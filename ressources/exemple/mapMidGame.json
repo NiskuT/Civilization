@@ -1,0 +1,2199 @@
+{
+    "id": "map",
+    "description": "Map Mid Game 2 players",
+    "data": [
+        {
+            "ligne": 0,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 1,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": true
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "oil",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 2,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": true
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 3,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "stone",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": true,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 4,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 5,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "geneve",
+                    "city": true,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 6,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": true,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 7,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": true,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 0,
+                    "ressource": "antic",
+                    "wonder": {},
+                    "caravane": [2],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": true
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "stone",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 1,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 8,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": true,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [1],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "kaboul",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "stone",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 9,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 2,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {
+                        "type": "natural",
+                        "name": "messa" 
+                    },
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 10,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "carthage",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 3,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "bruxelle",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 11,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 2,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 12,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 5,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": true
+                },
+                {
+                    "difficulty": 1,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 13,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 4,
+                    "player": 0,
+                    "ressource": "oil",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        },
+        {
+            "ligne": 14,
+            "data": [
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                },
+                {
+                    "difficulty": 0,
+                    "player": 0,
+                    "ressource": "none",
+                    "wonder": {},
+                    "caravane": [],
+                    "state-city": "none",
+                    "city": false,
+                    "barbare": false
+                }
+
+            ]
+        }
+    ] 
+}
