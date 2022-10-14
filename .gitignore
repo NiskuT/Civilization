@@ -1,0 +1,5 @@
+*~
+build
+bin
+src/*/*.h
+src/*/*/*.h
