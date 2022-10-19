@@ -47,13 +47,13 @@ Cities are the focal points around which empires are built. They allow players t
 
 ## Priority cards 
 
-There are five types of priority cards. A priori card’s type is indicated by an icon in the upper-left corner. Each player’s priority row contains one card of each type. During the game, players acquire advanced versions of their starting priority cards, which have a greater impact on the game. An advanced card is resolved using the same rules as the starting card of that type, but it may have an additional effect (e.g., allowing caravans to cross water). The following sections describe the rules for each type of priority card.
+There are five types of priority cards. A priority card’s type is indicated by an icon in the upper-left corner. Each player’s priority row contains one card of each type. During the game, players acquire advanced versions of their starting priority cards, which have a greater impact on the game. An advanced card is resolved using the same rules as the starting card of that type, but it may have an additional effect (e.g., allowing caravans to cross water). The following sections describe the rules for each type of priority card.
 
 ### Culture 
 
-Culture priority cards allow players to place pawns, which expands territory and claims resources. The card’s priority row slot determines which types of terrain the player can place pawns on. To place a pawn , the player takes one of his or her unused pawns and places it on a space adjacent to a friendly city. If that space contains a resource or natural wonder, that resource or natural wonder  is earned by the player. 
+Culture priority cards allow players to place pawns, which expands territory and claims resources. The card’s priority row slot determines which types of terrain the player can place pawns on. The player has to place a pawn on a space adjacent to a friendly city. If that space contains a resource or natural wonder, that resource or natural wonder  is earned by the player. 
 
-<p align="center"><img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-1.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-2.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-3.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-4.png"></p align="center"> 
+<p align="center"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-1.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-2.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-3.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-4.png"></p align="center"> 
 
 The player must note the following rules: 
 
@@ -69,7 +69,7 @@ The science priority card advances a player’s tech wheel, allowing the player 
 
 ### Economy
 
-Economy priority cards allow a player to interact with city-states and rival cities by moving caravans. The card’s priority row slot determines which terrain types the caravans can move into. Each player starts the game with one caravan on his or her economy card. During the game, a player may gain better economy cards that increase the number of caravans he or she can use. A caravan can move out of its player’s capital city or mature cities as though it was already in that city’s space. If a caravan does not reach a city-state or rival city in a single turn, it remains on the board and can be moved again the next time the player resolves the economy card.
+Economy priority cards allow a player to interact with city-states and rival cities by moving caravans. The card’s priority row slot determines which terrain types the caravans can move into. Each player starts the game with one caravan. During the game, a player may gain better economy cards that increase the number of caravans he or she can use. A caravan can move out of its player’s capital city or mature cities as though it was already in that city’s space. If a caravan does not reach a city-state or rival city in a single turn, it remains on the board and can be moved again the next time the player resolves the economy card.
 
 <p align="center"><img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-1-caravan.png"></p align="center"> 
 
@@ -81,15 +81,15 @@ The player must note the following rules:
 
 - The player cannot move more than one caravan to the same city or city-state during the same turn. When a player moves a caravan to a city-state or rival city, he or she resolves the following steps according to the destination: 
 
-1. The player returns the caravan to his or her economy card. 
+1. The caravan get back to the economy card. 
 
 2. The player gains two boxes. 
 
-	a. City-State: The bowes are placed on the card in his or her priority row that shares that city-state’s type. 
+	a. City-State: The boxes are placed on the card in his or her priority row that shares that city-state’s type. 
 	
 	b. Rival City: The boxes are placed on cards in his or her priority row, distributed as desired. 
 	
-	3. The player may take one diplomacy card. 
+3. The player may take one diplomacy card. 
 	
 	a. City-State: The player cannot take that card if he or she already has a copy of it. 
 
@@ -129,7 +129,7 @@ Military priority cards allow a player to either reinforce defenses or perform a
 Reinforced pawns are powerful defensive tools that are useful for protecting valuable territory and cities that house world wonders. To reinforce pawns, the player chooses a number of his or her pawns up to the number of the military card’s slot. Reinforced pawns offer some protection against barbarians. When a barbarian moves into a space that contains a reinforced pawns, the barbarian returns to the space it moved from and the pawn  get back to its unreinforced side. When a player is defending, he or she must determine the combat value of the defending component. A reinforced pawn increases its own combat value by one, and it also increases the combat value of each adjacent friendly city and pawn by one. These bonuses can stack to increase defense significantly—a city surrounded by several reinforced control tokens is difficult to conquer.
 
 **Performing Attacks:**
-Players perform attacks to defeat barbarians, conquer city states, and capture rival territory. To perform an attack, the player chooses a space to attack from and a target that is within the number of spaces indicated on the military card, counting from a friendly space. 
+Players perform attacks to defeat barbarians, conquer city states, and capture rival territory. To perform an attack, the player chooses a space to attack from and a target that is within the number of spaces indicated on the military card, counting from a friendly space. 
 
 The player must note the following rules: 
 
