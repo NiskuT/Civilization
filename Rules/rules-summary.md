@@ -912,24 +912,26 @@ Army
 ## I. Stats
 
 1. <span><b>Repartition of the cells</b></span>
-2. <span><b>Resource allocation</b></span>
+
+<img src="./img/ressource.png">
+
+3. <span><b>Resource allocation</b></span>
 
 <table>
   <tr>
    <td>
-   a
+    <img src="./img/stone.png">
    </td>
-   <td>b
+   <td>
+     <img src="./img/oil.png">
    </td>
   </tr>
   <tr>
-   <td>c
+   <td>
+     <img src="./img/diamond.png">
    </td>
-   <td>d
+   <td>
+     <img src="./img/antic.png">
    </td>
   </tr>
 </table>
-
-3. <span><b>Repartition of the barbarians</b></span>
-
-4. <span><b>Repetition of the neighbors of the Natural Wonders</b></span>
