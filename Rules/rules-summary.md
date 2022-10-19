@@ -1,3 +1,4 @@
+
 # Rules
 
 ## A. Civilizations
@@ -44,7 +45,7 @@ Industry
    </td>
   </tr>
   <tr>
-   <td colspan="5" >Extern cases of the field and water cases are considered difficulty 3
+   <td colspan="5" >Extern cases of the field and water cases are considered priority 3
    </td>
   </tr>
 </table>
@@ -94,9 +95,9 @@ Science
    </td>
   </tr>
   <tr>
-    <td colspan="5" ><p>Antic Wonders => 1 more case for Culture card</p>
-<p>Medieval Wonders => 2 more case for Culture card</p>
-<p>Modern Wonders => 3 more case for Culture card</p>
+    <td colspan="5" ><p>Antic Wonders => 1 more box for Culture card</p>
+<p>Medieval Wonders => 2 more boxes for Culture card</p>
+<p>Modern Wonders => 3 more boxes for Culture card</p>
    </td>
   </tr>
 </table>
@@ -121,7 +122,7 @@ Science
    </td>
   </tr>
   <tr>
-   <td colspan="5" >Caravan can start from any city, even if it is not a major one
+   <td colspan="5" >Caravan can start from any city, even if it is not a mature one
    </td>
   </tr>
 </table>
@@ -146,7 +147,7 @@ Army
    </td>
   </tr>
   <tr>
-   <td colspan="5" >Win or use a Natural Wonders Card ? Place it as a Case on any card
+   <td colspan="5" >Win or use a Natural Wonders Card ? Place it as a boxes on any card
    </td>
   </tr>
 </table>
@@ -171,7 +172,7 @@ Culture
    </td>
   </tr>
   <tr>
-   <td colspan="5" >Defend or attack from a plain or hill ? Fight score += 3
+   <td colspan="5" >Defend or attack from a grassland or hill ? Fight score += 3
    </td>
   </tr>
 </table>
@@ -196,7 +197,7 @@ Economy
    </td>
   </tr>
   <tr>
-   <td colspan="5" >Win against a barbare ? Win a resource
+   <td colspan="5" >Win against a barbarian ? Win a resource
    </td>
   </tr>
 </table>
@@ -206,7 +207,7 @@ Economy
 
 <p>
 
-    => Start from Barbare Spawn 
+    => Start from Barbarian Spawn 
 <p>
 
     => Nothing 
@@ -215,7 +216,7 @@ Economy
     => Move 
 <p>
 
-    => Case 
+    => Box
 <p>
 
     => Move 
@@ -224,11 +225,11 @@ Economy
     => Spawn
 <p>
  
-## C. Difficulty Order
+## C. Priority Row
 
 <p>
 
-    => Start from plain
+    => Start from grassland
 <p>
 
     => Hill
@@ -281,7 +282,7 @@ Economy
    </td>
   </tr>
   <tr>
-   <td>People - own 5 major cities
+   <td>People - own 5 mature cities
    </td>
    <td><strong>or</strong>
    </td>
@@ -316,7 +317,7 @@ Economy
    </td>
    <td><strong>or</strong>
    </td>
-   <td>Pantanal - Antiquity
+   <td>Pantanal - Antic
    </td>
   </tr>
 </table>
@@ -324,7 +325,7 @@ Economy
 
 ## F. Wonder of the world
 
-Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
+Stone => S  /  Antic => A  /  Oil => O  /  Diamond => D
 
 
 
@@ -411,7 +412,7 @@ Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
   <tr>
    <td>Great lighthouse
    </td>
-   <td>Build city on external border like it was on plain or hill cases
+   <td>Build city on external border like it was on grassland or hill cases
    </td>
    <td>8
    </td>
@@ -434,7 +435,7 @@ Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
   <tr>
    <td>Machu Picchu
    </td>
-   <td>Card from plain or hill are now like forest cases
+   <td>Card from grassland or hill are now like forest cases
    </td>
    <td>10
    </td>
@@ -496,7 +497,7 @@ Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
   <tr>
    <td>Hanging gardens
    </td>
-   <td>Each round, place a pawn on a difficulty 4 or less 
+   <td>Each round, place a pawn on a priority 4 or less 
    </td>
    <td>8
    </td>
@@ -532,7 +533,7 @@ Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
   <tr>
    <td>Sydney Opera
    </td>
-   <td>Others pawns are considered yours for major city
+   <td>Others pawns are considered yours for mature city
    </td>
    <td>10
    </td>
@@ -595,7 +596,7 @@ Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
   <tr>
    <td>Venetian Arsenal
    </td>
-   <td>Play difficulty 5 cards ? play it again as difficulty 1
+   <td>Play priority 5 cards ? play it again as priority 1
    </td>
    <td>10
    </td>
@@ -629,8 +630,8 @@ Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
 
    
 
-## G. Difficulty card	
-X = lvl of difficulty
+## G. Priority card	
+X = lvl of priority
 
 1. <span><b>Economy</b></span>
 
@@ -650,7 +651,7 @@ Bonus: +1 step
    <td>II
    </td>
    <td>
-    2 caravane <b>and</b> 4 steps on X_field <b>and</b> kill barbare without gain any case
+    2 caravane <b>and</b> 4 steps on X_field <b>and</b> kill barbarian without gain any box
    </td>
   </tr>
     <tr>
@@ -691,7 +692,7 @@ Bonus: +1 tech upgrade
   <tr>
    <td>II
    </td>
-   <td>1 case on a card <b>and</b> tech wheel += X
+   <td>1 box on a card <b>and</b> tech wheel += X
    </td>
   </tr>
   <tr>
@@ -728,7 +729,7 @@ Bonus: +1 fight score
   <tr>
    <td>II
    </td>
-   <td>Reinforce X pawns <b>or</b> 2 attack 3 steps from you with a fight score of X+1 or X+3 against barbares
+   <td>Reinforce X pawns <b>or</b> 2 attack 3 steps from you with a fight score of X+1 or X+3 against barbarians
    </td>
   </tr>
   <tr>
@@ -825,9 +826,9 @@ Bonus: +1 wonders production
 <table>
   <tr>
    <td>
-Player pawns are considered yours for major cities
+Player pawns are considered yours for mature cities
    </td>
-   <td>If your caravan go to player capital city, place a case on a card of this player and obtain a ressource
+   <td>If your caravan go to player capital city, place a box on a card of this player and obtain a ressource
    </td>
   </tr>
   <tr>
@@ -864,7 +865,7 @@ Army
    </td>
    <td>Mohenjo Daro
    </td>
-   <td>Difficulty for placing pawns = difficulty - 1
+   <td>Priority lvl for placing pawns = priority - 1
    </td>
   </tr>
   <tr>
@@ -872,7 +873,7 @@ Army
    </td>
    <td>Kumasi
    </td>
-   <td>Industry or Culture cards => Forest difficulty = 1
+   <td>Industry or Culture cards => Forest priority lvl = 1
    </td>
   </tr>
   <tr>
@@ -880,7 +881,7 @@ Army
    </td>
    <td>Seoul
    </td>
-   <td>At the beginning of each round, Move a barbare to a close empty field (not water)
+   <td>At the beginning of each round, Move a barbarian to a close empty field (not water)
    </td>
   </tr>
   <tr>
@@ -904,7 +905,7 @@ Army
    </td>
    <td>Bruxelles
    </td>
-   <td>Wonders cost 1 less resources for each major city
+   <td>Wonders cost 1 less resources for each mature city
    </td>
   </tr>
 </table>
