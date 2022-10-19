@@ -1,5 +1,6 @@
 # Rules
 
+
 Our game is a strategy board game in which two to four players act as the leaders of history’s most memorable civilizations. Over the course of the game, they will expand their domains, gain new technologies, and build many of humanity’s greatest wonders. In the end, one civilization will rise above all others to leave its indelible mark upon history. 
 
 ## Playing the game
@@ -28,13 +29,21 @@ After the player resets the chosen card, the turn ends and the next player takes
 
 Each hex on a map tile is a space. Spaces on the map have a terrain represented by art. The five basic types of terrain each correspond to a slot on the priority bar: grassland (1), hills (2), forest (3), desert (4), and mountains (5). A terrain’s slot number is its priority. Terrain affects many aspects of the game. In general, terrain that corresponds to a higher slot is more difficult to expand into and more difficult to conquer. The sixth terrain type, water, does not appear on the priority bar. Water has a priority of one, but players generally cannot interact with water unless a card specifically allows them to do so. When a space appears to have more than one terrain, its terrain is the type that covers the most area in the space.
 
+<p align="center"><img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/field-grassland.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/field-hill.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/field-forest.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/field-desert.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/field-mountain.png"> </p align="center"> 
+
+
 ### Resources and natural wonders
 
 Resources and natural wonders power the creation of amazing world wonders. There are four types of resources: antiquity, stone, oil, diamond. Players can collect these resources from the map and spend them when building world wonders. When a player spends a resource, it is returned it to the supply. A natural wonder can be spent as a resource of the type shown on it. However, when a natural wonder token is spent, it is not returned to the supply. The natural wonder an be spent again during future turns, but it cannot be spent more than once per turn. Spaces with natural wonder do not have a terrain type, but the terrain priority of all natural wonder spaces is five.
 
+<p align="center"><img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/ressource-antic.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/ressource-stone.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/ressource-oil.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/ressource-diamond.png"></p align="center"> 
+
+
 ### Cities and mature cities
 
 Cities are the focal points around which empires are built. They allow players to extend into new areas of the map. Mature cities are fully developed cities that contribute to the well-being of a player’s civilization. They periodically generate boxes (which are described later) and act as new starting points for caravans. A city is mature when each space adjacent to it either contains a friendly pawn or is a water space. Cities on the edge of the map can mature faster because they have fewer adjacent spaces.
+
+<p align="center"><img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-1-city.png">  <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-1-mature.png"></p align="center"> 
 
 ## Priority cards 
 
@@ -42,7 +51,11 @@ There are five types of priority cards. A priori card’s type is indicated by a
 
 ### Culture 
 
-Culture priority cards allow players to place pawns, which expands territory and claims resources. The card’s priority row slot determines which types of terrain the player can place pawns on. To place a pawn , the player takes one of his or her unused pawns and places it on a space adjacent to a friendly city. If that space contains a resource or natural wonder, that resource or natural wonder  is earned by the player. The player must note the following rules: 
+Culture priority cards allow players to place pawns, which expands territory and claims resources. The card’s priority row slot determines which types of terrain the player can place pawns on. To place a pawn , the player takes one of his or her unused pawns and places it on a space adjacent to a friendly city. If that space contains a resource or natural wonder, that resource or natural wonder  is earned by the player. 
+
+<p align="center"><img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-1.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-2.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-3.png"> <img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-4.png"></p align="center"> 
+
+The player must note the following rules: 
 
 - The player cannot place the pawn on a water space or on any space whose terrain corresponds to a higher priority row slot than the culture card’s slot. All natural wonders are treated as having a terrain priority of five. 
 
@@ -57,6 +70,8 @@ The science priority card advances a player’s tech wheel, allowing the player 
 ### Economy
 
 Economy priority cards allow a player to interact with city-states and rival cities by moving caravans. The card’s priority row slot determines which terrain types the caravans can move into. Each player starts the game with one caravan on his or her economy card. During the game, a player may gain better economy cards that increase the number of caravans he or she can use. A caravan can move out of its player’s capital city or mature cities as though it was already in that city’s space. If a caravan does not reach a city-state or rival city in a single turn, it remains on the board and can be moved again the next time the player resolves the economy card.
+
+<p align="center"><img src="https://github.com/NiskuT/Civilization/blob/develop/ressources/img/player-1-caravan.png"></p align="center"> 
 
 The player must note the following rules: 
 
@@ -176,7 +191,7 @@ Mature cities contribute to their civilizations in the form of boxes. When the p
 
 ### City-states
 
-A city-state is a small, sovereign state that is neutral toward all players. City-states are valuable trading partners, rewarding players who send caravans to them. Each city-state has two diplomacy cards that share the city state’s name. When a player moves a caravan to a city-state, that player places two boxes on the card in his or her priority row that shares the city-state’s type. If the player does not already have that city-state’s card, he or she wins one of its cards. The player cannot take the city-state’s card from another player. The terrain of all city-states is grassland, but the defense bonus of all city-states is eight. A player cannot move more than one caravan into the same city or city-state each turn.
+A city-state is a small, sovereign state that is neutral toward all players. City-states are valuable trading partners, rewarding players who send caravans to them. Each city-state has two diplomacy cards that share the city state’s name. When a player moves a caravan to a city-state, that player places two boxes on the card in his or her priority row that shares the city-state’s type. If the player does not already have that city-state’s card, he or she wins one of its cards. The player cannot take the city-state’s card from another player. The terrain of all city-states is grassland, but the defense bonus of all city-states is eight. A player cannot move more than one caravan into the same city or city-state each turn.
 
 1. Conquering and Liberating City-States 
 
