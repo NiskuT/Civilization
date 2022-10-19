@@ -1,4 +1,3 @@
-
 # Rules
 
 ## A. Civilizations
@@ -95,7 +94,7 @@ Science
    </td>
   </tr>
   <tr>
-   <td colspan="5" >Antic Wonders => 1 more case for Culture card
+    <td colspan="5" ><p>Antic Wonders => 1 more case for Culture card</p>
 <p>Medieval Wonders => 2 more case for Culture card</p>
 <p>Modern Wonders => 3 more case for Culture card</p>
    </td>
@@ -383,9 +382,7 @@ Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
   <tr>
    <td>Oxford University (ENSEA)
    </td>
-   <td>Upgrade a new card != Science ? 
-<p>
-Choose any type
+   <td>Upgrade a new card != Science ? Choose any other type
    </td>
    <td>10
    </td>
@@ -447,8 +444,7 @@ Choose any type
   <tr>
    <td>Great Zimbabwe
    </td>
-   <td>Instead of play a card, place 4 commerce pawns
-<p><b>and</b> can move commerce pawns</p>
+   <td>Instead of play a card, place 4 commerce pawns <b>and</b> can move commerce pawns
    </td>
    <td>9
    </td>
@@ -490,8 +486,7 @@ Choose any type
   <tr>
    <td>Stonehenge
    </td>
-   <td>Place a pawn on a hill ? 
-<p>Place pawns on close hills</p>
+   <td>Place a pawn on a hill ? Place pawns on close hills
    </td>
    <td>7
    </td>
@@ -509,13 +504,12 @@ Choose any type
    </td>
   </tr>
   </table>
-  <p><u>Medieval Wonders</u></p>
+  <p>Medieval Wonders</p>
    <table>
   <tr>
    <td>Forbidden City
    </td>
-   <td>Each round, 
-<p>kill an enemy pawn stuck to allied pawns</p>
+   <td>Each round, kill an enemy pawn stuck to allied pawns
    </td>
    <td>9
    </td>
@@ -525,8 +519,7 @@ Choose any type
   <tr>
    <td>Chichen Itza
    </td>
-   <td>Pawns can be places on any forest cases 
-<p>without ressources</p>
+   <td>Pawns can be places on any forest cases without ressources
    </td>
    <td>10
    </td>
@@ -569,8 +562,7 @@ Choose any type
   <tr>
    <td>Petra
    </td>
-   <td>Defend ? Fight score += 2
-<p>Barbare can’t kill cities or reinforced pawns</p>
+   <td>Defend ? Fight score += 2 <b> and </b> barbarians can’t kill cities or reinforced pawns
 </td>
    <td>7
    </td>
@@ -616,8 +608,7 @@ Choose any type
   <tr>
    <td>Pentagone
    </td>
-   <td>Attack ? Fight score += 2
-<p>Can attack anything on the entire field</p>
+   <td>Attack ? Fight score += 2 <b>and</b> can attack anything on the entire field
    </td>
    <td>12
    </td>
