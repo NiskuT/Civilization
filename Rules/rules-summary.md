@@ -1,8 +1,9 @@
+
 **Rules**
 
-**<span style="text-decoration:underline;">A. Civilizations:</span>**
+**<span>A. Civilizations:</span>**
 
-1. <span style="text-decoration:underline;">Antic Aztec</span>	(Moctezuma)
+1. <span>Antic Aztec</span>	(Moctezuma)
 
 <table>
   <tr>
@@ -27,7 +28,7 @@ Science
 
 
 
-2. <span style="text-decoration:underline;">Medieval Japan</span>	(Hōjō Tokimune)
+2. <span>Medieval Japan</span>	(Hōjō Tokimune)
 
 <table>
   <tr>
@@ -52,7 +53,7 @@ Industry
 
 
 
-3. <span style="text-decoration:underline;">Antic Egypt</span> 	(Cleopatra)
+3. <span>Antic Egypt</span> 	(Cleopatra)
 
 <table>
   <tr>
@@ -77,7 +78,7 @@ Science
 
 
 
-4. <span style="text-decoration:underline;">Renaissance France</span> 	(Catherine de Médicis)
+4. <span>Renaissance France</span> 	(Catherine de Médicis)
 
 <table>
   <tr>
@@ -106,7 +107,7 @@ Modern Wonders => 3 more case for Culture card
 
 
 
-5. <span style="text-decoration:underline;">Antic Rome</span> 	(Trajan)
+5. <span>Antic Rome</span> 	(Trajan)
 
 <table>
   <tr>
@@ -131,7 +132,7 @@ Science
 
 
 
-6. <span style="text-decoration:underline;">Modern America</span> 	(Roosevelt)
+6. <span>Modern America</span> 	(Roosevelt)
 
 <table>
   <tr>
@@ -156,7 +157,7 @@ Army
 
 
 
-7. <span style="text-decoration:underline;">Antic Scythie</span>		(Tomyris)
+7. <span>Antic Scythie</span>		(Tomyris)
 
 <table>
   <tr>
@@ -181,7 +182,7 @@ Culture
 
 
 
-8. <span style="text-decoration:underline;">Antic Sumer</span>		(Gilgamesh)
+8. <span>Antic Sumer</span>		(Gilgamesh)
 
 <table>
   <tr>
@@ -204,7 +205,7 @@ Economy
 </table>
 
 
-**<span style="text-decoration:underline;">B. Wheel order</span>**
+**<span>B. Wheel order</span>**
 
 <p>
 
@@ -228,7 +229,7 @@ Economy
     => Spawn
  </p>
  
-**<span style="text-decoration:underline;">C. Difficulty Order</span>**
+**<span>C. Difficulty Order</span>**
 
 <p>
 
@@ -250,7 +251,7 @@ Economy
 </table>
 
 
-**<span style="text-decoration:underline;">D. Victory</span>**
+**<span>D. Victory</span>**
 
 
 <table>
@@ -297,7 +298,7 @@ Economy
 </table>
 
 
-**<span style="text-decoration:underline;">E. Natural Wonders</span>**
+**<span>E. Natural Wonders</span>**
 
 
 <table>
@@ -328,15 +329,15 @@ Economy
 </table>
 
 
-**<span style="text-decoration:underline;">F. Wonder of the world</span>**
+**<span>F. Wonder of the world</span>**
 
 Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
 
 
 
-1. <span style="text-decoration:underline;"><u><b>Science Wonders</b></u></span> 
+1. <span><u><b>Science Wonders</b></u></span> 
 
-<p><u>Antic Wonders</p>
+<p><u>Antic Wonders</u></p>
 <table>
   <tr>
    <td>Oracle
@@ -360,7 +361,7 @@ Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
   </tr>
   </table>
 
-  <p><u>Medieval Wonders</p>
+  <p><u>Medieval Wonders</u></p>
  <table>
    <td>Potala Palace
    </td>
@@ -383,7 +384,7 @@ Stone => S  /  Antiquity => A  /  Oil => O  /  Diamond => D
   </tr>
  </table>
  
-  <p><u>Modern Wonders</p>
+  <p><u>Modern Wonders</u></p>
   <table>
   <tr>
    <td>Oxford University (ENSEA)
@@ -412,9 +413,9 @@ Choose any type
 
 
 
-2. <span style="text-decoration:underline;"><u><b>Economy Wonders</u></b></span> 
+2. <span><b><u>Economy Wonders</u></b></span> 
 
-<p><u>Antic Wonders
+<p><u>Antic Wonders</u>
 <table>
   <tr>
    <td>Great lighthouse
@@ -437,7 +438,7 @@ Choose any type
    </td>
   </tr>
   </table>
-  <p><u>Medieval Wonders
+  <p><u>Medieval Wonders</u>
   <table>
   <tr>
    <td>Machu Picchu
@@ -462,7 +463,7 @@ Choose any type
    </td>
   </tr>
   </table>
-   <p><u>Modern Wonders
+   <p><u>Modern Wonders</u>
    <table>
   <tr>
    <td>Maracana Stadium
@@ -489,9 +490,9 @@ Choose any type
 
 
 
-3. <span style="text-decoration:underline;"><u><b>Culture Wonders</span> 
+3. <span><u><b>Culture Wonders</b></u></span> 
 
-<p><u>Antic Wonders
+<p><u>Antic Wonders</u>
 <table>
   <tr>
    <td>Stonehenge
@@ -516,7 +517,7 @@ Place pawns on close hills
    </td>
   </tr>
   </table>
-  <p><u>Medieval Wonders
+  <p><u>Medieval Wonders</u>
    <table>
   <tr>
    <td>Forbidden City
@@ -543,7 +544,7 @@ without ressources
    </td>
   </tr>
   </table>
-  <p><u>Modern Wonders
+  <p><u>Modern Wonders</u>
    <table>
   <tr>
    <td>Sydney Opera
@@ -571,9 +572,9 @@ without ressources
 
 
 
-4. <span style="text-decoration:underline;"><u><b>Army Wonders</span> 
+4. <span><u><b>Army Wonders</b></u></span> 
 
-<p><u>Antic Wonders
+<p><u>Antic Wonders</u>
   <table>
   <tr>
    <td>Petra
@@ -597,7 +598,7 @@ without ressources
    </td>
   </tr>
   </table>
-<p><u>Medieval Wonders
+<p><u>Medieval Wonders</u>
  <table>
   <tr>
    <td>Alhambra
@@ -620,7 +621,7 @@ without ressources
    </td>
   </tr>
   </table>
-  <p><u>Modern Wonders
+  <p><u>Modern Wonders</u>
    <table>
   <tr>
    <td>Pentagone
@@ -648,11 +649,11 @@ Can attack anything on the entire field
 
    
 
-**<span style="text-decoration:underline;">G. Difficulty card</span>**		X = lvl of difficulty
+**<span>G. Difficulty card</span>**		X = lvl of difficulty
 
 
 
-1. <span style="text-decoration:underline;"><u>Economy</span>
+1. <span><u>Economy</u></span>
 
 <table>
   <tr>
@@ -691,7 +692,7 @@ Bonus: +1 step
 
 
 
-2. <span style="text-decoration:underline;"><u>Science</span>
+2. <span><u>Science</u></span>
 * upgrades lvl3 & lvl6 => II
 * upgrades lvl10 & lvl14 => III
 * upgrades lvl19 & lvl24 => IV    => Possibility to move to lvl14 after lvl24
@@ -731,7 +732,7 @@ Bonus: +1 tech upgrade
 
 
 
-3. <span style="text-decoration:underline;"><u>Army</span>
+3. <span><u>Army</u></span>
 
 <table>
   <tr>
@@ -768,7 +769,7 @@ Bonus: +1 fight score
 
 
 
-4. <span style="text-decoration:underline;"><u>Culture</span>
+4. <span><u>Culture</u></span>
 
 <table>
   <tr>
@@ -805,7 +806,7 @@ Bonus: +1 pawn
 
 
 
-5. <span style="text-decoration:underline;"><u>Industry</span>
+5. <span><u>Industry</u></span>
 
 <table>
   <tr>
@@ -839,9 +840,9 @@ Bonus: +1 wonders production
   </tr>
 </table>
 
-**<span style="text-decoration:underline;">H. Diplomacy Card</span>**	
+**<span>H. Diplomacy Card</span>**	
 
-1. <span style="text-decoration:underline;"><u>Player City</span>
+1. <span><u>Player City</u></span>
 <table>
   <tr>
    <td>
@@ -858,7 +859,7 @@ Player pawns are considered yours for major cities
   </tr>
 </table>
 
-2. <span style="text-decoration:underline;"><u>State City</span>
+2. <span><u>State City</u></span>
 
 <table>
   <tr>
@@ -929,10 +930,10 @@ Army
   </tr>
 </table>
 
-**<span style="text-decoration:underline;">I. Stats</span>**
+**<span>I. Stats</span>**
 
-1. <span style="text-decoration:underline;"><u>Repartition of the cells</span>
-2. <span style="text-decoration:underline;"><u>Resource allocation</span>
+1. <span><u>Repartition of the cells</u></span>
+2. <span><u>Resource allocation</u></span>
 
 <table>
   <tr>
@@ -950,6 +951,6 @@ Army
   </tr>
 </table>
 
-3. <span style="text-decoration:underline;"><u>Repartition of the barbarians</span>
+3. <span><u>Repartition of the barbarians</u></span>
 
-4. <span style="text-decoration:underline;"><u>Repetition of the neighbors of the Natural Wonders</span>
+4. <span><u>Repetition of the neighbors of the Natural Wonders</u></span>
