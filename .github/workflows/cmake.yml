@@ -22,12 +22,12 @@ jobs:
     - name: Configure CMake
       run: |
         mkdir build && cd build
-        cmake ${{github.workspace}}
+        cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
     - name: Run
-      working-directory: ${{github.workspace}}/build
-      run: .${{github.workspace}}/build/bin/client -hello
+      working-directory: ${{github.workspace}}/build/bin
+      run: ./client -hello
       
