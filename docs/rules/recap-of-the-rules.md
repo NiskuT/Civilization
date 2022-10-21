@@ -1,5 +1,5 @@
 
-# Rules
+# Recap of the rules
 
 ## A. Civilizations
 
