@@ -1,5 +1,5 @@
 
-# Recap of the rules
+# Recap of Specific Actions
 
 ## A. Civilizations
 
