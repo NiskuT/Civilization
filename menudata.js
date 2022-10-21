@@ -24,4 +24,5 @@
 */
 var menudata={children:[
 {text:"Documentation",url:"index.html"},
-{text:"Source code",url:"^https://github.com/NiskuT/Civilization"}]}
+{text:"Source code",url:"^https://github.com/NiskuT/Civilization"},
+{text:"List of pages",url:"pages.html"}]}
