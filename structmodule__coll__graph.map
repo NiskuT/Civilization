@@ -1,0 +1,15 @@
+<map id="module" name="module">
+<area shape="rect" id="node1" title=" " alt="" coords="19,357,83,383"/>
+<area shape="rect" id="node4" href="$structdeclaration.html" title=" " alt="" coords="110,642,195,667"/>
+<area shape="rect" id="node2" href="$structumlpackage.html" title=" " alt="" coords="5,269,97,295"/>
+<area shape="rect" id="node6" href="$structumlclass.html" title=" " alt="" coords="246,357,321,383"/>
+<area shape="rect" id="node3" href="$structgeometry.html" title=" " alt="" coords="119,181,194,207"/>
+<area shape="rect" id="node5" href="$structumlclassnode.html" title=" " alt="" coords="191,543,293,568"/>
+<area shape="rect" id="node13" href="$structumlassocnode.html" title=" " alt="" coords="282,445,389,471"/>
+<area shape="rect" id="node7" href="$structumlattrnode.html" title=" " alt="" coords="238,93,329,119"/>
+<area shape="rect" id="node10" href="$structumloperation.html" title=" " alt="" coords="323,181,419,207"/>
+<area shape="rect" id="node8" href="$structumlattribute.html" title=" " alt="" coords="310,5,401,31"/>
+<area shape="rect" id="node9" href="$structumlopnode.html" title=" " alt="" coords="321,269,406,295"/>
+<area shape="rect" id="node11" href="$structumltemplatenode.html" title=" " alt="" coords="483,269,604,295"/>
+<area shape="rect" id="node12" href="$structumltemplate.html" title=" " alt="" coords="497,181,590,207"/>
+</map>
