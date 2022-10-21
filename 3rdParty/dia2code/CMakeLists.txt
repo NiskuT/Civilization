@@ -27,7 +27,11 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 include_directories(${CMAKE_SOURCE_DIR}/3rdParty/libxml2-src/include)
 include_directories(${CMAKE_BINARY_DIR}/lib)
-link_libraries(${CMAKE_BINARY_DIR}/lib/libxml2.so)
+IF (WIN32)
+	link_libraries(${CMAKE_BINARY_DIR}/lib/libxml2.dll)
+ELSE ()
+	link_libraries(${CMAKE_BINARY_DIR}/lib/libxml2.so)
+ENDIF()
 
 # Sources
 file(GLOB_RECURSE main_sources src/*.c)
