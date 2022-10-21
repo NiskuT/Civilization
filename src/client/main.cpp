@@ -3,14 +3,13 @@
 
 int main(int argc,char* argv[])
 {
-    if (argc == 1) {
-        client::sayHello("");
-        return 0;
-    }
+    std::string arg;
+    if (argc == 2) client::sayHello sayHello(argv[1]);
+
     else {
-        std::string arg = argv[1];
-        client::sayHello(arg);
-        return 0;
+        std::cout << "Unkown command, use -h for help." << std::endl;
     }
+
+   
     return 0;
 }
