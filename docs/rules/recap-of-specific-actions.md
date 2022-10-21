@@ -354,9 +354,10 @@ Stone => S  /  Antic => A  /  Oil => O  /  Diamond => D
    </td>
   </tr>
   </table>
-
-  <p>Medieval Wonders</p>
- <table>
+  
+<p>Medieval Wonders</p>
+<table>
+  <tr>
    <td>Potala Palace
    </td>
    <td>Pick 3 diplomacy cards from our opponents
@@ -376,7 +377,7 @@ Stone => S  /  Antic => A  /  Oil => O  /  Diamond => D
    <td>S / D
    </td>
   </tr>
- </table>
+  </table>
  
   <p>Modern Wonders</p>
   <table>
