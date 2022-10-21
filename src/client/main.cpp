@@ -1,25 +1,16 @@
 #include <iostream>
-
-// Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
-#include <SFML/Graphics.hpp>
-
-void testSFML() {
-    sf::Texture texture;
-}
-
-// Fin test SFML
-
-#include <state.h>
-
-using namespace std;
-using namespace state;
+#include <client.hpp>
 
 int main(int argc,char* argv[])
 {
-    Exemple exemple;
-    exemple.setX(53);
-
-    cout << "It works !" << endl;
-
+    if (argc == 1) {
+        client::sayHello("");
+        return 0;
+    }
+    else {
+        std::string arg = argv[1];
+        client::sayHello(arg);
+        return 0;
+    }
     return 0;
 }

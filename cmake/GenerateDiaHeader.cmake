@@ -5,8 +5,8 @@ add_custom_target(generate-headers)
 # Global cmake target responsible for the cleanup of all the cpp headers
 # generated using the "generate-headers" target.
 add_custom_target(clean-headers
-  COMMAND rm -vf ${PROJECT_SOURCE_DIR}/src/*/*.h
-  COMMAND rm -vf ${PROJECT_SOURCE_DIR}/src/*/*/*.h
+  COMMAND rm -vf ${PROJECT_SOURCE_DIR}/src/*/*.hpp
+  COMMAND rm -vf ${PROJECT_SOURCE_DIR}/src/*/*/*.hpp
   COMMAND rm -f ${PROJECT_BINARY_DIR}/generate_header_*.stamp
   )
 
@@ -32,9 +32,9 @@ function(generate_dia_header dia_file)
   # Custom command that generate the cpp headers and create the stamp file
   add_custom_command(
     OUTPUT ${stamp}
-    COMMAND rm -vf ${PROJECT_SOURCE_DIR}/src/*/${namespace}.h
-    COMMAND rm -vf ${PROJECT_SOURCE_DIR}/src/*/${namespace}/*.h
-    COMMAND $<TARGET_FILE:dia2code> -ns ${namespace} -d ${output_dir} -t cpp ${dia_file}
+    COMMAND rm -vf ${PROJECT_SOURCE_DIR}/src/*/${namespace}.hpp
+    COMMAND rm -vf ${PROJECT_SOURCE_DIR}/src/*/${namespace}/*.hpp
+    COMMAND $<TARGET_FILE:dia2code> -d ${output_dir} -ext hpp -t cpp ${dia_file}
     COMMAND ${CMAKE_COMMAND} -E touch ${stamp}
     DEPENDS ${dia_file}
     )

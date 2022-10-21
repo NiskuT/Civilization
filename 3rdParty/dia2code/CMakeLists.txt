@@ -1,9 +1,9 @@
 cmake_minimum_required (VERSION 3.0)
 project (dia2code)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../../lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../../lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../../bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/3rdParty/dia2code-arch)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Enable C11
 set(CMAKE_BUILD_TYPE Release)
@@ -25,15 +25,15 @@ IF(CMAKE_COMPILER_IS_GNUCC)
 	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${dia2code_warnings}")
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
+include_directories(${CMAKE_SOURCE_DIR}/3rdParty/libxml2-src/include)
+include_directories(${CMAKE_BINARY_DIR}/lib)
+link_libraries(${CMAKE_BINARY_DIR}/lib/libxml2.so)
 
-include_directories(libxml2/include)
 # Sources
 file(GLOB_RECURSE main_sources src/*.c)
 
-add_dependencies(dia2code libxml2)
-
 # Executables
 add_executable(dia2code ${main_sources})
-target_link_libraries(dia2code ${LIBXML2_LIBRARIES})
 
+add_dependencies(dia2code libxml2)
 
