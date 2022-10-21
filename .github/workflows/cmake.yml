@@ -13,7 +13,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
+    
+    - name: Install tools
+      run: |
+        sudo apt install gcov
+        sudo apt install lcov
+        
     - name: Configure CMake
       run: |
         mkdir build && cd build
