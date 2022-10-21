@@ -16,7 +16,6 @@ jobs:
     
     - name: Install tools
       run: |
-        sudo apt install gcov
         sudo apt install lcov
         
     - name: Configure CMake
