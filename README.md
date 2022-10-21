@@ -13,7 +13,7 @@ Link to graphic resources : [here](https://niskut.github.io/Civilization/md_docs
 
 Link to the credits: [here](https://niskut.github.io/Civilization/md_docs_credits.html)
 
-Link to the diagrams explanation: [here](https://niskut.github.io/Civilization/md_diagram_explanation.html)
+Link to the diagrams explanation: [here](https://github.com/NiskuT/Civilization/blob/develop/docs/diagram-explanation.md)
 
 
 ## Principle
