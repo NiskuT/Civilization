@@ -1,0 +1,32 @@
+name: CMake
+
+on:
+  [push, pull_request]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install tools
+      run: |
+        sudo apt install lcov
+        
+    - name: Configure CMake
+      run: |
+        mkdir build && cd build
+        cmake ${{github.workspace}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Run
+      working-directory: ${{github.workspace}}/build
+      run: ./${{github.workspace}}/build/bin/client -hello
+      
