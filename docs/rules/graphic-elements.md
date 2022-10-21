@@ -39,7 +39,7 @@ Field natural wonder elements:
 <p align="center"><img src="../../ressources/img/map/field-wonder-everest.png"> <img src="../../ressources/img/map/field-wonder-galapagos.png"> <img src="../../ressources/img/map/field-wonder-kilimanjaro.png"> <img src="../../ressources/img/map/field-wonder-messa.png"> <img src="../../ressources/img/map/field-wonder-pantanal.png"> <img src="../../ressources/img/map/field-wonder-volcanic.png"> </p align="center">
 
 Barbarians:
-<p align="center"><img src="../../ressources/img/map/barbarians.png"></p align="center"> 
+<p align="center"><img src="../../ressources/img/map/barbarians.png"> <img src="../../ressources/img/map/barbarian-hutte.png"></p align="center"> 
 
 Player pawns:
 <p align="center"><img src="../../ressources/img/map/player-1.png"> <img src="../../ressources/img/map/player-1-reinforced.png"> <img src="../../ressources/img/map/player-1-caravan.png"> <img src="../../ressources/img/map/player-1-capital.png"> <img src="../../ressources/img/map/player-1-mature.png"> <img src="../../ressources/img/map/player-1-city.png"></p align="center">
