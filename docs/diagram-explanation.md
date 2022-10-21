@@ -2,7 +2,7 @@
 
 ## State diagram
 
-<img src="state-digram.png" width="1000">
+<img src="./res/state-diagram.png" width="1000">
 
 At the beginning of the round, a choice is given to the player according to the cards he got before. If there are cards that can be resolved at the beginning of the round, these cards will be suggested to him. He can choose to resolve them or not.
 After that the player has to choose between one of the five priority cards he get in front of him. If this card has multiple actions possible, he choose between one of these actions. Then, if he get a bonus on this card he choose to play the bonus (boxes) or not.
@@ -13,7 +13,7 @@ If you want to know more information about it, we would recommand you to read ca
 
 ## Class Diagram
 
-<img src="class-diagram.png" width="1000">
+<img src="./res/class-diagram.png" width="1000">
 
 Each player has various resources, wonders, action cards and counters. He can also create cities, exchange cards and play some of them. He is linked to the caravan class, control pawn class and the city class, which also have their own attributes.
 
