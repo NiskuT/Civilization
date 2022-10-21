@@ -13,6 +13,8 @@ Link to graphic resources : [here](https://niskut.github.io/Civilization/md_docs
 
 Link to the credits: [here](https://niskut.github.io/Civilization/md_docs_credits.html)
 
+Link to the diagrams explanation: [here](https://niskut.github.io/Civilization/md_diagram_explanation.html)
+
 
 ## Principle
 This game is a strategy board game in which two to four players act as the leaders of history’s most memorable civilizations. Over the course of the game, they will expand their domains, gain new technologies, and build many of humanity’s greatest wonders. In the end, one civilization will rise above all others to leave its indelible mark upon history.
