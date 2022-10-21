@@ -1,4 +1,4 @@
-# Civilization
+# Home Civilization
 
 This is a school project of four french students of the [ENSEA](<www.ensea.fr/>). During our last year of school, we were ask to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".
 
