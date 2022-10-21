@@ -1,4 +1,6 @@
-# State diagram
+#Diagram Explanation
+
+## State diagram
 
 <img src="./res/state-digram">
 
@@ -9,5 +11,18 @@ Finally, if this player was the last player the barbare wheel (event dial) is ro
 
 If you want to know more information about it, I would recommand you to read carefully the rules ([here](https://niskut.github.io/Civilization/md_docs_rules_rules.html))
 
+## Class Diagram
+
+<img src="class-diagram.png" width="1000">
+
+Each player has various resources, wonders, action cards and counters. He can also create cities, exchange cards and play some of them. He is linked to the caravan class, control pawn class and the city class, which also have their own attributes.
+
+Each hexagonal map cell has a level attribute, which symbolizes its nature (grassland, hill, desert, forest...) and another one, named special which can have several arguments like natural wonder, city state, barbarian village or resource.
+
+The rule class allows to define all the possible actions for a card or a player. When a player starts his turn, he chooses an action to play first from a list of different possible actions. This list is actually a list of rule objects that define each action. These objects are instantiated from a json file that defines the set of possible rules like a manual.
+
+Finally a Game class governs the game with two main functions. One to count the turns and one to check the victory conditions.
+
+To better understand the different elements of the diagram, Ie invite you to read the rules by following this link: [here](https://niskut.github.io/Civilization/md_docs_rules_rules.html)
 
 
