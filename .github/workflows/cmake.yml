@@ -29,5 +29,5 @@ jobs:
 
     - name: Run
       working-directory: ${{github.workspace}}/build
-      run: ./${{github.workspace}}/build/bin/client -hello
+      run: .${{github.workspace}}/build/bin/client -hello
       
