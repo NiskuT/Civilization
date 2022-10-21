@@ -914,25 +914,25 @@ Army
 
 1. <span><b>Repartition of the cells</b></span>
 
-<img src="./img/ressource.png">
+<img src="ressource.png">
 
 3. <span><b>Resource allocation</b></span>
 
 <table>
   <tr>
    <td>
-    <img src="./img/stone.png">
+    <img src="stone.png">
    </td>
    <td>
-     <img src="./img/oil.png">
+     <img src="oil.png">
    </td>
   </tr>
   <tr>
    <td>
-     <img src="./img/diamond.png">
+     <img src="diamond.png">
    </td>
    <td>
-     <img src="./img/antic.png">
+     <img src="antic.png">
    </td>
   </tr>
 </table>
