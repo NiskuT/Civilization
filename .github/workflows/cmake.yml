@@ -1,4 +1,4 @@
-name: CMake
+name: Build project
 
 on:
   [push, pull_request]
@@ -17,6 +17,7 @@ jobs:
     - name: Install tools
       run: |
         sudo apt install lcov
+        sudo apt install gcovr
         
     - name: Configure CMake
       run: |
