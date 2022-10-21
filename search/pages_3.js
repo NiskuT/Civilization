@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['recap_20of_20specific_20actions_0',['Recap of Specific Actions',['../md_docs_rules_recap_of_specific_actions.html',1,'']]],
-  ['rules_1',['Rules',['../md_docs_rules_rules.html',1,'']]]
+  ['home_20_2d_20project_20civilization_0',['Home - Project Civilization',['../index.html',1,'(Global Namespace)'],['../md_README.html',1,'(Global Namespace)']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['graphic_20ressources_0',['Graphic Ressources',['../md_docs_rules_graphic_elements.html',1,'']]]
+  ['diagram_20explanation_0',['Diagram Explanation',['../md_docs_diagram_explanation.html',1,'']]]
 ];

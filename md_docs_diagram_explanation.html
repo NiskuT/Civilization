@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Civilization: Home - Project Civilization</title>
+<title>Civilization: Diagram Explanation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,33 +69,22 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">Home - Project Civilization </div></div>
+  <div class="headertitle"><div class="title">Diagram Explanation </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p >This is a school project of four french students of the <a href="www.ensea.fr/">ENSEA</a>. During our last year of school, we were ask to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".</p>
-<h1><a class="anchor" id="autotoc_md65"></a>
-Project report</h1>
-<p >Documentation, rules, code and report: <a href="https://niskut.github.io/Civilization/index.html">here</a></p>
-<p >Link to rules: <a href="https://niskut.github.io/Civilization/md_docs_rules_rules.html">here</a></p>
-<p >Link to the recap of specific actions: <a href="https://niskut.github.io/Civilization/md_docs_rules_recap_of_specific_actions.html">here</a></p>
-<p >Link to graphic resources : <a href="https://niskut.github.io/Civilization/md_docs_rules_graphic_elements.html">here</a></p>
-<p >Link to the credits: <a href="https://niskut.github.io/Civilization/md_docs_credits.html">here</a></p>
-<p >Link to the diagrams explanation: <a href="https://niskut.github.io/Civilization/md_diagram_explanation.html">here</a></p>
-<h1><a class="anchor" id="autotoc_md66"></a>
-Principle</h1>
-<p >This game is a strategy board game in which two to four players act as the leaders of history’s most memorable civilizations. Over the course of the game, they will expand their domains, gain new technologies, and build many of humanity’s greatest wonders. In the end, one civilization will rise above all others to leave its indelible mark upon history.</p>
-<p >If you want to know more about the rules and the documentation of the game you can click <a href="https://niskut.github.io/Civilization/index.html">here</a>. To read the rules, go fisrt on the tab called "List of pages" and then click on "rules".</p>
-<p ><img src="./ressources/img/hud/hud.png" alt="" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md67"></a>
-Constraints</h1>
-<p >Our build system must use <a href="www.github.com/cbares/plt">this template</a>.</p>
-<p >Other constraints are:</p>
-<ul>
-<li>We must create an UML diagram of our project with <a href="www.dia-installer.de/">Dia</a>. This diagram is used to generate all the header files of the project thanks to the open source software "dia2code". Thus we should not create header files by ourselves.</li>
-<li>We must use SFML as graphic lirary.</li>
-<li>The game must be multiplayer with a server part.</li>
-<li>The game must implement 3 different types of AI. </li>
-</ul>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md3"></a>
+State diagram</h1>
+<p ><img src="state-digram.png" alt="" width="1000" class="inline"/></p>
+<p >At the beginning of the round, a choice is given to the player according to the cards he got before. If there are cards that can be resolved at the beginning of the round, these cards will be suggested to him. He can choose to resolve them or not. After that the player has to choose between one of the five priority cards he get in front of him. If this card has multiple actions possible, he choose between one of these actions. Then, if he get a bonus on this card he choose to play the bonus (boxes) or not. After that, he can resolve the card. Finally, if this player was the last player the barbare wheel (event dial) is rotated.</p>
+<p >If you want to know more information about it, we would recommand you to read carefully the rules (<a href="https://niskut.github.io/Civilization/md_docs_rules_rules.html">here</a>)</p>
+<h1><a class="anchor" id="autotoc_md4"></a>
+Class Diagram</h1>
+<p ><img src="class-diagram.png" alt="" width="1000" class="inline"/></p>
+<p >Each player has various resources, wonders, action cards and counters. He can also create cities, exchange cards and play some of them. He is linked to the caravan class, control pawn class and the city class, which also have their own attributes.</p>
+<p >Each hexagonal map cell has a level attribute, which symbolizes its nature (grassland, hill, desert, forest...) and another one, named special which can have several arguments like natural wonder, city state, barbarian village or resource.</p>
+<p >The rule class allows to define all the possible actions for a card or a player. When a player starts his turn, he chooses an action to play first from a list of different possible actions. This list is actually a list of rule objects that define each action. These objects are instantiated from a json file that defines the set of possible rules like a manual.</p>
+<p >Finally a Game class governs the game with two main functions. One to count the turns and one to check the victory conditions.</p>
+<p >To better understand the different elements of the diagram, Ie invite you to read the rules by following this link: <a href="https://niskut.github.io/Civilization/md_docs_rules_rules.html">here</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
