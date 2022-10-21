@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['civilization_0',['Civilization',['../md_README.html',1,'']]],
-  ['credits_1',['Credits',['../md_docs_credits.html',1,'']]]
+  ['recap_20of_20specific_20actions_0',['Recap of Specific Actions',['../md_docs_rules_recap_of_specific_actions.html',1,'']]],
+  ['rules_1',['Rules',['../md_docs_rules_rules.html',1,'']]]
 ];

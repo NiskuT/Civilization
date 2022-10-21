@@ -25,9 +25,4 @@
 var menudata={children:[
 {text:"Documentation",url:"index.html"},
 {text:"Source code",url:"^https://github.com/NiskuT/Civilization"},
-{text:"List of pages",url:"pages.html"},
-{text:"Classes",url:"annotated.html",children:[
-{text:"Class List",url:"annotated.html"},
-{text:"Class Index",url:"classes.html"}]},
-{text:"Source files",url:"files.html",children:[
-{text:"File List",url:"files.html"}]}]}
+{text:"List of pages",url:"pages.html"}]}
