@@ -30,8 +30,8 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 
 # Add code coverage support for Gcov using GCC
-set(BUILD_CODE_COVERAGE ON CACHE BOOL
-  "Set BUILD_CODE_COVERAGE to OFF to disable code coverage")
+set(BUILD_CODE_COVERAGE OFF CACHE BOOL
+  "Set BUILD_CODE_COVERAGE to ON to enable code coverage")
 if(BUILD_CODE_COVERAGE AND NOT UNIX)
   message(WARNING "Code coverage is only available for UNIX systems")
   set(BUILD_CODE_COVERAGE OFF)
