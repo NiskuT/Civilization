@@ -14,6 +14,8 @@ Link to the recap of specific actions: [here](https://niskut.github.io/Civilizat
 
 Link to graphic resources : [here](https://niskut.github.io/Civilization/md_docs_rules_graphic_elements.html)
 
+Link to the diagram explanation: [here](https://niskut.github.io/Civilization/md_docs_diagram_explanation.html)
+
 Link to the credits: [here](https://niskut.github.io/Civilization/md_docs_credits.html)
 
 
