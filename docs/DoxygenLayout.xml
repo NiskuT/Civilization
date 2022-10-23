@@ -4,6 +4,11 @@
   <navindex>
     <tab type="mainpage" visible="yes" title="Documentation"/>
     <tab type="user" url="https://github.com/NiskuT/Civilization" title="Source code"/>
+    <tab type="user" url="https://niskut.github.io/Civilization/md_docs_development_process.html" title="Dev process "/>
+    <tab type="user" url="https://niskut.github.io/Civilization/md_docs_rules_rules.html" title="Rules"/>
+    <tab type="user" url="https://niskut.github.io/Civilization/md_docs_rules_recap_of_specific_actions.html" title="Specific actions"/>
+    <tab type="user" url="https://niskut.github.io/Civilization/md_docs_rules_graphic_elements.html" title="Graphic ressources"/>
+    <tab type="user" url="https://niskut.github.io/Civilization/md_docs_credits.html" title="Credits"/>
     <tab type="pages" visible="yes" title="List of pages" intro=""/>
     <tab type="modules" visible="yes" title="" intro=""/>
     <tab type="namespaces" visible="yes" title="">
