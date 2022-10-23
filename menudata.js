@@ -25,4 +25,9 @@
 var menudata={children:[
 {text:"Documentation",url:"index.html"},
 {text:"Source code",url:"^https://github.com/NiskuT/Civilization"},
+{text:"Dev process ",url:"^https://niskut.github.io/Civilization/md_docs_development_process.html"},
+{text:"Rules",url:"^https://niskut.github.io/Civilization/md_docs_rules_rules.html"},
+{text:"Specific actions",url:"^https://niskut.github.io/Civilization/md_docs_rules_recap_of_specific_actions.html"},
+{text:"Graphic ressources",url:"^https://niskut.github.io/Civilization/md_docs_rules_graphic_elements.html"},
+{text:"Credits",url:"^https://niskut.github.io/Civilization/md_docs_credits.html"},
 {text:"List of pages",url:"pages.html"}]}
