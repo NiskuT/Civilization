@@ -7,6 +7,8 @@ Documentation, rules, code and report: [here](https://niskut.github.io/Civilizat
 
 Link to rules: [here](https://niskut.github.io/Civilization/md_docs_rules_rules.html)
 
+Link to state and class diagrams: [here](https://niskut.github.io/Civilization/md_docs_diagrams.html)
+
 Link to the recap of specific actions: [here](https://niskut.github.io/Civilization/md_docs_rules_recap_of_specific_actions.html)
 
 Link to graphic resources : [here](https://niskut.github.io/Civilization/md_docs_rules_graphic_elements.html)
