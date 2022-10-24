@@ -38,9 +38,7 @@ jobs:
 
     - name: Valgrind Memory check for program
       working-directory: ${{github.workspace}}/build/bin
-      run: |
-        cat ../../src/client/client/sayHello.cpp
-        valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./client -hello
+      run: valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./client -hello
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test

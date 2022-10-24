@@ -1,6 +1,5 @@
 #include "sayHello.hpp"
 #include <iostream>
-#include <stdlib.h>
 
 
 namespace client {
@@ -10,9 +9,6 @@ sayHello::sayHello(std::string arg) {
     int help = arg.compare(sayHello::commandList[0]);
     int h = arg.compare(sayHello::commandList[1]);
     int hello = arg.compare(sayHello::commandList[2]);
-
-    char * pEnd = NULL;
-    pEnd = (char*)malloc(12);
 
     if (!hello ) sayHello::helloOutput();
     else if (!help || !h) sayHello::helpOutput();
