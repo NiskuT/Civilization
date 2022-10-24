@@ -67,8 +67,8 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p>This is a school project of four french students of the <a href="www.ensea.fr/">ENSEA</a>. During our last year of school, we were ask to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".</p>
 <h1><a class="anchor" id="autotoc_md68"></a>
-Project report</h1>
-<p><b>Documentation</b>, rules, code and report: <b><a href="https://niskut.github.io/Civilization/index.html">here</a></b></p>
+&lt;a href="https://niskut.github.io/Civilization/index.html"&gt;Project report - here&lt;/a&gt;</h1>
+<p><b>Documentation</b>, rules, code and report.</p>
 <h1><a class="anchor" id="autotoc_md69"></a>
 Principle</h1>
 <p>This game is a strategy board game in which two to four players act as the leaders of history’s most memorable civilizations. Over the course of the game, they will expand their domains, gain new technologies, and build many of humanity’s greatest wonders. In the end, one civilization will rise above all others to leave its indelible mark upon history.</p>
@@ -82,8 +82,16 @@ Constraints</h1>
 <li>We must create an UML diagram of our project with <a href="www.dia-installer.de/">Dia</a>. This diagram is used to generate all the header files of the project thanks to the open source software "dia2code". Thus we should not create header files by ourselves.</li>
 <li>We must use SFML as graphic lirary.</li>
 <li>The game must be multiplayer with a server part.</li>
-<li>The game must implement 3 different types of AI. </li>
+<li>The game must implement 3 different types of AI.</li>
 </ul>
+<h1><a class="anchor" id="autotoc_md71"></a>
+Build documentation</h1>
+<h2><a class="anchor" id="autotoc_md72"></a>
+Prerequisites</h2>
+<p>To build the documentation, you must install doxygen, graphviz, libpng-dev and dia.</p>
+<p>From the root of the project, you can now build the site with:</p>
+<div class="fragment"><div class="line">doxygen docs/Doxyfile</div>
+</div><!-- fragment --><p>Then, you can access the documentation from <code>html/index.html</code> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
