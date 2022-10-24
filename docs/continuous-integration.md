@@ -14,7 +14,7 @@ We also use actions to build our project in different environments and thus chec
 
 ## Run tests
 
-GitHub also does coverage testing to make sure our project is working properly.
+GitHub also does code coverage and project testing to make sure our project is working properly.
 
 ## Valgrind analysis for memory leaks
 
