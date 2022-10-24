@@ -2,8 +2,8 @@
 
 This is a school project of four french students of the [ENSEA](<www.ensea.fr/>). During our last year of school, we were ask to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".
 
-## Project report
-<b>Documentation</b>, rules, code and report: <b>[here](https://niskut.github.io/Civilization/index.html)</b>
+## [Project report - here](https://niskut.github.io/Civilization/index.html)
+<b>Documentation</b>, rules, code and report.
 
 
 ## Principle
