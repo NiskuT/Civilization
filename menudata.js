@@ -31,4 +31,7 @@ var menudata={children:[
 {text:"Graphic ressources",url:"https://niskut.github.io/Civilization/md_docs_rules_graphic_elements.html"},
 {text:"Diagram explanation",url:"https://niskut.github.io/Civilization/md_docs_diagram_explanation.html"},
 {text:"Credits",url:"https://niskut.github.io/Civilization/md_docs_credits.html"},
-{text:"List of pages",url:"pages.html"}]}
+{text:"List of pages",url:"pages.html"},
+{text:"Classes",url:"annotated.html",children:[
+{text:"Class List",url:"annotated.html"},
+{text:"Class Index",url:"classes.html"}]}]}
