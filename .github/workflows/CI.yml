@@ -1,8 +1,6 @@
-name: Build project
+name: Debug build
 
-on:
-  [push, pull_request]
-
+on: push
 
 jobs:
   build-on-linux-debug:
@@ -31,26 +29,3 @@ jobs:
       working-directory: ${{github.workspace}}/build/test
       run: ctest --timeout 300
       
-
-  build-on-linux-release:
-    if: github.ref_name == 'develop'
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Install tools
-      run: sudo apt install libboost-all-dev
-        
-    - name: Configure CMake
-      run: |
-        mkdir build && cd build
-        cmake .. -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
-
-    - name: Build
-      working-directory: ${{github.workspace}}/build
-      run: cmake --build .
-
-    - name: Tests
-      working-directory: ${{github.workspace}}/build/test
-      run: ctest --timeout 300
