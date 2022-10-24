@@ -2,8 +2,8 @@
 
 This is a school project of four french students of the [ENSEA](<www.ensea.fr/>). During our last year of school, we were ask to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".
 
-## Project report
-<b>Documentation</b>, rules, code and report: <b>[here](https://niskut.github.io/Civilization/index.html)</b>
+## [Project report - here](https://niskut.github.io/Civilization/index.html)
+<b>Documentation</b>, rules, code and report.
 
 
 ## Principle
@@ -25,3 +25,17 @@ Other constraints are:
 * We must use SFML as graphic lirary.
 * The game must be multiplayer with a server part.
 * The game must implement 3 different types of AI.
+
+## Build documentation
+
+### Prerequisites
+
+To build the documentation, you must install doxygen, graphviz, libpng-dev and dia.
+
+From the root of the project, you can now build the site with:
+
+```shell
+doxygen docs/Doxyfile
+```
+
+Then, you can access the documentation from `html/index.html`
