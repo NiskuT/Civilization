@@ -7,3 +7,4 @@ src/*/*.hpp
 src/*/*/*.hpp
 3rdParty/libxml2/
 3rdParty/libxml2-src/
+html
