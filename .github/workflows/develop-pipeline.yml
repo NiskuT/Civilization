@@ -47,7 +47,6 @@ jobs:
         sudo apt install libboost-all-dev
         sudo apt install -y libev-dev
         sudo apt install valgrind
-        pip install ValgrindCI
         
     - name: Configure CMake
       run: |
@@ -64,15 +63,11 @@ jobs:
 
     - name: Valgrind Memory check for program
       working-directory: ${{github.workspace}}/build/bin
-      run: |
-        valgrind --leak-check=full --xml=yes --xml-file=prog_valgrind.xml ./client -hello
-        valgrind-ci prog_valgrind.xml --abort-on-errors
+      run: valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./client -hello
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
-      run: |
-        valgrind --leak-check=full --xml=yes --xml-file=unit_tests_valgrind.xml ctest --timeout 300
-        valgrind-ci unit_tests_valgrind.xml --abort-on-errors
+      run: valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ctest --timeout 300
         
         
         
