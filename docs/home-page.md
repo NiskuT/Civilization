@@ -57,3 +57,4 @@ Then, you can access the documentation from `html/index.html`
 To build our project on Windows, you must have installed <b>MinGW</b> with all its default libraries and it lpthread libraries. You must also have <b>CMake</b> installed on your machine.
 
 Now go to the `Civilization\build` folder and type `cmake -G "MinGW Makefiles" ..`.  Finally, type `cmake --build .` to launch the project.
+

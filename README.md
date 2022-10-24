@@ -2,6 +2,11 @@
 
 This is a school project of four french students of the [ENSEA](<www.ensea.fr/>). During our last year of school, we were ask to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".
 
+Develop branch: [![Develop build](https://github.com/NiskuT/Civilization/actions/workflows/cmake.yml/badge.svg?branch=develop)](https://github.com/NiskuT/Civilization/actions/workflows/cmake.yml)
+
+Last release:   [![Last release build](https://github.com/NiskuT/Civilization/actions/workflows/cmake.yml/badge.svg?branch=main)](https://github.com/NiskuT/Civilization/actions/workflows/cmake.yml)
+
+
 ## [Project report - here](https://niskut.github.io/Civilization/index.html)
 <b>Documentation</b>, rules, code and report.
 
