@@ -67,7 +67,9 @@ jobs:
 
     - name: Run tests with Valgrind
       working-directory: ${{github.workspace}}/build
-      run: valgrind --leak-check=full --xml=yes --xml-file=unit_tests_valgrind.xml ./run_test.sh
+      run: |
+        ls -la
+        valgrind --leak-check=full --xml=yes --xml-file=unit_tests_valgrind.xml ./run_test.sh
 
     - name: Valgrind Memory check
       working-directory: ${{github.workspace}}/build
