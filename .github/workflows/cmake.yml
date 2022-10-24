@@ -3,12 +3,9 @@ name: Build project
 on:
   [push, pull_request]
 
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
 
 jobs:
-  build:
+  build-on-linux-debug:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,16 +15,42 @@ jobs:
       run: |
         sudo apt install lcov
         sudo apt install gcovr
+        sudo apt install libboost-all-dev
+        
+    - name: Configure CMake
+
+      run: |
+        mkdir build && cd build
+        cmake .. -DBUILD_CODE_COVERAGE=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
+
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      run: cmake --build .
+
+    - name: Tests
+      working-directory: ${{github.workspace}}/build/test
+      run: ctest --timeout 300
+      
+
+  build-on-linux-release:
+    if: github.ref_name == 'develop'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install tools
+      run: sudo apt install libboost-all-dev
         
     - name: Configure CMake
       run: |
         mkdir build && cd build
-        cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake .. -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      working-directory: ${{github.workspace}}/build
+      run: cmake --build .
 
-    - name: Run
-      working-directory: ${{github.workspace}}/build/bin
-      run: ./client -hello
-      
+    - name: Tests
+      working-directory: ${{github.workspace}}/build/test
+      run: ctest --timeout 300
