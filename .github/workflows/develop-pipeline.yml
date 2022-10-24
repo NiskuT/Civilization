@@ -65,20 +65,25 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: valgrind --leak-check=full --xml=yes --xml-file=prog_valgrind.xml ./bin/client hello
 
-    - name: Run tests with Valgrind
-      working-directory: ${{github.workspace}}/build
-      run: |
-        ls -la
-        valgrind --leak-check=full --xml=yes --xml-file=unit_tests_valgrind.xml ./run_test.sh
-
-    - name: Valgrind Memory check
+    - name: Valgrind Memory check for program
       working-directory: ${{github.workspace}}/build
       run: |
         export xml_file=prog_valgrind.xml
         echo "sed 's/"/ /g' < $xml_file | grep '</error>' &> /dev/null\nif [ $? == 0 ]; then\n    printf "%s" "$boldred"\n    echo "[  FAILED  ] Some memory checks failed for $xml_file."\n    error=-1\n        exit $error;\nelse\n    echo "[  SUCCESS  ]"\nfi\n" > check-memory.sh
         chmod +x check-memory.sh
         ./check-memory.sh
+
+    - name: Run tests with Valgrind
+      working-directory: ${{github.workspace}}/build/test
+      run: |
+        valgrind --leak-check=full --xml=yes --xml-file=unit_tests_valgrind.xml ctest --timeout 300
+
+    - name: Valgrind Memory check for test
+      working-directory: ${{github.workspace}}/build/test
+      run: |
         export xml_file=unit_tests_valgrind.xml
+        echo "sed 's/"/ /g' < $xml_file | grep '</error>' &> /dev/null\nif [ $? == 0 ]; then\n    printf "%s" "$boldred"\n    echo "[  FAILED  ] Some memory checks failed for $xml_file."\n    error=-1\n        exit $error;\nelse\n    echo "[  SUCCESS  ]"\nfi\n" > check-memory.sh
+        chmod +x check-memory.sh
         ./check-memory.sh
       
 
