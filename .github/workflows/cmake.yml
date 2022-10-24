@@ -31,7 +31,7 @@ jobs:
       working-directory: ${{github.workspace}}/build/test
       run: ctest --timeout 300
       
-jobs:
+      
   build-on-linux-release:
     if: github.ref_name == 'develop'
     runs-on: ubuntu-latest
