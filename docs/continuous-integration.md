@@ -1,6 +1,6 @@
 # Implemented continuous integration
 
-We chose to use continuous integration to automate many tasks in our project. The continuous iteration tool we use is GitHub actions. If one of these actions fail during a merge request, the merge request cannot be authorized.
+We chose to use continuous integration to automate many tasks in our project. The continuous iteration tool we use is GitHub actions. If one of these actions fail during a pull request, the merge request cannot be authorized.
 
 ## Build the documentation
 
