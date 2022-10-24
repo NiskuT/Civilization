@@ -6,6 +6,10 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
+message(STATUS "To build without debug symbols, use -DCMAKE_BUILD_TYPE=Release")
+message(STATUS "To build with code coverage, use -DBUILD_CODE_COVERAGE=ON")
+message(STATUS "To build test, use -DBUILD_TESTING=ON")
+
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(GenerateDiaHeader)
 
@@ -30,8 +34,8 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 
 # Add code coverage support for Gcov using GCC
-set(BUILD_CODE_COVERAGE ON CACHE BOOL
-  "Set BUILD_CODE_COVERAGE to OFF to disable code coverage")
+set(BUILD_CODE_COVERAGE OFF CACHE BOOL
+  "Set BUILD_CODE_COVERAGE to ON to enable code coverage")
 if(BUILD_CODE_COVERAGE AND NOT UNIX)
   message(WARNING "Code coverage is only available for UNIX systems")
   set(BUILD_CODE_COVERAGE OFF)
@@ -75,10 +79,17 @@ endif()
 
 add_subdirectory(3rdParty)
 
-
-
 # Add source subdirectories
 add_subdirectory(src/client)
 #add_subdirectory(src/shared)
 #add_subdirectory(src/server)
+
+# Unit tests
+# Set BUILD_TESTING to ON in CMakeCache to enable tests
+set(BUILD_TESTING OFF CACHE BOOL "Set BUILD_TESTING to ON to enable tests")
+message(STATUS "Test: ${BUILD_TESTING}")
+if(BUILD_TESTING)
+  # Include tests scripts
+  add_subdirectory(test)
+endif()
 
