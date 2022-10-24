@@ -1,0 +1,108 @@
+name: CI develop
+
+on: 
+  pull-request:
+    branches:
+      develop
+  push:
+    branches:
+      develop
+
+jobs:
+  linux-debug:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install tools
+      run: |
+        sudo apt install lcov
+        sudo apt install gcovr
+        sudo apt install libboost-all-dev
+        
+    - name: Configure CMake
+
+      run: |
+        mkdir build && cd build
+        cmake .. -DBUILD_CODE_COVERAGE=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
+
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      run: cmake --build .
+
+    - name: Tests
+      working-directory: ${{github.workspace}}/build/test
+      run: ctest --timeout 300
+      
+
+  linux-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install tools
+      run: sudo apt install libboost-all-dev
+        
+    - name: Configure CMake
+      run: |
+        mkdir build && cd build
+        cmake .. -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      run: cmake --build .
+
+    - name: Upload workspace
+      uses: actions/upload-artifact@v3
+      with:
+        name: workspaceBuild
+        path: ${{github.workspace}}
+
+    - name: Tests
+      working-directory: ${{github.workspace}}/build/test
+      run: ctest --timeout 300
+
+  run-valgrind:
+    needs: linux-release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up environment
+        run: |
+          sudo apt update
+          sudo apt install -y libev-dev
+          sudo apt install libboost-all-dev
+          mkdir civ
+
+      - name: Install Valgrind
+        run: |
+          sudo apt install valgrind
+          echo "Valgrind installed"
+
+      - name: Get artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: workspaceBuild
+          path: ${{github.workspace}}/civ
+
+      - name: Run program with Valgrind
+        working-directory: ${{github.workspace}}/civ/build
+        run: valgrind --leak-check=full --xml=yes --xml-file=prog_valgrind.xml ./build/bin/client hello
+
+      - name: Run tests with Valgrind
+        working-directory: ${{github.workspace}}/civ/build
+        run: valgrind --leak-check=full --xml=yes --xml-file=unit_tests_valgrind.xml ./run_test.sh
+
+      - name: Valgrind Memory check
+        working-directory: ${{github.workspace}}/civ/build
+        run: |
+          export xml_file=prog_valgrind.xml
+          echo "sed 's/"/ /g' < $xml_file | grep '</error>' &> /dev/null\nif [ $? == 0 ]; then\n    printf "%s" "$boldred"\n    echo "[  FAILED  ] Some memory checks failed for $xml_file."\n    error=-1\n        exit $error;\nelse\n    echo "[  SUCCESS  ]"\nfi\n" > check-memory.sh
+          chmod +x check-memory.sh
+          ./check-memory.sh
+          export xml_file=unit_tests_valgrind.xml
+          chmod +x check-memory.sh
+      
+
