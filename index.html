@@ -88,8 +88,20 @@ Constraints</h1>
 <li>We must create an UML diagram of our project with <a href="http://dia-installer.de/">Dia</a>. This diagram is used to generate all the header files of the project thanks to the open source software "dia2code". Thus we should not create header files by ourselves.</li>
 <li>We must use SFML as graphic lirary.</li>
 <li>The game must be multiplayer with a server part.</li>
-<li>The game must implement 3 different types of AI. </li>
+<li>The game must implement 3 different types of AI.</li>
 </ul>
+<h1><a class="anchor" id="autotoc_md17"></a>
+Build documentation</h1>
+<h2><a class="anchor" id="autotoc_md18"></a>
+Prerequisites</h2>
+<p>To build the documentation, you must install doxygen, graphviz, libpng-dev and dia.</p>
+<p>From the root of the project, you can now build the site with:</p>
+<div class="fragment"><div class="line">doxygen docs/Doxyfile</div>
+</div><!-- fragment --><p>Then, you can access the documentation from <code>html/index.html</code></p>
+<h2><a class="anchor" id="autotoc_md19"></a>
+Windows</h2>
+<p>To build our project on Windows, you must have installed <b>MinGW</b> with all its default libraries and it lpthread libraries. You must also have <b>CMake</b> installed on your machine.</p>
+<p>Now go to the <code>Civilization\build</code> folder and type <code>cmake -G "MinGW Makefiles" ..</code>. Finally, type <code>cmake --build .</code> to launch the project. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
