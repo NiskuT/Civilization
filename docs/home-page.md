@@ -37,3 +37,24 @@ Other constraints are:
 * We must use SFML as graphic lirary.
 * The game must be multiplayer with a server part.
 * The game must implement 3 different types of AI.
+
+## Build documentation
+
+### Prerequisites
+
+To build the documentation, you must install doxygen, graphviz, libpng-dev and dia.
+
+From the root of the project, you can now build the site with:
+
+```shell
+doxygen docs/Doxyfile
+```
+
+Then, you can access the documentation from `html/index.html`
+
+### Windows
+
+To build our project on Windows, you must have installed <b>MinGW</b> with all its default libraries and it lpthread libraries. You must also have <b>CMake</b> installed on your machine.
+
+Now go to the `Civilization\build` folder and type `cmake -G "MinGW Makefiles" ..`.  Finally, type `cmake --build .` to launch the project.
+
