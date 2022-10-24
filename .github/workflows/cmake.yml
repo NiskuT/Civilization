@@ -15,7 +15,6 @@ jobs:
       run: |
         sudo apt install lcov
         sudo apt install gcovr
-        sudo apt install libboost1.74-all-dev
         
     - name: Configure CMake
 
@@ -31,7 +30,7 @@ jobs:
       working-directory: ${{github.workspace}}/build/test
       run: ctest --timeout 300
       
-      
+
   build-on-linux-release:
     if: github.ref_name == 'develop'
     runs-on: ubuntu-latest
