@@ -1,6 +1,6 @@
-
+#include <client.hpp>
 #include <boost/test/unit_test.hpp>
-#include <boost/test/output_test_stream.hpp>
+#include <boost/test/tools/output_test_stream.hpp>
 #include <iostream>
 //#include <SFML/Graphics.hpp>
 
@@ -40,25 +40,25 @@ BOOST_AUTO_TEST_CASE( helloTest )
         cout_redirect guard( output.rdbuf( ) );
         client::sayHello sayHello("-h");
     }
-    BOOST_CHECK(output.find("List of available command:") != std::string::npos);
+    BOOST_CHECK(output.is_equal("List of available command:\n-h or -help : display this help\n-hello : display hello world\n"));
     boost::test_tools::output_test_stream output2;
     {
         cout_redirect guard( output2.rdbuf( ) );
         client::sayHello sayHello("-help");
     }
-    BOOST_CHECK(output2.find("List of available command:") != std::string::npos);
+    BOOST_CHECK(output2.is_equal("List of available command:\n-h or -help : display this help\n-hello : display hello world\n"));
     boost::test_tools::output_test_stream output3;
     {
         cout_redirect guard( output3.rdbuf( ) );
         client::sayHello sayHello("-hello");
     }
-    BOOST_CHECK(output2.is_equal("Hello world !" ));
+    BOOST_CHECK(output3.is_equal("Hello world !\n" ));
     boost::test_tools::output_test_stream output4;
     {
         cout_redirect guard( output4.rdbuf( ) );
         client::sayHello sayHello("test");
     }
-    BOOST_CHECK(output4.is_equal("Unkown command, use -h for help." ));
+    BOOST_CHECK(output4.is_equal("Unkown command, use -h for help.\n" ));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
