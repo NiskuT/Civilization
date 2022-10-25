@@ -2,6 +2,12 @@
 # Global cmake target responsible for the generation of all the cpp headers
 add_custom_target(generate-headers)
 
+add_custom_target(clean-headers
+  COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/*.hpp
+  COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/*/*.hpp
+  COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/generate_header_*.stamp
+  )
+
 # Fonction that generate cpp header files from dia files using dia2code.
 # Dia files must contain only one namespace and must be named by this
 # namespace.
@@ -21,15 +27,12 @@ function(generate_dia_header dia_file)
   # Stamp file that take care of the dependency chain
   set(stamp ${PROJECT_BINARY_DIR}/generate_header_${namespace}.stamp)
 
-  file(
-    REMOVE
-    ${PROJECT_SOURCE_DIR}/src/*/${namespace}.hpp
-    ${PROJECT_SOURCE_DIR}/src/*/${namespace}/*.hpp
-  )
   # Custom command that generate the cpp headers and create the stamp file
   IF (WIN32)
     add_custom_command(
       OUTPUT ${stamp}
+      COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/${namespace}.hpp
+      COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/${namespace}/*.hpp
       COMMAND ${CMAKE_COMMAND} -E env "PATH=\"%PATH%;${CMAKE_BINARY_DIR}/lib\"" $<TARGET_FILE:dia2code> -d ${output_dir} -ext hpp -t cpp ${dia_file}
       COMMAND ${CMAKE_COMMAND} -E touch ${stamp}
       DEPENDS ${dia_file}
@@ -50,6 +53,3 @@ function(generate_dia_header dia_file)
   # generation.
   add_dependencies(generate-headers generate-header-${namespace})
 endfunction()
-
-# vim: set sw=2 sts=2 et:
-
