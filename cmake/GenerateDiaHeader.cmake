@@ -2,11 +2,17 @@
 # Global cmake target responsible for the generation of all the cpp headers
 add_custom_target(generate-headers)
 
-add_custom_target(clean-headers
-  COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/*.hpp
-  COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/*/*.hpp
-  COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/generate_header_*.stamp
-  )
+IF (WIN32)
+  add_custom_target(clean-headers
+    COMMAND cd ${CMAKE_BINARY_DIR} && del generate_header_*.stamp
+)
+ELSE ()
+  add_custom_target(clean-headers
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/*.hpp
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/*/*.hpp
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/generate_header_*.stamp
+    )
+ENDIF ()
 
 # Fonction that generate cpp header files from dia files using dia2code.
 # Dia files must contain only one namespace and must be named by this
