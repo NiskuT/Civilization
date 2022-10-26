@@ -2,7 +2,7 @@
 
 > By Quentin Souvigent, Lucas Marquet, Violaine Bec and Antoine Coutant
 
-This is a school project of four french students of the [ENSEA](<www.ensea.fr/>). During our last year of school, we were ask to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".
+This is a school project of four french students of the [ENSEA](<www.ensea.fr/>). During our last year of school, we were asked to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".
 
 Develop branch build: [![CI develop](https://github.com/NiskuT/Civilization/actions/workflows/develop-pipeline.yml/badge.svg?branch=develop)](https://github.com/NiskuT/Civilization/actions/workflows/develop-pipeline.yml)
 
