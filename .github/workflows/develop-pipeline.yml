@@ -50,19 +50,19 @@ jobs:
 
     - name: Doxygen to GH-pages
       uses: jard-111/doxygen-action@1.0
-      if: ${{ github.event_name == 'push' }}
+      # if: ${{ github.event_name == 'push' }}
       with:
         doxyfile-path: "./docs/Doxyfile" 
         working-directory: "."
 
     - name: Add coverage to GH-pages
-      if: ${{ github.event_name == 'push' }}
+      # if: ${{ github.event_name == 'push' }}
       run : |
         cp -r build/code-coverage html/code-coverage
     
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
-      if: ${{ github.event_name == 'push' }}
+      # if: ${{ github.event_name == 'push' }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./html
