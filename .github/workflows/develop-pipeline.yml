@@ -58,7 +58,7 @@ jobs:
     - name: Add coverage to GH-pages
       # if: ${{ github.event_name == 'push' }}
       run : |
-        cp -r build/code-coverage html/code-coverage
+        sudo cp -r build/code-coverage html/code-coverage
     
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
