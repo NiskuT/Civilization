@@ -76,6 +76,17 @@ if(BUILD_CODE_COVERAGE)
     )
 endif()
 
+# Find library SFML
+if(WIN32)
+  set(SFML_ROOT "D:/Utils/SFML-2.3" CACHE STRING
+    "Root directory for SFML library")
+  set(CMAKE_MODULE_PATH "${SFML_ROOT}/cmake/Modules" ${CMAKE_MODULE_PATH})
+else(WIN32)
+  set(CMAKE_MODULE_PATH "/usr/share/SFML/cmake/Modules/" ${CMAKE_MODULE_PATH})
+endif(WIN32)
+find_package(SFML 2 COMPONENTS graphics network window system)
+set(SFML_LIBRARIES sfml-graphics sfml-network sfml-window sfml-system)
+
 
 add_subdirectory(3rdParty)
 
