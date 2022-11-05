@@ -40,12 +40,6 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: cmake --build . --target code-coverage
 
-    - name: Export code coverage website
-      uses: actions/upload-artifact@v3
-      with:
-        name: code-coverage-website
-        path: build/code-coverage
-
     - name: Valgrind Memory check for program
       working-directory: ${{github.workspace}}/build/bin
       run: valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./client -hello
@@ -53,6 +47,28 @@ jobs:
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
       run: valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ctest --timeout 300
+
+    - name: Doxygen to GH-pages
+      uses: jard-111/doxygen-action@1.0
+      if: ${{ github.event_name == 'push' }}
+      working-directory: ${{github.workspace}}
+      with:
+        doxyfile-path: "./docs/Doxyfile" 
+        working-directory: "."
+
+    - name: Add coverage to GH-pages
+      if: ${{ github.event_name == 'push' }}
+      working-directory: ${{github.workspace}}
+      run : |
+        cp -r build/code-coverage html/code-coverage
+    
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      if: ${{ github.event_name == 'push' }}
+      working-directory: ${{github.workspace}}
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./html
       
 
   linux-release:
@@ -79,5 +95,4 @@ jobs:
         
         
         
-      
 
