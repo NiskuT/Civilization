@@ -1,9 +1,9 @@
 name: Build Nightly
 on:
   schedule:
-    - cron: '0 2 * * *' # run at 2 AM UTC
+    - cron: '47 13 * * *' # run at 2 AM UTC
 
-  linux:
+  linux-nightly-build:
     runs-on: ubuntu-latest
 
     steps:
