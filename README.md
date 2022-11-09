@@ -55,4 +55,4 @@ Now go to the `Civilization\build` folder and type `cmake -G "MinGW Makefiles" .
 
 To build our project on Linux, you must have installed <b>gcc</b>, <b>g++</b>, <b>cmake</b>, <b>libboost-dev</b>, <b>libsfml-dev</b>, <b>lcov</b> and <b>gcovr</b>.
 
-Now go to the `Civilization\build` folder and type `cmake ..`.  Finally, type `cmake --build .` to build the project and start client file on bin folder.
+Now go to the `Civilization\build` folder and type `cmake ..`.  Finally, type `cmake --build .` to build the project. Then, you can start the programs located in build/bin.
