@@ -2262,7 +2262,7 @@
             <dia:string>#gameSocket#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>##</dia:string>
+            <dia:string>#void*#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -2546,7 +2546,7 @@
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>##</dia:string>
+            <dia:string>#void#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -2684,7 +2684,7 @@
             <dia:string>#listElements#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::array&lt;element*&gt;#</dia:string>
+            <dia:string>#std::array&lt;Element*&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -3414,13 +3414,13 @@ else = type#</dia:string>
       <dia:attribute name="operations">
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#moveTo()#</dia:string>
+            <dia:string>#moveTo#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>##</dia:string>
+            <dia:string>#void#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -3658,13 +3658,13 @@ else = type#</dia:string>
         <dia:point val="141.351,34.7228"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="141.301,34.6728;150.371,38.1728"/>
+        <dia:rectangle val="141.301,34.6728;151.141,38.1728"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="141.351,34.7228"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="8.9700000000000006"/>
+        <dia:real val="9.7400000000000002"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="3.3999999999999999"/>
@@ -3790,7 +3790,7 @@ else = type#</dia:string>
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>##</dia:string>
+            <dia:string>#void#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -3992,7 +3992,7 @@ else = type#</dia:string>
         <dia:point val="142.486,29.4615"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="141.636,29.4115;145.886,34.7728"/>
+        <dia:rectangle val="141.636,29.4115;146.271,34.7728"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -4000,8 +4000,8 @@ else = type#</dia:string>
       <dia:attribute name="orth_points">
         <dia:point val="142.486,29.4615"/>
         <dia:point val="142.486,32.4922"/>
-        <dia:point val="145.836,32.4922"/>
-        <dia:point val="145.836,34.7228"/>
+        <dia:point val="146.221,32.4922"/>
+        <dia:point val="146.221,34.7228"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -4306,7 +4306,7 @@ else = type#</dia:string>
             <dia:string>#name#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#string#</dia:string>
+            <dia:string>#std::string#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -4360,7 +4360,7 @@ else = type#</dia:string>
                 <dia:string>#prevOwner#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#*std::array&lt;Card&gt;#</dia:string>
+                <dia:string>#std::array&lt;Card&gt;&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -4377,7 +4377,7 @@ else = type#</dia:string>
                 <dia:string>#nextOwner#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#*std::array&lt;Card&gt;#</dia:string>
+                <dia:string>#std::array&lt;Card&gt;&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -4988,7 +4988,7 @@ else = type#</dia:string>
         <dia:point val="114.03,11.886"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="113.98,11.4431;168.621,13.4895"/>
+        <dia:rectangle val="113.98,11.0896;168.621,12.6896"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -5076,7 +5076,7 @@ else = type#</dia:string>
         <dia:point val="114.03,14.686"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="113.98,14.636;133.812,17.0227"/>
+        <dia:rectangle val="113.98,14.6227;133.812,16.6094"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -5165,7 +5165,7 @@ else = type#</dia:string>
         <dia:point val="173.985,39.3486"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="152.766,39.2986;174.035,45.7815"/>
+        <dia:rectangle val="152.766,39.2986;174.035,44.9815"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
