@@ -1006,7 +1006,7 @@
             <dia:string>#listOfCard#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::array&lt;*Card&gt;#</dia:string>
+            <dia:string>#std::vector&lt;*Card&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
