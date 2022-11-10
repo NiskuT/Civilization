@@ -5,14 +5,17 @@
 #define Y_OFFSET -21
 #define LEN_ELEMENT 43
 
+#define MAP_X_OFFSET 0
+#define MAP_Y_OFFSET 0
+
 class ElementData {
-    public:
+    private:
         int xCoordonne;
         int yCoordonne;
         int xOffset;
         int yOffset;
         std::string fileName;
-        
+    public:
         void update(int yCoordonne, int xCoordonne, int yOffset, int xOffset, std::string fileName)
         {
             this->xCoordonne = xCoordonne;
@@ -47,21 +50,21 @@ class  Element {
     }
   };
 
-class FieldMap : public sf::Drawable, public sf::Transformable
+class Hex : public sf::Drawable, public sf::Transformable
 {
 public:
 
-    bool load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
+    void load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
     {
         // load the tileset texture
         if (!m_tileset.loadFromFile(tileset))
-            return false;
+            std::cout << "Error loading Hex file";
 
         // resize the vertex array to fit the level size
         m_vertices.setPrimitiveType(sf::Quads);
         m_vertices.resize(width * height * 4);
 
-        unsigned int offset = 0;
+        unsigned int offset;
 
         // populate the vertex array, with one quad per tile
         for (unsigned int i = 0; i < width; ++i)
@@ -95,8 +98,36 @@ public:
                     quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
                 }
             }
+    }
+    
+    void update(sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
+    {
 
-        return true;
+        // resize the vertex array to fit the level size
+        m_vertices.setPrimitiveType(sf::Quads);
+        m_vertices.resize(width * height * 4);
+
+        unsigned int offset;
+
+        // populate the vertex array, with one quad per tile
+        for (unsigned int i = 0; i < width; ++i)
+            for (unsigned int j = 0; j < height; ++j)
+            {
+                if (j%2==0) offset = 41;
+                else offset = 0;
+
+                if ((offset == 0) | (i+1 != width))
+                {
+                    // get a pointer to the current tile's quad
+                    sf::Vertex* quad = &m_vertices[(i + j * width) * 4];
+
+                    // define its 4 corners
+                    quad[0].position = sf::Vector2f(MAP_X_OFFSET + offset + i * tileSize.x, MAP_Y_OFFSET + j * (Y_OFFSET + tileSize.y));
+                    quad[1].position = sf::Vector2f(MAP_X_OFFSET + offset + (i + 1) * tileSize.x, MAP_Y_OFFSET + j * (Y_OFFSET + tileSize.y));
+                    quad[2].position = sf::Vector2f(MAP_X_OFFSET + offset + (i + 1) * tileSize.x, MAP_Y_OFFSET + j * (Y_OFFSET + tileSize.y) + tileSize.y);
+                    quad[3].position = sf::Vector2f(MAP_X_OFFSET + offset + i * tileSize.x, MAP_Y_OFFSET + j * (Y_OFFSET + tileSize.y) + tileSize.y);
+                }
+            }
     }
 
 private:
@@ -117,12 +148,9 @@ private:
     sf::Texture m_tileset;
 };
 
-class  GameWindow {
+class  Map {
     
   public:
-
-    // create the window
-    sf::RenderWindow window;
 
     // define the level with an array of tile indices
     const int level[165] =
@@ -141,7 +169,7 @@ class  GameWindow {
     };
 
     // create the tilemap from the level definition
-    FieldMap fieldMap;
+    Hex hexagon;
         
     ElementData elementData[LEN_ELEMENT];
     Element elements[LEN_ELEMENT];
@@ -149,13 +177,9 @@ class  GameWindow {
     //shared::element elements[LEN_ELEMENT];
     
   public:
-    GameWindow() {
+    Map() {
 
-        window.create(sf::VideoMode(1245, 725),"Civilization VII");
-
-        
-        if (!fieldMap.load("../ressources/img/map/field.png", sf::Vector2u(83, 85), level, 15, 11))
-            std::cout << "Error loading field";
+        hexagon.load("../ressources/img/map/field.png", sf::Vector2u(83, 85), level, 15, 11);
 
         elementData[0].update(0,4,20,21,"../ressources/img/map/ressource-oil.png");
         elementData[1].update(2,6,20,21,"../ressources/img/map/ressource-stone.png");
@@ -207,7 +231,30 @@ class  GameWindow {
             elementSprites[i].setTexture(elements[i].texture);
             elementSprites[i].move(sf::Vector2f(elements[i].position[0] * 1.f, elements[i].position[1] * 1.f));
         }
+    }
 
+    void setOffset (int xOffset, int yOffset){
+        for(int i =0; i < LEN_ELEMENT; i++)
+        {
+            elementSprites[i].move(sf::Vector2f(xOffset * 1.f, yOffset * 1.f));
+        }
+        hexagon.update(sf::Vector2u(83, 85), level, 15, 11);
+
+    }
+  };
+
+class  GameWindow {
+    
+  public:
+    // create the window
+    sf::RenderWindow window;
+    Map map;
+    
+  public:
+  
+    GameWindow() {
+        window.create(sf::VideoMode(1245, 725),"Civilization VII");
+        map.setOffset(MAP_X_OFFSET, MAP_Y_OFFSET);
     }
 
     void game() {
@@ -229,10 +276,10 @@ class  GameWindow {
 
     void display() {
         window.clear();
-        window.draw(fieldMap);
+        window.draw(map.hexagon);
         for(int i =0; i < LEN_ELEMENT; i++)
         {
-            window.draw(elementSprites[i]);
+            window.draw(map.elementSprites[i]);
         }
         window.display();
     }
