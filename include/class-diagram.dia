@@ -1503,7 +1503,7 @@
             <dia:string>#inputEvent#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#void#</dia:string>
+            <dia:string>#void*#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
