@@ -1,4 +1,4 @@
-#include <client.hpp>
+#include <shared.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/tools/output_test_stream.hpp>
 #include <iostream>
@@ -38,25 +38,25 @@ BOOST_AUTO_TEST_CASE( helloTest )
     boost::test_tools::output_test_stream output;
     {
         cout_redirect guard( output.rdbuf( ) );
-        client::sayHello sayHello("-h");
+        shared::sayHello sayHello("-h");
     }
     BOOST_CHECK(output.is_equal("List of available command:\n-h or -help : display this help\n-hello : display hello world\n"));
     boost::test_tools::output_test_stream output2;
     {
         cout_redirect guard( output2.rdbuf( ) );
-        client::sayHello sayHello("-help");
+        shared::sayHello sayHello("-help");
     }
     BOOST_CHECK(output2.is_equal("List of available command:\n-h or -help : display this help\n-hello : display hello world\n"));
     boost::test_tools::output_test_stream output3;
     {
         cout_redirect guard( output3.rdbuf( ) );
-        client::sayHello sayHello("-hello");
+        shared::sayHello sayHello("-hello");
     }
     BOOST_CHECK(output3.is_equal("Hello world !\n" ));
     boost::test_tools::output_test_stream output4;
     {
         cout_redirect guard( output4.rdbuf( ) );
-        client::sayHello sayHello("test");
+        shared::sayHello sayHello("test");
     }
     BOOST_CHECK(output4.is_equal("Unkown command, use -h for help.\n" ));
 }
