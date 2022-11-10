@@ -56,13 +56,16 @@ Then, you can access the documentation from `html/index.html`
 
 ### Windows
 
-To build our project on Windows, you must have installed <b>MinGW</b> with all its default libraries and it lpthread libraries. You must also have <b>CMake</b> installed on your machine.
+To build our project on Windows, you must have installed <b>MinGW</b> with all its default libraries and it lpthread libraries. You must also have <b>CMake</b> and <b>git</b> installed on your machine.
 
 Now go to the `Civilization\build` folder and type `cmake -G "MinGW Makefiles" ..`.  Finally, type `cmake --build .` to launch the project.
 
 
 ### Linux
 
-To build our project on Linux, you must have installed <b>gcc</b>, <b>g++</b>, <b>cmake</b>, <b>libboost-dev</b>, <b>libsfml-dev</b>, <b>lcov</b> and <b>gcovr</b>.
+To build our project on Linux, you must have installed <b>git</b>, <b>gcc</b>/<b>g++</b>, <b>cmake</b> and <b>libsfml-dev</b>. 
 
-Now go to the `Civilization\build` folder and type `cmake ..`.  Finally, type `cmake --build .` to build the project. Then, you can start the programs located in build/bin.
+If you also want to build testing, you will need to install <b>libboost-dev</b>.
+For building code coverage, add in addition to that <b>lcov</b> and <b>gcovr</b>.
+
+Now go to the `Civilization\build` folder and type `cmake ..`. You can add the following options: <b>-DCMAKE_BUILD_TYPE=Release</b>, <b>-DBUILD_TESTING=ON</b> and <b>-DBUILD_CODE_COVERAGE=ON</b>. Finally, type `cmake --build .` to build the project. Then, you can start the programs located in build/bin.
