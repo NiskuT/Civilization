@@ -1,8 +1,8 @@
-#include "client.hpp"
+#include <shared.hpp>
 #include <iostream>
 
 
-namespace client {
+namespace shared {
 
 sayHello::sayHello(std::string arg) {
     
