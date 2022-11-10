@@ -1503,13 +1503,13 @@
             <dia:string>#inputEvent#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#sf::Event#</dia:string>
+            <dia:string>#void#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
-            <dia:string>##</dia:string>
+            <dia:string>#void* to be replaced by sf::Event#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -1554,7 +1554,7 @@
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>##</dia:string>
+            <dia:string>#void#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -1666,13 +1666,13 @@
         <dia:point val="215.046,14.355"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="214.996,14.305;232.921,21.005"/>
+        <dia:rectangle val="214.996,14.305;230.611,21.005"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="215.046,14.355"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="17.824999999999999"/>
+        <dia:real val="15.515000000000001"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="6.6000000000000005"/>
@@ -1770,13 +1770,13 @@
             <dia:string>#imageMap#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::map&lt;std::string, sf::texture&gt;#</dia:string>
+            <dia:string>#std::map&lt;std::string, void*&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
-            <dia:string>##</dia:string>
+            <dia:string>#void* to be replaced by sf::texture#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -1793,13 +1793,13 @@
             <dia:string>#gameMap#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::vector&lt;sf::sprite&gt;#</dia:string>
+            <dia:string>#std::vector&lt;void*&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
-            <dia:string>##</dia:string>
+            <dia:string>#void* to be replaced by sf::sprite#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -1881,13 +1881,13 @@
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::vector&lt;sf::sprite&gt;#</dia:string>
+            <dia:string>#std::vector&lt;void*&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
           </dia:attribute>
           <dia:attribute name="comment">
-            <dia:string>##</dia:string>
+            <dia:string>#void* to be replace by sf::sprite#</dia:string>
           </dia:attribute>
           <dia:attribute name="abstract">
             <dia:boolean val="false"/>
@@ -2121,20 +2121,24 @@
         <dia:boolean val="false"/>
       </dia:attribute>
       <dia:attribute name="obj_pos">
-        <dia:point val="223.958,20.955"/>
+        <dia:point val="222.803,20.955"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="221.885,20.905;224.158,25.8851"/>
+        <dia:rectangle val="221.885,20.905;223.854,25.8851"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="223.958,20.955"/>
-        <dia:point val="223.958,25.0851"/>
+        <dia:point val="222.803,20.955"/>
+        <dia:point val="222.803,22.005"/>
+        <dia:point val="223.803,22.005"/>
+        <dia:point val="223.803,25.0851"/>
         <dia:point val="221.935,25.0851"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
+        <dia:enum val="1"/>
+        <dia:enum val="0"/>
         <dia:enum val="1"/>
         <dia:enum val="0"/>
       </dia:attribute>
@@ -2426,7 +2430,7 @@
         <dia:real val="3.3999999999999999"/>
       </dia:attribute>
       <dia:attribute name="name">
-        <dia:string>#map#</dia:string>
+        <dia:string>#Map#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
         <dia:string>##</dia:string>
