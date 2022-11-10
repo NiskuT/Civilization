@@ -4,6 +4,25 @@
 
 #define Y_OFFSET -21
 
+class  Element {
+    // Attributes
+  public:
+    int position[2] = {0, 0};
+    sf::Texture texture;
+    // Operations
+  public:
+    void update(std::string nameFile, int x, int y) {
+        if (!texture.loadFromFile(nameFile))
+        {
+            //Error
+        }
+        int x_offset;
+        if (x%2==0) x_offset = 41;
+        else x_offset = 0;
+        position[1] = x * (85 + Y_OFFSET); position[0] = x_offset + y * 83;
+    }
+  };
+
 class FieldMap : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -107,7 +126,47 @@ int main(int argc,char* argv[])
     FieldMap fieldMap;
     if (!fieldMap.load("../ressources/img/map/field.png", sf::Vector2u(83, 85), level, 15, 11))
         return -1;
-    
+
+    int lenElement = 5;
+
+    const int positions[lenElement][2] =
+    {
+        {0,4},
+        {2,7},
+        {6,8},
+        {7,13},
+        {10,6}
+    };
+
+    const int offset[lenElement][2] =
+    {
+        {5,1},
+        {5,1},
+        {5,1},
+        {5,1},
+        {5,1},
+        {5,1}
+    };
+
+    const std::string nameFile[lenElement] =
+    {
+        "../ressources/img/map/ressource-oil.png",
+        "../ressources/img/map/ressource-stone.png",
+        "../ressources/img/map/ressource-antic.png",
+        "../ressources/img/map/ressource-stone.png",
+        "../ressources/img/map/ressource-diamond.png"
+    };
+
+    sf::Sprite elementSprites[lenElement];
+    Element elements[lenElement];
+
+    for(int i =0; i < lenElement; i++)
+    {
+        elements[i].update(nameFile[i], positions[i][0], positions[i][1]);
+        elementSprites[i].setTexture(elements[i].texture);
+        elementSprites[i].move(sf::Vector2f(elements[i].position[0] * 1.f, elements[i].position[1] * 1.f));
+    }
+
     while (window.isOpen())
     {
         // handle events
@@ -121,8 +180,13 @@ int main(int argc,char* argv[])
         // draw the map
         window.clear();
         window.draw(fieldMap);
+        for(int i =0; i < lenElement; i++)
+        {
+            window.draw(elementSprites[i]);
+        }
         window.display();
     }
 
     return 0;
+
 }
