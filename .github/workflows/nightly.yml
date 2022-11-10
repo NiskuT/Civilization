@@ -1,13 +1,16 @@
-name: Debug build
-
-on: push
+name: Nightly build
+on:
+  schedule:
+    - cron: '0 2 * * *' # run at 2 AM UTC
 
 jobs:
-  build-on-linux-debug:
+  linux-nightly-build:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        ref: 'develop'
     
     - name: Install tools
       run: sudo apt install libboost-all-dev
@@ -15,7 +18,7 @@ jobs:
     - name: Configure CMake
       run: |
         mkdir build && cd build
-        cmake .. -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
+        cmake .. -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
 
     - name: Build
       working-directory: ${{github.workspace}}/build
@@ -24,4 +27,3 @@ jobs:
     - name: Tests
       working-directory: ${{github.workspace}}/build/test
       run: ctest --timeout 300
-      
