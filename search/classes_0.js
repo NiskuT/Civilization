@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['cout_5fredirect_10',['cout_redirect',['../structcout__redirect.html',1,'']]]
+  ['barabarianvillage_34',['BarabarianVillage',['../classshared_1_1BarabarianVillage.html',1,'shared']]],
+  ['barbarian_35',['Barbarian',['../classshared_1_1Barbarian.html',1,'shared']]]
 ];

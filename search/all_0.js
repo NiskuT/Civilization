@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['cout_5fredirect_0',['cout_redirect',['../structcout__redirect.html',1,'']]],
-  ['credits_1',['Credits',['../md_docs_credits.html',1,'']]]
+  ['applymodifier_0',['applyModifier',['../classclient_1_1ClientGameEngine.html#aa2aa12c60a8a8d539e6b269801a9c2ec',1,'client::ClientGameEngine']]]
 ];
