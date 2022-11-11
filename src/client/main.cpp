@@ -46,7 +46,7 @@ int main(int argc,char* argv[])
     //Display tech wheel
     sf::Sprite techWheel;
     sf::Texture techWheelTexture;
-    int rotation = 0; // have to find how to rotate correctly
+    int rotation = 45;
     if (!techWheelTexture.loadFromFile("../ressources/img/hud/tech-wheel.png"))
     {
         std::cout << "Error loading tech wheele";
@@ -54,10 +54,31 @@ int main(int argc,char* argv[])
     techWheel.setScale(0.3f, 0.3f);
     techWheel.setTexture(techWheelTexture);
     sf::Vector2<unsigned int> sizeTechWheel = techWheelTexture.getSize();
-    int offsetWidthTechWheel = (width-sizeTechWheel.y/2*0.3);
-    int offsetLengthTechWheel= (length-sizeTechWheel.x/2*0.3);
-    techWheel.move(offsetLengthTechWheel,offsetWidthTechWheel);
-    techWheel.setRotation(rotation);
+    techWheel.setOrigin(sizeTechWheel.x/2, sizeTechWheel.y/2); // set the point of rotation at the center of the image
+    techWheel.move(length, width); // set the point of rotation at the bottom right
+    techWheel.rotate(rotation);
+
+    // Display event dial (barbare wheel)
+    int posBarbareWheel = 0;
+
+    sf::Sprite barbareWheel;
+    sf::Texture barbareWheelTexture;
+    std::string file = "../ressources/img/hud/barbare-wheel-";
+    std::string num = std::to_string(posBarbareWheel);
+    std::string format= ".png";
+    std::string fileToLoad = file + num + format;
+    if (!barbareWheelTexture.loadFromFile(fileToLoad))
+    {
+        std::cout << "Error loading barbare wheel";
+    }
+    barbareWheel.setScale(0.3f, 0.3f);
+    barbareWheel.setTexture(barbareWheelTexture);
+    sf::Vector2<unsigned int> sizeBarbareWheel = barbareWheelTexture.getSize();
+    int offsetWidthBarbareWheel = (width-sizeBarbareWheel.y*0.3);
+    barbareWheel.move(0, offsetWidthBarbareWheel);
+
+
+
 
 
 
@@ -92,6 +113,7 @@ int main(int argc,char* argv[])
         window.draw(background);
         window.draw(ladder);
         window.draw(techWheel);
+        window.draw(barbareWheel);
         //window.draw(map);
         window.display();
     }
