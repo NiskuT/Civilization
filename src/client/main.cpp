@@ -1,7 +1,6 @@
 #include <iostream>
 #include <client.hpp>
 #include <shared.hpp>
-#include <SFML/Graphics.hpp>
 
 #define LEN_ELEMENT 43
 
