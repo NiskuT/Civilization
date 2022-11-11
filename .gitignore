@@ -9,3 +9,5 @@ src/*/*/*.hpp
 3rdParty/libxml2-src/
 html/
 .vscode/
+/include/*
+!/include/class-diagram.dia

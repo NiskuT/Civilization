@@ -43,8 +43,8 @@ function(add_custom_test name)
   target_link_libraries(${target_name} PRIVATE
     ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     ${ARG_TEST_LIBRARIES}
-    #$<TARGET_NAME:shared_static>
-    $<TARGET_NAME:client_static>
+    $<TARGET_NAME:shared_static>
+    #$<TARGET_NAME:client_static>
     #$<TARGET_NAME:server_static>
     )
   target_include_directories(${target_name} PRIVATE
@@ -69,8 +69,8 @@ function(add_custom_test name)
   endif()
 endfunction()
 
-#add_subdirectory(shared)
-add_subdirectory(client)
+add_subdirectory(shared)
+#add_subdirectory(client)
 #add_subdirectory(server)
 
 
