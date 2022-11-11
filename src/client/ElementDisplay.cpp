@@ -4,7 +4,7 @@
 
 namespace client {
 
-Element::update(shared::ElementData data) {
+void ElementDisplay::loadTexture(client::TextureData &data) {
     if (!texture.loadFromFile(data.getFileName()));
     int x_Offset = data.getxOffset();
     if (data.getyCoord()%2==0) x_Offset += 41;

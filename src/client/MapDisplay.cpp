@@ -6,7 +6,7 @@
 
 namespace client {
 
-MapDisplay:MapDisplay() {
+MapDisplay::MapDisplay() {
 
     int level[165] =
     {
