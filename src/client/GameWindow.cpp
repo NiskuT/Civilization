@@ -1,7 +1,6 @@
 #include <client.hpp>
 #include <iostream>
 
-#define LEN_ELEMENT 43
 #define MAP_X_OFFSET 0
 #define MAP_Y_OFFSET 0
 
@@ -15,9 +14,9 @@ GameWindow::GameWindow() {
 void GameWindow::displayWindow() {
     window.clear();
     window.draw(map.hexagon);
-    for(int i =0; i < LEN_ELEMENT; i++)
+    for(sf::Sprite i : map.elementSprites)
     {
-        window.draw(map.elementSprites[i]);
+        window.draw(i);
     }
     window.display();
 }

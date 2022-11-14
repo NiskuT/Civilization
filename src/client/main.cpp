@@ -2,8 +2,6 @@
 #include <client.hpp>
 #include <shared.hpp>
 
-#define LEN_ELEMENT 43
-
 int main(int argc,char* argv[])
 {
     

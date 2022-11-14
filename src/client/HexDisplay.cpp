@@ -7,7 +7,7 @@
 
 namespace client {
 
-void HexDisplay::load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
+void HexDisplay::load(const std::string& tileset, sf::Vector2u tileSize, int* tiles, unsigned int width, unsigned int height)
 {
     // load the tileset texture
     if (!m_tileset.loadFromFile(tileset))
@@ -53,7 +53,7 @@ void HexDisplay::load(const std::string& tileset, sf::Vector2u tileSize, const i
         }
 }
         
-void HexDisplay::update(sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
+void HexDisplay::update(sf::Vector2u tileSize, int* tiles, unsigned int width, unsigned int height)
 {
 
     // resize the vertex array to fit the level size
