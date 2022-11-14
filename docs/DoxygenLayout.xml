@@ -8,6 +8,7 @@
       <tab type="user" url="./md_docs_rules_rules.html" title="Rules"/>
       <tab type="user" url="./md_docs_rules_recap_of_specific_actions.html" title="Specific actions"/>
       <tab type="user" url="./md_docs_rules_graphic_elements.html" title="Graphic ressources"/>
+      <tab type="user" url="./md_docs_rendering.html" title="Rendering"/>
     </tab>
     <tab type="usergroup" url="./md_docs_development_process.html" title="Development">
       <tab type="user" url="./md_docs_development_process.html" title="Our development process "/>
