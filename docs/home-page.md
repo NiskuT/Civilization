@@ -50,3 +50,5 @@ If you also want to build testing, you will need to install <b>libboost-dev</b>.
 For building code coverage, add in addition to that <b>lcov</b> and <b>gcovr</b>.
 
 Now go to the `Civilization\build` folder and type `cmake ..`. You can add the following options: <b>-DCMAKE_BUILD_TYPE=Release</b>, <b>-DBUILD_TESTING=ON</b> and <b>-DBUILD_CODE_COVERAGE=ON</b>. Finally, type `cmake --build .` to build the project. Then, you can start the programs located in build/bin.
+
+[Credits](<./md_docs_credits.html>)
