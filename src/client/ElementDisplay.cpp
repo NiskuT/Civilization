@@ -5,10 +5,10 @@
 namespace client {
 
 void ElementDisplay::loadTexture(client::TextureData &data) {
-    if (!texture.loadFromFile(data.getFileName()));
-    int x_Offset = data.getxOffset();
-    if (data.getyCoord()%2==0) x_Offset += 41;
-    position.at(0) = x_Offset + data.getxCoord() * 83;
-    position.at(1) = data.getyOffset() + data.getyCoord() * (85 + Y_OFFSET);
+    if (!texture.loadFromFile("../ressources/img/map/player-2.png"/*data.fileName*/));
+    int x_Offset = data.xOffset;
+    if (data.yCoordonne%2==0) x_Offset += 41;
+    position.at(0) = x_Offset + data.xCoordonne * 83;
+    position.at(1) = data.yOffset + data.yCoordonne * (85 + Y_OFFSET);
     }
 };

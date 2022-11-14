@@ -1,9 +1,9 @@
 #include <client.hpp>
 #include <iostream>
 
+#define LEN_ELEMENT 43
 #define MAP_X_OFFSET 0
 #define MAP_Y_OFFSET 0
-#define LEN_ELEMENT 43
 
 namespace client {
 
@@ -12,7 +12,17 @@ GameWindow::GameWindow() {
     map.setOffset(MAP_X_OFFSET, MAP_Y_OFFSET);
 }
 
-void GameWindow::game() {
+void GameWindow::displayWindow() {
+    window.clear();
+    window.draw(map.hexagon);
+    for(int i =0; i < LEN_ELEMENT; i++)
+    {
+        window.draw(map.elementSprites[i]);
+    }
+    window.display();
+}
+
+void GameWindow::gameWindow() {
 
     while (window.isOpen())
     {
@@ -25,18 +35,8 @@ void GameWindow::game() {
         }
 
         // draw the map
-        display();
+        displayWindow();
     }
-}
-
-void GameWindow::display() {
-    window.clear();
-    window.draw(map.hexagon);
-    for(int i =0; i < LEN_ELEMENT; i++)
-    {
-        window.draw(map.elementSprites[i]);
-    }
-    window.display();
 }
 
 }

@@ -2,6 +2,8 @@
 #include <iostream>
 
 #define Y_OFFSET -21
+#define MAP_X_OFFSET 0
+#define MAP_Y_OFFSET 0
 
 namespace client {
 
@@ -81,7 +83,7 @@ void HexDisplay::update(sf::Vector2u tileSize, const int* tiles, unsigned int wi
         }
 }
 
-virtual void HexDisplay::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void HexDisplay::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // apply the transform
     states.transform *= getTransform();
