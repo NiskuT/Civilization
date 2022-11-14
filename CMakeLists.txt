@@ -92,7 +92,7 @@ add_subdirectory(3rdParty)
 
 # Add source subdirectories
 add_subdirectory(src/client)
-#add_subdirectory(src/shared)
+add_subdirectory(src/shared)
 #add_subdirectory(src/server)
 
 # Unit tests

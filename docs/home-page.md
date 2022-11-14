@@ -16,6 +16,8 @@ Link to graphic resources : [here](https://niskut.github.io/Civilization/md_docs
 
 Link to the diagram explanation: [here](https://niskut.github.io/Civilization/md_docs_diagram_explanation.html)
 
+Link to the code-coverage: [here](https://niskut.github.io/Civilization/code-coverage/index.html)
+
 Link to the credits: [here](https://niskut.github.io/Civilization/md_docs_credits.html)
 
 

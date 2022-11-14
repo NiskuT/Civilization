@@ -8,8 +8,8 @@ IF (WIN32)
 )
 ELSE ()
   add_custom_target(clean-headers
-    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/*.hpp
-    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/*/*.hpp
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/include/*.hpp
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/include/*/*.hpp
     COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/generate_header_*.stamp
     )
 ENDIF ()
@@ -24,11 +24,9 @@ ENDIF ()
 #   Name of the dia file. Must also be the name of the namespace contained
 #   inside the dia file.
 #
-function(generate_dia_header dia_file)
-  # Path to the .dia file used to generate the cpp headers
-  get_filename_component(namespace ${dia_file} NAME_WE)
+function(generate_dia_header dia_file namespace)
   # Path to the output directory
-  set(output_dir ${CMAKE_CURRENT_SOURCE_DIR})
+  set(output_dir ${CMAKE_SOURCE_DIR}/include)
 
   # Stamp file that take care of the dependency chain
   set(stamp ${PROJECT_BINARY_DIR}/generate_header_${namespace}.stamp)
@@ -37,16 +35,18 @@ function(generate_dia_header dia_file)
   IF (WIN32)
     add_custom_command(
       OUTPUT ${stamp}
-      COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/${namespace}.hpp
-      COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/src/*/${namespace}/*.hpp
-      COMMAND ${CMAKE_COMMAND} -E env "PATH=\"%PATH%;${CMAKE_BINARY_DIR}/lib\"" $<TARGET_FILE:dia2code> -d ${output_dir} -ext hpp -t cpp ${dia_file}
+      COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/include/${namespace}.hpp
+      COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/include/${namespace}/*.hpp
+      COMMAND ${CMAKE_COMMAND} -E env "PATH=\"%PATH%;${CMAKE_BINARY_DIR}/lib\"" $<TARGET_FILE:dia2code> -ns ${namespace} -d ${output_dir} -ext hpp -t cpp ${dia_file}
       COMMAND ${CMAKE_COMMAND} -E touch ${stamp}
       DEPENDS ${dia_file}
       )
   ELSE ()
   add_custom_command(
     OUTPUT ${stamp}
-    COMMAND $<TARGET_FILE:dia2code> -d ${output_dir} -ext hpp -t cpp ${dia_file}
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/include/${namespace}.hpp
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/include/${namespace}/*.hpp
+    COMMAND $<TARGET_FILE:dia2code> -ns ${namespace} -d ${output_dir} -ext hpp -t cpp ${dia_file}
     COMMAND ${CMAKE_COMMAND} -E touch ${stamp}
     DEPENDS ${dia_file}
     )
