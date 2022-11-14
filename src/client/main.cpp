@@ -12,8 +12,8 @@ int main(int argc,char* argv[])
         std::cout << "Unkown command, use -h for help." << std::endl;
     }
 
-    client::GameWindow gameWindow;
-    gameWindow.gameWindow();
+    client::GameWindow clientGame;
+    clientGame.gameWindow();
 
     return 0;
 }

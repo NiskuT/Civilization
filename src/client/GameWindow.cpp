@@ -10,21 +10,21 @@
 namespace client {
 
 GameWindow::GameWindow() {
-    window.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH),"Civilization VII");
-    map.setOffset(100, 100);
+    clientGameWindow.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH),"Civilization VII");
+    clientMap.setOffset(100, 100);
 }
 
 void GameWindow::displayWindow() {
-    window.clear();
-    window.draw(background.getSprite());
-    window.draw(ladder.getSprite());
-    window.draw(techWheel.getSprite());
-    window.draw(barbareWheel.getSprite());
-    window.draw(map.hexagon);
-    for(sf::Sprite i : map.elementSprites){
-        window.draw(i);
+    clientGameWindow.clear();
+    clientGameWindow.draw(background.getSprite());
+    clientGameWindow.draw(ladder.getSprite());
+    clientGameWindow.draw(techWheel.getSprite());
+    clientGameWindow.draw(barbareWheel.getSprite());
+    clientGameWindow.draw(clientMap.hexClientDisplay);
+    for(sf::Sprite i : clientMap.elementSprites){
+        clientGameWindow.draw(i);
     }
-    window.display();
+    clientGameWindow.display();
 }
 
 void GameWindow::gameWindow() {
@@ -83,12 +83,13 @@ void GameWindow::gameWindow() {
     map.setScale(0.5f, 0.5f);
 */
 
-    while (window.isOpen()){
+    while (clientGameWindow.isOpen()){
         // handle events
         sf::Event event;
-        while (window.pollEvent(event)){
+        while (clientGameWindow.pollEvent(event))
+        {
             if(event.type == sf::Event::Closed)
-                window.close();
+                clientGameWindow.close();
         }
 
         // draw the map
