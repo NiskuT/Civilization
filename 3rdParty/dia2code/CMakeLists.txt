@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.0)
 project (dia2code)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/3rdParty/dia2code-arch)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/dia)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Enable C11
@@ -26,11 +26,11 @@ IF(CMAKE_COMPILER_IS_GNUCC)
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 include_directories(${CMAKE_SOURCE_DIR}/3rdParty/libxml2-src/include)
-include_directories(${CMAKE_BINARY_DIR}/lib)
+include_directories(${CMAKE_BINARY_DIR}/lib/xml)
 IF (WIN32)
-	link_libraries(${CMAKE_BINARY_DIR}/lib/libxml2.dll)
+	link_libraries(${CMAKE_BINARY_DIR}/lib/xml/libxml2.dll)
 ELSE ()
-	link_libraries(${CMAKE_BINARY_DIR}/lib/libxml2.so)
+	link_libraries(${CMAKE_BINARY_DIR}/lib/xml/libxml2.so)
 ENDIF()
 
 # Sources
