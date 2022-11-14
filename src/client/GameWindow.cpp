@@ -17,10 +17,12 @@ GameWindow::GameWindow() {
 void GameWindow::displayWindow() {
     clientGameWindow.clear();
     clientGameWindow.draw(background.getSprite());
-    clientGameWindow.draw(ladder.getSprite());
     clientGameWindow.draw(techWheel.getSprite());
     clientGameWindow.draw(barbareWheel.getSprite());
     clientGameWindow.draw(clientMap.hexClientDisplay);
+    clientGameWindow.draw(priorityCard.getSprite());
+    clientGameWindow.draw(ladder.getSprite());
+
     for(sf::Sprite i : clientMap.elementSprites){
         clientGameWindow.draw(i);
     }
@@ -47,30 +49,39 @@ void GameWindow::gameWindow() {
     // Display event dial (barbare wheel)
 
     int posBarbareWheel = 0;
-    std::string file = "../ressources/img/hud/barbare-wheel-";
-    std::string num = std::to_string(posBarbareWheel);
+    std::string BarbareWheelFile = "../ressources/img/hud/barbare-wheel-";
+    std::string wheelNum = std::to_string(posBarbareWheel);
     std::string format= ".png";
-    std::string fileToLoad = file + num + format;
+    std::string fileToLoad = BarbareWheelFile + wheelNum + format;
     barbareWheel.loadHudData(fileToLoad, 0.3f, "barbareWheel");
     barbareWheel.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
 
 
     // Display card
 
-/*
     std::vector<std::string> cardType = {"army", "culture", "economy", "industry", "science"};
-    std::vector<HudDisplay> priorityCards;
+    //std::vector<HudDisplay> priorityCards;
+    std::string priorityCardFile = "../ressources/img/hud/priority-card-";
+    std::string type = cardType[0];
+    std::string priorityFileToLoad = priorityCardFile + type + format;
+    priorityCard.loadHudData(priorityFileToLoad, 1, "priorityCard");
+    priorityCard.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
+    //priorityCards.emplace_back(prorityFileToLoad, 1, "priorityCard") ;
+    //priorityCards.back().updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
+
+
+/*
     for (int i=0; i<1; i++) {
         std::string file = "../ressources/img/hud/priority-card-";
         std::string type = cardType[i];
         std::string format= ".png";
         std::string fileToLoad = file + type + format;
+        std::cout << "File:" << fileToLoad;
         priorityCards.emplace_back(fileToLoad, 1, "priorityCard") ;
         priorityCards.back().updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
     }
-*/
    
-/*
+
     // Display the map
     sf::Sprite map;
     sf::Texture mapTexture;

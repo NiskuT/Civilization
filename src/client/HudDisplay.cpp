@@ -49,8 +49,8 @@ int rotation = 0;
     }
 
     else if (this->type == "priorityCard") {
-        offsetLength = 10*priorityCard + 300;
-        offsetWidth = width-size.y; 
+        offsetLength = 10*priorityCard + 185;
+        offsetWidth = width-size.y + 140; 
     }
 
     else {
