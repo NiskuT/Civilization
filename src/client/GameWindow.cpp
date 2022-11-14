@@ -7,30 +7,30 @@
 namespace client {
 
 GameWindow::GameWindow() {
-    window.create(sf::VideoMode(1245, 725),"Civilization VII");
-    map.setOffset(MAP_X_OFFSET, MAP_Y_OFFSET);
+    clientGameWindow.create(sf::VideoMode(1245, 725),"Civilization VII");
+    clientMap.setOffset(MAP_X_OFFSET, MAP_Y_OFFSET);
 }
 
 void GameWindow::displayWindow() {
-    window.clear();
-    window.draw(map.hexagon);
-    for(sf::Sprite i : map.elementSprites)
+    clientGameWindow.clear();
+    clientGameWindow.draw(clientMap.hexClientDisplay);
+    for(sf::Sprite i : clientMap.elementSprites)
     {
-        window.draw(i);
+        clientGameWindow.draw(i);
     }
-    window.display();
+    clientGameWindow.display();
 }
 
 void GameWindow::gameWindow() {
 
-    while (window.isOpen())
+    while (clientGameWindow.isOpen())
     {
         // handle events
         sf::Event event;
-        while (window.pollEvent(event))
+        while (clientGameWindow.pollEvent(event))
         {
             if(event.type == sf::Event::Closed)
-                window.close();
+                clientGameWindow.close();
         }
 
         // draw the map

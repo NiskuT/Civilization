@@ -7,10 +7,10 @@ namespace client {
     
 TextureData::TextureData(int yCoord, int xCoord, int yOff, int xOff, std::string file)
 {
-    xCoordonne = xCoord;
-    yCoordonne = yCoord;
-    xOffset = xOff;
-    yOffset = yOff;
+    elementCoord.at(0) = xCoord;
+    elementCoord.at(1) = yCoord;
+    elementOffset.at(0) = xOff;
+    elementOffset.at(1) = yOff;
     fileName = file;
 }
 void TextureData::loadTexture() {
@@ -18,9 +18,9 @@ void TextureData::loadTexture() {
     {
         std::cout << "Error loading element picture \n";
     };
-    int x_Offset = xOffset;
-    if (yCoordonne%2==0) x_Offset += 41;
-    position.at(0) = x_Offset + xCoordonne * 83;
-    position.at(1) = yOffset + yCoordonne * (85 + Y_OFFSET);
+    int x_Offset = elementOffset.at(0);
+    if (elementCoord.at(1)%2==0) x_Offset += 41;
+    position.at(0) = x_Offset + elementCoord.at(0) * 83;
+    position.at(1) = elementOffset.at(1) + elementCoord.at(1) * (85 + Y_OFFSET);
     }
 };
