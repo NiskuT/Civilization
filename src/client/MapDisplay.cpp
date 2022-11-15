@@ -39,9 +39,10 @@ namespace client
         }*/
         hexClientDisplay.updateHexPosition(sf::Vector2u(83, 85), 15, 11, xOffset, yOffset);
 
-        for (sf::Sprite sprite : elementSprites)
+        for (unsigned i = 0; i < elementSprites.size(); i++)
         {
-            sprite.move(sf::Vector2f(xOffset * 1.f, yOffset * 1.f));
+            temporaryElementData.at(i).updateElementPosition({xOffset, yOffset});
+            elementSprites.at(i).setPosition(sf::Vector2f(temporaryElementData.at(i).position.at(0) * 1.f, temporaryElementData.at(i).position.at(1) * 1.f));
         }
     }
 
