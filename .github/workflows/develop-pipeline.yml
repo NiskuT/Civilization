@@ -49,9 +49,8 @@ jobs:
     - name: Valgrind Memory check for program
       run: |
         cd build/
-        valgrind --leak-check=full --error-exitcode=1 ./bin/client -hello &
-        sleep 10
-        pgrep -f Xvfb | xargs kill
+        sleep 20  && pgrep -f Xvfb | xargs kill &
+        valgrind --leak-check=full --error-exitcode=1 ./bin/client -hello
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
