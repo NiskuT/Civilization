@@ -24,10 +24,13 @@ jobs:
         sudo apt install libboost-all-dev
         sudo apt install valgrind
         sudo apt-get install libsfml-dev
-        Xvfb :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        sudo apt install xvfb
+
+    - name: Run Xvfb
+      run: Xvfb :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+
         
     - name: Configure CMake
-
       run: |
         mkdir build && cd build
         cmake .. -DBUILD_CODE_COVERAGE=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
