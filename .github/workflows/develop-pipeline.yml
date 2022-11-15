@@ -50,7 +50,8 @@ jobs:
       run: |
         cd build/
         sleep 20  && pgrep -f Xvfb | xargs kill &
-        valgrind --leak-check=full --error-exitcode=1 ./bin/client -hello
+        valgrind --leak-check=full --error-exitcode=1 ./bin/client -hello &
+        ps -e
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
