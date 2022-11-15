@@ -49,7 +49,7 @@ jobs:
 
     - name: Valgrind Memory check for program
       run: |
-        cd /build/bin
+        cd build/bin/
         valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./client -hello
 
     - name: Valgrind Memory check for tests
