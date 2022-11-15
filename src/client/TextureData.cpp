@@ -16,7 +16,7 @@ TextureData::TextureData(int yCoord, int xCoord, int yOff, int xOff, std::string
 void TextureData::loadTexture() {
     if (!texture.loadFromFile(fileName))
     {
-        std::cout << "Error loading element picture \n";
+        std::cout << "Error loading element picture: " << fileName << "\n";
     };
     int x_Offset = elementOffset.at(0);
     if (elementCoord.at(1)%2==0) x_Offset += 41;

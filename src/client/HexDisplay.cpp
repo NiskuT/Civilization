@@ -2,8 +2,6 @@
 #include <iostream>
 
 #define Y_OFFSET -21
-#define MAP_X_OFFSET 0
-#define MAP_Y_OFFSET 0
 
 namespace client {
 
@@ -47,7 +45,7 @@ void HexDisplay::loadHexTexture(const std::string& fileName, sf::Vector2u hexSiz
     for (unsigned int i = 0; i < width; ++i){
         for (unsigned int j = 0; j < height; ++j){
 
-            if (j%2==0) offset = 41;
+            if (j%2==0) offset = m_fileName.getSize().x/2;
             else offset = 0;
 
             if ((offset == 0) | (i+1 != width))
@@ -78,7 +76,7 @@ void HexDisplay::loadHexTexture(const std::string& fileName, sf::Vector2u hexSiz
     }
 }
         
-void HexDisplay::updateHexPosition(sf::Vector2u hexSize, unsigned int width, unsigned int height)
+void HexDisplay::updateHexPosition(sf::Vector2u hexSize, unsigned int width, unsigned int height, int xOffset, int yOffset)
 {
 
     // resize the vertex array to fit the level size
@@ -88,10 +86,10 @@ void HexDisplay::updateHexPosition(sf::Vector2u hexSize, unsigned int width, uns
     unsigned int offset;
 
     // populate the vertex array, with one quad per tile
-    for (unsigned int i = 0; i < width; ++i)
+    for (unsigned int i = 0; i < width; ++i){
         for (unsigned int j = 0; j < height; ++j)
         {
-            if (j%2==0) offset = 41;
+            if (j%2==0) offset = hexSize.x/2;
             else offset = 0;
 
             if ((offset == 0) | (i+1 != width))
@@ -100,12 +98,13 @@ void HexDisplay::updateHexPosition(sf::Vector2u hexSize, unsigned int width, uns
                 sf::Vertex* quad = &m_vertices[(i + j * width) * 4];
 
                 // define its 4 corners
-                quad[0].position = sf::Vector2f(MAP_X_OFFSET + offset + i * hexSize.x, MAP_Y_OFFSET + j * (Y_OFFSET + hexSize.y));
-                quad[1].position = sf::Vector2f(MAP_X_OFFSET + offset + (i + 1) * hexSize.x, MAP_Y_OFFSET + j * (Y_OFFSET + hexSize.y));
-                quad[2].position = sf::Vector2f(MAP_X_OFFSET + offset + (i + 1) * hexSize.x, MAP_Y_OFFSET + j * (Y_OFFSET + hexSize.y) + hexSize.y);
-                quad[3].position = sf::Vector2f(MAP_X_OFFSET + offset + i * hexSize.x, MAP_Y_OFFSET + j * (Y_OFFSET + hexSize.y) + hexSize.y);
+                quad[0].position = sf::Vector2f(xOffset + offset + i * hexSize.x, yOffset + j * (Y_OFFSET + hexSize.y));
+                quad[1].position = sf::Vector2f(xOffset + offset + (i + 1) * hexSize.x, yOffset + j * (Y_OFFSET + hexSize.y));
+                quad[2].position = sf::Vector2f(xOffset + offset + (i + 1) * hexSize.x, yOffset + j * (Y_OFFSET + hexSize.y) + hexSize.y);
+                quad[3].position = sf::Vector2f(xOffset + offset + i * hexSize.x, yOffset + j * (Y_OFFSET + hexSize.y) + hexSize.y);
             }
         }
+    }
 }
 
 void HexDisplay::draw(sf::RenderTarget& target, sf::RenderStates states) const

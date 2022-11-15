@@ -33,12 +33,16 @@ namespace client
 
     void MapDisplay::setOffset(int xOffset, int yOffset)
     {
+        /*
+        for(unsigned i = 0; i < elementSprites.size(); i++){
+            elementSprites.at(i).move((xOffset + temporaryElementData.at(i).position.at(0)), (yOffset + temporaryElementData.at(i).position.at(1)));
+        }*/
+        hexClientDisplay.updateHexPosition(sf::Vector2u(83, 85), 15, 11, xOffset, yOffset);
 
         for (sf::Sprite sprite : elementSprites)
         {
             sprite.move(sf::Vector2f(xOffset * 1.f, yOffset * 1.f));
         }
-        hexClientDisplay.updateHexPosition(sf::Vector2u(83, 85), 15, 11);
     }
 
 }
