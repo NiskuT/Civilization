@@ -11,7 +11,7 @@ void HudDisplay::loadHudData(std::string path, float scale, std::string type ) {
     this->type = type;
 
     if (!texture.loadFromFile(pathFile)){
-        std::cout << "Error loading background";
+        std::cout << "Error loading " << this->type;
     }
     
     sprite.setScale(scale, scale);
@@ -34,6 +34,7 @@ int rotation = 0;
 
     else if (this->type == "ladder") {
         offsetLength = (length-size.x)/2;
+        std::cout << offsetLength;
         offsetWidth = (width-size.y);  
     }
 
@@ -49,7 +50,7 @@ int rotation = 0;
     }
 
     else if (this->type == "priorityCard") {
-        offsetLength = 10*priorityCard + 185;
+        offsetLength = 249*priorityCard + 185;
         offsetWidth = width-size.y + 140; 
     }
 
