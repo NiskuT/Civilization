@@ -3,304 +3,304 @@
     [
         {
             "path": "../ressources/img/map/ressource-oil.png",
-            "i": 0,
-            "j": 4,
-            "k": 20,
-            "l": 21
+            "x": 0,
+            "y": 4,
+            "xOffset": 20,
+            "yOffset": 21
         },
         {
             "path": "../ressources/img/map/ressource-stone.png",
-            "i": 2,
-            "j": 6,
-            "k": 20,
-            "l": 21
+            "x": 2,
+            "y": 6,
+            "xOffset": 20,
+            "yOffset": 21
         },
         {
             "path": "../ressources/img/map/ressource-antic.png",
-            "i": 6,
-            "j": 7,
-            "k": 20,
-            "l": 21
+            "x": 6,
+            "y": 7,
+            "xOffset": 20,
+            "yOffset": 21
         },
         {
             "path": "../ressources/img/map/ressource-stone.png",
-            "i": 7,
-            "j": 11,
-            "k": 20,
-            "l": 21
+            "x": 7,
+            "y": 11,
+            "xOffset": 20,
+            "yOffset": 21
         },
         {
             "path": "../ressources/img/map/ressource-diamond.png",
-            "i": 10,
-            "j": 6,
-            "k": 20,
-            "l": 21
+            "x": 10,
+            "y": 6,
+            "xOffset": 20,
+            "yOffset": 21
         },
         {
             "path": "../ressources/img/map/player-2.png",
-            "i": 1,
-            "j": 8,
-            "k": 20,
-            "l": 22
+            "x": 1,
+            "y": 8,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2.png",
-            "i": 2,
-            "j": 9,
-            "k": 20,
-            "l": 22
+            "x": 2,
+            "y": 9,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2.png",
-            "i": 2,
-            "j": 10,
-            "k": 20,
-            "l": 22
+            "x": 2,
+            "y": 10,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2.png",
-            "i": 4,
-            "j": 10,
-            "k": 20,
-            "l": 22
+            "x": 4,
+            "y": 10,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2.png",
-            "i": 5,
-            "j": 11,
-            "k": 20,
-            "l": 22
+            "x": 5,
+            "y": 11,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2-reinforced.png",
-            "i": 1,
-            "j": 9,
-            "k": 20,
-            "l": 22
+            "x": 1,
+            "y": 9,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2-reinforced.png",
-            "i": 3,
-            "j": 9,
-            "k": 20,
-            "l": 22
+            "x": 3,
+            "y": 9,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2-reinforced.png",
-            "i": 3,
-            "j": 8,
-            "k": 20,
-            "l": 22
+            "x": 3,
+            "y": 8,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2-reinforced.png",
-            "i": 5,
-            "j": 9,
-            "k": 20,
-            "l": 22
+            "x": 5,
+            "y": 9,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2-reinforced.png",
-            "i": 6,
-            "j": 10,
-            "k": 20,
-            "l": 22
+            "x": 6,
+            "y": 10,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-2-mature.png",
-            "i": 2,
-            "j": 8,
-            "k": 10,
-            "l": 9
+            "x": 2,
+            "y": 8,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/player-2-capital.png",
-            "i": 3,
-            "j": 10,
-            "k": 10,
-            "l": 9
+            "x": 3,
+            "y": 10,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/player-2-city.png",
-            "i": 4,
-            "j": 8,
-            "k": 10,
-            "l": 9
+            "x": 4,
+            "y": 8,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/player-2-city.png",
-            "i": 5,
-            "j": 10,
-            "k": 10,
-            "l": 9
+            "x": 5,
+            "y": 10,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/player-2-caravan.png",
-            "i": 8,
-            "j": 11,
-            "k": 17,
-            "l": 17
+            "x": 8,
+            "y": 11,
+            "xOffset": 17,
+            "yOffset": 17
         },
         {
             "path": "../ressources/img/map/player-1.png",
-            "i": 5,
-            "j": 7,
-            "k": 20,
-            "l": 22
+            "x": 5,
+            "y": 7,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-1.png",
-            "i": 6,
-            "j": 5,
-            "k": 20,
-            "l": 22
+            "x": 6,
+            "y": 5,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-1.png",
-            "i": 6,
-            "j": 2,
-            "k": 20,
-            "l": 22
+            "x": 6,
+            "y": 2,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-1.png",
-            "i": 7,
-            "j": 3,
-            "k": 20,
-            "l": 22
+            "x": 7,
+            "y": 3,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-1.png",
-            "i": 7,
-            "j": 7,
-            "k": 20,
-            "l": 22
+            "x": 7,
+            "y": 7,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-1-reinforced.png",
-            "i": 6,
-            "j": 6,
-            "k": 20,
-            "l": 22
+            "x": 6,
+            "y": 6,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-1-reinforced.png",
-            "i": 4,
-            "j": 5,
-            "k": 20,
-            "l": 22
+            "x": 4,
+            "y": 5,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-1-reinforced.png",
-            "i": 6,
-            "j": 4,
-            "k": 20,
-            "l": 22
+            "x": 6,
+            "y": 4,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-1-reinforced.png",
-            "i": 8,
-            "j": 6,
-            "k": 20,
-            "l": 22
+            "x": 8,
+            "y": 6,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/player-1-capital.png",
-            "i": 5,
-            "j": 6,
-            "k": 10,
-            "l": 9
+            "x": 5,
+            "y": 6,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/player-1-mature.png",
-            "i": 7,
-            "j": 6,
-            "k": 10,
-            "l": 9
+            "x": 7,
+            "y": 6,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/player-1-city.png",
-            "i": 6,
-            "j": 3,
-            "k": 10,
-            "l": 9
+            "x": 6,
+            "y": 3,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/player-1-caravan.png",
-            "i": 7,
-            "j": 9,
-            "k": 17,
-            "l": 17
+            "x": 7,
+            "y": 9,
+            "xOffset": 17,
+            "yOffset": 17
         },
         {
             "path": "../ressources/img/map/state-city-science.png",
-            "i": 7,
-            "j": 10,
-            "k": 10,
-            "l": 9
+            "x": 7,
+            "y": 10,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/state-city-culture.png",
-            "i": 9,
-            "j": 12,
-            "k": 10,
-            "l": 9
+            "x": 9,
+            "y": 12,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/state-city-army.png",
-            "i": 9,
-            "j": 4,
-            "k": 10,
-            "l": 9
+            "x": 9,
+            "y": 4,
+            "xOffset": 10,
+            "yOffset": 9
         },
         {
             "path": "../ressources/img/map/barbarians.png",
-            "i": 0,
-            "j": 3,
-            "k": 20,
-            "l": 22
+            "x": 0,
+            "y": 3,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/barbarians.png",
-            "i": 1,
-            "j": 6,
-            "k": 20,
-            "l": 22
+            "x": 1,
+            "y": 6,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/barbarians.png",
-            "i": 6,
-            "j": 6,
-            "k": 20,
-            "l": 22
+            "x": 6,
+            "y": 6,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/barbarians.png",
-            "i": 8,
-            "j": 4,
-            "k": 20,
-            "l": 22
+            "x": 8,
+            "y": 4,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/barbarian-hutte.png",
-            "i": 0,
-            "j": 7,
-            "k": 20,
-            "l": 22
+            "x": 0,
+            "y": 7,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/barbarian-hutte.png",
-            "i": 2,
-            "j": 3,
-            "k": 20,
-            "l": 22
+            "x": 2,
+            "y": 3,
+            "xOffset": 20,
+            "yOffset": 22
         },
         {
             "path": "../ressources/img/map/barbarian-hutte.png",
-            "i": 9,
-            "j": 6,
-            "k": 20,
-            "l": 22
+            "x": 9,
+            "y": 6,
+            "xOffset": 20,
+            "yOffset": 22
         }
     ]
 }

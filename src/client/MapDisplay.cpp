@@ -17,10 +17,10 @@ namespace client
 
         for (unsigned index = 0; index < root["data"].size(); ++index) {
             temporaryElementData.emplace_back(
-                root["data"][index]["i"].asInt(),
-                root["data"][index]["j"].asInt(),
-                root["data"][index]["k"].asInt(),
-                root["data"][index]["l"].asInt(),
+                root["data"][index]["x"].asInt(),
+                root["data"][index]["y"].asInt(),
+                root["data"][index]["xOffset"].asInt(),
+                root["data"][index]["yOffset"].asInt(),
                 root["data"][index]["path"].asString());
         }
 
