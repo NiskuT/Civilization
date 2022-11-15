@@ -48,8 +48,8 @@ jobs:
 
     - name: Valgrind Memory check for program
       run: |
-        cd build/bin/
-        sudo valgrind --leak-check=full --error-exitcode=1 ./client -hello
+        cd build/
+        valgrind --leak-check=full --error-exitcode=1 ./bin/client -hello
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
