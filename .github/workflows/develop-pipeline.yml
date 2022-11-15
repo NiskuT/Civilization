@@ -26,7 +26,7 @@ jobs:
         sudo apt-get install libsfml-dev
 
     - name: Run Xvfb
-      run: Xvfb :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+      run: Xvfb ${DISPLAY} -screen 0 1280x1024x24 > /dev/null 2>&1 &
 
         
     - name: Configure CMake
@@ -48,8 +48,9 @@ jobs:
 
     - name: Valgrind Memory check for program
       run: |
-        cd build/bin/
-        sudo valgrind --leak-check=full --error-exitcode=1 ./client -hello
+        cd build/
+        sleep 20  && pgrep -f Xvfb | xargs kill &
+        valgrind --leak-check=full --error-exitcode=1 ./bin/client -hello
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
