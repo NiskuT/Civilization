@@ -48,8 +48,9 @@ jobs:
       run: cmake --build . --target code-coverage
 
     - name: Valgrind Memory check for program
-      working-directory: ${{github.workspace}}/build/bin
-      run: valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./client -hello
+      run: |
+        cd /build/bin
+        valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./client -hello
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
