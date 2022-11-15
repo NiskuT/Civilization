@@ -5,6 +5,11 @@
 
 namespace client {
 
+/*!
+* \brief Constructeur
+*
+* Constructor of HexDisplay class
+*/
 HexDisplay::HexDisplay()
 {
     int level[165] =
@@ -27,7 +32,16 @@ HexDisplay::HexDisplay()
     }
 }
 
-void HexDisplay::loadHexTexture(const std::string& fileName, sf::Vector2u hexSize, unsigned int width, unsigned int height)
+/*!
+* \brief Load the hexagon picture and display an haxagon at his place
+*
+* \param fileName : the file to display
+* hexSize: size of the map
+* width: width of the hexagon
+* height: height of the hexagon
+*/
+void HexDisplay::loadHexTexture(const std::string& 
+fileName, sf::Vector2u hexSize, unsigned int width, unsigned int height)
 {
     // load the fileName texture
     if (!m_fileName.loadFromFile(fileName)){
@@ -75,17 +89,24 @@ void HexDisplay::loadHexTexture(const std::string& fileName, sf::Vector2u hexSiz
         }
     }
 }
-        
+
+/*!
+* \brief Create an offset to the hexagon element on the screen
+*
+* \param hexSize: size of the map
+* width: width of the hexagon
+* height: height of the hexagon
+* xOffset: offset on x coordonate to apply to the hexagon
+* yOffset: offset on y coordonate to apply to the hexagon
+*/    
 void HexDisplay::updateHexPosition(sf::Vector2u hexSize, unsigned int width, unsigned int height, int xOffset, int yOffset)
 {
 
-    // resize the vertex array to fit the level size
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(width * height * 4);
 
     unsigned int offset;
 
-    // populate the vertex array, with one quad per tile
     for (unsigned int i = 0; i < width; ++i){
         for (unsigned int j = 0; j < height; ++j)
         {
@@ -94,10 +115,9 @@ void HexDisplay::updateHexPosition(sf::Vector2u hexSize, unsigned int width, uns
 
             if ((offset == 0) | (i+1 != width))
             {
-                // get a pointer to the current tile's quad
+                // get a pointer to the current hex's quad
                 sf::Vertex* quad = &m_vertices[(i + j * width) * 4];
 
-                // define its 4 corners
                 quad[0].position = sf::Vector2f(xOffset + offset + i * hexSize.x, yOffset + j * (Y_OFFSET + hexSize.y));
                 quad[1].position = sf::Vector2f(xOffset + offset + (i + 1) * hexSize.x, yOffset + j * (Y_OFFSET + hexSize.y));
                 quad[2].position = sf::Vector2f(xOffset + offset + (i + 1) * hexSize.x, yOffset + j * (Y_OFFSET + hexSize.y) + hexSize.y);
@@ -107,15 +127,17 @@ void HexDisplay::updateHexPosition(sf::Vector2u hexSize, unsigned int width, uns
     }
 }
 
+/*!
+* \brief Herited method that display the hexagon
+*
+* \param target: window where the hexagon will appear
+*/   
 void HexDisplay::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    // apply the transform
     states.transform *= getTransform();
 
-    // apply the fileName texture
     states.texture = &m_fileName;
 
-    // draw the vertex array
     target.draw(m_vertices, states);
 }
 

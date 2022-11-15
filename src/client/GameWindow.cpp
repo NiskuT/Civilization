@@ -6,11 +6,19 @@
 
 namespace client {
 
+/*!
+* \brief Constructeur
+*
+* Constructor of GameWindow class
+*/
 GameWindow::GameWindow() {
     clientGameWindow.create(sf::VideoMode(1245, 725),"Civilization VII");
     clientMap.setOffset(MAP_X_OFFSET, MAP_Y_OFFSET);
 }
 
+/*!
+* \brief Display all the different variable in the screen
+*/
 void GameWindow::displayWindow() {
     clientGameWindow.clear();
     clientGameWindow.draw(clientMap.hexClientDisplay);
@@ -21,6 +29,9 @@ void GameWindow::displayWindow() {
     clientGameWindow.display();
 }
 
+/*!
+* \brief Loop that look for events to happend and call displayWindow()
+*/
 void GameWindow::gameWindow() {
 
     while (clientGameWindow.isOpen())
