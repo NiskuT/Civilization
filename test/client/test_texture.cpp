@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE( constructorTest )
 BOOST_AUTO_TEST_CASE( loadTexture )
 {
     client::TextureData texture1(0, 4, 20, 21, "file1.png");
-    texture1.loadTexture();
+    texture1.updateElementPosition({0, 0});
     BOOST_CHECK(texture1.position.at(0) == 394);
     BOOST_CHECK(texture1.position.at(1) == 20);
 }
