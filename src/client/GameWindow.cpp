@@ -18,15 +18,18 @@ GameWindow::GameWindow() {
 void GameWindow::displayWindow() {
     clientGameWindow.clear();
     clientGameWindow.draw(background.getSprite());
-    /*clientGameWindow.draw(techWheel.getSprite());
+    clientGameWindow.draw(techWheel.getSprite());
     clientGameWindow.draw(barbareWheel.getSprite());
     clientGameWindow.draw(clientMap.hexClientDisplay);
     for(sf::Sprite i : clientMap.elementSprites){
         clientGameWindow.draw(i);
-    }*/
+    }
     for (int i = 0; i<5; i++) {
          clientGameWindow.draw(priorityCards.at(i).getSprite());
          clientGameWindow.draw(priorityCards.at(i).titleCard);
+    }
+    for (int i = 0; i<3; i++) {
+         clientGameWindow.draw(actionCards.at(i).getSprite());
     }
     clientGameWindow.draw(ladder.getSprite());
 
@@ -61,7 +64,7 @@ void GameWindow::gameWindow() {
     barbareWheel.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
 
 
-    // Display card
+    // Display priority cards
 
     std::vector<std::string> cardType = {"army", "culture", "economy", "industry", "science"};
     std::string priorityCardFile = "../ressources/img/hud/priority-card-";
@@ -73,6 +76,17 @@ void GameWindow::gameWindow() {
         sf::Vector2f position = priorityCards.at(i).getSprite().getPosition();
         priorityCards.at(i).loadTitle(type, position.x + 75, position.y);
     }
+
+    // Display action cards
+    std::vector<std::string> actionCardOwned = {"army", "player-1", "player-2"};
+    std::string actionCardFile = "../ressources/img/hud/action-card-";
+    for (int i = 0; i<actionCardOwned.size(); i++) {
+        std::string actionType = actionCardOwned[i];
+        std::string actionCardFileToLoad = actionCardFile + actionType + format;
+        actionCards.at(i).loadHudData(actionCardFileToLoad, 1, "actionCard");
+        actionCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
+    }
+
 
     while (clientGameWindow.isOpen()){
         // handle events

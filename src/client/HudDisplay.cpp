@@ -50,6 +50,11 @@ int rotation = 0;
         offsetWidth = width-size.y + 140; 
     }
 
+    else if (this->type == "actionCard") {
+        offsetLength = length - size.x - 10;
+        offsetWidth = width/4 + (size.y+10)*priorityCard;
+    }
+
     else {
         std::cout << ("Not good type");
     }
