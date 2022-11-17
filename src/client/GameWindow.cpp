@@ -18,18 +18,18 @@ GameWindow::GameWindow() {
 void GameWindow::displayWindow() {
     clientGameWindow.clear();
     clientGameWindow.draw(background.getSprite());
-    clientGameWindow.draw(techWheel.getSprite());
+    /*clientGameWindow.draw(techWheel.getSprite());
     clientGameWindow.draw(barbareWheel.getSprite());
     clientGameWindow.draw(clientMap.hexClientDisplay);
     for(sf::Sprite i : clientMap.elementSprites){
         clientGameWindow.draw(i);
-    }
+    }*/
     for (int i = 0; i<5; i++) {
          clientGameWindow.draw(priorityCards.at(i).getSprite());
+         clientGameWindow.draw(priorityCards.at(i).titleCard);
     }
     clientGameWindow.draw(ladder.getSprite());
 
- 
     clientGameWindow.display();
 }
 
@@ -70,8 +70,9 @@ void GameWindow::gameWindow() {
         std::string priorityFileToLoad = priorityCardFile + type + format;
         priorityCards.at(i).loadHudData(priorityFileToLoad, 1, "priorityCard");
         priorityCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
+        sf::Vector2f position = priorityCards.at(i).getSprite().getPosition();
+        priorityCards.at(i).loadTitle(type, position.x + 75, position.y);
     }
-
 
     while (clientGameWindow.isOpen()){
         // handle events

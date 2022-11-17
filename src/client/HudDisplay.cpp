@@ -26,13 +26,11 @@ int rotation = 0;
     if (this->type == "background") {
         offsetLength = -((size.x-length)/2);
         offsetWidth = -((size.y-width)/2);
-        sprite.setTextureRect(sf::IntRect(offsetLength, offsetWidth, length, width));
     }
 
     else if (this->type == "ladder") {
         offsetLength = (length-size.x)/2;
         offsetWidth = (width-size.y);  
-        sprite.move(offsetLength, offsetWidth);
     }
 
     else if (this->type =="techWheel") {
@@ -41,26 +39,21 @@ int rotation = 0;
         offsetLength = length;
         offsetWidth = width; 
         sprite.rotate(rotation);
-        sprite.move(offsetLength, offsetWidth);
-        sprite.rotate(rotation);
-        sprite.setTextureRect(sf::IntRect(0, 0, size.x/2, size.y/2));
     }
 
     else if (this->type == "barbareWheel") {
         offsetWidth = (width-size.y*0.3);
-        sprite.move(offsetLength, offsetWidth);
     }
 
     else if (this->type == "priorityCard") {
-    
         offsetLength = 249*priorityCard + 185;
         offsetWidth = width-size.y + 140; 
-        sprite.move(offsetLength, offsetWidth);
     }
 
     else {
         std::cout << ("Not good type");
     }
+    sprite.move(offsetLength, offsetWidth);
 }
 
 }
