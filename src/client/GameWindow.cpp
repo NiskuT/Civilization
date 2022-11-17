@@ -10,7 +10,8 @@
 namespace client {
 
 GameWindow::GameWindow() {
-    clientGameWindow.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH),"Civilization VII");
+    clientGameWindow.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH),"Civilization VII", sf::Style::Close);
+    clientGameWindow.setPosition(sf::Vector2i(0, 0));
     clientMap.setOffset(MAP_X_OFFSET, MAP_Y_OFFSET);
 }
 
