@@ -26,7 +26,6 @@ int rotation = 0;
     if (this->type == "background") {
         offsetLength = -((size.x-length)/2);
         offsetWidth = -((size.y-width)/2);
-        sprite.setTextureRect(sf::IntRect(offsetLength, offsetWidth, length, width));
     }
 
     else if (this->type == "ladder") {
@@ -43,7 +42,6 @@ int rotation = 0;
         sprite.rotate(rotation);
         sprite.move(offsetLength, offsetWidth);
         sprite.rotate(rotation);
-        sprite.setTextureRect(sf::IntRect(0, 0, size.x/2, size.y/2));
     }
 
     else if (this->type == "barbareWheel") {
@@ -55,6 +53,12 @@ int rotation = 0;
     
         offsetLength = 249*priorityCard + 185;
         offsetWidth = width-size.y + 140; 
+        sprite.move(offsetLength, offsetWidth);
+    }
+
+    else if (this->type == "actionCard") {
+        offsetLength = length - size.x - 10;
+        offsetWidth = width/4 + (size.y+10)*priorityCard; 
         sprite.move(offsetLength, offsetWidth);
     }
 
