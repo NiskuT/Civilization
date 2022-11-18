@@ -73,8 +73,8 @@ void GameWindow::gameWindow() {
         std::string priorityFileToLoad = priorityCardFile + type + format;
         priorityCards.at(i).loadHudData(priorityFileToLoad, 1, "priorityCard");
         priorityCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
-        sf::Vector2f position = priorityCards.at(i).getSprite().getPosition();
-        priorityCards.at(i).loadTitle(type, position.x + 75, position.y);
+        sf::Vector2f priorityCardPosition = priorityCards.at(i).getSprite().getPosition();
+        priorityCards.at(i).loadTitle(type, priorityCardPosition.x + 75, priorityCardPosition.y);
     }
 
     // Display action cards
@@ -85,6 +85,8 @@ void GameWindow::gameWindow() {
         std::string actionCardFileToLoad = actionCardFile + actionType + format;
         actionCards.at(i).loadHudData(actionCardFileToLoad, 1, "actionCard");
         actionCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
+        sf::Vector2f  actionCardPosition = actionCards.at(i).getSprite().getPosition;
+        actionCards.at(i).loadTitle(actionCardOwned.at(i), actionCardPosition.x, actionCardPosition.y);
     }
 
 
