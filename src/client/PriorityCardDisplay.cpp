@@ -1,5 +1,7 @@
 #include <client.hpp>
 #include <iostream>
+#include <json/json.h>
+#define WINDOW_LENGTH 1600
 
 namespace client {
 
@@ -14,7 +16,7 @@ namespace client {
     this->sprite.move(offsetLength, offsetWidth);
 }*/
 
-void PriorityCardDisplay::loadTitle(std::string title, int x, int y) {
+void PriorityCardDisplay::loadTitle(std::string title, sf::Vector2f position, int xCardSize) {
     
     if(!priorityFont.loadFromFile("../ressources/img/hud/font.otf")){
         std::cout << "font not loaded\n" ;
@@ -25,10 +27,12 @@ void PriorityCardDisplay::loadTitle(std::string title, int x, int y) {
 
     titleCard.setFont(priorityFont);
     titleCard.setString(upperFirstLetter);
-    titleCard.setCharacterSize(40);
+    titleCard.setCharacterSize((float(40)/float(1600))*WINDOW_LENGTH);
     titleCard.setStyle(sf::Text::Bold);
     titleCard.setColor(sf::Color::Black);
-    titleCard.setPosition(x, y);
+    sf::Rect titleScale =titleCard.getLocalBounds();
+    int xOffset = (xCardSize - titleScale.width)/2 ;
+    titleCard.setPosition(position.x + xOffset, position.y);
 }
 
 }

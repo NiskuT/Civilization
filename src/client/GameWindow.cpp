@@ -39,18 +39,17 @@ void GameWindow::displayWindow() {
 void GameWindow::gameWindow() {
 
     // Display the background
-    background.loadHudData("../ressources/img/hud/background.png", 1, "background");
+    background.loadHudData("../ressources/img/hud/background.png", "background");
     background.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
 
     // Display ladder
-
-    ladder.loadHudData("../ressources/img/hud/ladder.png",1 , "ladder");
+    ladder.loadHudData("../ressources/img/hud/ladder.png", "ladder");
     ladder.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
     
 
     //Display tech wheel
 
-    techWheel.loadHudData("../ressources/img/hud/tech-wheel.png", 0.3f, "techWheel");
+    techWheel.loadHudData("../ressources/img/hud/tech-wheel.png", "techWheel");
     techWheel.updatePlacement(WINDOW_LENGTH,WINDOW_WIDTH, 0);
 
     // Display event dial (barbare wheel)
@@ -60,7 +59,7 @@ void GameWindow::gameWindow() {
     std::string wheelNum = std::to_string(posBarbareWheel);
     std::string format= ".png";
     std::string fileToLoad = BarbareWheelFile + wheelNum + format;
-    barbareWheel.loadHudData(fileToLoad, 0.3f, "barbareWheel");
+    barbareWheel.loadHudData(fileToLoad, "barbareWheel");
     barbareWheel.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
 
 
@@ -71,10 +70,11 @@ void GameWindow::gameWindow() {
     for (int i = 0; i<5; i++) {
         std::string type = cardType[i];
         std::string priorityFileToLoad = priorityCardFile + type + format;
-        priorityCards.at(i).loadHudData(priorityFileToLoad, 1, "priorityCard");
+        priorityCards.at(i).loadHudData(priorityFileToLoad, "priorityCard");
         priorityCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
         sf::Vector2f priorityCardPosition = priorityCards.at(i).getSprite().getPosition();
-        priorityCards.at(i).loadTitle(type, priorityCardPosition.x + 75, priorityCardPosition.y);
+        sf::Rect rectPriorityCard = priorityCards.at(i).getSprite().getLocalBounds();
+        priorityCards.at(i).loadTitle(type, priorityCardPosition, rectPriorityCard.width);
     }
 
     // Display action cards
@@ -83,18 +83,16 @@ void GameWindow::gameWindow() {
     for (int i = 0; i<actionCardOwned.size(); i++) {
         std::string actionType = actionCardOwned[i];
         std::string actionCardFileToLoad = actionCardFile + actionType + format;
-        actionCards.at(i).loadHudData(actionCardFileToLoad, 1, "actionCard");
+        actionCards.at(i).loadHudData(actionCardFileToLoad, "actionCard");
         actionCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
-        sf::Vector2f  actionCardPosition = actionCards.at(i).getSprite().getPosition;
-        actionCards.at(i).loadTitle(actionCardOwned.at(i), actionCardPosition.x, actionCardPosition.y);
+        
     }
 
 
     while (clientGameWindow.isOpen()){
         // handle events
         sf::Event event;
-        while (clientGameWindow.pollEvent(event))
-        {
+        while (clientGameWindow.pollEvent(event)){
             if(event.type == sf::Event::Closed)
                 clientGameWindow.close();
         }
