@@ -74,7 +74,8 @@ void GameWindow::gameWindow() {
         priorityCards.at(i).loadHudData(priorityFileToLoad, 1, "priorityCard");
         priorityCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
         sf::Vector2f position = priorityCards.at(i).getSprite().getPosition();
-        priorityCards.at(i).loadTitle(type, position.x + 75, position.y);
+        sf::Rect rect = priorityCards.at(i).getSprite().getLocalBounds();
+        priorityCards.at(i).loadTitle(type, position, rect.width);
     }
 
     // Display action cards
@@ -91,8 +92,7 @@ void GameWindow::gameWindow() {
     while (clientGameWindow.isOpen()){
         // handle events
         sf::Event event;
-        while (clientGameWindow.pollEvent(event))
-        {
+        while (clientGameWindow.pollEvent(event)){
             if(event.type == sf::Event::Closed)
                 clientGameWindow.close();
         }
