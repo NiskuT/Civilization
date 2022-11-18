@@ -13,9 +13,6 @@ namespace client
 */
 MapDisplay::MapDisplay()
 {
-
-    hexClientDisplay.loadHexTexture("../ressources/img/map/field.png", sf::Vector2u(83, 85), 15, 11);
-
     Json::Value root;
     std::ifstream json_file("../ressources/img/map/files.json", std::ifstream::binary);
     json_file >> root;
@@ -44,11 +41,6 @@ MapDisplay::MapDisplay()
 */
 void MapDisplay::setOffset(int xOffset, int yOffset)
 {
-    /*
-    for(unsigned i = 0; i < elementSprites.size(); i++){
-        elementSprites.at(i).move((xOffset + temporaryElementData.at(i).position.at(0)), (yOffset + temporaryElementData.at(i).position.at(1)));
-    }*/
-    hexClientDisplay.updateHexPosition(sf::Vector2u(83, 85), 15, 11, xOffset, yOffset);
 
     for (unsigned i = 0; i < elementSprites.size(); i++)
     {
