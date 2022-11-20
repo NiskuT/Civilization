@@ -13,6 +13,16 @@ void ElementDisplayer::loadTextureToSprite(sf::Texture* textureToLoad)
     this->sprite = new sf::Sprite(*textureToLoad);
 } 
 
+int ElementDisplayer::getWidth() 
+{
+    return this->sprite->getLocalBounds().width;
+}
+
+int ElementDisplayer::getHeight()
+{
+    return this->sprite->getLocalBounds().height;
+} 
+
 sf::Sprite ElementDisplayer::getSprite()
 {    
     return *this->sprite;
@@ -34,9 +44,6 @@ void ElementDisplayer::setMapSpritePosition(unsigned int rank)
     else {
         this->sprite->setPosition(sf::Vector2f(xCoordonate * 82, yCoordonate + yCoordonate * 63));
     }
-    
-
-    
 }
 
 std::string ElementDisplayer::getType()

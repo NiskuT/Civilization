@@ -1,5 +1,7 @@
 #include <client.hpp>
 #include <iostream>
+#include <fstream>
+#include <json/json.h>
 
 #define MAP_X_OFFSET 0
 #define MAP_Y_OFFSET 0
@@ -13,7 +15,6 @@ namespace client {
 */
 GameWindow::GameWindow() {
     clientGameWindow.create(sf::VideoMode(1231, 725),"Civilization VII");
-    clientMap.setOffset(MAP_X_OFFSET, MAP_Y_OFFSET);
 }
 
 /*!
@@ -27,9 +28,9 @@ void GameWindow::displayWindow() {
         clientGameWindow.draw(mapSprite());
     }
 
-    for(sf::Sprite i : clientMap.elementSprites)
+    for(ElementDisplayer mapSprite : elementToDisplay)
     {
-        clientGameWindow.draw(i);
+        clientGameWindow.draw(mapSprite());
     }
     clientGameWindow.display();
 }
@@ -86,15 +87,12 @@ void GameWindow::loadMap() {
 
         std::string mapElementPath = hexagonImgPath + mapField.at(i) + ".png";
         mapTexture.at(i) = new sf::Texture(); 
-        image.loadFromFile(mapElementPath);
-        /*if (!mapTexture.at(i)->loadFromFile(mapElementPath))
+        if (!image.loadFromFile(mapElementPath))
         {
             std::cout << "Error loading element picture: " << mapElementPath << "\n";
-        };*/
+        };
         mapTexture.at(i)->loadFromImage(image);
     }
-
-    //sf::Rect hexRect;
 
     for(unsigned int i = 0; i < mapElements.size(); i++){
 
@@ -104,31 +102,31 @@ void GameWindow::loadMap() {
 
     }
 
-    std::cout << "----4----\n";
+    std::array<int, 2> hexSize = {mapElements.at(0).getWidth(), mapElements.at(0).getHeight()};
+    unsigned startElement = mapTexture.size();
 
-    /*std::ifstream json_file("../ressources/img/map/files.json", std::ifstream::binary);
+    std::vector<sf::Texture*> elementTexture;
+
+    Json::Value root;
+    std::ifstream json_file("../ressources/img/map/files.json", std::ifstream::binary);
     json_file >> root;
 
     for (unsigned index = 0; index < root["data"].size(); ++index) {
-        temporaryElementData.emplace_back(
-            root["data"][index]["x"].asInt(),
-            root["data"][index]["y"].asInt(),
-            root["data"][index]["xOffset"].asInt(),
-            root["data"][index]["yOffset"].asInt(),
-            root["data"][index]["path"].asString());
-    }
+   
+        elementTexture.emplace_back(new sf::Texture()); 
+        if (!image.loadFromFile(root["data"][index]["path"].asString()))
+        {
+            std::cout << "Error loading element picture: " << root["data"][index]["path"].asString() << "\n";
+        };
+        elementTexture.at(index)->loadFromImage(image);
 
-    for (TextureData &t : temporaryElementData) {
-        t.loadTexture();
-        elementSprites.emplace_back(t.texture);
-        elementSprites.back().move(sf::Vector2f(t.position.at(0) * 1.f, t.position.at(1) * 1.f));
-    };
-    
-    for(unsigned int i = 0; i < mapElements.size(); i++){
-        std::string mapElementPath = hexagonImgPath + mapField.at(level.at(i)) + ".png";
-        mapElements.at(i).setTexturePath(mapElementPath);
-        mapElements.at(i).setMapSpritePosition(i);
-    }*/
+        elementToDisplay.emplace_back();
+        elementToDisplay.back().loadTextureToSprite(elementTexture.at(index));
+
+        int rank = root["data"][index]["x"].asInt()*15 + root["data"][index]["y"].asInt();
+
+        elementToDisplay.back().setMapSpritePosition(rank); 
+    }
 
 
     std::cout << "UpdateMap End\n";
