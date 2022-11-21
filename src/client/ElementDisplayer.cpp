@@ -46,6 +46,27 @@ void ElementDisplayer::setMapSpritePosition(unsigned int rank)
     }
 }
 
+void ElementDisplayer::setElementSpritePosition(unsigned int rank, std::array<int, 2> hexSize)
+{
+    int xCoordonate = rank % 15;
+    int yCoordonate = rank / 15;
+
+    int xOffset = (hexSize.at(0) - this->sprite->getLocalBounds().width) / 2;
+    int yOffset = (hexSize.at(1) - this->sprite->getLocalBounds().height) / 2;
+
+    if (yCoordonate%2==0) {
+        if (xCoordonate !=14 ){
+            this->sprite->setPosition(sf::Vector2f(xOffset + 41 + xCoordonate * 82, yOffset + yCoordonate + yCoordonate * 63));
+        }
+        else{
+            this->sprite->setPosition(sf::Vector2f(-100, -100));
+        }
+    }
+    else {
+        this->sprite->setPosition(sf::Vector2f(xOffset + xCoordonate * 82, yOffset +  yCoordonate + yCoordonate * 63));
+    }
+}
+
 std::string ElementDisplayer::getType()
 {
     return this->pathElement;

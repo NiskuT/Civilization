@@ -125,7 +125,7 @@ void GameWindow::loadMap() {
 
         int rank = root["data"][index]["x"].asInt()*15 + root["data"][index]["y"].asInt();
 
-        elementToDisplay.back().setMapSpritePosition(rank); 
+        elementToDisplay.back().setElementSpritePosition(rank, hexSize); 
     }
 
 
