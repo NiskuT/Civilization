@@ -95,6 +95,8 @@ namespace client
         }
 
         bool dragging = false;
+        std::array<int, 2> clickStartingPoint = {0, 0};
+        std::array<int, 2> newMapOffset = {0, 0};
 
         while (clientGameWindow.isOpen())
         {
@@ -105,10 +107,10 @@ namespace client
                 switch (event.type)
                 {
                 case sf::Event::MouseButtonPressed:
-                    std::cout << "Left click: " << sf::Mouse::getPosition(clientGameWindow).x << " " << sf::Mouse::getPosition(clientGameWindow).y << "\n";
                     dragging = true;
+                    clickStartingPoint = {sf::Mouse::getPosition(clientGameWindow).x, sf::Mouse::getPosition(clientGameWindow).y};
                     break;
-                
+
                 case sf::Event::MouseButtonReleased:
                     dragging = false;
                     break;
@@ -116,7 +118,7 @@ namespace client
                 case sf::Event::Closed:
                     clientGameWindow.close();
                     break;
-                    
+
                 default:
                     break;
                 }
@@ -125,7 +127,10 @@ namespace client
                 {
                     if (sf::Event::MouseMoved)
                     {
-                        std::cout << "Left click: " << sf::Mouse::getPosition(clientGameWindow).x << " " << sf::Mouse::getPosition(clientGameWindow).y << "\n";
+                        newMapOffset = {MAP_X_OFFSET + sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint.at(0),
+                                        MAP_Y_OFFSET + sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint.at(1)};
+
+                        clientMap.setOffset(newMapOffset.at(0), newMapOffset.at(1));
                     }
                 }
             }
