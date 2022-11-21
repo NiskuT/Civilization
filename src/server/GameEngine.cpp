@@ -2,8 +2,7 @@
 
 namespace server {
     GameEngine::GameEngine(shared::Player &player) {
-        isPublic = True;
-        gameId = 0;
+        gameId = "azerty";
         listOfPlayer.push_back(player);
     }
 }

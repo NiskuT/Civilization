@@ -3,13 +3,16 @@
 
 namespace shared {
 
-Player::Player() {
-    this->ressources = {0,0,0,0};
-    this->wonderRessources = {0,0,0,0};
+Player::Player(std::string username) {
+    this->username = username;
+    for (int i = 1; i < 4; i++) {
+        this->ressources[i] = 0;
+        this->wonderRessources[i] = 0;
+    }
 }
 
 std::string Player::getName() {
-    return this->name;
+    return this->username;
 }
 
 

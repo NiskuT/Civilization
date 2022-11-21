@@ -2,25 +2,22 @@
 
 namespace server {
 
-Server::Server() {
-    listOfGame;
-}
 
 /**
  * @brief This function is used to create a new game
  * @param player The player who create the game 
  * @return 
  */
-void* Server::acceptClient(shared::Player &player) {
+void Server::acceptClient(shared::Player &player) {
     listOfGame.emplace_back(player);
     
 }
 
-void* Server::openGame() {
+void Server::openGame() {
     // TODO implement here
 }
 
-void* Server::connectToGame(string id, shared::Player &player) {
+void Server::connectToGame(std::string id, shared::Player &player) {
     for (auto &game : listOfGame) {
         if (game.isPublic 
                 && (game.listOfPlayer.size() < 4)
