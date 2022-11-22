@@ -21,17 +21,18 @@ GameWindow::GameWindow() {
 * \brief Display all the different variable in the screen
 */
 void GameWindow::displayWindow() {
-    clientGameWindow.clear(sf::Color::Red);
 
-    for(ElementDisplayer mapSprite : mapElements)
-    {
-        clientGameWindow.draw(mapSprite());
+    clientGameWindow.clear(sf::Color::Blue);
+
+    for(unsigned i = 0; i < textureToDisplay.size(); i++ ){
+
+        for(unsigned j = 0; j < textureToDisplay.at(i).getSize(); j++ ){
+
+            clientGameWindow.draw(*textureToDisplay.at(i).getSprite(j));
+
+        }
     }
 
-    for(ElementDisplayer mapSprite : elementToDisplay)
-    {
-        clientGameWindow.draw(mapSprite());
-    }
     clientGameWindow.display();
 }
 
@@ -54,82 +55,71 @@ void GameWindow::clientWindow() {
 
         // draw the map
         if (turn == 0) {
-            loadMap();
+            loadTexture();
             turn += 1;
         }
         displayWindow();
     }
 }
 
-void GameWindow::loadMap() {
-    std::cout << "UpdateMap \n";
+void GameWindow::loadTexture() {
 
     std::array<int, 165> level =
     {
         0, 0, 5, 4, 4, 2, 5, 2, 1, 2, 5, 0, 0, 0, 0,
-        0, 0, 0, 5, 0, 1, 5, 5, 5, 5, 1, 1, 0, 0, 0,
-        0, 0, 0, 3, 0, 1, 5, 0, 1, 1, 3, 4, 0, 0, 0,
-        0, 0, 0, 0, 1, 2, 5, 3, 2, 3, 1, 4, 0, 0, 0,
-        0, 0, 0, 0, 4, 5, 5, 2, 3, 0, 3, 2, 0, 0, 0,
-        0, 0, 0, 0, 2, 5, 1, 3, 3, 2, 2, 5, 0, 0, 0,
+        0, 0, 0, 5, 0, 1, 5, 5, 5, 5, 1, 1, 0, 0, 0, 
+        0, 0, 0, 3, 0, 1, 5, 0, 1, 1, 3, 4, 0, 0, 0, 
+        0, 0, 0, 0, 1, 2, 5, 3, 2, 3, 1, 4, 0, 0, 0, 
+        0, 0, 0, 0, 4, 5, 5, 2, 3, 0, 3, 2, 0, 0, 0, 
+        0, 0, 0, 0, 2, 5, 1, 3, 3, 2, 2, 5, 0, 0, 0, 
         0, 0, 5, 1, 2, 1, 5, 3, 1, 5, 2, 5, 4, 0, 0,
-        0, 0, 0, 1, 2, 0, 4, 2, 5, 3, 1, 4, 5, 0, 0,
-        0, 0, 0, 0, 2, 0, 5, 4, 2, 0, 0, 3, 2, 2, 0,
-        0, 0, 0, 0, 1, 1, 5, 3, 0, 5, 2, 4, 2, 2, 0,
-        0, 0, 0, 0, 0, 1, 5, 5, 0, 1, 0, 0, 4, 2, 0,
+        0, 0, 0, 1, 2, 0, 4, 2, 5, 3, 1, 4, 5, 0, 0, 
+        0, 0, 0, 0, 2, 0, 5, 4, 2, 0, 0, 3, 2, 2, 0, 
+        0, 0, 0, 0, 1, 1, 5, 3, 0, 5, 2, 4, 2, 2, 0, 
+        0, 0, 0, 0, 0, 1, 5, 5, 0, 1, 0, 0, 4, 2, 0
     };
 
     std::string hexagonImgPath = "../ressources/img/map/field-";
-    std::array<std::string, 6> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain"};
-    std::array<sf::Texture*, 6> mapTexture;
+    std::array<std::string, 12> mapField =   {"water", "grassland", "hill", "forest", "desert", "mountain",
+                                            "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
+                                            "wonder-messa", "wonder-pantanal", "wonder-volcanic"
+                                            };
 
     for(unsigned i {0}; i < mapField.size(); i++){
 
         std::string mapElementPath = hexagonImgPath + mapField.at(i) + ".png";
-        mapTexture.at(i) = new sf::Texture(); 
-        if (!image.loadFromFile(mapElementPath))
-        {
-            std::cout << "Error loading element picture: " << mapElementPath << "\n";
-        };
-        mapTexture.at(i)->loadFromImage(image);
+        textureToDisplay.emplace_back(mapElementPath);        
     }
 
-    for(unsigned int i = 0; i < mapElements.size(); i++){
+    for(int i = 0; i < 165; i++){
 
-        mapElements.at(i).loadTextureToSprite(mapTexture.at(level.at(i)));
+        int indexSprite = textureToDisplay.at(level[i]).getSize();
 
-        mapElements.at(i).setMapSpritePosition(i);
+        textureToDisplay.at(level[i]).addMapSprite();
+
+        //textureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
+
+        textureToDisplay.at(level[i]).setMapSpritePosition(indexSprite, i);
 
     }
 
-    std::array<int, 2> hexSize = {mapElements.at(0).getWidth(), mapElements.at(0).getHeight()};
-    unsigned startElement = mapTexture.size();
-
-    std::vector<sf::Texture*> elementTexture;
-
+    std::array<int, 2> hexSize = {textureToDisplay.at(0).getWidth(), textureToDisplay.at(0).getHeight()};
+    
     Json::Value root;
     std::ifstream json_file("../ressources/img/map/files.json", std::ifstream::binary);
     json_file >> root;
 
     for (unsigned index = 0; index < root["data"].size(); ++index) {
-   
-        elementTexture.emplace_back(new sf::Texture()); 
-        if (!image.loadFromFile(root["data"][index]["path"].asString()))
-        {
-            std::cout << "Error loading element picture: " << root["data"][index]["path"].asString() << "\n";
-        };
-        elementTexture.at(index)->loadFromImage(image);
 
-        elementToDisplay.emplace_back();
-        elementToDisplay.back().loadTextureToSprite(elementTexture.at(index));
+        textureToDisplay.emplace_back(root["data"][index]["path"].asString());
+
+        textureToDisplay.back().addMapSprite();
 
         int rank = root["data"][index]["x"].asInt()*15 + root["data"][index]["y"].asInt();
 
-        elementToDisplay.back().setElementSpritePosition(rank, hexSize); 
+        textureToDisplay.back().setElementSpritePosition(0, rank, hexSize); 
     }
 
-
-    std::cout << "UpdateMap End\n";
 }
 
 }
