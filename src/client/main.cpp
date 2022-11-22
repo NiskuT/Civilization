@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     }
 
     client::GameWindow clientGame;
-    clientGame.gameWindow();
+    clientGame.clientWindow();
 
     return 0;
 }
