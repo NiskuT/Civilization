@@ -1,6 +1,7 @@
 #include <client.hpp>
 #include <iostream>
 
+
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
 
