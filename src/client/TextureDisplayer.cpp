@@ -48,7 +48,7 @@ void TextureDisplayer::setMapSpritePosition(int index, int rank)
     }
 }
 
-void TextureDisplayer::setElementSpritePosition(int index, int rank, std::array<int, 2> hexSize)
+void TextureDisplayer::setElementSpritePosition(std::array<int, 2> hexSize, int index, int rank)
 {
     int xCoordonate = rank % 15;
     int yCoordonate = rank / 15;

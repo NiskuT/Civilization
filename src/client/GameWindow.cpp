@@ -24,11 +24,11 @@ void GameWindow::displayWindow() {
 
     clientGameWindow.clear(sf::Color::Blue);
 
-    for(unsigned i = 0; i < textureToDisplay.size(); i++ ){
+    for(TextureDisplayer texture : textureToDisplay){
 
-        for(unsigned j = 0; j < textureToDisplay.at(i).getSize(); j++ ){
+        for(unsigned j = 0; j < texture.getSize(); j++ ){
 
-            clientGameWindow.draw(*textureToDisplay.at(i).getSprite(j));
+            clientGameWindow.draw(*texture.getSprite(j));
 
         }
     }
@@ -117,9 +117,21 @@ void GameWindow::loadTexture() {
 
         int rank = root["data"][index]["x"].asInt()*15 + root["data"][index]["y"].asInt();
 
-        textureToDisplay.back().setElementSpritePosition(0, rank, hexSize); 
+        textureToDisplay.back().setElementSpritePosition(hexSize, 0, rank); 
     }
 
+}
+
+void GameWindow::setMapOffset(int xOffset, int yOffset) {
+
+    for(TextureDisplayer texture : textureToDisplay){
+
+        for(unsigned j = 0; j < texture.getSize(); j++ ){
+
+            //texture.at(j).mooveMapSpritePosition(xOffset, yOffset);
+
+        }
+    }
 }
 
 }
