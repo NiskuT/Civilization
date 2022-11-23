@@ -26,7 +26,6 @@ TextureDisplayer::TextureDisplayer(std::string pathImage)
     }
 
     this->type = pathImage.substr(nameStartPosition + 1, pathImage.size() - nameStartPosition - 5);
-    std::cout << this->type << "\n";
 }
 
 TextureDisplayer::~TextureDisplayer()
@@ -79,10 +78,52 @@ void TextureDisplayer::setElementSpritePosition(int index, int rank, std::array<
     }
 }
 
-void TextureDisplayer::setHudSpritePosition(float scale, int rotation)
+
+void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation)
 {
-    //this->sprites.at(0).setPosition(sf::Vector2f(x, y));
+    int xPos = 0;
+    int yPos = 0;
+
+    if (this->type == "ladder") {
+        xPos = (windowLength-getWidth()*scale)/2;
+        yPos = (windowWidth-getHeight()*scale);
+    }
+
+    else if (this->type =="tech-wheel") {
+        xPos=  windowLength;
+        yPos= windowWidth;
+        sprites.at(0).setOrigin(getWidth()/2, getHeight()/2);
+        sprites.at(0).rotate(rotation);
+    }
+
+      else if (this->type == "barbare-wheel-0") {
+        yPos = (windowWidth-getWidth()*scale);
+        xPos= 0;
+    }
+
+
+    else if (this->type == "priority-card-army") {
+        int priorityCardNumber = 0;
+        float fisrtLengthOffsetScale = float(185) / float(1600); // Offset of the first priority card
+        float priorityCardOffset = float(249) / float(1600); // Offset between each card
+        float proportionWidth = float(140) / float(900);
+        xPos = priorityCardOffset*windowLength*priorityCardNumber + fisrtLengthOffsetScale*windowLength; // have to change name "prioritycard" --> it corresponds to the number of the priority card in the ladder
+        yPos = windowWidth-getHeight()*scale + proportionWidth*windowWidth; 
+    }
+
+
+    else if (this->type == "action-card-army") {
+        int actionCardNumber = 0;
+        float rightOffset = float(10) / float(1600);
+        float upOffset = float(900/4) / float(900);
+        xPos = windowLength - getWidth()*scale - rightOffset*windowLength;
+        yPos = upOffset*windowWidth + (getHeight()*scale+10)*actionCardNumber;
+    }
+
+
+
     this->sprites.at(0).setScale(scale, scale);
+    this->sprites.at(0).setPosition(xPos, yPos);
 }
 
 unsigned TextureDisplayer::getSize()

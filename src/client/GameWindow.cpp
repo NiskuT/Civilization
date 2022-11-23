@@ -36,8 +36,6 @@ void GameWindow::displayWindow() {
     clientGameWindow.clear(sf::Color::Blue);
 
     clientGameWindow.draw(background.getSprite());
-    clientGameWindow.draw(techWheel.getSprite());
-    clientGameWindow.draw(barbareWheel.getSprite());
 
     for(unsigned i = 0; i < textureToDisplay.size(); i++ ){
 
@@ -47,7 +45,7 @@ void GameWindow::displayWindow() {
 
         }
     }
-
+/*
     for (int i = 0; i < 5; i++)
     {
         clientGameWindow.draw(priorityCards.at(i).getSprite());
@@ -57,6 +55,7 @@ void GameWindow::displayWindow() {
     {
         clientGameWindow.draw(actionCards.at(i).getSprite());
     }
+*/
 
     clientGameWindow.display();
 }
@@ -73,27 +72,8 @@ void GameWindow::clientWindow()
     background.loadHudData("../ressources/img/hud/background.png", "background");
     background.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
 
-    // Display ladder
-    ladder.loadHudData("../ressources/img/hud/ladder.png", "ladder");
-    ladder.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
-
-    // Display tech wheel
-
-    techWheel.loadHudData("../ressources/img/hud/tech-wheel.png", "techWheel");
-    techWheel.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
-
-    // Display event dial (barbare wheel)
-
-    int posBarbareWheel = 0;
-    std::string BarbareWheelFile = "../ressources/img/hud/barbare-wheel-";
-    std::string wheelNum = std::to_string(posBarbareWheel);
-    std::string format = ".png";
-    std::string fileToLoad = BarbareWheelFile + wheelNum + format;
-    barbareWheel.loadHudData(fileToLoad, "barbareWheel");
-    barbareWheel.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
-
     // Display priority cards
-
+/*
     std::vector<std::string> cardType = {"army", "culture", "economy", "industry", "science"};
     std::string priorityCardFile = "../ressources/img/hud/priority-card-";
     for (int i = 0; i < 5; i++)
@@ -117,6 +97,7 @@ void GameWindow::clientWindow()
         actionCards.at(i).loadHudData(actionCardFileToLoad, "actionCard");
         actionCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
     }
+*/
 
     bool dragging = false;
     std::array<int, 2> clickStartingPoint = {0, 0};
@@ -234,11 +215,37 @@ void GameWindow::loadHud() {
     int offsetLength = 0;
     int rotation = 0; 
 
+    // load the ladder
     textureToDisplay.emplace_back("../ressources/img/hud/ladder.png");
     textureToDisplay.back().addMapSprite();
     float ladderScale = float(LADDER_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    textureToDisplay.back().setHudSpritePosition(ladderScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
 
-    //textureToDisplay.back().setHudSpritePosition(ladderScale, rotation); 
+    // load the techWheel
+    textureToDisplay.emplace_back("../ressources/img/hud/tech-wheel.png");
+    textureToDisplay.back().addMapSprite();
+    float techWheelScale = float(TECH_WHEEL_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    textureToDisplay.back().setHudSpritePosition(techWheelScale, WINDOW_LENGTH, WINDOW_WIDTH, 45); 
+
+    // load the barbareWheel
+    textureToDisplay.emplace_back("../ressources/img/hud/barbare-wheel-0.png");
+    textureToDisplay.back().addMapSprite();
+    float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    textureToDisplay.back().setHudSpritePosition(barbareWheelScale, WINDOW_LENGTH, WINDOW_WIDTH, 45);
+
+     // load the priorityCard
+    textureToDisplay.emplace_back("../ressources/img/hud/priority-card-army.png");
+    textureToDisplay.back().addMapSprite();
+    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    textureToDisplay.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+
+    // load the actionCard
+    textureToDisplay.emplace_back("../ressources/img/hud/action-card-army.png");
+    textureToDisplay.back().addMapSprite();
+    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    textureToDisplay.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+
+   
 
 }
 
