@@ -9,17 +9,17 @@
 namespace client {
 
 /*!
-* \brief Constructeur
-*
-* Constructor of GameWindow class
-*/
+ * \brief Constructeur
+ *
+ * Constructor of GameWindow class
+ */
 GameWindow::GameWindow() {
     clientGameWindow.create(sf::VideoMode(1231, 725),"Civilization VII");
 }
 
 /*!
-* \brief Display all the different variable in the screen
-*/
+ * \brief Display all the different variable in the screen
+ */
 void GameWindow::displayWindow() {
 
     clientGameWindow.clear(sf::Color::Blue);
@@ -27,9 +27,7 @@ void GameWindow::displayWindow() {
     for(TextureDisplayer texture : textureToDisplay){
 
         for(unsigned j = 0; j < texture.getSize(); j++ ){
-
             clientGameWindow.draw(*texture.getSprite(j));
-
         }
     }
 
@@ -37,8 +35,8 @@ void GameWindow::displayWindow() {
 }
 
 /*!
-* \brief Loop that look for events to happend and call displayWindow()
-*/
+ * \brief Loop that look for events to happend and call displayWindow()
+ */
 void GameWindow::clientWindow() {
 
     int turn = 0;
@@ -55,14 +53,17 @@ void GameWindow::clientWindow() {
 
         // draw the map
         if (turn == 0) {
-            loadTexture();
+            loadMapTexture();
             turn += 1;
         }
         displayWindow();
     }
 }
 
-void GameWindow::loadTexture() {
+/*!
+ * \brief Load all the textures of the map
+ */
+void GameWindow::loadMapTexture() {
 
     std::array<int, 165> level =
     {
@@ -99,7 +100,7 @@ void GameWindow::loadTexture() {
 
         //textureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
 
-        textureToDisplay.at(level[i]).setMapSpritePosition(indexSprite, i);
+        textureToDisplay.at(level[i]).setSpritePosition(indexSprite, i % 15, i / 15, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
 
     }
 
@@ -128,21 +129,9 @@ void GameWindow::loadTexture() {
 
         int rank = data[index]["x"].asInt()*15 + data[index]["y"].asInt();
 
-        textureToDisplay.back().setElementSpritePosition(hexSize, 0, rank); 
+        textureToDisplay.back().setSpritePosition(0, rank % 15, rank / 15, MAP_X_OFFSET, MAP_Y_OFFSET, hexSize); 
     }
 
-}
-
-void GameWindow::setMapOffset(int xOffset, int yOffset) {
-
-    for(TextureDisplayer texture : textureToDisplay){
-
-        for(unsigned j = 0; j < texture.getSize(); j++ ){
-
-            //texture.at(j).mooveMapSpritePosition(xOffset, yOffset);
-
-        }
-    }
 }
 
 }
