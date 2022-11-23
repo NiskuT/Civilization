@@ -104,18 +104,29 @@ void GameWindow::loadTexture() {
     }
 
     std::array<int, 2> hexSize = {textureToDisplay.at(0).getWidth(), textureToDisplay.at(0).getHeight()};
-    
-    Json::Value root;
-    std::ifstream json_file("../ressources/img/map/files.json", std::ifstream::binary);
-    json_file >> root;
 
-    for (unsigned index = 0; index < root["data"].size(); ++index) {
+    std::ifstream file("../ressources/img/map/files.json");
+    // check is file is correctly open
+    if (!file.is_open()) {
+        std::cout << "Error while opening json ressources file" << std::endl;
+        exit(1);
+    }
+    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
-        textureToDisplay.emplace_back(root["data"][index]["path"].asString());
+    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+    Json::Value obj;
+    std::string errors;
+    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
+
+    const Json::Value& data = obj["data"];
+
+    for (unsigned index = 0; index < data.size(); ++index) {
+        
+        textureToDisplay.emplace_back(data[index]["path"].asString());
 
         textureToDisplay.back().addMapSprite();
 
-        int rank = root["data"][index]["x"].asInt()*15 + root["data"][index]["y"].asInt();
+        int rank = data[index]["x"].asInt()*15 + data[index]["y"].asInt();
 
         textureToDisplay.back().setElementSpritePosition(0, rank, hexSize); 
     }
