@@ -11,8 +11,6 @@ on:
 jobs:
   linux-debug:
     runs-on: ubuntu-latest
-    env: 
-      DEBUGINFOD_URLS: "https://debuginfod.archlinux.org"
     steps:
     - uses: actions/checkout@v3
     
@@ -21,6 +19,7 @@ jobs:
         sudo apt install lcov
         sudo apt install gcovr
         sudo apt install libboost-all-dev
+        sudo apt install libc6-dbg
 
     - name: Install valgrind
       run: |
