@@ -81,7 +81,7 @@ void GameWindow::loadMapTexture() {
     };
 
     std::string hexagonImgPath = "../ressources/img/map/field-";
-    std::array<std::string, 12> mapField =   {"water", "grassland", "hill", "forest", "desert", "mountain",
+    std::array<std::string, 12> mapField =  {"water", "grassland", "hill", "forest", "desert", "mountain",
                                             "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
                                             "wonder-messa", "wonder-pantanal", "wonder-volcanic"
                                             };
