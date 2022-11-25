@@ -11,7 +11,8 @@ on:
 jobs:
   linux-debug:
     runs-on: ubuntu-latest
-
+    env: 
+      DEBUGINFOD_URLS: "https://debuginfod.archlinux.org"
     steps:
     - uses: actions/checkout@v3
     
