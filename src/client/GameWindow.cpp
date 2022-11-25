@@ -45,6 +45,22 @@ void GameWindow::displayWindow() {
         }
     }
 
+    for(unsigned i = 0; i < actionCards.size(); i++ ){
+
+        for(unsigned j = 0; j < actionCards.at(i).getSize(); j++ ){
+
+            clientGameWindow.draw(*actionCards.at(i).getSprite(j));
+        }
+    }
+
+    for(unsigned i = 0; i < priorityCards.size(); i++ ){
+
+        for(unsigned j = 0; j < priorityCards.at(i).getSize(); j++ ){
+
+            clientGameWindow.draw(*priorityCards.at(i).getSprite(j));
+        }
+    }
+
     for(unsigned i = 0; i < hudTextureToDisplay.size(); i++ ){
 
         for(unsigned j = 0; j < hudTextureToDisplay.at(i).getSize(); j++ ){
@@ -62,37 +78,6 @@ void GameWindow::displayWindow() {
 void GameWindow::clientWindow() {
 
     int turn = 0;
-
-    // Display the background
-    /*background.loadHudData("../ressources/img/hud/background.png", "background");
-    background.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);*/
-
-    // Display priority cards
-/*
-    std::vector<std::string> cardType = {"army", "culture", "economy", "industry", "science"};
-    std::string priorityCardFile = "../ressources/img/hud/priority-card-";
-    for (int i = 0; i < 5; i++)
-    {
-        std::string type = cardType[i];
-        std::string priorityFileToLoad = priorityCardFile + type + format;
-        priorityCards.at(i).loadHudData(priorityFileToLoad, "priorityCard");
-        priorityCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
-        sf::Vector2f priorityCardPosition = priorityCards.at(i).getSprite().getPosition();
-        sf::Rect rectPriorityCard = priorityCards.at(i).getSprite().getLocalBounds();
-        priorityCards.at(i).loadTitle(type, priorityCardPosition, rectPriorityCard.width);
-    }
-
-    // Display action cards
-    std::vector<std::string> actionCardOwned = {"army", "player-1", "player-2"};
-    std::string actionCardFile = "../ressources/img/hud/action-card-";
-    for (int i = 0; i < actionCardOwned.size(); i++)
-    {
-        std::string actionType = actionCardOwned[i];
-        std::string actionCardFileToLoad = actionCardFile + actionType + format;
-        actionCards.at(i).loadHudData(actionCardFileToLoad, "actionCard");
-        actionCards.at(i).updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, i);
-    }
-*/
 
     bool dragging = false;
     std::array<int, 2> clickStartingPoint = {0, 0};
@@ -227,40 +212,67 @@ void GameWindow::loadHudTexture() {
     backgroundTexture = new TextureDisplayer("../ressources/img/hud/background.png");
     backgroundTexture->addMapSprite();
     float backgroundScale = 1/(float(backgroundTexture->getWidth())/float(WINDOW_LENGTH));
-    backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+    backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation);
 
-    // load the ladder
-    hudTextureToDisplay.emplace_back("../ressources/img/hud/ladder.png");
-    hudTextureToDisplay.back().addMapSprite();
-    float ladderScale = float(LADDER_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    hudTextureToDisplay.back().setHudSpritePosition(ladderScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+   std::ifstream file("../ressources/img/hud/files.json");
+    // check is file is correctly open
+    if (!file.is_open()) {
+        std::cout << "Error while opening json ressources file" << std::endl;
+        exit(1);
+    }
+    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
-    // load the techWheel
-    hudTextureToDisplay.emplace_back("../ressources/img/hud/tech-wheel.png");
-    hudTextureToDisplay.back().addMapSprite();
-    float techWheelScale = float(TECH_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    hudTextureToDisplay.back().setHudSpritePosition(techWheelScale, WINDOW_LENGTH, WINDOW_WIDTH, 45); 
+    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+    Json::Value obj;
+    std::string errors;
+    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
 
-    // load the barbareWheel
-    hudTextureToDisplay.emplace_back("../ressources/img/hud/barbare-wheel-0.png");
-    hudTextureToDisplay.back().addMapSprite();
-    float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    hudTextureToDisplay.back().setHudSpritePosition(barbareWheelScale, WINDOW_LENGTH, WINDOW_WIDTH, 45);
+    const Json::Value& data = obj["data"];
 
-     // load the priorityCard
-    hudTextureToDisplay.emplace_back("../ressources/img/hud/priority-card-army.png");
-    hudTextureToDisplay.back().addMapSprite();
+    for (unsigned index = 0; index < data.size(); ++index) {
+
+        hudTextureToDisplay.emplace_back(data[index]["path"].asString());
+
+        hudTextureToDisplay.back().addMapSprite();
+
+        float scale = data[index]["scale"].asFloat()/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+
+        hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index]["rotation"].asInt()); 
+    }
+
+    // load the priorityCard
+    priorityCards.emplace_back("../ressources/img/hud/priority-card-army.png");
+    priorityCards.back().addMapSprite();
     //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    hudTextureToDisplay.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+    priorityCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
 
     // load the actionCard
-    hudTextureToDisplay.emplace_back("../ressources/img/hud/action-card-army.png");
-    hudTextureToDisplay.back().addMapSprite();
+    actionCards.emplace_back("../ressources/img/hud/action-card-army.png");
+    actionCards.back().addMapSprite();
     //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    hudTextureToDisplay.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
-
-   
+    actionCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
 
 }
+
+/*
+void PriorityCardDisplay::loadTitle(std::string title, sf::Vector2f position, int xCardSize) {
+    
+    if(!priorityFont.loadFromFile("../ressources/img/hud/font.otf")){
+        std::cout << "font not loaded\n" ;
+    }
+
+    std::string upperFirstLetter = title;
+    upperFirstLetter[0] = toupper(upperFirstLetter[0]);
+
+    titleCard.setFont(priorityFont);
+    titleCard.setString(upperFirstLetter);
+    titleCard.setCharacterSize((float(40)/float(1600))*WINDOW_LENGTH);
+    titleCard.setStyle(sf::Text::Bold);
+    titleCard.setColor(sf::Color::Black);
+    sf::Rect titleScale =titleCard.getLocalBounds();
+    int xOffset = (xCardSize - titleScale.width)/2 ;
+    titleCard.setPosition(position.x + xOffset, position.y);
+}
+*/
 
 }
