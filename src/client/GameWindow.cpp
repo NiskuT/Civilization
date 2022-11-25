@@ -244,9 +244,6 @@ void GameWindow::loadHud() {
     textureToDisplay.back().addMapSprite();
     //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
     textureToDisplay.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
-
-   
-
 }
 
 }
