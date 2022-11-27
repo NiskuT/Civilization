@@ -11,7 +11,6 @@ on:
 jobs:
   linux-debug:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     
@@ -20,7 +19,17 @@ jobs:
         sudo apt install lcov
         sudo apt install gcovr
         sudo apt install libboost-all-dev
-        sudo apt install valgrind
+        sudo apt install libc6-dbg
+
+    - name: Install valgrind
+      run: |
+        git clone https://sourceware.org/git/valgrind.git valgrind
+        cd valgrind && git checkout VALGRIND_3_20_0
+        ./autogen.sh
+        ./configure
+        make -j 4
+        sudo make install
+        cd ..
         
     - name: Configure CMake
 
