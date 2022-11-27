@@ -1,0 +1,13 @@
+<map id="vki_v4l2_create_buffers" name="vki_v4l2_create_buffers">
+<area shape="rect" id="node1" title=" " alt="" coords="843,147,1001,174"/>
+<area shape="rect" id="node2" href="$structvki__v4l2__format.html" title=" " alt="" coords="639,147,753,174"/>
+<area shape="rect" id="node3" href="$structvki__v4l2__sliced__vbi__format.html" title=" " alt="" coords="407,5,542,47"/>
+<area shape="rect" id="node4" href="$structvki__v4l2__vbi__format.html" title=" " alt="" coords="405,71,544,98"/>
+<area shape="rect" id="node5" href="$structvki__v4l2__sdr__format.html" title=" " alt="" coords="405,122,544,149"/>
+<area shape="rect" id="node6" href="$structvki__v4l2__pix__format.html" title=" " alt="" coords="405,173,544,199"/>
+<area shape="rect" id="node7" href="$structvki__v4l2__window.html" title=" " alt="" coords="414,223,535,250"/>
+<area shape="rect" id="node8" href="$structvki__v4l2__clip.html" title=" " alt="" coords="181,223,279,250"/>
+<area shape="rect" id="node9" href="$structvki__v4l2__rect.html" title=" " alt="" coords="5,173,104,199"/>
+<area shape="rect" id="node10" href="$structvki__v4l2__pix__format__mplane.html" title=" " alt="" coords="405,275,544,316"/>
+<area shape="rect" id="node11" href="$structvki__v4l2__plane__pix__format.html" title=" " alt="" coords="164,275,296,316"/>
+</map>

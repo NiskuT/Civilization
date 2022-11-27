@@ -1,0 +1,23 @@
+<map id="drd_clientobj" name="drd_clientobj">
+<area shape="rect" id="node1" title=" " alt="" coords="569,647,663,673"/>
+<area shape="rect" id="node2" href="$structhb__info.html" title=" " alt="" coords="689,440,753,467"/>
+<area shape="rect" id="node3" href="$struct__ExeContext.html" title=" " alt="" coords="420,320,519,347"/>
+<area shape="rect" id="node9" href="$structmutex__info.html" title=" " alt="" coords="333,557,419,584"/>
+<area shape="rect" id="node10" href="$structsegment.html" title=" " alt="" coords="68,440,140,467"/>
+<area shape="rect" id="node17" href="$structsemaphore__info.html" title=" " alt="" coords="936,440,1051,467"/>
+<area shape="rect" id="node18" href="$structany.html" title=" " alt="" coords="155,507,197,533"/>
+<area shape="rect" id="node19" href="$structbarrier__info.html" title=" " alt="" coords="814,440,901,467"/>
+<area shape="rect" id="node20" href="$structrwlock__info.html" title=" " alt="" coords="572,440,660,467"/>
+<area shape="rect" id="node21" href="$structcond__info.html" title=" " alt="" coords="481,507,559,533"/>
+<area shape="rect" id="node4" href="$structDiEpoch.html" title=" " alt="" coords="433,216,505,243"/>
+<area shape="rect" id="node5" href="$struct__OSet.html" title=" " alt="" coords="1024,216,1083,243"/>
+<area shape="rect" id="node13" href="$structbitmap.html" title=" " alt="" coords="169,320,231,347"/>
+<area shape="rect" id="node6" href="$struct__AvlNode.html" title=" " alt="" coords="1067,103,1146,130"/>
+<area shape="rect" id="node7" href="$struct__PoolAlloc.html" title=" " alt="" coords="959,103,1043,130"/>
+<area shape="rect" id="node8" href="$struct__XArray.html" title=" " alt="" coords="1087,5,1156,32"/>
+<area shape="rect" id="node11" href="$structVectorClock.html" title=" " alt="" coords="5,320,99,347"/>
+<area shape="rect" id="node12" href="$structVCElem.html" title=" " alt="" coords="17,216,87,243"/>
+<area shape="rect" id="node14" href="$structbm__cache__elem.html" title=" " alt="" coords="141,216,259,243"/>
+<area shape="rect" id="node15" href="$structbitmap2.html" title=" " alt="" coords="166,103,234,130"/>
+<area shape="rect" id="node16" href="$structbitmap1.html" title=" " alt="" coords="166,5,234,32"/>
+</map>

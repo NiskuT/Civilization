@@ -1,0 +1,19 @@
+<map id="AddrInfo" name="AddrInfo">
+<area shape="rect" id="node1" title=" " alt="" coords="951,196,1021,223"/>
+<area shape="rect" id="node2" href="$struct__DebugInfo.html" title=" " alt="" coords="741,240,830,267"/>
+<area shape="rect" id="node3" href="$structDiSym.html" title=" " alt="" coords="515,25,578,52"/>
+<area shape="rect" id="node4" href="$structSymAVMAs.html" title=" " alt="" coords="216,25,309,52"/>
+<area shape="rect" id="node5" href="$struct__DebugInfoFSM.html" title=" " alt="" coords="340,144,457,171"/>
+<area shape="rect" id="node6" href="$struct__XArray.html" title=" " alt="" coords="24,317,93,344"/>
+<area shape="rect" id="node7" href="$struct__DedupPoolAlloc.html" title=" " alt="" coords="485,397,608,424"/>
+<area shape="rect" id="node10" href="$struct__PoolAlloc.html" title=" " alt="" coords="221,404,305,431"/>
+<area shape="rect" id="node8" href="$struct__VgHashTable.html" title=" " alt="" coords="209,455,316,481"/>
+<area shape="rect" id="node9" href="$struct__VgHashNode.html" title=" " alt="" coords="5,455,112,481"/>
+<area shape="rect" id="node11" href="$structDiEpoch.html" title=" " alt="" coords="511,139,583,165"/>
+<area shape="rect" id="node17" href="$struct__ExeContext.html" title=" " alt="" coords="736,69,835,96"/>
+<area shape="rect" id="node12" href="$structDebugInfoMapping.html" title=" " alt="" coords="481,499,612,525"/>
+<area shape="rect" id="node13" href="$struct__FPO__DATA.html" title=" " alt="" coords="498,189,595,216"/>
+<area shape="rect" id="node14" href="$structDiLoc.html" title=" " alt="" coords="519,240,575,267"/>
+<area shape="rect" id="node15" href="$structDiCfSI.html" title=" " alt="" coords="515,341,578,368"/>
+<area shape="rect" id="node16" href="$structDiInlLoc.html" title=" " alt="" coords="511,448,582,475"/>
+</map>

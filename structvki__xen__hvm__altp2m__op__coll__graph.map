@@ -1,0 +1,8 @@
+<map id="vki_xen_hvm_altp2m_op" name="vki_xen_hvm_altp2m_op">
+<area shape="rect" id="node1" title=" " alt="" coords="340,137,507,163"/>
+<area shape="rect" id="node2" href="$structvki__xen__hvm__altp2m__change__gfn.html" title=" " alt="" coords="22,5,167,47"/>
+<area shape="rect" id="node3" href="$structvki__xen__hvm__altp2m__vcpu__enable__notify.html" title=" " alt="" coords="22,71,167,112"/>
+<area shape="rect" id="node4" href="$structvki__xen__hvm__altp2m__view.html" title=" " alt="" coords="5,137,184,163"/>
+<area shape="rect" id="node5" href="$structvki__xen__hvm__altp2m__set__mem__access.html" title=" " alt="" coords="22,188,167,229"/>
+<area shape="rect" id="node6" href="$structvki__xen__hvm__altp2m__domain__state.html" title=" " alt="" coords="22,253,167,295"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="vki_drm_wait_vblank" name="vki_drm_wait_vblank">
+<area shape="rect" id="node1" title=" " alt="" coords="89,109,233,136"/>
+<area shape="rect" id="node2" href="$structvki__drm__wait__vblank__reply.html" title=" " alt="" coords="5,5,149,47"/>
+<area shape="rect" id="node3" href="$structvki__drm__wait__vblank__request.html" title=" " alt="" coords="173,5,317,47"/>
+</map>

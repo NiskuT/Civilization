@@ -1,0 +1,5 @@
+<map id="vki_xen_vcpu_guest_context" name="vki_xen_vcpu_guest_context">
+<area shape="rect" id="node1" title=" " alt="" coords="97,95,238,136"/>
+<area shape="rect" id="node2" href="$structvki__xen__cpu__user__regs.html" title=" " alt="" coords="5,5,164,32"/>
+<area shape="rect" id="node3" href="$structvki__xen__trap__info.html" title=" " alt="" coords="188,5,312,32"/>
+</map>

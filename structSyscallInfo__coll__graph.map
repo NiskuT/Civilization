@@ -1,0 +1,5 @@
+<map id="SyscallInfo" name="SyscallInfo">
+<area shape="rect" id="node1" title=" " alt="" coords="68,109,155,136"/>
+<area shape="rect" id="node2" href="$structSyscallArgs.html" title=" " alt="" coords="5,5,97,32"/>
+<area shape="rect" id="node3" href="$structSyscallStatus.html" title=" " alt="" coords="121,5,224,32"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="MIPSInstr" name="MIPSInstr">
+<area shape="rect" id="node1" title=" " alt="" coords="114,407,195,433"/>
+<area shape="rect" id="node2" href="$structRetLoc.html" title=" " alt="" coords="5,177,69,203"/>
+<area shape="rect" id="node3" href="$structMIPSAMode.html" title=" " alt="" coords="179,177,275,203"/>
+<area shape="rect" id="node4" href="$structHReg.html" title=" " alt="" coords="199,5,255,32"/>
+<area shape="rect" id="node5" href="$structMIPSRH.html" title=" " alt="" coords="299,177,373,203"/>
+</map>

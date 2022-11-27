@@ -1,0 +1,10 @@
+<map id="PPCInstr" name="PPCInstr">
+<area shape="rect" id="node1" title=" " alt="" coords="278,407,354,433"/>
+<area shape="rect" id="node2" href="$structRetLoc.html" title=" " alt="" coords="5,177,69,203"/>
+<area shape="rect" id="node3" href="$structPPCVI5s.html" title=" " alt="" coords="179,177,256,203"/>
+<area shape="rect" id="node4" href="$structHReg.html" title=" " alt="" coords="288,5,344,32"/>
+<area shape="rect" id="node5" href="$structPPCRH.html" title=" " alt="" coords="281,177,351,203"/>
+<area shape="rect" id="node6" href="$structPPCAMode.html" title=" " alt="" coords="376,177,467,203"/>
+<area shape="rect" id="node7" href="$structPPCRI.html" title=" " alt="" coords="491,177,555,203"/>
+<area shape="rect" id="node8" href="$structPPCCondCode.html" title=" " alt="" coords="579,177,691,203"/>
+</map>

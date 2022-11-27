@@ -1,0 +1,12 @@
+<map id="_vki_fpstate" name="_vki_fpstate">
+<area shape="rect" id="node1" title=" " alt="" coords="230,184,323,211"/>
+<area shape="rect" id="node2" href="$struct__vki__fpxreg.html" title=" " alt="" coords="5,95,95,121"/>
+<area shape="rect" id="node3" href="$struct__vki__fpreg.html" title=" " alt="" coords="119,95,202,121"/>
+<area shape="rect" id="node4" href="$struct__vki__xmmreg.html" title=" " alt="" coords="227,95,327,121"/>
+<area shape="rect" id="node5" href="$struct__vki__savexmm.html" title=" " alt="" coords="351,95,461,121"/>
+<area shape="rect" id="node6" href="$struct__vki__xmmacc.html" title=" " alt="" coords="215,5,317,32"/>
+<area shape="rect" id="node7" href="$struct__vki__envxmm.html" title=" " alt="" coords="341,5,444,32"/>
+<area shape="rect" id="node8" href="$struct__vki__fpacc87.html" title=" " alt="" coords="469,5,567,32"/>
+<area shape="rect" id="node9" href="$struct__vki__save87.html" title=" " alt="" coords="497,95,592,121"/>
+<area shape="rect" id="node10" href="$struct__vki__env87.html" title=" " alt="" coords="591,5,679,32"/>
+</map>
