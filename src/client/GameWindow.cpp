@@ -31,7 +31,7 @@ GameWindow::GameWindow() {
 /*!
  * \brief Display all the different variable in the screen
  */
-void GameWindow::displayWindow() {
+void GameWindow::displayWindow(int numberTurn) {
 
     clientGameWindow.clear(sf::Color::Blue);
 
@@ -61,7 +61,9 @@ void GameWindow::displayWindow() {
         }
     }
 
-    for(unsigned i = 0; i < hudTextureToDisplay.size(); i++ ){
+    clientGameWindow.draw(*hudTextureToDisplay.at(numberTurn%5).getSprite(0));
+    
+    for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ ){
 
         for(unsigned j = 0; j < hudTextureToDisplay.at(i).getSize(); j++ ){
 
@@ -126,7 +128,7 @@ void GameWindow::clientWindow() {
             loadHudTexture();
             turn += 1;
         }
-        displayWindow();
+        displayWindow(turn);
     }
 }
 

@@ -104,7 +104,7 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         sprites.at(0).rotate(rotation);
     }
 
-      else if (this->type == "barbare-wheel-0") {
+      else if (this->type == "barbare-wheel-0" || this->type == "barbare-wheel-1" || this->type == "barbare-wheel-2" || this->type == "barbare-wheel-3" || this->type == "barbare-wheel-4") {
         yPos = (windowWidth-getWidth()*scale);
         xPos= 0;
     }
