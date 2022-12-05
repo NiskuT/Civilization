@@ -27,9 +27,7 @@ void GameWindow::displayWindow() {
     for(unsigned i = 0; i < textureToDisplay.size(); i++ ){
 
         for(unsigned j = 0; j < textureToDisplay.at(i).getSize(); j++ ){
-
-            clientGameWindow.draw(*textureToDisplay.at(i).getSprite(j));
-
+            clientGameWindow.draw(textureToDisplay.at(i).getSprite(j));
         }
     }
 
@@ -41,7 +39,7 @@ void GameWindow::displayWindow() {
 */
 void GameWindow::clientWindow() {
 
-    int turn = 0;
+    loadTexture();
 
     while (clientGameWindow.isOpen())
     {
@@ -51,12 +49,6 @@ void GameWindow::clientWindow() {
         {
             if(event.type == sf::Event::Closed)
                 clientGameWindow.close();
-        }
-
-        // draw the map
-        if (turn == 0) {
-            loadTexture();
-            turn += 1;
         }
         displayWindow();
     }
