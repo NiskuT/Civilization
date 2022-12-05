@@ -19,58 +19,53 @@ namespace client
 {
 
 /*!
-* \brief Constructeur
-*
-* Constructor of GameWindow class
-*/
+ * \brief Constructeur
+ *
+ * Constructor of GameWindow class
+ */
 GameWindow::GameWindow() {
     clientGameWindow.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
     clientGameWindow.setPosition(sf::Vector2i(0, 0));
 }
 
 /*!
-* \brief Display all the different variable in the screen
-*/
+ * \brief Display all the different variable in the screen
+ */
 void GameWindow::displayWindow() {
 
     clientGameWindow.clear(sf::Color::Blue);
 
-    clientGameWindow.draw(background.getSprite());
+    clientGameWindow.draw(*backgroundTexture->getSprite(0));
 
-    for(unsigned i = 0; i < textureToDisplay.size(); i++ ){
+    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ ){
 
-        for(unsigned j = 0; j < textureToDisplay.at(i).getSize(); j++ ){
+        for(unsigned j = 0; j < mapTextureToDisplay.at(i).getSize(); j++ ){
 
-            clientGameWindow.draw(*textureToDisplay.at(i).getSprite(j));
-
+            clientGameWindow.draw(*mapTextureToDisplay.at(i).getSprite(j));
         }
     }
-/*
-    for (int i = 0; i < 5; i++)
-    {
-        clientGameWindow.draw(priorityCards.at(i).getSprite());
-        clientGameWindow.draw(priorityCards.at(i).titleCard);
+
+    for(unsigned i = 0; i < hudTextureToDisplay.size(); i++ ){
+
+        for(unsigned j = 0; j < hudTextureToDisplay.at(i).getSize(); j++ ){
+
+            clientGameWindow.draw(*hudTextureToDisplay.at(i).getSprite(j));
+        }
     }
-    for (int i = 0; i < 3; i++)
-    {
-        clientGameWindow.draw(actionCards.at(i).getSprite());
-    }
-*/
 
     clientGameWindow.display();
 }
 
 /*!
-* \brief Loop that look for events to happend and call displayWindow()
-*/
-void GameWindow::clientWindow() 
-{
+ * \brief Loop that look for events to happend and call displayWindow()
+ */
+void GameWindow::clientWindow() {
 
     int turn = 0;
 
     // Display the background
-    background.loadHudData("../ressources/img/hud/background.png", "background");
-    background.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);
+    /*background.loadHudData("../ressources/img/hud/background.png", "background");
+    background.updatePlacement(WINDOW_LENGTH, WINDOW_WIDTH, 0);*/
 
     // Display priority cards
 /*
@@ -142,15 +137,18 @@ void GameWindow::clientWindow()
         
         // draw the map
         if (turn == 0) {
-            loadTexture();
-            loadHud();
+            loadMapTexture();
+            loadHudTexture();
             turn += 1;
         }
         displayWindow();
     }
 }
 
-void GameWindow::loadTexture() {
+/*!
+ * \brief Load all the textures of the map
+ */
+void GameWindow::loadMapTexture() {
 
     std::array<int, 165> level =
     {
@@ -168,7 +166,7 @@ void GameWindow::loadTexture() {
     };
 
     std::string hexagonImgPath = "../ressources/img/map/field-";
-    std::array<std::string, 12> mapField =   {"water", "grassland", "hill", "forest", "desert", "mountain",
+    std::array<std::string, 12> mapField =  {"water", "grassland", "hill", "forest", "desert", "mountain",
                                             "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
                                             "wonder-messa", "wonder-pantanal", "wonder-volcanic"
                                             };
@@ -176,74 +174,93 @@ void GameWindow::loadTexture() {
     for(unsigned i {0}; i < mapField.size(); i++){
 
         std::string mapElementPath = hexagonImgPath + mapField.at(i) + ".png";
-        textureToDisplay.emplace_back(mapElementPath);        
+        mapTextureToDisplay.emplace_back(mapElementPath);        
     }
 
     for(int i = 0; i < 165; i++){
 
-        int indexSprite = textureToDisplay.at(level[i]).getSize();
+        int indexSprite = mapTextureToDisplay.at(level[i]).getSize();
 
-        textureToDisplay.at(level[i]).addMapSprite();
+        mapTextureToDisplay.at(level[i]).addMapSprite();
 
-        //textureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
+        //mapTextureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
 
-        textureToDisplay.at(level[i]).setMapSpritePosition(indexSprite, i);
+        mapTextureToDisplay.at(level[i]).setSpritePosition(indexSprite, i % 15, i / 15, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
 
     }
 
-    std::array<int, 2> hexSize = {textureToDisplay.at(0).getWidth(), textureToDisplay.at(0).getHeight()};
-    
-    Json::Value root;
-    std::ifstream json_file("../ressources/img/map/files.json", std::ifstream::binary);
-    json_file >> root;
+    std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-    for (unsigned index = 0; index < root["data"].size(); ++index) {
+    std::ifstream file("../ressources/img/map/files.json");
+    // check is file is correctly open
+    if (!file.is_open()) {
+        std::cout << "Error while opening json ressources file" << std::endl;
+        exit(1);
+    }
+    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
-        textureToDisplay.emplace_back(root["data"][index]["path"].asString());
+    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+    Json::Value obj;
+    std::string errors;
+    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
 
-        textureToDisplay.back().addMapSprite();
+    const Json::Value& data = obj["data"];
 
-        int rank = root["data"][index]["x"].asInt()*15 + root["data"][index]["y"].asInt();
+    for (unsigned index = 0; index < data.size(); ++index) {
+        
+        mapTextureToDisplay.emplace_back(data[index]["path"].asString());
 
-        textureToDisplay.back().setElementSpritePosition(0, rank, hexSize); 
+        mapTextureToDisplay.back().addMapSprite();
+
+        int rank = data[index]["x"].asInt()*15 + data[index]["y"].asInt();
+
+        mapTextureToDisplay.back().setSpritePosition(0, rank % 15, rank / 15, MAP_X_OFFSET, MAP_Y_OFFSET, hexSize); 
     }
 
 }
 
-void GameWindow::loadHud() {
+void GameWindow::loadHudTexture() {
 
     int offsetLength = 0;
     int rotation = 0; 
 
+    backgroundTexture = new TextureDisplayer("../ressources/img/hud/background.png");
+    backgroundTexture->addMapSprite();
+    float backgroundScale = 1/(float(backgroundTexture->getWidth())/float(WINDOW_LENGTH));
+    backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+
     // load the ladder
-    textureToDisplay.emplace_back("../ressources/img/hud/ladder.png");
-    textureToDisplay.back().addMapSprite();
-    float ladderScale = float(LADDER_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    textureToDisplay.back().setHudSpritePosition(ladderScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+    hudTextureToDisplay.emplace_back("../ressources/img/hud/ladder.png");
+    hudTextureToDisplay.back().addMapSprite();
+    float ladderScale = float(LADDER_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    hudTextureToDisplay.back().setHudSpritePosition(ladderScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
 
     // load the techWheel
-    textureToDisplay.emplace_back("../ressources/img/hud/tech-wheel.png");
-    textureToDisplay.back().addMapSprite();
-    float techWheelScale = float(TECH_WHEEL_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    textureToDisplay.back().setHudSpritePosition(techWheelScale, WINDOW_LENGTH, WINDOW_WIDTH, 45); 
+    hudTextureToDisplay.emplace_back("../ressources/img/hud/tech-wheel.png");
+    hudTextureToDisplay.back().addMapSprite();
+    float techWheelScale = float(TECH_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    hudTextureToDisplay.back().setHudSpritePosition(techWheelScale, WINDOW_LENGTH, WINDOW_WIDTH, 45); 
 
     // load the barbareWheel
-    textureToDisplay.emplace_back("../ressources/img/hud/barbare-wheel-0.png");
-    textureToDisplay.back().addMapSprite();
-    float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    textureToDisplay.back().setHudSpritePosition(barbareWheelScale, WINDOW_LENGTH, WINDOW_WIDTH, 45);
+    hudTextureToDisplay.emplace_back("../ressources/img/hud/barbare-wheel-0.png");
+    hudTextureToDisplay.back().addMapSprite();
+    float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    hudTextureToDisplay.back().setHudSpritePosition(barbareWheelScale, WINDOW_LENGTH, WINDOW_WIDTH, 45);
 
      // load the priorityCard
-    textureToDisplay.emplace_back("../ressources/img/hud/priority-card-army.png");
-    textureToDisplay.back().addMapSprite();
-    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    textureToDisplay.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+    hudTextureToDisplay.emplace_back("../ressources/img/hud/priority-card-army.png");
+    hudTextureToDisplay.back().addMapSprite();
+    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    hudTextureToDisplay.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
 
     // load the actionCard
-    textureToDisplay.emplace_back("../ressources/img/hud/action-card-army.png");
-    textureToDisplay.back().addMapSprite();
-    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(textureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    textureToDisplay.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+    hudTextureToDisplay.emplace_back("../ressources/img/hud/action-card-army.png");
+    hudTextureToDisplay.back().addMapSprite();
+    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    hudTextureToDisplay.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+
+   
+
 }
 
 }
