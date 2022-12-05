@@ -45,7 +45,7 @@ void GameWindow::displayWindow(int numberTurn) {
         }
     }
 
-    for(unsigned i = 0; i < actionCards.size(); i++ ){
+    /*for(unsigned i = 0; i < actionCards.size(); i++ ){
 
         for(unsigned j = 0; j < actionCards.at(i).getSize(); j++ ){
 
@@ -59,7 +59,7 @@ void GameWindow::displayWindow(int numberTurn) {
 
             clientGameWindow.draw(*priorityCards.at(i).getSprite(j));
         }
-    }
+    }*/
 
     clientGameWindow.draw(*hudTextureToDisplay.at(numberTurn%5).getSprite(0));
     
@@ -243,7 +243,7 @@ void GameWindow::loadHudTexture() {
     }
 
     // load the priorityCard
-    priorityCards.emplace_back("../ressources/img/hud/priority-card-army.png");
+    /*priorityCards.emplace_back("../ressources/img/hud/priority-card-army.png");
     priorityCards.back().addMapSprite();
     //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
     priorityCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
@@ -252,7 +252,7 @@ void GameWindow::loadHudTexture() {
     actionCards.emplace_back("../ressources/img/hud/action-card-army.png");
     actionCards.back().addMapSprite();
     //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    actionCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
+    actionCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); */
 
 }
 
