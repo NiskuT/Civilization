@@ -1,0 +1,52 @@
+{
+   SFML memory leak 1 of 64 bytes in 1 block
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:_Znwm
+   obj:*
+   obj:*
+   fun:call_init.part.0
+   fun:call_init
+   fun:_dl_init
+   fun:_dl_catch_exception
+   fun:dl_open_worker
+   fun:_dl_catch_exception
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_exception
+   fun:_dl_catch_error
+}
+{
+   SFML memory leak 2 of 112 bytes in 2 blocks
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   SFML memory leak 3 of 5355 bytes in 255 blocks
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0
+   fun:__glDispatchMakeCurrent
+   obj:/usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0
+   obj:/usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0
+   obj:/usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
+   obj:/usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
+   obj:/usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
+}
