@@ -54,8 +54,11 @@ jobs:
 
     - name: Valgrind Memory check for program
       run: |
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
         cd build/
-        valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./bin/client -hello 
+        sleep 20  && pgrep -f Xvfb | xargs kill -15 &
+        valgrind --leak-check=full --exit-on-first-error=no --error-exitcode=1 ./bin/client -hello 
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
