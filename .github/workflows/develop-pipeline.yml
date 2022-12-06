@@ -43,7 +43,10 @@ jobs:
 
     - name: Tests
       working-directory: ${{github.workspace}}/build/test
-      run: ctest --verbose --timeout 300
+      run: |
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
+        ctest --verbose --timeout 300
 
     - name: Run code coverage
       working-directory: ${{github.workspace}}/build
@@ -51,10 +54,7 @@ jobs:
 
     - name: Valgrind Memory check for program
       run: |
-        export DISPLAY=':99'
-        Xvfb :99 -ac -screen 0 1280x1024x24 &
         cd build/
-        sleep 20  && pgrep -f Xvfb | xargs kill -15 &
         valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./bin/client -hello 
 
     - name: Valgrind Memory check for tests
@@ -103,7 +103,10 @@ jobs:
 
     - name: Tests
       working-directory: ${{github.workspace}}/build/test
-      run: ctest --verbose --timeout 300
+      run: |
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
+        ctest --verbose --timeout 300
         
         
         
