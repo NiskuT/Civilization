@@ -28,4 +28,4 @@ jobs:
 
     - name: Tests
       working-directory: ${{github.workspace}}/build/test
-      run: ctest --timeout 300
+      run: ctest --verbose --timeout 300
