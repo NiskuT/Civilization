@@ -87,7 +87,7 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
 }
 
 
-void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation)
+void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation, int priorityCardIndex)
 {
     int xPos = 0;
     int yPos = 0;
@@ -110,17 +110,17 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
     }
 
 
-    else if (this->type == "priority-card-army") {
-        int priorityCardNumber = 0;
+    else if (this->type.substr(0, 8) == "priority") {
         float fisrtLengthOffsetScale = float(185) / float(1600); // Offset of the first priority card
         float priorityCardOffset = float(249) / float(1600); // Offset between each card
         float proportionWidth = float(140) / float(900);
-        xPos = priorityCardOffset*windowLength*priorityCardNumber + fisrtLengthOffsetScale*windowLength; // have to change name "prioritycard" --> it corresponds to the number of the priority card in the ladder
+        xPos = priorityCardOffset*windowLength*priorityCardIndex + fisrtLengthOffsetScale*windowLength; 
         yPos = windowWidth-getHeight()*scale + proportionWidth*windowWidth; 
+
     }
 
 
-    else if (this->type == "action-card-army") {
+    else if (this->type.substr(0, 11) == "action-card") {
         int actionCardNumber = 0;
         float rightOffset = float(10) / float(1600);
         float upOffset = float(900/4) / float(900);
