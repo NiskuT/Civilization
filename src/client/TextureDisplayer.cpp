@@ -66,13 +66,19 @@ void TextureDisplayer::addMapSprite()
  */
 void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, int yOffset, std::array<int, 2> hexSize)
 {
-    xOffset += hexSize.at(0) != 0 ? (hexSize.at(0) - this->sprites.at(index).getLocalBounds().width) / 2 : 0;
-    yOffset += hexSize.at(1) != 0 ? (hexSize.at(1) - this->sprites.at(index).getLocalBounds().height) / 2 : 0;
+    xOffset += hexSize[0] != 0 ? (hexSize[0] - this->sprites.at(index).getLocalBounds().width) / 2 : 0;
+    yOffset += hexSize[1] != 0 ? (hexSize[1] - this->sprites.at(index).getLocalBounds().height) / 2 : 0;
+
+    int xHexSize = hexSize[0] != 0 ? hexSize[0] : this->sprites.at(index).getLocalBounds().width;
+    int yHexSize = hexSize[1] != 0 ? hexSize[1] : this->sprites.at(index).getLocalBounds().height;
 
     if (y%2==0) {
         //if (x !=14 ){
-            x = xOffset + 41 + x * 82;
-            y = yOffset + y + y * 63;
+            // divide by 2 to have the good offset & -1 because width count the size from 1
+            x = xOffset + (int)(xHexSize)/2  + x * (xHexSize - 1);
+
+            // multiply by 3/4 to not count the supperposition of hexagon & -1 because height count the size from 1
+            y = yOffset + y + y * (yHexSize - 1) * 3 / 4;
         /*}
         else{
             x = -100;
@@ -80,8 +86,8 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
         }*/
     }
     else {
-        x = xOffset + x * 82;
-        y = yOffset + y + y * 63;
+        x = xOffset + x * (xHexSize - 1);
+        y = yOffset + y + y * (yHexSize - 1) * 3 / 4;
     }
     this->sprites.at(index).setPosition(sf::Vector2f(x, y));
 }
@@ -95,8 +101,8 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
 void TextureDisplayer::mooveSpritePosition(int xOffset, int yOffset)
 {
     for (unsigned i = 0; i < this->sprites.size(); i++){
-        sf::Vector2f pos = this->sprites.at(i).getPosition();
-        this->sprites.at(i).setPosition(pos.x + xOffset, pos.y + yOffset);
+        sf::Vector2f pos = this->sprites[i].getPosition();
+        this->sprites[i].setPosition(pos.x + xOffset, pos.y + yOffset);
 
     }
 }
@@ -114,8 +120,8 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
     else if (this->type =="tech-wheel") {
         xPos=  windowLength;
         yPos= windowWidth;
-        sprites.at(0).setOrigin(getWidth()/2, getHeight()/2);
-        sprites.at(0).rotate(rotation);
+        sprites[0].setOrigin(getWidth()/2, getHeight()/2);
+        sprites[0].rotate(rotation);
     }
 
       else if (this->type == "barbare-wheel-0" || this->type == "barbare-wheel-1" || this->type == "barbare-wheel-2" || this->type == "barbare-wheel-3" || this->type == "barbare-wheel-4") {
@@ -140,8 +146,8 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         yPos = upOffset*windowWidth + (getHeight()*scale+10)*actionCardNumber;
     }
 
-    this->sprites.at(0).setScale(scale, scale);
-    this->sprites.at(0).setPosition(xPos, yPos);
+    this->sprites[0].setScale(scale, scale);
+    this->sprites[0].setPosition(xPos, yPos);
 }
 /*!
  * \brief Get the number of sprite in a TextureDisplayer
@@ -164,14 +170,14 @@ sf::Sprite* TextureDisplayer::getSprite(unsigned index)
  */
 int TextureDisplayer::getWidth()
 {    
-    return getSize() > 0 ? this->sprites.at(0).getLocalBounds().width : 0;
+    return getSize() > 0 ? this->sprites[0].getLocalBounds().width : 0;
 }
 /*!
  * \brief Get the Height of the texture
  */
 int TextureDisplayer::getHeight()
 {    
-    return getSize() > 0 ? this->sprites.at(0).getLocalBounds().height : 0;
+    return getSize() > 0 ? this->sprites[0].getLocalBounds().height : 0;
 }
 
 }

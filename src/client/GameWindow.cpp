@@ -5,15 +5,11 @@
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
+#define MAP_WIDTH 15
+#define MAP_HEIGHT 11
 
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
-
-#define LADDER_PROPORTION 0.78
-#define TECH_WHEEL_PROPORTION 0.187
-#define BARBARE_WHEEL_PROPORTION 0.0956
-#define PRIORITY_CARD_PROPORTION 0.144
-#define ACTION_CARD_PROPORTION 0.125
 
 namespace client
 {
@@ -39,9 +35,9 @@ void GameWindow::displayWindow(int numberTurn) {
 
     for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ ){
 
-        for(unsigned j = 0; j < mapTextureToDisplay.at(i).getSize(); j++ ){
+        for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++ ){
 
-            clientGameWindow.draw(*mapTextureToDisplay.at(i).getSprite(j));
+            clientGameWindow.draw(*mapTextureToDisplay[i].getSprite(j));
         }
     }
 
@@ -49,9 +45,9 @@ void GameWindow::displayWindow(int numberTurn) {
     
     for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ ){
 
-        for(unsigned j = 0; j < hudTextureToDisplay.at(i).getSize(); j++ ){
+        for(unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++ ){
 
-            clientGameWindow.draw(*hudTextureToDisplay.at(i).getSprite(j));
+            clientGameWindow.draw(*hudTextureToDisplay[i].getSprite(j));
         }
     }
 
@@ -88,11 +84,11 @@ void GameWindow::clientWindow() {
             
                 if (mooveMode){
                         
-                    newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint.at(0),
-                                    sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint.at(1)};
+                    newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint[0],
+                                    sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint[1]};
 
                     for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-                        mapTextureToDisplay.at(i).mooveSpritePosition(newMapOffset.at(0), newMapOffset.at(1));
+                        mapTextureToDisplay[i].mooveSpritePosition(newMapOffset[0], newMapOffset[1]);
 
                 }
 
@@ -100,11 +96,13 @@ void GameWindow::clientWindow() {
 
             case sf::Event::KeyPressed:
 
-                if (event.key.code == sf::Keyboard::M){
+                switch (event.key.code)
+                {
+                case sf::Keyboard::M:
 
                     if (mooveMode){
                         mooveMode = false;
-                        if (clientCursor.loadFromSystem(sf::Cursor::Arrow)) 
+                        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
                             clientGameWindow.setMouseCursor(clientCursor);
                     } 
                     else {
@@ -112,6 +110,10 @@ void GameWindow::clientWindow() {
                         if (clientCursor.loadFromSystem(sf::Cursor::Hand)) 
                             clientGameWindow.setMouseCursor(clientCursor);
                     }
+                    break;
+
+                default:
+                    break;
                 }
                 break;
 
@@ -139,7 +141,7 @@ void GameWindow::clientWindow() {
  */
 void GameWindow::loadMapTexture() {
 
-    std::array<int, 165> level =
+    std::array<int, MAP_WIDTH * MAP_HEIGHT> level =
     {
         0, 0, 5, 4, 4, 2, 5, 2, 1, 2, 5, 0, 0, 0, 0,
         0, 0, 0, 5, 0, 1, 5, 5, 5, 5, 1, 1, 0, 0, 0, 
@@ -162,11 +164,11 @@ void GameWindow::loadMapTexture() {
 
     for(unsigned i {0}; i < mapField.size(); i++){
 
-        std::string mapElementPath = hexagonImgPath + mapField.at(i) + ".png";
+        std::string mapElementPath = hexagonImgPath + mapField[i] + ".png";
         mapTextureToDisplay.emplace_back(mapElementPath);        
     }
 
-    for(int i = 0; i < 165; i++){
+    for(int i = 0; i < MAP_WIDTH * MAP_HEIGHT; i++){
 
         int indexSprite = mapTextureToDisplay.at(level[i]).getSize();
 
@@ -174,11 +176,11 @@ void GameWindow::loadMapTexture() {
 
         //mapTextureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
 
-        mapTextureToDisplay.at(level[i]).setSpritePosition(indexSprite, i % 15, i / 15, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
+        mapTextureToDisplay.at(level[i]).setSpritePosition(indexSprite, i % MAP_WIDTH, i / MAP_WIDTH, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
 
     }
 
-    std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
+    std::array<int, 2> hexSize = {mapTextureToDisplay[0].getWidth(), mapTextureToDisplay[0].getHeight()};
 
     std::ifstream file("../ressources/img/map/files.json");
     // check is file is correctly open
@@ -203,13 +205,12 @@ void GameWindow::loadMapTexture() {
 
         int rank = data[index]["x"].asInt()*15 + data[index]["y"].asInt();
 
-        mapTextureToDisplay.back().setSpritePosition(0, rank % 15, rank / 15, MAP_X_OFFSET, MAP_Y_OFFSET, hexSize); 
+        mapTextureToDisplay.back().setSpritePosition(0, rank % MAP_WIDTH, rank / MAP_WIDTH, MAP_X_OFFSET, MAP_Y_OFFSET, hexSize); 
     }
 }
 
 void GameWindow::loadHudTexture() {
 
-    int offsetLength = 0;
     int rotation = 0; 
 
     backgroundTexture = new TextureDisplayer("../ressources/img/hud/background.png");
