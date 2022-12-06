@@ -45,22 +45,6 @@ void GameWindow::displayWindow(int numberTurn) {
         }
     }
 
-    /*for(unsigned i = 0; i < actionCards.size(); i++ ){
-
-        for(unsigned j = 0; j < actionCards.at(i).getSize(); j++ ){
-
-            clientGameWindow.draw(*actionCards.at(i).getSprite(j));
-        }
-    }
-
-    for(unsigned i = 0; i < priorityCards.size(); i++ ){
-
-        for(unsigned j = 0; j < priorityCards.at(i).getSize(); j++ ){
-
-            clientGameWindow.draw(*priorityCards.at(i).getSprite(j));
-        }
-    }*/
-
     clientGameWindow.draw(*hudTextureToDisplay.at(numberTurn%5).getSprite(0));
     
     for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ ){
@@ -80,8 +64,8 @@ void GameWindow::displayWindow(int numberTurn) {
 void GameWindow::clientWindow() {
 
     int turn = 0;
+    int mooveMode = false;
 
-    bool dragging = false;
     std::array<int, 2> clickStartingPoint = {0, 0};
     std::array<int, 2> newMapOffset = {0, 0};
 
@@ -94,12 +78,41 @@ void GameWindow::clientWindow() {
             switch (event.type)
             {
             case sf::Event::MouseButtonPressed:
-                dragging = true;
-                //clickStartingPoint = {sf::Mouse::getPosition(clientGameWindow).x, sf::Mouse::getPosition(clientGameWindow).y};
+            
+                if (mooveMode) 
+                    clickStartingPoint = {sf::Mouse::getPosition(clientGameWindow).x, sf::Mouse::getPosition(clientGameWindow).y};
+                
                 break;
 
             case sf::Event::MouseButtonReleased:
-                dragging = false;
+            
+                if (mooveMode){
+                        
+                    newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint.at(0),
+                                    sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint.at(1)};
+
+                    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                        mapTextureToDisplay.at(i).mooveSpritePosition(newMapOffset.at(0), newMapOffset.at(1));
+
+                }
+
+                break;
+
+            case sf::Event::KeyPressed:
+
+                if (event.key.code == sf::Keyboard::M){
+
+                    if (mooveMode){
+                        mooveMode = false;
+                        if (clientCursor.loadFromSystem(sf::Cursor::Arrow)) 
+                            clientGameWindow.setMouseCursor(clientCursor);
+                    } 
+                    else {
+                        mooveMode = true;
+                        if (clientCursor.loadFromSystem(sf::Cursor::Hand)) 
+                            clientGameWindow.setMouseCursor(clientCursor);
+                    }
+                }
                 break;
 
             case sf::Event::Closed:
@@ -108,17 +121,6 @@ void GameWindow::clientWindow() {
 
             default:
                 break;
-            }
-
-            if (dragging == true)
-            {
-                if (sf::Event::MouseMoved)
-                {
-                    /*newMapOffset = {MAP_X_OFFSET + sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint.at(0),
-                                    MAP_Y_OFFSET + sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint.at(1)};
-
-                    clientMap.setOffset(newMapOffset.at(0), newMapOffset.at(1));*/
-                }
             }
         }
         
@@ -203,7 +205,6 @@ void GameWindow::loadMapTexture() {
 
         mapTextureToDisplay.back().setSpritePosition(0, rank % 15, rank / 15, MAP_X_OFFSET, MAP_Y_OFFSET, hexSize); 
     }
-
 }
 
 void GameWindow::loadHudTexture() {
@@ -241,40 +242,6 @@ void GameWindow::loadHudTexture() {
 
         hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index]["rotation"].asInt()); 
     }
-
-    // load the priorityCard
-    /*priorityCards.emplace_back("../ressources/img/hud/priority-card-army.png");
-    priorityCards.back().addMapSprite();
-    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    priorityCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); 
-
-    // load the actionCard
-    actionCards.emplace_back("../ressources/img/hud/action-card-army.png");
-    actionCards.back().addMapSprite();
-    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    actionCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation); */
-
 }
-
-/*
-void PriorityCardDisplay::loadTitle(std::string title, sf::Vector2f position, int xCardSize) {
-    
-    if(!priorityFont.loadFromFile("../ressources/img/hud/font.otf")){
-        std::cout << "font not loaded\n" ;
-    }
-
-    std::string upperFirstLetter = title;
-    upperFirstLetter[0] = toupper(upperFirstLetter[0]);
-
-    titleCard.setFont(priorityFont);
-    titleCard.setString(upperFirstLetter);
-    titleCard.setCharacterSize((float(40)/float(1600))*WINDOW_LENGTH);
-    titleCard.setStyle(sf::Text::Bold);
-    titleCard.setColor(sf::Color::Black);
-    sf::Rect titleScale =titleCard.getLocalBounds();
-    int xOffset = (xCardSize - titleScale.width)/2 ;
-    titleCard.setPosition(position.x + xOffset, position.y);
-}
-*/
 
 }

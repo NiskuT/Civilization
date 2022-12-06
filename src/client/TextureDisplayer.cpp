@@ -12,7 +12,6 @@ sf::Texture TextureDisplayer::operator()()
 {
    return *this->texture;
 }
-
 /*!
  * \brief Constructor
  *
@@ -31,7 +30,7 @@ TextureDisplayer::TextureDisplayer(std::string pathImage)
     this->texture->loadFromImage(*(this->image));
 
     int nameStartPosition = 0;
-    for(int i = 0; i < pathImage.size(); i++){
+    for(unsigned i = 0; i < pathImage.size(); i++){
         if (pathImage[i] == ('/')){
             nameStartPosition = i;
         }
@@ -58,6 +57,7 @@ void TextureDisplayer::addMapSprite()
 
 /*!
  * \brief Set a particular Sprite Position
+ * @param index is the index position of the sprite
  * @param x is the X position of the sprite in the Map
  * @param y is the Y position of the sprite in the Map
  * @param xOffset is the X offset of the map in the screen
@@ -70,14 +70,14 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
     yOffset += hexSize.at(1) != 0 ? (hexSize.at(1) - this->sprites.at(index).getLocalBounds().height) / 2 : 0;
 
     if (y%2==0) {
-        if (x !=14 ){
+        //if (x !=14 ){
             x = xOffset + 41 + x * 82;
             y = yOffset + y + y * 63;
-        }
+        /*}
         else{
             x = -100;
             y = -100;
-        }
+        }*/
     }
     else {
         x = xOffset + x * 82;
@@ -86,6 +86,20 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
     this->sprites.at(index).setPosition(sf::Vector2f(x, y));
 }
 
+/*!
+ * \brief Move the sprite Position
+ * @param index is the index position of the sprite
+ * @param xOffset is the X offset of the map in the screen
+ * @param yOffset is the Y offset of the map in the screen
+ */
+void TextureDisplayer::mooveSpritePosition(int xOffset, int yOffset)
+{
+    for (unsigned i = 0; i < this->sprites.size(); i++){
+        sf::Vector2f pos = this->sprites.at(i).getPosition();
+        this->sprites.at(i).setPosition(pos.x + xOffset, pos.y + yOffset);
+
+    }
+}
 
 void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation)
 {
@@ -109,7 +123,6 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         xPos= 0;
     }
 
-
     else if (this->type == "priority-card-army") {
         int priorityCardNumber = 0;
         float fisrtLengthOffsetScale = float(185) / float(1600); // Offset of the first priority card
@@ -119,7 +132,6 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         yPos = windowWidth-getHeight()*scale + proportionWidth*windowWidth; 
     }
 
-
     else if (this->type == "action-card-army") {
         int actionCardNumber = 0;
         float rightOffset = float(10) / float(1600);
@@ -128,12 +140,9 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         yPos = upOffset*windowWidth + (getHeight()*scale+10)*actionCardNumber;
     }
 
-
-
     this->sprites.at(0).setScale(scale, scale);
     this->sprites.at(0).setPosition(xPos, yPos);
 }
-
 /*!
  * \brief Get the number of sprite in a TextureDisplayer
  */
@@ -141,7 +150,6 @@ unsigned TextureDisplayer::getSize()
 {    
     return sprites.size();
 }
-
 /*!
  * \brief Get a particular sprite
  *
@@ -151,7 +159,6 @@ sf::Sprite* TextureDisplayer::getSprite(unsigned index)
 {
     return &sprites.at((int)(index));
 }
-
 /*!
  * \brief Get the Width of the texture
  */
@@ -159,7 +166,6 @@ int TextureDisplayer::getWidth()
 {    
     return getSize() > 0 ? this->sprites.at(0).getLocalBounds().width : 0;
 }
-
 /*!
  * \brief Get the Height of the texture
  */
