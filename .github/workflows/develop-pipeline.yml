@@ -11,6 +11,8 @@ on:
 jobs:
   linux-debug:
     runs-on: ubuntu-latest
+    env:
+      DISPLAY: ':99'
     steps:
     - uses: actions/checkout@v3
     
