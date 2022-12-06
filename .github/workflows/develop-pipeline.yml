@@ -11,8 +11,6 @@ on:
 jobs:
   linux-debug:
     runs-on: ubuntu-latest
-    env:
-      DISPLAY: ':99'
     steps:
     - uses: actions/checkout@v3
     
@@ -53,7 +51,8 @@ jobs:
 
     - name: Valgrind Memory check for program
       run: |
-        Xvfb ${DISPLAY} -ac -screen 0 1280x1024x24 &
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
         cd build/
         sleep 20  && pgrep -f Xvfb | xargs kill -15 &
         valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./bin/client -hello 
