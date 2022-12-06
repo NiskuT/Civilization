@@ -3,9 +3,17 @@
 #include <boost/test/tools/output_test_stream.hpp>
 #include <iostream>
 
-/*
+
 BOOST_AUTO_TEST_SUITE( TestTextureData )
 
+BOOST_AUTO_TEST_CASE(TestSFML)
+{
+  {
+    ::sf::Texture texture;
+    BOOST_CHECK(texture.getSize() == ::sf::Vector2<unsigned int> {});
+  }
+}
+/*
 BOOST_AUTO_TEST_CASE( constructorTest )
 {
     client::TextureData texture1(10, 15, 20, 25, "../ressources/img/map/ressource-antic.png");
@@ -30,5 +38,5 @@ BOOST_AUTO_TEST_CASE( loadTexture )
     BOOST_CHECK(texture1.position.at(0) == 394);
     BOOST_CHECK(texture1.position.at(1) == 20);
 }
-
-BOOST_AUTO_TEST_SUITE_END()*/
+*/
+BOOST_AUTO_TEST_SUITE_END()
