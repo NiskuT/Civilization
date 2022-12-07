@@ -68,7 +68,11 @@ jobs:
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
-      run: valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ctest --timeout 300
+      run: |
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
+        valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ctest --verbose --timeout 300
+        kill $(ps | grep 'Xvfb' | awk '{print $1}')
 
     - name: Doxygen to GH-pages
       uses: jard-111/doxygen-action@1.0
