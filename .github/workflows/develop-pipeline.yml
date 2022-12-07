@@ -21,6 +21,7 @@ jobs:
         sudo apt install libboost-all-dev
         sudo apt install libc6-dbg
         sudo apt-get install libsfml-dev
+        sudo apt install xdotool
 
     - name: Install valgrind
       run: |
@@ -57,7 +58,7 @@ jobs:
         export DISPLAY=':99'
         Xvfb :99 -ac -screen 0 1280x1024x24 &
         cd build/
-        sleep 20  && pgrep -f Xvfb | xargs kill -15 &
+        sleep 20  && sudo xdotool windowactivate $(xdotool search --name "Civilization VII") key Alt+F4 &
         valgrind --leak-check=full --exit-on-first-error=no --error-exitcode=1 ./bin/client -hello 
 
     - name: Valgrind Memory check for tests
