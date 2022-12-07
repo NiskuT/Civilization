@@ -1,12 +1,15 @@
 #include <client.hpp>
 #include <iostream>
 #include <fstream>
+#include<math.h>
 #include <json/json.h>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
 #define MAP_WIDTH 15
 #define MAP_HEIGHT 11
+
+#define NUMBER_OF_FIELD 12
 
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
@@ -29,14 +32,13 @@ GameWindow::GameWindow() {
  */
 void GameWindow::displayWindow(int numberTurn) {
 
-    clientGameWindow.clear(sf::Color::Blue);
+    clientGameWindow.clear();
 
     clientGameWindow.draw(*backgroundTexture->getSprite(0));
 
     for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ ){
 
         for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++ ){
-
             clientGameWindow.draw(*mapTextureToDisplay[i].getSprite(j));
         }
     }
@@ -75,9 +77,47 @@ void GameWindow::clientWindow() {
             {
             case sf::Event::MouseButtonPressed:
             
-                if (mooveMode) 
-                    clickStartingPoint = {sf::Mouse::getPosition(clientGameWindow).x, sf::Mouse::getPosition(clientGameWindow).y};
+                clickStartingPoint = {  sf::Mouse::getPosition(clientGameWindow).x, 
+                                        sf::Mouse::getPosition(clientGameWindow).y};
                 
+                if (!mooveMode) {
+
+                    int minimumDistance = WINDOW_LENGTH;
+                    std::array<int, 2> hexagonOnClick = {0, 0};
+                    std::array<int, 2> firstHexagon = {WINDOW_LENGTH, WINDOW_WIDTH};
+
+                    sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0)->getGlobalBounds();
+                    cursorRect.left = clickStartingPoint[0];
+                    cursorRect.top = clickStartingPoint[1];
+                    cursorRect.width = 1;
+                    cursorRect.height = 1;
+
+                    for(int i = 0; i < NUMBER_OF_FIELD; i++){
+
+                        for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++){
+
+                            sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j)->getGlobalBounds();
+
+                            if (firstHexagon[0] > spriteBounds.left) firstHexagon[0] = spriteBounds.left;
+                            if (firstHexagon[1] > spriteBounds.top) firstHexagon[1] = spriteBounds.top;
+
+                            if (spriteBounds.intersects(cursorRect)) {
+
+                                int distance = pow( pow(spriteBounds.left + spriteBounds.width/2 - cursorRect.left, 2) 
+                                                  + pow(spriteBounds.top + spriteBounds.height/2 - cursorRect.top, 2), 0.5);
+
+                                if (distance < minimumDistance){
+
+                                    minimumDistance = distance;
+                                    hexagonOnClick[1] =  (int)((spriteBounds.top - firstHexagon[1]))/(int)((spriteBounds.height * 3 / 4));
+                                    hexagonOnClick[0] =  (int)((spriteBounds.left - firstHexagon[0])) /(int)((spriteBounds.width - 1));
+                                }
+                            }   
+                        }
+                    }
+                    std::cout << "User click on the Hex x=" << hexagonOnClick[0] << " & y=" << hexagonOnClick[1] << "\n";
+                }
+
                 break;
 
             case sf::Event::MouseButtonReleased:
@@ -115,6 +155,7 @@ void GameWindow::clientWindow() {
                 default:
                     break;
                 }
+
                 break;
 
             case sf::Event::Closed:
@@ -157,7 +198,7 @@ void GameWindow::loadMapTexture() {
     };
 
     std::string hexagonImgPath = "../ressources/img/map/field-";
-    std::array<std::string, 12> mapField =  {"water", "grassland", "hill", "forest", "desert", "mountain",
+    std::array<std::string, NUMBER_OF_FIELD> mapField =  {"water", "grassland", "hill", "forest", "desert", "mountain",
                                             "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
                                             "wonder-messa", "wonder-pantanal", "wonder-volcanic"
                                             };
