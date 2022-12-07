@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['gamemap_406',['gameMap',['../classclient_1_1GameWindow.html#a1681b7970573d4d3560248e597efe622',1,'client::GameWindow']]],
-  ['gamewindow_407',['GameWindow',['../classclient_1_1GameWindow.html',1,'client']]],
+  ['gamewindow_407',['GameWindow',['../classclient_1_1GameWindow.html',1,'client::GameWindow'],['../classclient_1_1GameWindow.html#a1b064394880a240c6cc66cfe02e2652a',1,'client::GameWindow::GameWindow()']]],
   ['genericerrinfo_408',['GenericErrInfo',['../structGenericErrInfo.html',1,'']]],
   ['gj_5fthreadinfo_409',['gj_threadinfo',['../structgj__threadinfo.html',1,'']]],
   ['globalblock_410',['GlobalBlock',['../structGlobalBlock.html',1,'']]],

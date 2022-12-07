@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['createelementfromhash_2705',['createElementFromHash',['../classclient_1_1ClientGameEngine.html#a9c8a27b50e4e592b2442c4f453fab550',1,'client::ClientGameEngine']]]
+  ['displaywindow_2707',['displayWindow',['../classclient_1_1GameWindow.html#a07f644281b6df7aba39ce08526d12ca5',1,'client::GameWindow']]]
 ];

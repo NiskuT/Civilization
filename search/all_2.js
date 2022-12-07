@@ -23,8 +23,7 @@ var searchData=
   ['branchcc_219',['BranchCC',['../structBranchCC.html',1,'']]],
   ['buffer_5ft_220',['buffer_t',['../structbuffer__t.html',1,'']]],
   ['bufferedfile_221',['BufferedFile',['../structBufferedFile.html',1,'']]],
-  ['buildgamemap_222',['buildGameMap',['../classclient_1_1GameWindow.html#ac3149611e2b27b1dda132519965d9524',1,'client::GameWindow']]],
-  ['busnum_223',['busnum',['../structvki__drm__irq__busid.html#a578f3b3930056685cdd1cabf7ccbb02a',1,'vki_drm_irq_busid']]],
-  ['byterangelockpb2_224',['ByteRangeLockPB2',['../structByteRangeLockPB2.html',1,'']]],
-  ['bz_5fstream_225',['bz_stream',['../structbz__stream.html',1,'']]]
+  ['busnum_222',['busnum',['../structvki__drm__irq__busid.html#a578f3b3930056685cdd1cabf7ccbb02a',1,'vki_drm_irq_busid']]],
+  ['byterangelockpb2_223',['ByteRangeLockPB2',['../structByteRangeLockPB2.html',1,'']]],
+  ['bz_5fstream_224',['bz_stream',['../structbz__stream.html',1,'']]]
 ];

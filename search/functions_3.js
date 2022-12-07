@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['setupconfig_2706',['setUpConfig',['../classclient_1_1ClientManager.html#ad85aa689c09ac046fa3926f1b1964409',1,'client::ClientManager']]],
-  ['startworkers_2707',['StartWorkers',['../classThreadPool.html#a38debfbcbe679c21a2effd2609893ee7',1,'ThreadPool']]]
+  ['gamewindow_2708',['GameWindow',['../classclient_1_1GameWindow.html#a1b064394880a240c6cc66cfe02e2652a',1,'client::GameWindow']]]
 ];
