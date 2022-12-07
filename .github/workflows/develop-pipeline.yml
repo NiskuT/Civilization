@@ -61,7 +61,7 @@ jobs:
         export DISPLAY=':99'
         Xvfb :99 -ac -screen 0 1280x1024x24 &
         cd build/
-        sleep 20  && xdotool search --sync --name "Civilization VII" | xargs wmctrl -i -c &
+        sleep 20  && xdotool search --name "Civilization VII" | xargs wmctrl -i -c &
         valgrind --leak-check=full --exit-on-first-error=no --error-exitcode=1 ./bin/client -hello 
         kill $(ps | grep 'Xvfb' | awk '{print $1}')
 
