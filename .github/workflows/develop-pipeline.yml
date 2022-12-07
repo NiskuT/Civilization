@@ -49,6 +49,8 @@ jobs:
         export DISPLAY=':99'
         Xvfb :99 -ac -screen 0 1280x1024x24 &
         ctest --verbose --timeout 300
+        kill $(ps | grep 'Xvfb' | awk '{print $1}')
+
 
     - name: Run code coverage
       working-directory: ${{github.workspace}}/build
@@ -56,9 +58,12 @@ jobs:
 
     - name: Valgrind Memory check for program
       run: |
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
         cd build/
         sleep 20  && xdotool search --sync --name "Civilization VII" | xargs wmctrl -i -c &
         valgrind --leak-check=full --exit-on-first-error=no --error-exitcode=1 ./bin/client -hello 
+        kill $(ps | grep 'Xvfb' | awk '{print $1}')
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
