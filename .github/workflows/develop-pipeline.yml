@@ -21,8 +21,6 @@ jobs:
         sudo apt install libboost-all-dev
         sudo apt install libc6-dbg
         sudo apt-get install libsfml-dev
-        sudo apt install xdotool
-        sudo apt install wmctrl
 
     - name: Install valgrind
       run: |
