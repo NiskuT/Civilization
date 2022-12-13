@@ -63,19 +63,21 @@ namespace client
     void GameWindow::loadTexture()
     {
 
-        std::array<int, 165> level =
+        /*std::array<int, 165> level =
             {
                 0, 0, 5, 4, 4, 2, 5, 2, 1, 2, 5, 0, 0, 0, 0,
                 0, 0, 0, 5, 0, 1, 5, 5, 5, 5, 1, 1, 0, 0, 0,
                 0, 0, 0, 3, 0, 1, 5, 0, 1, 1, 3, 4, 0, 0, 0,
                 0, 0, 0, 0, 1, 2, 5, 3, 2, 3, 1, 4, 0, 0, 0,
-                0, 0, 0, 0, 4, 5, 5, 2, 3, 0, 3, 2, 0, 0, 0,
+                0, 0, 0, 0, 4, 5, 5, 2, 3, 7, 3, 2, 0, 0, 0,
                 0, 0, 0, 0, 2, 5, 1, 3, 3, 2, 2, 5, 0, 0, 0,
                 0, 0, 5, 1, 2, 1, 5, 3, 1, 5, 2, 5, 4, 0, 0,
                 0, 0, 0, 1, 2, 0, 4, 2, 5, 3, 1, 4, 5, 0, 0,
                 0, 0, 0, 0, 2, 0, 5, 4, 2, 0, 0, 3, 2, 2, 0,
                 0, 0, 0, 0, 1, 1, 5, 3, 0, 5, 2, 4, 2, 2, 0,
-                0, 0, 0, 0, 0, 1, 5, 5, 0, 1, 0, 0, 4, 2, 0};
+                0, 0, 0, 0, 0, 1, 5, 5, 0, 1, 0, 0, 4, 2, 0};*/
+
+        mapShared.generateRandomMap(123456789);
 
         std::string hexagonImgPath = "../ressources/img/map/field-";
         std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
@@ -89,7 +91,21 @@ namespace client
             textureToDisplay.emplace_back(mapElementPath);
         }
 
-        for (int i = 0; i < 165; i++)
+        // print texture of mapShared
+
+        for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
+        {
+            for (unsigned j = 0; j < mapShared.getMapWidth(); j++)
+            {
+
+                int indexSprite = textureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).getSize();
+                textureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).addMapSprite();
+                textureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).setMapSpritePosition(indexSprite, i*15+j);
+            }
+
+        }
+
+        /*for (int i = 0; i < 165; i++)
         {
 
             int indexSprite = textureToDisplay.at(level[i]).getSize();
@@ -99,7 +115,7 @@ namespace client
             // textureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
 
             textureToDisplay.at(level[i]).setMapSpritePosition(indexSprite, i);
-        }
+        }*/
 
         std::array<int, 2> hexSize = {textureToDisplay.at(0).getWidth(), textureToDisplay.at(0).getHeight()};
 
