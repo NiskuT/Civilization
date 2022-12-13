@@ -3,8 +3,8 @@
 #include <fstream>
 #include <json/json.h>
 
-#define MAP_X_OFFSET 100
-#define MAP_Y_OFFSET 10
+#define MAP_X_OFFSET 0
+#define MAP_Y_OFFSET 0
 
 namespace client
 {
@@ -59,7 +59,9 @@ namespace client
             displayWindow();
         }
     }
-
+    /*!
+    * \brief Load all the textures of the map
+    */
     void GameWindow::loadMapTexture()
     {
 
