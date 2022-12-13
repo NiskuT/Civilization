@@ -6128,7 +6128,7 @@
         <dia:point val="136.139,44.1604"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="135.289,17.7112;165.469,44.2104"/>
+        <dia:rectangle val="135.289,17.7112;165.468,44.2104"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -7222,7 +7222,7 @@
             <dia:string>#body#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#sf::Text#</dia:string>
+            <dia:string>#std::unique_ptr&lt;sf::Text&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>

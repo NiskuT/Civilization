@@ -14,7 +14,10 @@
 #define BARBARE_WHEEL_PROPORTION 0.0956
 #define PRIORITY_CARD_PROPORTION 0.144
 #define ACTION_CARD_PROPORTION 0.125
-#define TEXT_PROPORTION 0.025
+#define TITLE_PROPORTION 0.025
+#define BODY_PROPORTION_X 0.0075
+#define BODY_PROPORTION_Y 0.036
+
 
 namespace client
 {
@@ -57,12 +60,11 @@ namespace client
         }*/
 
 
-        //for (unsigned i = 0; i < priorityCards.size(); i++)
-//{
-            clientGameWindow.draw(*priorityCards.at(0).texture->getSprite(0));
-            clientGameWindow.draw(*priorityCards[0].title);
-        
-        //}
+        for (unsigned i = 0; i < priorityCards.size(); i++){
+            clientGameWindow.draw(*priorityCards.at(i).texture->getSprite(0));
+            clientGameWindow.draw(*priorityCards[i].title);
+            clientGameWindow.draw(*priorityCards[i].body);
+        }
 
         clientGameWindow.draw(*hudTextureToDisplay.at(numberTurn % 5).getSprite(0));
 
@@ -88,8 +90,6 @@ namespace client
         int turn = 0;
 
         bool dragging = false;
-        std::array<int, 2> clickStartingPoint = {0, 0};
-        std::array<int, 2> newMapOffset = {0, 0};
 
         while (clientGameWindow.isOpen())
         {
@@ -119,13 +119,15 @@ namespace client
 
                 if (dragging == true)
                 {
+                    /*
                     if (sf::Event::MouseMoved)
                     {
-                        /*newMapOffset = {MAP_X_OFFSET + sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint.at(0),
+                        newMapOffset = {MAP_X_OFFSET + sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint.at(0),
                                         MAP_Y_OFFSET + sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint.at(1)};
 
-                        clientMap.setOffset(newMapOffset.at(0), newMapOffset.at(1));*/
+                        clientMap.setOffset(newMapOffset.at(0), newMapOffset.at(1));
                     }
+                    */
                 }
             }
 
@@ -218,7 +220,6 @@ namespace client
     void GameWindow::loadHudTexture()
     {
 
-        int offsetLength = 0;
         int rotation = 0;
         int priorityCardIndex = 0;
 
@@ -256,10 +257,9 @@ namespace client
         }
 
 
-
         // load the priorityCard
         if(!priorityFont.loadFromFile("../ressources/img/hud/font.otf")) {
-            std::cout << "font not loaded\n" ;
+            std::cout << "Font not loaded\n" ;
         }
 
         std::ifstream priorityFile("../ressources/img/hud/priority-card.json");
@@ -285,16 +285,27 @@ namespace client
             float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
             priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
 
-
-            priorityCards.back().title = (std::unique_ptr<sf::Text>) new sf::Text(priorityData[index]["text"][0].asString(), priorityFont);
-            priorityCards.back().title->setCharacterSize(TEXT_PROPORTION*WINDOW_LENGTH);
+            // display the title on the card
+            priorityCards.back().title = (std::unique_ptr<sf::Text>) new sf::Text(priorityData[index]["text"][0].asString(), priorityFont, TITLE_PROPORTION*WINDOW_LENGTH);
             priorityCards.back().title->setStyle(sf::Text::Bold);
             priorityCards.back().title->setFillColor(sf::Color::Black);
-            //sf::Rect titleScale = priorityCards.back().title->getLocalBounds();
-            //int xOffset = (xCardSize - titleScale.width)/2 ;
-            priorityCards.back().title->setPosition(210, 780);
-            // priorityCards.back().title->setPosition(position.x + xOffset, position.y);
+            auto titleSize = priorityCards.back().title->getLocalBounds();
+            int xTitleOffset = (priorityCards.back().texture->getWidth() - titleSize.width)/2;
+            int xTitlePosition = priorityCards.back().texture->sprites[0].getPosition().x + xTitleOffset;
+            int yTitlePosition = priorityCards.back().texture->sprites[0].getPosition().y;
+            priorityCards.back().title->setPosition( xTitlePosition, yTitlePosition);
 
+            // display the body on the card
+            priorityCards.back().level = 1;
+            std::string body = priorityData[index]["text"][ priorityCards.back().level].asString();
+            //body.insert(3, "\n"); // test saut à la ligne si trop long
+            priorityCards.back().body = (std::unique_ptr<sf::Text>) new sf::Text(body, priorityFont, 30);
+            priorityCards.back().body->setFillColor(sf::Color::Black);
+            int xBodyOffset = BODY_PROPORTION_X*WINDOW_LENGTH;
+            int yBodyOffset = BODY_PROPORTION_Y*WINDOW_WIDTH;
+            int xBodyPosition = priorityCards.back().texture->sprites[0].getPosition().x + xBodyOffset;
+            int yBodyPosition = priorityCards.back().texture->sprites[0].getPosition().y + yBodyOffset;
+            priorityCards.back().body->setPosition(xBodyPosition, yBodyPosition);        
 
         }
 
