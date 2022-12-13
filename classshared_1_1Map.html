@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classshared_1_1Map-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">shared::Map Class Reference</div>  </div>
@@ -81,20 +80,134 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8d3cd2982cdf2c4fa7edb6556e4cd0d6"><td class="memItemLeft" align="right" valign="top"><a id="a8d3cd2982cdf2c4fa7edb6556e4cd0d6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getHexagonElement</b> ()</td></tr>
-<tr class="separator:a8d3cd2982cdf2c4fa7edb6556e4cd0d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a9fd5b41028abdd0504b7846b00c3435d"><td class="memItemLeft" align="right" valign="top"><a id="a9fd5b41028abdd0504b7846b00c3435d"></a>
-std::vector&lt; <a class="el" href="classshared_1_1Hexagon.html">Hexagon</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mapOfTheGame</b></td></tr>
-<tr class="separator:a9fd5b41028abdd0504b7846b00c3435d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a252e9725f6aa607ec609082667b023cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshared_1_1Map.html#a252e9725f6aa607ec609082667b023cf">Map</a> (unsigned width=15, unsigned height=11)</td></tr>
+<tr class="memdesc:a252e9725f6aa607ec609082667b023cf"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classshared_1_1Map.html" title="class Map -">Map</a> constructor.  <a href="classshared_1_1Map.html#a252e9725f6aa607ec609082667b023cf">More...</a><br /></td></tr>
+<tr class="separator:a252e9725f6aa607ec609082667b023cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa24d36ae10419023adde9823bf808b5c"><td class="memItemLeft" align="right" valign="top"><a id="aa24d36ae10419023adde9823bf808b5c"></a>
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>getMapHeight</b> ()</td></tr>
+<tr class="separator:aa24d36ae10419023adde9823bf808b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e3a9b1335901edb566657ddea4e9e4"><td class="memItemLeft" align="right" valign="top"><a id="a53e3a9b1335901edb566657ddea4e9e4"></a>
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>getMapWidth</b> ()</td></tr>
+<tr class="separator:a53e3a9b1335901edb566657ddea4e9e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32ceca02d8e4edbd4699603e0faf77c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classshared_1_1Hexagon.html">Hexagon</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshared_1_1Map.html#a32ceca02d8e4edbd4699603e0faf77c2">operator()</a> (unsigned x, unsigned y)</td></tr>
+<tr class="memdesc:a32ceca02d8e4edbd4699603e0faf77c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator to access a specific hexagon of the map.  <a href="classshared_1_1Map.html#a32ceca02d8e4edbd4699603e0faf77c2">More...</a><br /></td></tr>
+<tr class="separator:a32ceca02d8e4edbd4699603e0faf77c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a203a3ceff0178c175a84da01914f9eb6"><td class="memItemLeft" align="right" valign="top"><a id="a203a3ceff0178c175a84da01914f9eb6"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshared_1_1Map.html#a203a3ceff0178c175a84da01914f9eb6">~Map</a> ()</td></tr>
+<tr class="memdesc:a203a3ceff0178c175a84da01914f9eb6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classshared_1_1Map.html" title="class Map -">Map</a> destructor. <br /></td></tr>
+<tr class="separator:a203a3ceff0178c175a84da01914f9eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fa0251f7a26370595aaae09a2935803"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshared_1_1Map.html#a1fa0251f7a26370595aaae09a2935803">generateRandomMap</a> (int seed)</td></tr>
+<tr class="memdesc:a1fa0251f7a26370595aaae09a2935803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to generate a random map based on Perlin Noise.  <a href="classshared_1_1Map.html#a1fa0251f7a26370595aaae09a2935803">More...</a><br /></td></tr>
+<tr class="separator:a1fa0251f7a26370595aaae09a2935803"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classshared_1_1Map.html" title="class Map -">Map</a> - </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a252e9725f6aa607ec609082667b023cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a252e9725f6aa607ec609082667b023cf">&#9670;&nbsp;</a></span>Map()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">shared::Map::Map </td>
+          <td>(</td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>width</em> = <code>15</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>height</em> = <code>11</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classshared_1_1Map.html" title="class Map -">Map</a> constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>Width of the map to instantiate </td></tr>
+    <tr><td class="paramname">height</td><td>Height of the map to instantiate </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1fa0251f7a26370595aaae09a2935803"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fa0251f7a26370595aaae09a2935803">&#9670;&nbsp;</a></span>generateRandomMap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void shared::Map::generateRandomMap </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>seed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function to generate a random map based on Perlin Noise. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">seed</td><td>Seed to use for the random generation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a32ceca02d8e4edbd4699603e0faf77c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32ceca02d8e4edbd4699603e0faf77c2">&#9670;&nbsp;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classshared_1_1Hexagon.html">Hexagon</a> * shared::Map::operator() </td>
+          <td>(</td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Operator to access a specific hexagon of the map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td><a class="el" href="classX.html">X</a> coordinate of the hexagon </td></tr>
+    <tr><td class="paramname">y</td><td>Y coordinate of the hexagon </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the hexagon </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/shared/<a class="el" href="Map_8hpp_source.html">Map.hpp</a></li>
+<li>src/shared/Map.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

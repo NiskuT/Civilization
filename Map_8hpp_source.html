@@ -77,27 +77,42 @@ $(function() {
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>shared {</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">class </span>Hexagon;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;}</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;Hexagon.hpp&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>shared {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classshared_1_1Map.html">   16</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classshared_1_1Map.html">Map</a> {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="comment">// Associations</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="comment">// Attributes</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    std::vector&lt;Hexagon&gt; mapOfTheGame;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// Operations</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">void</span> getHexagonElement ();</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// Setters and Getters</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  };</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;};</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassshared_1_1Map_html"><div class="ttname"><a href="classshared_1_1Map.html">shared::Map</a></div><div class="ttdoc">class Map -</div><div class="ttdef"><b>Definition:</b> Map.hpp:16</div></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="keyword">class </span>PerlinNoise;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;FieldLevel.hpp&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;PerlinNoise.hpp&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;Hexagon.hpp&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>shared {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classshared_1_1Map.html">   19</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classshared_1_1Map.html">Map</a> {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="comment">// Associations</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// Attributes</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    std::vector&lt;Hexagon*&gt; mapOfTheGame;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">unsigned</span> height     = 0;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">unsigned</span> width     = 0;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// Operations</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="classshared_1_1Map.html#a252e9725f6aa607ec609082667b023cf">Map</a> (<span class="keywordtype">unsigned</span> width = 15, <span class="keywordtype">unsigned</span> height = 11);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">unsigned</span> getMapHeight ();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">unsigned</span> getMapWidth ();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="classshared_1_1Hexagon.html">Hexagon</a>* <a class="code" href="classshared_1_1Map.html#a32ceca02d8e4edbd4699603e0faf77c2">operator() </a>(<span class="keywordtype">unsigned</span> x, <span class="keywordtype">unsigned</span> y);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="classshared_1_1Map.html#a203a3ceff0178c175a84da01914f9eb6">~Map</a> ();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classshared_1_1Map.html#a1fa0251f7a26370595aaae09a2935803">generateRandomMap</a> (<span class="keywordtype">int</span> seed);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">// Setters and Getters</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  };</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;};</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassshared_1_1Hexagon_html"><div class="ttname"><a href="classshared_1_1Hexagon.html">shared::Hexagon</a></div><div class="ttdoc">class Hexagon -</div><div class="ttdef"><b>Definition:</b> Hexagon.hpp:16</div></div>
+<div class="ttc" id="aclassshared_1_1Map_html"><div class="ttname"><a href="classshared_1_1Map.html">shared::Map</a></div><div class="ttdoc">class Map -</div><div class="ttdef"><b>Definition:</b> Map.hpp:19</div></div>
+<div class="ttc" id="aclassshared_1_1Map_html_a1fa0251f7a26370595aaae09a2935803"><div class="ttname"><a href="classshared_1_1Map.html#a1fa0251f7a26370595aaae09a2935803">shared::Map::generateRandomMap</a></div><div class="ttdeci">void generateRandomMap(int seed)</div><div class="ttdoc">Function to generate a random map based on Perlin Noise.</div><div class="ttdef"><b>Definition:</b> Map.cpp:41</div></div>
+<div class="ttc" id="aclassshared_1_1Map_html_a203a3ceff0178c175a84da01914f9eb6"><div class="ttname"><a href="classshared_1_1Map.html#a203a3ceff0178c175a84da01914f9eb6">shared::Map::~Map</a></div><div class="ttdeci">~Map()</div><div class="ttdoc">Map destructor.</div><div class="ttdef"><b>Definition:</b> Map.cpp:138</div></div>
+<div class="ttc" id="aclassshared_1_1Map_html_a252e9725f6aa607ec609082667b023cf"><div class="ttname"><a href="classshared_1_1Map.html#a252e9725f6aa607ec609082667b023cf">shared::Map::Map</a></div><div class="ttdeci">Map(unsigned width=15, unsigned height=11)</div><div class="ttdoc">Map constructor.</div><div class="ttdef"><b>Definition:</b> Map.cpp:14</div></div>
+<div class="ttc" id="aclassshared_1_1Map_html_a32ceca02d8e4edbd4699603e0faf77c2"><div class="ttname"><a href="classshared_1_1Map.html#a32ceca02d8e4edbd4699603e0faf77c2">shared::Map::operator()</a></div><div class="ttdeci">Hexagon * operator()(unsigned x, unsigned y)</div><div class="ttdoc">Operator to access a specific hexagon of the map.</div><div class="ttdef"><b>Definition:</b> Map.cpp:123</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

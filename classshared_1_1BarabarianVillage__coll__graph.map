@@ -1,5 +1,4 @@
 <map id="shared::BarabarianVillage" name="shared::BarabarianVillage">
-<area shape="rect" id="node1" title="class BarabarianVillage &#45;" alt="" coords="5,171,176,197"/>
-<area shape="rect" id="node2" href="$classshared_1_1Element.html" title="class Element &#45; Dynamic allocation" alt="" coords="27,5,144,32"/>
-<area shape="rect" id="node3" href="$classshared_1_1Barbarian.html" title="class Barbarian &#45;" alt="" coords="107,81,231,108"/>
+<area shape="rect" id="node1" title="class BarabarianVillage &#45;" alt="" coords="5,95,176,121"/>
+<area shape="rect" id="node2" href="$classshared_1_1Barbarian.html" title="class Barbarian &#45;" alt="" coords="29,5,153,32"/>
 </map>

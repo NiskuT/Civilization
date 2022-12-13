@@ -79,24 +79,27 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">class </span>Element;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;}</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>shared {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;FieldLevel.hpp&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classshared_1_1Hexagon.html">   14</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classshared_1_1Hexagon.html">Hexagon</a> {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="comment">// Attributes</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    std::vector&lt;Element*&gt; listElements;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classshared_1_1Hexagon.html#ae04cd3a5f98f92cf02ccbb26c5b19891">   19</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classshared_1_1Hexagon.html#ae04cd3a5f98f92cf02ccbb26c5b19891">level</a>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//else = type</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classshared_1_1Hexagon.html#ac34969a6ed3a4c96caf16eaa0d3b489f">   22</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classshared_1_1Hexagon.html#ac34969a6ed3a4c96caf16eaa0d3b489f">isANaturalWonder</a>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">// Setters and Getters</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  };</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassshared_1_1Hexagon_html"><div class="ttname"><a href="classshared_1_1Hexagon.html">shared::Hexagon</a></div><div class="ttdoc">class Hexagon -</div><div class="ttdef"><b>Definition:</b> Hexagon.hpp:14</div></div>
-<div class="ttc" id="aclassshared_1_1Hexagon_html_ac34969a6ed3a4c96caf16eaa0d3b489f"><div class="ttname"><a href="classshared_1_1Hexagon.html#ac34969a6ed3a4c96caf16eaa0d3b489f">shared::Hexagon::isANaturalWonder</a></div><div class="ttdeci">int isANaturalWonder</div><div class="ttdoc">0=NO</div><div class="ttdef"><b>Definition:</b> Hexagon.hpp:22</div></div>
-<div class="ttc" id="aclassshared_1_1Hexagon_html_ae04cd3a5f98f92cf02ccbb26c5b19891"><div class="ttname"><a href="classshared_1_1Hexagon.html#ae04cd3a5f98f92cf02ccbb26c5b19891">shared::Hexagon::level</a></div><div class="ttdeci">int level</div><div class="ttdoc">From 0 to 5: plain, mountains...</div><div class="ttdef"><b>Definition:</b> Hexagon.hpp:19</div></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>shared {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classshared_1_1Hexagon.html">   16</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classshared_1_1Hexagon.html">Hexagon</a> {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="comment">// Attributes</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    std::vector&lt;Element*&gt; listElements;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    FieldLevel level;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// Operations</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    FieldLevel getFieldLevel ();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">bool</span> getElements (std::vector&lt;Element*&gt;* fieldElement);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">void</span> setFieldType (FieldLevel field);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// Setters and Getters</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  };</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;};</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassshared_1_1Hexagon_html"><div class="ttname"><a href="classshared_1_1Hexagon.html">shared::Hexagon</a></div><div class="ttdoc">class Hexagon -</div><div class="ttdef"><b>Definition:</b> Hexagon.hpp:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

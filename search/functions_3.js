@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gamewindow_2708',['GameWindow',['../classclient_1_1GameWindow.html#a1b064394880a240c6cc66cfe02e2652a',1,'client::GameWindow']]]
+  ['endofroundactions_2722',['endOfRoundActions',['../classserver_1_1GameEngine.html#ad76c416c983f85f1c7a8448212ef46c0',1,'server::GameEngine']]]
 ];
