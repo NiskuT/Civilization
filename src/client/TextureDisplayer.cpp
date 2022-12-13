@@ -19,43 +19,26 @@ void TextureDisplayer::addMapSprite()
     sprites.push_back(std::move(sprite));
 }
 
-void TextureDisplayer::setMapSpritePosition(int index, int rank)
+void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, int yOffset, std::array<int, 2> hexSize)
 {
-    int xCoordonate = rank % 15;
-    int yCoordonate = rank / 15;
+    xOffset += hexSize.at(0) != 0 ? (hexSize.at(0) - this->sprites.at(index)->getLocalBounds().width) / 2 : 0;
+    yOffset += hexSize.at(1) != 0 ? (hexSize.at(1) - this->sprites.at(index)->getLocalBounds().height) / 2 : 0;
 
-    if (yCoordonate%2==0) {
-        if (xCoordonate !=14 ){
-            this->sprites[index]->setPosition(sf::Vector2f(41 + xCoordonate * 82, yCoordonate + yCoordonate * 63));
+    if (y%2==0) {
+        if (x !=14 ){
+            x = xOffset + 41 + x * 82;
+            y = yOffset + y + y * 63;
         }
         else{
-            this->sprites[index]->setPosition(sf::Vector2f(-100, -100));
+            x = -100;
+            y = -100;
         }
     }
     else {
-        this->sprites[index]->setPosition(sf::Vector2f(xCoordonate * 82, yCoordonate + yCoordonate * 63));
+        x = xOffset + x * 82;
+        y = yOffset + y + y * 63;
     }
-}
-
-void TextureDisplayer::setElementSpritePosition(int index, int rank, std::array<int, 2> hexSize)
-{
-    int xCoordonate = rank % 15;
-    int yCoordonate = rank / 15;
-
-    int xOffset = (hexSize.at(0) - this->sprites[index]->getLocalBounds().width) / 2;
-    int yOffset = (hexSize.at(1) - this->sprites[index]->getLocalBounds().height) / 2;
-
-    if (yCoordonate%2==0) {
-        if (xCoordonate !=14 ){
-            this->sprites[index]->setPosition(sf::Vector2f(xOffset + 41 + xCoordonate * 82, yOffset + yCoordonate + yCoordonate * 63));
-        }
-        else{
-            this->sprites[index]->setPosition(sf::Vector2f(-100, -100));
-        }
-    }
-    else {
-        this->sprites[index]->setPosition(sf::Vector2f(xOffset + xCoordonate * 82, yOffset +  yCoordonate + yCoordonate * 63));
-    }
+    this->sprites.at(index)->setPosition(sf::Vector2f(x, y));
 }
 
 unsigned TextureDisplayer::getSize()

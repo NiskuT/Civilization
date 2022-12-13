@@ -3,8 +3,8 @@
 #include <fstream>
 #include <json/json.h>
 
-#define MAP_X_OFFSET 0
-#define MAP_Y_OFFSET 0
+#define MAP_X_OFFSET 100
+#define MAP_Y_OFFSET 10
 
 namespace client
 {
@@ -45,7 +45,7 @@ namespace client
     void GameWindow::clientWindow()
     {
 
-        loadTexture();
+        loadMapTexture();
 
         while (clientGameWindow.isOpen())
         {
@@ -60,7 +60,7 @@ namespace client
         }
     }
 
-    void GameWindow::loadTexture()
+    void GameWindow::loadMapTexture()
     {
 
         std::array<int, 165> level =
@@ -98,7 +98,7 @@ namespace client
 
             // textureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
 
-            textureToDisplay.at(level[i]).setMapSpritePosition(indexSprite, i);
+            textureToDisplay.at(level[i]).setSpritePosition(indexSprite, i % 15, i / 15, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
         }
 
         std::array<int, 2> hexSize = {textureToDisplay.at(0).getWidth(), textureToDisplay.at(0).getHeight()};
@@ -128,7 +128,7 @@ namespace client
 
             int rank = data[index]["x"].asInt() * 15 + data[index]["y"].asInt();
 
-            textureToDisplay.back().setElementSpritePosition(0, rank, hexSize);
+            textureToDisplay.back().setSpritePosition(0, rank % 15, rank / 15, MAP_X_OFFSET, MAP_Y_OFFSET, hexSize);
         }
     }
 
