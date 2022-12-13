@@ -37,7 +37,7 @@ function(generate_dia_header dia_file namespace)
       OUTPUT ${stamp}
       COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/include/${namespace}.hpp
       COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/include/${namespace}/*.hpp
-      COMMAND ${CMAKE_COMMAND} -E env "PATH=\"%PATH%;${CMAKE_BINARY_DIR}/lib\"" $<TARGET_FILE:dia2code> -ns ${namespace} -d ${output_dir} -ext hpp -t cpp ${dia_file}
+      COMMAND ${CMAKE_COMMAND} -E env "PATH=\"%PATH%;${CMAKE_BINARY_DIR}/lib/xml\"" $<TARGET_FILE:dia2code> -ns ${namespace} -d ${output_dir} -ext hpp -t cpp ${dia_file}
       COMMAND ${CMAKE_COMMAND} -E touch ${stamp}
       DEPENDS ${dia_file}
       )
