@@ -4,7 +4,6 @@
 
 int main(int argc, char *argv[])
 {
-
     std::string arg;
     if (argc != 2)
     {
