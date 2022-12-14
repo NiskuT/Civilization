@@ -1,7 +1,6 @@
 #include <iostream>
 #include <client.hpp>
 #include <shared.hpp>
-#include <SFML/Graphics.hpp>
 
 int main(int argc, char *argv[])
 {
