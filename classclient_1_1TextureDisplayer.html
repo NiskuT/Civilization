@@ -67,6 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classclient_1_1TextureDisplayer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">client::TextureDisplayer Class Reference</div>  </div>
@@ -105,6 +106,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af1ba3c6f7b96d527ce194f6bea3841f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1TextureDisplayer.html#af1ba3c6f7b96d527ce194f6bea3841f8">setSpritePosition</a> (int index, int x, int y, int xOffset, int yOffset, std::array&lt; int, 2 &gt; hexSize)</td></tr>
 <tr class="memdesc:af1ba3c6f7b96d527ce194f6bea3841f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a particular Sprite Position.  <a href="classclient_1_1TextureDisplayer.html#af1ba3c6f7b96d527ce194f6bea3841f8">More...</a><br /></td></tr>
 <tr class="separator:af1ba3c6f7b96d527ce194f6bea3841f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c12787fdafe2ba3807cd8e5940ae53a"><td class="memItemLeft" align="right" valign="top"><a id="a4c12787fdafe2ba3807cd8e5940ae53a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setHudSpritePosition</b> (float scale, int windowLength, int windowWidth, int rotation=0)</td></tr>
+<tr class="separator:a4c12787fdafe2ba3807cd8e5940ae53a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a676fd52cd9e3ca2c86a3e674e32a198a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1TextureDisplayer.html#a676fd52cd9e3ca2c86a3e674e32a198a">mooveSpritePosition</a> (int xOffset, int yOffset)</td></tr>
+<tr class="memdesc:a676fd52cd9e3ca2c86a3e674e32a198a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the sprite Position.  <a href="classclient_1_1TextureDisplayer.html#a676fd52cd9e3ca2c86a3e674e32a198a">More...</a><br /></td></tr>
+<tr class="separator:a676fd52cd9e3ca2c86a3e674e32a198a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a1fd1245a0bb5591e80b89cd5bdaf6384"><td class="memItemLeft" align="right" valign="top"><a id="a1fd1245a0bb5591e80b89cd5bdaf6384"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="separator:a1fd1245a0bb5591e80b89cd5bdaf6384"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1TextureDisplayer.html" title="class TextureDisplayer -">TextureDisplayer</a> - </p>
@@ -129,6 +142,44 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>is the position of the sprite in the textureDisplayer list of Sprite </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a676fd52cd9e3ca2c86a3e674e32a198a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a676fd52cd9e3ca2c86a3e674e32a198a">&#9670;&nbsp;</a></span>mooveSpritePosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void client::TextureDisplayer::mooveSpritePosition </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>xOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>yOffset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Move the sprite Position. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>is the index position of the sprite </td></tr>
+    <tr><td class="paramname">xOffset</td><td>is the <a class="el" href="classX.html">X</a> offset of the map in the screen </td></tr>
+    <tr><td class="paramname">yOffset</td><td>is the Y offset of the map in the screen </td></tr>
   </table>
   </dd>
 </dl>
@@ -188,6 +239,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set a particular Sprite Position. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">index</td><td>is the index position of the sprite </td></tr>
     <tr><td class="paramname">x</td><td>is the <a class="el" href="classX.html">X</a> position of the sprite in the Map </td></tr>
     <tr><td class="paramname">y</td><td>is the Y position of the sprite in the Map </td></tr>
     <tr><td class="paramname">xOffset</td><td>is the <a class="el" href="classX.html">X</a> offset of the map in the screen </td></tr>

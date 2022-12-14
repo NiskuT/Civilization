@@ -108,18 +108,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a713871c6c3719a40e5a35a5326c5d41f">loadMapTexture</a> ()</td></tr>
 <tr class="memdesc:a713871c6c3719a40e5a35a5326c5d41f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all the textures of the map. <br /></td></tr>
 <tr class="separator:a713871c6c3719a40e5a35a5326c5d41f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1314448989a94d8d1127f3df02c1ecac"><td class="memItemLeft" align="right" valign="top"><a id="a1314448989a94d8d1127f3df02c1ecac"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>loadHudTexture</b> ()</td></tr>
+<tr class="separator:a1314448989a94d8d1127f3df02c1ecac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a2c96e569554c9e1bf8c643929fb65234"><td class="memItemLeft" align="right" valign="top"><a id="a2c96e569554c9e1bf8c643929fb65234"></a>
 sf::RenderWindow&#160;</td><td class="memItemRight" valign="bottom"><b>clientGameWindow</b></td></tr>
 <tr class="separator:a2c96e569554c9e1bf8c643929fb65234"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a3375f70a4b1162c5b4f04e47a76dd2"><td class="memItemLeft" align="right" valign="top"><a id="a8a3375f70a4b1162c5b4f04e47a76dd2"></a>
+std::unique_ptr&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>backgroundTexture</b></td></tr>
+<tr class="separator:a8a3375f70a4b1162c5b4f04e47a76dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cee851fe9948f42c48db85b43dfa480"><td class="memItemLeft" align="right" valign="top"><a id="a4cee851fe9948f42c48db85b43dfa480"></a>
+std::vector&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mapTextureToDisplay</b></td></tr>
+<tr class="separator:a4cee851fe9948f42c48db85b43dfa480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ab44818a65b3143f9c8a7b68efb1a15"><td class="memItemLeft" align="right" valign="top"><a id="a4ab44818a65b3143f9c8a7b68efb1a15"></a>
+std::vector&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hudTextureToDisplay</b></td></tr>
+<tr class="separator:a4ab44818a65b3143f9c8a7b68efb1a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc69680e60bcf8632559e0af31ceb397"><td class="memItemLeft" align="right" valign="top"><a id="adc69680e60bcf8632559e0af31ceb397"></a>
+std::vector&lt; <a class="el" href="classclient_1_1PriorityCardStruct.html">PriorityCardStruct</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>priorityCards</b></td></tr>
+<tr class="separator:adc69680e60bcf8632559e0af31ceb397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1e7c2824712bc110f1a2c720625880b"><td class="memItemLeft" align="right" valign="top"><a id="ac1e7c2824712bc110f1a2c720625880b"></a>
+std::vector&lt; <a class="el" href="classclient_1_1ActionCardStruct.html">ActionCardStruct</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>actionCards</b></td></tr>
+<tr class="separator:ac1e7c2824712bc110f1a2c720625880b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d5351344023bdd039bf93413dfcf045"><td class="memItemLeft" align="right" valign="top"><a id="a6d5351344023bdd039bf93413dfcf045"></a>
 <a class="el" href="classshared_1_1Map.html">shared::Map</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mapShared</b></td></tr>
 <tr class="separator:a6d5351344023bdd039bf93413dfcf045"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fb12fd7417872a9e17c78581dcb5c8a"><td class="memItemLeft" align="right" valign="top"><a id="a4fb12fd7417872a9e17c78581dcb5c8a"></a>
-std::vector&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>textureToDisplay</b></td></tr>
-<tr class="separator:a4fb12fd7417872a9e17c78581dcb5c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dbed87aa2526b6cc6fd72193946b51c"><td class="memItemLeft" align="right" valign="top"><a id="a9dbed87aa2526b6cc6fd72193946b51c"></a>
+sf::Cursor&#160;</td><td class="memItemRight" valign="bottom"><b>clientCursor</b></td></tr>
+<tr class="separator:a9dbed87aa2526b6cc6fd72193946b51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1GameWindow.html" title="class GameWindow -">GameWindow</a> - </p>
