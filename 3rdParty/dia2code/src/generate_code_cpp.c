@@ -56,7 +56,7 @@ int is_scalar_type(char* name) {
         return 1;
     }    
     umlclassnode *ref = find_by_name (gb->classlist, name);
-    if (ref && is_enum_stereo(ref->key->stereotype)) {
+    if (ref && (is_enum_stereo(ref->key->stereotype) || is_enum_stereo2(ref->key->stereotype))) {
         return 1;
     }
     return 0;
@@ -103,8 +103,9 @@ pass_by_reference (umlclass *cl)
             return 0;
         return pass_by_reference (ref->key);
     }
-    return (!is_const_stereo (st) &&
-            !is_enum_stereo (st));
+    return (!is_const_stereo (st) 
+            && !is_enum_stereo (st) 
+            && !is_enum_stereo2 (st));
 }
 
 static int
@@ -119,6 +120,7 @@ is_oo_class (umlclass *cl)
     return (!is_const_stereo (st) &&
             !is_typedef_stereo (st) &&
             !is_enum_stereo (st) &&
+            !is_enum_stereo2 (st) &&
             !is_struct_stereo (st) &&
             !eq (st, "CORBAUnion") &&
             !eq (st, "CORBAException"));
@@ -610,6 +612,25 @@ gen_decl (declaration *d)
         indentlevel--;
         print ("};\n\n");
 
+    } else if (is_enum_stereo2 (stype)) {
+        print ("enum class %s {\n", name);
+        indentlevel++;
+        while (umla != NULL) {
+            char *literal = umla->key.name;
+            check_umlattr (&umla->key, name);
+            if (strlen (umla->key.type) > 0)
+                fprintf (stderr, "%s/%s: ignoring type\n", name, literal);
+            print ("%s", literal);
+            if (strlen (umla->key.value) > 0)
+                print (" = %s", umla->key.value);
+            if (umla->next)
+                emit (",");
+            emit ("\n");
+            umla = umla->next;
+        }
+        indentlevel--;
+        print ("};\n\n");
+
     } else if (is_struct_stereo (stype)) {
         print ("struct %s {\n", name);
         indentlevel++;
@@ -789,9 +810,7 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            si->random = 1;
        }
        if (!si->sfmlGraphics 
-       && (strstr(name,"sf::RenderWindow")
-       ||  strstr(name,"sf::VertexArray")
-       ||  strstr(name,"sf::Texture"))) {
+       && strstr(name,"sf::")) {
            print ("#include <SFML/Graphics.hpp>\n");
            si->sfmlGraphics = 1;
        }       
