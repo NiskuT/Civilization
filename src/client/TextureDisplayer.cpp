@@ -10,6 +10,14 @@ TextureDisplayer::TextureDisplayer(const std::string& filename)
 		throw std::runtime_error("Holder::load - Failed to load " + filename);
 
     texture = std::move(resource);
+
+    int nameStartPosition = 0;
+    for(unsigned i = 0; i < filename.size(); i++){
+        if (filename[i] == ('/')){
+            nameStartPosition = i;
+        }
+    }
+    this->type = filename.substr(nameStartPosition + 1, filename.size() - nameStartPosition - 5);
 }
 
 /*!
@@ -24,6 +32,7 @@ void TextureDisplayer::addMapSprite()
 
 /*!
  * \brief Set a particular Sprite Position
+ * @param index is the index position of the sprite
  * @param x is the X position of the sprite in the Map
  * @param y is the Y position of the sprite in the Map
  * @param xOffset is the X offset of the map in the screen
@@ -32,26 +41,89 @@ void TextureDisplayer::addMapSprite()
  */
 void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, int yOffset, std::array<int, 2> hexSize)
 {
-    xOffset += hexSize.at(0) != 0 ? (hexSize.at(0) - this->sprites.at(index)->getLocalBounds().width) / 2 : 0;
-    yOffset += hexSize.at(1) != 0 ? (hexSize.at(1) - this->sprites.at(index)->getLocalBounds().height) / 2 : 0;
+    xOffset += hexSize[0] != 0 ? (hexSize[0] - this->sprites.at(index)->getLocalBounds().width) / 2 : 0;
+    yOffset += hexSize[1] != 0 ? (hexSize[1] - this->sprites.at(index)->getLocalBounds().height) / 2 : 0;
+
+    int xHexSize = hexSize[0] != 0 ? hexSize[0] : this->sprites.at(index)->getLocalBounds().width;
+    int yHexSize = hexSize[1] != 0 ? hexSize[1] : this->sprites.at(index)->getLocalBounds().height;
 
     if (y%2==0) {
-        if (x !=14 ){
-            x = xOffset + 41 + x * 82;
-            y = yOffset + y + y * 63;
-        }
+        //if (x !=14 ){
+            // divide by 2 to have the good offset & -1 because width count the size from 1
+            x = xOffset + (int)(xHexSize)/2  + x * (xHexSize - 1);
+
+            // multiply by 3/4 to not count the supperposition of hexagon & -1 because height count the size from 1
+            y = yOffset + y + y * (yHexSize - 1) * 3 / 4;
+        /*}
         else{
             x = -100;
             y = -100;
-        }
+        }*/
     }
     else {
-        x = xOffset + x * 82;
-        y = yOffset + y + y * 63;
+        x = xOffset + x * (xHexSize - 1);
+        y = yOffset + y + y * (yHexSize - 1) * 3 / 4;
     }
     this->sprites.at(index)->setPosition(sf::Vector2f(x, y));
 }
 
+/*!
+ * \brief Move the sprite Position
+ * @param index is the index position of the sprite
+ * @param xOffset is the X offset of the map in the screen
+ * @param yOffset is the Y offset of the map in the screen
+ */
+void TextureDisplayer::mooveSpritePosition(int xOffset, int yOffset)
+{
+    for (unsigned i = 0; i < this->sprites.size(); i++){
+        sf::Vector2f pos = this->sprites[i]->getPosition();
+        this->sprites[i]->setPosition(pos.x + xOffset, pos.y + yOffset);
+
+    }
+}
+
+void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation)
+{
+    int xPos = 0;
+    int yPos = 0;
+
+    if (this->type == "ladder") {
+        xPos = (windowLength-getWidth()*scale)/2;
+        yPos = (windowWidth-getHeight()*scale);
+    }
+
+    else if (this->type =="tech-wheel") {
+        xPos=  windowLength;
+        yPos= windowWidth;
+        sprites[0]->setOrigin(getWidth()/2, getHeight()/2);
+        sprites[0]->rotate(rotation);
+    }
+
+      else if (this->type == "barbare-wheel-0" || this->type == "barbare-wheel-1" || this->type == "barbare-wheel-2" || this->type == "barbare-wheel-3" || this->type == "barbare-wheel-4") {
+        yPos = (windowWidth-getWidth()*scale);
+        xPos= 0;
+    }
+
+    else if (this->type == "priority-card-army") {
+        int priorityCardNumber = 0;
+        float fisrtLengthOffsetScale = float(185) / float(1600); // Offset of the first priority card
+        float priorityCardOffset = float(249) / float(1600); // Offset between each card
+        float proportionWidth = float(140) / float(900);
+        xPos = priorityCardOffset*windowLength*priorityCardNumber + fisrtLengthOffsetScale*windowLength; // have to change name "prioritycard" --> it corresponds to the number of the priority card in the ladder
+        yPos = windowWidth-getHeight()*scale + proportionWidth*windowWidth; 
+    }
+
+    else if (this->type == "action-card-army") {
+        int actionCardNumber = 0;
+        float rightOffset = float(10) / float(1600);
+        float upOffset = float(900/4) / float(900);
+        xPos = windowLength - getWidth()*scale - rightOffset*windowLength;
+        yPos = upOffset*windowWidth + (getHeight()*scale+10)*actionCardNumber;
+    }
+
+    this->sprites[0]->setScale(scale, scale);
+    this->sprites[0]->setPosition(xPos, yPos);
+}
 /*!
  * \brief Get the number of sprite in a TextureDisplayer
  */
@@ -59,7 +131,6 @@ unsigned TextureDisplayer::getSize()
 {    
     return sprites.size();
 }
-
 /*!
  * \brief Get a particular sprite
  *
@@ -69,7 +140,6 @@ sf::Sprite& TextureDisplayer::getSprite(unsigned index)
 {    
     return *sprites[index];
 }
-
 /*!
  * \brief Get the Width of the texture
  */
@@ -77,7 +147,6 @@ int TextureDisplayer::getWidth()
 {    
     return getSize() > 0 ? this->sprites[0]->getLocalBounds().width : 0;
 }
-
 /*!
  * \brief Get the Height of the texture
  */
