@@ -11,6 +11,8 @@
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
 
+#define TURN_NUMBER 2
+
 namespace client
 {
 
@@ -24,225 +26,209 @@ GameWindow::GameWindow() {
     clientGameWindow.setPosition(sf::Vector2i(0, 0));
 }
 
-/*!
- * \brief Display all the different variable in the screen
- */
-void GameWindow::displayWindow(int numberTurn) {
+    /*!
+    * \brief Display all the different variable in the screen
+    */
+    void GameWindow::displayWindow() {
 
-    clientGameWindow.clear(sf::Color::Blue);
+        clientGameWindow.clear(sf::Color::Blue);
 
-    clientGameWindow.draw(*backgroundTexture->getSprite(0));
+        clientGameWindow.draw(backgroundTexture->getSprite(0));
 
-    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ ){
+        for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ ){
 
-        for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++ ){
+            for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++ ){
 
-            clientGameWindow.draw(*mapTextureToDisplay[i].getSprite(j));
+                clientGameWindow.draw(mapTextureToDisplay[i].getSprite(j));
+            }
         }
+
+        clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER%5).getSprite(0));
+        
+        for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ ){
+
+            for(unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++ ){
+
+                clientGameWindow.draw(hudTextureToDisplay[i].getSprite(j));
+            }
+        }
+        clientGameWindow.display();
     }
 
-    clientGameWindow.draw(*hudTextureToDisplay.at(numberTurn%5).getSprite(0));
-    
-    for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ ){
+    /*!
+     * \brief Loop that look for events to happend and call displayWindow()
+     */
+    void GameWindow::clientWindow()
+    {
 
-        for(unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++ ){
+        int turn = 0;
+        int mooveMode = false;
 
-            clientGameWindow.draw(*hudTextureToDisplay[i].getSprite(j));
-        }
-    }
+        std::array<int, 2> clickStartingPoint = {0, 0};
+        std::array<int, 2> newMapOffset = {0, 0};
 
-    clientGameWindow.display();
-}
+        while (clientGameWindow.isOpen()){
 
-/*!
- * \brief Loop that look for events to happend and call displayWindow()
- */
-void GameWindow::clientWindow() {
-
-    int turn = 0;
-    int mooveMode = false;
-
-    std::array<int, 2> clickStartingPoint = {0, 0};
-    std::array<int, 2> newMapOffset = {0, 0};
-
-    while (clientGameWindow.isOpen()){
-
-        // handle events
-        sf::Event event;
-        while (clientGameWindow.pollEvent(event))
-        {
-            switch (event.type)
+            // handle events
+            sf::Event event;
+            while (clientGameWindow.pollEvent(event))
             {
-            case sf::Event::MouseButtonPressed:
-            
-                if (mooveMode) 
-                    clickStartingPoint = {sf::Mouse::getPosition(clientGameWindow).x, sf::Mouse::getPosition(clientGameWindow).y};
-                
-                break;
-
-            case sf::Event::MouseButtonReleased:
-            
-                if (mooveMode){
-                        
-                    newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint[0],
-                                    sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint[1]};
-
-                    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-                        mapTextureToDisplay[i].mooveSpritePosition(newMapOffset[0], newMapOffset[1]);
-
-                }
-
-                break;
-
-            case sf::Event::KeyPressed:
-
-                switch (event.key.code)
+                switch (event.type)
                 {
-                case sf::Keyboard::M:
+                case sf::Event::MouseButtonPressed:
 
+                    if (mooveMode) 
+                        clickStartingPoint = {sf::Mouse::getPosition(clientGameWindow).x, sf::Mouse::getPosition(clientGameWindow).y};
+                    break;
+
+                case sf::Event::MouseButtonReleased:
+                
                     if (mooveMode){
-                        mooveMode = false;
-                        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-                            clientGameWindow.setMouseCursor(clientCursor);
-                    } 
-                    else {
-                        mooveMode = true;
-                        if (clientCursor.loadFromSystem(sf::Cursor::Hand)) 
-                            clientGameWindow.setMouseCursor(clientCursor);
+
+                        newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint[0],
+                                        sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint[1]};
+
+                        for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                            mapTextureToDisplay[i].mooveSpritePosition(newMapOffset[0], newMapOffset[1]);
+
                     }
+
+                    break;
+
+                case sf::Event::KeyPressed:
+
+                    switch (event.key.code)
+                    {
+                    case sf::Keyboard::M:
+
+                        if (mooveMode){
+                            mooveMode = false;
+                            if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
+                                clientGameWindow.setMouseCursor(clientCursor);
+                        } 
+                        else {
+                            mooveMode = true;
+                            if (clientCursor.loadFromSystem(sf::Cursor::Hand)) 
+                                clientGameWindow.setMouseCursor(clientCursor);
+                        }
+                        break;
+
+                    default:
+                        break;
+                    }
+                    break;
+
+                case sf::Event::Closed:
+                    clientGameWindow.close();
                     break;
 
                 default:
                     break;
                 }
-                break;
-
-            case sf::Event::Closed:
-                clientGameWindow.close();
-                break;
-
-            default:
-                break;
             }
+            
+            // draw the map
+            if (turn == 0) {
+                loadMapTexture();
+                loadHudTexture();
+                turn += 1;
+            }
+            displayWindow();
         }
-        
-        // draw the map
-        if (turn == 0) {
-            loadMapTexture();
-            loadHudTexture();
-            turn += 1;
-        }
-        displayWindow(turn);
     }
-}
 
-/*!
- * \brief Load all the textures of the map
- */
-void GameWindow::loadMapTexture() {
-
-    std::array<int, MAP_WIDTH * MAP_HEIGHT> level =
+    /*!
+    * \brief Load all the textures of the map
+    */
+    void GameWindow::loadMapTexture() 
     {
-        0, 0, 5, 4, 4, 2, 5, 2, 1, 2, 5, 0, 0, 0, 0,
-        0, 0, 0, 5, 0, 1, 5, 5, 5, 5, 1, 1, 0, 0, 0, 
-        0, 0, 0, 3, 0, 1, 5, 0, 1, 1, 3, 4, 0, 0, 0, 
-        0, 0, 0, 0, 1, 2, 5, 3, 2, 3, 1, 4, 0, 0, 0, 
-        0, 0, 0, 0, 4, 5, 5, 2, 3, 0, 3, 2, 0, 0, 0, 
-        0, 0, 0, 0, 2, 5, 1, 3, 3, 2, 2, 5, 0, 0, 0, 
-        0, 0, 5, 1, 2, 1, 5, 3, 1, 5, 2, 5, 4, 0, 0,
-        0, 0, 0, 1, 2, 0, 4, 2, 5, 3, 1, 4, 5, 0, 0, 
-        0, 0, 0, 0, 2, 0, 5, 4, 2, 0, 0, 3, 2, 2, 0, 
-        0, 0, 0, 0, 1, 1, 5, 3, 0, 5, 2, 4, 2, 2, 0, 
-        0, 0, 0, 0, 0, 1, 5, 5, 0, 1, 0, 0, 4, 2, 0
-    };
 
-    std::string hexagonImgPath = "../ressources/img/map/field-";
-    std::array<std::string, 12> mapField =  {"water", "grassland", "hill", "forest", "desert", "mountain",
-                                            "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
-                                            "wonder-messa", "wonder-pantanal", "wonder-volcanic"
-                                            };
+        mapShared.generateRandomMap(123456789);
 
-    for(unsigned i {0}; i < mapField.size(); i++){
+        std::string hexagonImgPath = "../ressources/img/map/field-";
+        std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
+                                                "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
+                                                "wonder-messa", "wonder-pantanal", "wonder-volcanic"};
 
-        std::string mapElementPath = hexagonImgPath + mapField[i] + ".png";
-        mapTextureToDisplay.emplace_back(mapElementPath);        
+        for (unsigned i{0}; i < mapField.size(); i++)
+        {
+            std::string mapElementPath = hexagonImgPath + mapField.at(i) + ".png";
+            mapTextureToDisplay.emplace_back(mapElementPath);
+        }
+
+        for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
+        {
+            for (unsigned j = 0; j < mapShared.getMapWidth(); j++)
+            {
+                int indexSprite = mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).getSize();
+                mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).addMapSprite();
+                mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).setSpritePosition(indexSprite, j, i, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
+            }
+
+        }
+
+        std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
+
+        std::ifstream file("../ressources/img/map/files.json");
+        // check is file is correctly open
+        if (!file.is_open())
+        {
+            std::cout << "Error while opening json ressources file" << std::endl;
+            exit(1);
+        }
+        std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+        std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+        Json::Value obj;
+        std::string errors;
+        reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
+
+        const Json::Value &data = obj["data"];
+
+        for (unsigned index = 0; index < data.size(); ++index)
+        {
+
+            mapTextureToDisplay.emplace_back(data[index]["path"].asString());
+
+            mapTextureToDisplay.back().addMapSprite();
+
+            mapTextureToDisplay.back().setSpritePosition(0, data[index]["y"].asInt(), data[index]["x"].asInt(), MAP_X_OFFSET, MAP_Y_OFFSET, hexSize);
+        }
     }
 
-    for(int i = 0; i < MAP_WIDTH * MAP_HEIGHT; i++){
+    void GameWindow::loadHudTexture() {
 
-        int indexSprite = mapTextureToDisplay.at(level[i]).getSize();
+        int rotation = 0; 
 
-        mapTextureToDisplay.at(level[i]).addMapSprite();
+        backgroundTexture = (std::unique_ptr<TextureDisplayer>) new TextureDisplayer("../ressources/img/hud/background.png");
+        backgroundTexture->addMapSprite();
+        float backgroundScale = 1/(float(backgroundTexture->getWidth())/float(WINDOW_LENGTH));
+        backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation);
 
-        //mapTextureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
+        std::ifstream file("../ressources/img/hud/files.json");
+        // check is file is correctly open
+        if (!file.is_open()) {
+            std::cout << "Error while opening json ressources file" << std::endl;
+            exit(1);
+        }
+        std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
-        mapTextureToDisplay.at(level[i]).setSpritePosition(indexSprite, i % MAP_WIDTH, i / MAP_WIDTH, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
+        std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+        Json::Value obj;
+        std::string errors;
+        reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
 
+        const Json::Value& data = obj["data"];
+
+        for (unsigned index = 0; index < data.size(); ++index) {
+
+            hudTextureToDisplay.emplace_back(data[index]["path"].asString());
+
+            hudTextureToDisplay.back().addMapSprite();
+
+            float scale = data[index]["scale"].asFloat()/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+
+            hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index]["rotation"].asInt()); 
+        }
     }
-
-    std::array<int, 2> hexSize = {mapTextureToDisplay[0].getWidth(), mapTextureToDisplay[0].getHeight()};
-
-    std::ifstream file("../ressources/img/map/files.json");
-    // check is file is correctly open
-    if (!file.is_open()) {
-        std::cout << "Error while opening json ressources file" << std::endl;
-        exit(1);
-    }
-    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-    Json::Value obj;
-    std::string errors;
-    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
-
-    const Json::Value& data = obj["data"];
-
-    for (unsigned index = 0; index < data.size(); ++index) {
-        
-        mapTextureToDisplay.emplace_back(data[index]["path"].asString());
-
-        mapTextureToDisplay.back().addMapSprite();
-
-        int rank = data[index]["x"].asInt()*15 + data[index]["y"].asInt();
-
-        mapTextureToDisplay.back().setSpritePosition(0, rank % MAP_WIDTH, rank / MAP_WIDTH, MAP_X_OFFSET, MAP_Y_OFFSET, hexSize); 
-    }
-}
-
-void GameWindow::loadHudTexture() {
-
-    int rotation = 0; 
-
-    backgroundTexture = new TextureDisplayer("../ressources/img/hud/background.png");
-    backgroundTexture->addMapSprite();
-    float backgroundScale = 1/(float(backgroundTexture->getWidth())/float(WINDOW_LENGTH));
-    backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation);
-
-   std::ifstream file("../ressources/img/hud/files.json");
-    // check is file is correctly open
-    if (!file.is_open()) {
-        std::cout << "Error while opening json ressources file" << std::endl;
-        exit(1);
-    }
-    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-    Json::Value obj;
-    std::string errors;
-    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
-
-    const Json::Value& data = obj["data"];
-
-    for (unsigned index = 0; index < data.size(); ++index) {
-
-        hudTextureToDisplay.emplace_back(data[index]["path"].asString());
-
-        hudTextureToDisplay.back().addMapSprite();
-
-        float scale = data[index]["scale"].asFloat()/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-
-        hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index]["rotation"].asInt()); 
-    }
-}
-
 }
