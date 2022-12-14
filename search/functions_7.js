@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['playturn_2727',['playTurn',['../classserver_1_1GameEngine.html#a733b2a1a5e638a318610d19562d4a590',1,'server::GameEngine']]]
+  ['operator_28_29_2739',['operator()',['../classshared_1_1Map.html#a32ceca02d8e4edbd4699603e0faf77c2',1,'shared::Map']]]
 ];
