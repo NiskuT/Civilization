@@ -1,12 +1,15 @@
 #include <client.hpp>
 #include <iostream>
 #include <fstream>
+#include <math.h>
 #include <json/json.h>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
 #define MAP_WIDTH 15
 #define MAP_HEIGHT 11
+
+#define NUMBER_OF_FIELD 12
 
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
@@ -37,22 +40,19 @@ GameWindow::GameWindow() {
 
         clientGameWindow.clear(sf::Color::Blue);
 
-        clientGameWindow.draw(backgroundTexture->getSprite(0));
+        clientGameWindow.draw(backgroundTexture->getSprite());
 
         for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ ){
-
             for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++ ){
-
                 clientGameWindow.draw(mapTextureToDisplay[i].getSprite(j));
             }
         }
 
-        clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER%5).getSprite(0));
+
+        clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER%5).getSprite());
         
         for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ ){
-
-            for(unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++ ){
-
+            for(unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++ ){            
                 clientGameWindow.draw(hudTextureToDisplay[i].getSprite(j));
             }
         }
@@ -80,9 +80,52 @@ GameWindow::GameWindow() {
                 switch (event.type)
                 {
                 case sf::Event::MouseButtonPressed:
+            
+                    clickStartingPoint = {  sf::Mouse::getPosition(clientGameWindow).x, 
+                                            sf::Mouse::getPosition(clientGameWindow).y};
 
-                    if (mooveMode) 
-                        clickStartingPoint = {sf::Mouse::getPosition(clientGameWindow).x, sf::Mouse::getPosition(clientGameWindow).y};
+                    if (!mooveMode) {
+
+                        int minimumDistance = WINDOW_LENGTH;
+                        std::array<int, 2> hexagonOnClick = {0, 0};
+                        std::array<int, 2> firstHexagonPosition = {WINDOW_LENGTH, WINDOW_WIDTH};
+
+                        sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
+                        cursorRect.left = clickStartingPoint[0];
+                        cursorRect.top = clickStartingPoint[1];
+                        cursorRect.width = 1;
+                        cursorRect.height = 1;
+
+                        bool isClickable = false;
+
+                        for(int i = 0; i < NUMBER_OF_FIELD; i++){
+
+                            for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++){
+
+                                sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
+
+                                if (firstHexagonPosition[0] > spriteBounds.left) firstHexagonPosition[0] = spriteBounds.left;
+                                if (firstHexagonPosition[1] > spriteBounds.top) firstHexagonPosition[1] = spriteBounds.top;
+
+                                if (spriteBounds.intersects(cursorRect)) {
+
+                                    isClickable = true;
+
+                                    int distance = sqrt(pow(spriteBounds.left + spriteBounds.width/2 - cursorRect.left, 2) 
+                                                      + pow(spriteBounds.top + spriteBounds.height/2 - cursorRect.top, 2));
+
+                                    if (distance < minimumDistance){
+
+                                        minimumDistance = distance;
+                                        hexagonOnClick[1] =  (int)((spriteBounds.top - firstHexagonPosition[1]))/(int)((spriteBounds.height * 3 / 4));
+                                        hexagonOnClick[0] =  (int)((spriteBounds.left - firstHexagonPosition[0])) /(int)((spriteBounds.width - 1));
+                                    }
+                                } 
+                            }
+                        }
+                        if (isClickable) std::cout << "User click on the Hex x=" << hexagonOnClick[0] << " & y=" << hexagonOnClick[1] << "\n";
+                    }
+
                     break;
 
                 case sf::Event::MouseButtonReleased:
@@ -129,15 +172,15 @@ GameWindow::GameWindow() {
                 default:
                     break;
                 }
+                
+                // draw the map
+                if (turn == 0) {
+                    loadMapTexture();
+                    loadHudTexture();
+                    turn += 1;
+                }
+                displayWindow();
             }
-            
-            // draw the map
-            if (turn == 0) {
-                loadMapTexture();
-                loadHudTexture();
-                turn += 1;
-            }
-            displayWindow();
         }
     }
 

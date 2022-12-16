@@ -17,6 +17,7 @@ TextureDisplayer::TextureDisplayer(const std::string& filename)
             nameStartPosition = i;
         }
     }
+    
     this->type = filename.substr(nameStartPosition + 1, filename.size() - nameStartPosition - 5);
 }
 
