@@ -306,6 +306,8 @@ namespace client
             priorityCards.back().level = 1;
             std::string body = priorityData[index]["text"][priorityCards.back().level].asString();
             priorityCards.back().body = (std::unique_ptr<sf::Text>) new sf::Text(body, priorityFont, 30);
+
+            //to have the text on several lines without exceeding the card
             int countEndLine = 1;
             while(priorityCards.back().body->getLocalBounds().width > priorityCards.back().texture->getWidth()-10){
                 for (int i = countEndLine*NBR_CHAR_MAX_PER_LIGNE; i > 0 ; i--){
