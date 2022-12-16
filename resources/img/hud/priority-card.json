@@ -1,0 +1,50 @@
+{
+    "data" : 
+    [
+        {
+            "type": "economy",
+            "texte": [
+                "economy 1",
+                "economy 2",
+                "economy 3",
+                "economy 4"
+            ]
+        },
+        {
+            "type": "army",
+            "texte": [
+                "army 1",
+                "army 2",
+                "army 3",
+                "army 4"
+            ]
+        },
+        {
+            "type": "science",
+            "texte": [
+                "science 1",
+                "science 2",
+                "science 3",
+                "science 4"
+            ]
+        },
+        {
+            "type": "culture",
+            "texte": [
+                "culture 1",
+                "culture 2",
+                "culture 3",
+                "culture 4"
+            ]
+        },
+        {
+            "type": "tech",
+            "texte": [
+                "tech 1",
+                "tech 2",
+                "tech 3",
+                "tech 4"
+            ]
+        }
+    ]
+}
