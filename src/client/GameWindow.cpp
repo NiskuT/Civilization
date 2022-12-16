@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <json/json.h>
+#include <cmath>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -9,14 +10,15 @@
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
 
-#define LADDER_PROPORTION 0.78
-#define TECH_WHEEL_PROPORTION 0.187
-#define BARBARE_WHEEL_PROPORTION 0.0956
 #define PRIORITY_CARD_PROPORTION 0.144
 #define ACTION_CARD_PROPORTION 0.125
 #define TITLE_PROPORTION 0.025
 #define BODY_PROPORTION_X 0.0075
-#define BODY_PROPORTION_Y 0.036
+#define BODY_PROPORTION_Y 0.05
+#define MAX_CHARACTER_SIZE 18
+#define NBR_CHAR_MAX_PER_LIGNE 25 
+
+
 
 
 namespace client
@@ -61,7 +63,7 @@ namespace client
 
 
         for (unsigned i = 0; i < priorityCards.size(); i++){
-            clientGameWindow.draw(*priorityCards.at(i).texture->getSprite(0));
+            clientGameWindow.draw(*priorityCards[i].texture->getSprite(0));
             clientGameWindow.draw(*priorityCards[i].title);
             clientGameWindow.draw(*priorityCards[i].body);
         }
@@ -297,9 +299,20 @@ namespace client
 
             // display the body on the card
             priorityCards.back().level = 1;
-            std::string body = priorityData[index]["text"][ priorityCards.back().level].asString();
-            //body.insert(3, "\n"); // test saut à la ligne si trop long
+            std::string body = priorityData[index]["text"][priorityCards.back().level].asString();
             priorityCards.back().body = (std::unique_ptr<sf::Text>) new sf::Text(body, priorityFont, 30);
+            int countEndLine = 1;
+            while(priorityCards.back().body->getLocalBounds().width > priorityCards.back().texture->getWidth()-10){
+                for (int i = countEndLine*NBR_CHAR_MAX_PER_LIGNE; i > 0 ; i--){
+                    if ((char)body[i] == ' ') {
+                        body.insert(i, "\n");
+                        countEndLine++;
+                        break;
+                    }
+                }
+                priorityCards.back().body->setString(body);
+            }
+
             priorityCards.back().body->setFillColor(sf::Color::Black);
             int xBodyOffset = BODY_PROPORTION_X*WINDOW_LENGTH;
             int yBodyOffset = BODY_PROPORTION_Y*WINDOW_WIDTH;
@@ -316,26 +329,5 @@ namespace client
         //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
         actionCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex); */
     }
-
-    /*
-    void PriorityCardDisplay::loadTitle(std::string title, sf::Vector2f position, int xCardSize) {
-
-        if(!priorityFont.loadFromFile("../ressources/img/hud/font.otf")){
-            std::cout << "font not loaded\n" ;
-        }
-
-        std::string upperFirstLetter = title;
-        upperFirstLetter[0] = toupper(upperFirstLetter[0]);
-
-        titleCard.setFont(priorityFont);
-        titleCard.setString(upperFirstLetter);
-        titleCard.setCharacterSize((float(40)/float(1600))*WINDOW_LENGTH);
-        titleCard.setStyle(sf::Text::Bold);
-        titleCard.setColor(sf::Color::Black);
-        sf::Rect titleScale =titleCard.getLocalBounds();
-        int xOffset = (xCardSize - titleScale.width)/2 ;
-        titleCard.setPosition(position.x + xOffset, position.y);
-    }
-    */
 
 }

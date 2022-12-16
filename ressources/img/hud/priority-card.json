@@ -6,7 +6,7 @@
             "path": "../ressources/img/hud/priority-card-economy.png",
             "text": [
                 "ECONOMY",
-                "economy 1 ceci est un long texte que je veux tester merci beaucoup",
+                "This is a test with a long long string and still long long hello hello hello",
                 "economy 2",
                 "economy 3",
                 "economy 4"

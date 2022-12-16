@@ -31,7 +31,7 @@ TextureDisplayer::TextureDisplayer(std::string pathImage)
     this->texture->loadFromImage(*(this->image));
 
     int nameStartPosition = 0;
-    for(int i = 0; i < pathImage.size(); i++){
+    for(int i = 0; i < (int)pathImage.size(); i++){
         if (pathImage[i] == ('/')){
             nameStartPosition = i;
         }
@@ -100,8 +100,8 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
     else if (this->type =="tech-wheel") {
         xPos=  windowLength;
         yPos= windowWidth;
-        sprites.at(0).setOrigin(getWidth()/2, getHeight()/2);
-        sprites.at(0).rotate(rotation);
+        sprites[0].setOrigin(getWidth()/2, getHeight()/2);
+        sprites[0].rotate(rotation);
     }
 
       else if (this->type == "barbare-wheel-0" || this->type == "barbare-wheel-1" || this->type == "barbare-wheel-2" || this->type == "barbare-wheel-3" || this->type == "barbare-wheel-4") {
