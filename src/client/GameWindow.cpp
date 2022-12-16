@@ -97,6 +97,8 @@ GameWindow::GameWindow() {
                         cursorRect.width = 1;
                         cursorRect.height = 1;
 
+                        bool isClickable = false;
+
                         for(int i = 0; i < NUMBER_OF_FIELD; i++){
 
                             for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++){
@@ -107,6 +109,8 @@ GameWindow::GameWindow() {
                                 if (firstHexagon[1] > spriteBounds.top) firstHexagon[1] = spriteBounds.top;
 
                                 if (spriteBounds.intersects(cursorRect)) {
+
+                                    isClickable = true;
 
                                     int distance = pow( pow(spriteBounds.left + spriteBounds.width/2 - cursorRect.left, 2) 
                                                     + pow(spriteBounds.top + spriteBounds.height/2 - cursorRect.top, 2), 0.5);
@@ -120,7 +124,7 @@ GameWindow::GameWindow() {
                                 } 
                             }
                         }
-                        std::cout << "User click on the Hex x=" << hexagonOnClick[0] << " & y=" << hexagonOnClick[1] << "\n";
+                        if (isClickable) std::cout << "User click on the Hex x=" << hexagonOnClick[0] << " & y=" << hexagonOnClick[1] << "\n";
                     }
 
                     break;
