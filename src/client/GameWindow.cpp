@@ -47,9 +47,9 @@ namespace client
 
         for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
         {
-            for (unsigned j = 0; j < mapTextureToDisplay.at(i).getSize(); j++)
+            for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
             {
-                clientGameWindow.draw(*mapTextureToDisplay.at(i).getSprite(j));
+                clientGameWindow.draw(*mapTextureToDisplay[i].getSprite(j));
             }
         }
 
@@ -68,15 +68,15 @@ namespace client
             clientGameWindow.draw(*priorityCards[i].body);
         }
 
-        clientGameWindow.draw(*hudTextureToDisplay.at(numberTurn % 5).getSprite(0));
+        clientGameWindow.draw(*hudTextureToDisplay[numberTurn % 5].getSprite(0));
 
         for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
         {
 
-            for (unsigned j = 0; j < hudTextureToDisplay.at(i).getSize(); j++)
+            for (unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++)
             {
 
-                clientGameWindow.draw(*hudTextureToDisplay.at(i).getSprite(j));
+                clientGameWindow.draw(*hudTextureToDisplay[i].getSprite(j));
             }
         }
 
@@ -172,23 +172,23 @@ namespace client
         for (unsigned i{0}; i < mapField.size(); i++)
         {
 
-            std::string mapElementPath = hexagonImgPath + mapField.at(i) + ".png";
+            std::string mapElementPath = hexagonImgPath + mapField[i] + ".png";
             mapTextureToDisplay.emplace_back(mapElementPath);
         }
 
         for (int i = 0; i < 165; i++)
         {
 
-            int indexSprite = mapTextureToDisplay.at(level[i]).getSize();
+            int indexSprite = mapTextureToDisplay[level[i]].getSize();
 
-            mapTextureToDisplay.at(level[i]).addMapSprite();
+            mapTextureToDisplay[level[i]].addMapSprite();
 
             // mapTextureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
 
-            mapTextureToDisplay.at(level[i]).setSpritePosition(indexSprite, i % 15, i / 15, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
+            mapTextureToDisplay[level[i]].setSpritePosition(indexSprite, i % 15, i / 15, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
         }
 
-        std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
+        std::array<int, 2> hexSize = {mapTextureToDisplay[0].getWidth(), mapTextureToDisplay[0].getHeight()};
 
         std::ifstream file("../ressources/img/map/files.json");
         // check is file is correctly open
@@ -255,7 +255,10 @@ namespace client
 
             float scale = data[index]["scale"].asFloat() / (float(hudTextureToDisplay.back().getWidth()) / float(WINDOW_LENGTH));
 
+            hudTextureToDisplay.back().setImageType((HudTextureType)index);
+
             hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index]["rotation"].asInt(), priorityCardIndex);
+
         }
 
 
@@ -285,7 +288,9 @@ namespace client
             priorityCards.back().texture = new TextureDisplayer(priorityData[index]["path"].asString());
             priorityCards.back().texture->addMapSprite();
             float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
+            priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
             priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
+
 
             // display the title on the card
             priorityCards.back().title = (std::unique_ptr<sf::Text>) new sf::Text(priorityData[index]["text"][0].asString(), priorityFont, TITLE_PROPORTION*WINDOW_LENGTH);
