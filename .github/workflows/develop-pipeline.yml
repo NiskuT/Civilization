@@ -11,9 +11,6 @@ on:
 jobs:
   linux-debug:
     runs-on: ubuntu-latest
-    env:
-      DISPLAY: ':99'
-
     steps:
     - uses: actions/checkout@v3
     
@@ -22,8 +19,18 @@ jobs:
         sudo apt install lcov
         sudo apt install gcovr
         sudo apt install libboost-all-dev
-        sudo apt install valgrind
+        sudo apt install libc6-dbg
         sudo apt-get install libsfml-dev
+
+    - name: Install valgrind
+      run: |
+        git clone https://sourceware.org/git/valgrind.git valgrind
+        cd valgrind && git checkout VALGRIND_3_20_0
+        ./autogen.sh
+        ./configure
+        make -j 4
+        sudo make install
+        cd ..
         
     - name: Configure CMake
       run: |
@@ -36,22 +43,34 @@ jobs:
 
     - name: Tests
       working-directory: ${{github.workspace}}/build/test
-      run: ctest --timeout 300
+      run: |
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
+        ctest --verbose --timeout 300
+        kill $(ps | grep 'Xvfb' | awk '{print $1}')
+
 
     - name: Run code coverage
       working-directory: ${{github.workspace}}/build
       run: cmake --build . --target code-coverage
 
-    - name: Valgrind Memory check for program
-      run: |
-        Xvfb ${DISPLAY} -ac -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        cd build/
-        sleep 20  && pgrep -f Xvfb | xargs kill -15 &
-        valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ./bin/client -hello 
+    # # # this script works in jard-111 computer but not in github actions
+    # - name: Valgrind Memory check for program
+    #   run: |
+    #     export DISPLAY=':99'
+    #     Xvfb :99 -ac -screen 0 1280x1024x24 &
+    #     cd build/
+    #     sleep 40  && xdotool search --name "Civilization VII" | xargs wmctrl -i -c &
+    #     valgrind --leak-check=full --exit-on-first-error=no --error-exitcode=1 ./bin/client -hello 
+    #     kill $(ps | grep 'Xvfb' | awk '{print $1}')
 
     - name: Valgrind Memory check for tests
       working-directory: ${{github.workspace}}/build/test
-      run: valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ctest --timeout 300
+      run: |
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
+        valgrind --leak-check=full --exit-on-first-error=yes --error-exitcode=1 ctest --verbose --timeout 300
+        kill $(ps | grep 'Xvfb' | awk '{print $1}')
 
     - name: Doxygen to GH-pages
       uses: jard-111/doxygen-action@1.0
@@ -95,7 +114,10 @@ jobs:
 
     - name: Tests
       working-directory: ${{github.workspace}}/build/test
-      run: ctest --timeout 300
+      run: |
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
+        ctest --verbose --timeout 300
         
         
         

@@ -2,48 +2,23 @@
 #include <iostream>
 
 namespace client {
-
-/*!
- * \brief Operator
- *
- *Return the texture of the TextureDisplayer
- */
-sf::Texture TextureDisplayer::operator()()
-{
-   return *this->texture;
-}
-/*!
- * \brief Constructor
- *
- * Constructor of TextureDisplayer class
- *
- * @param path enter the path to the png you want to use
- */
-TextureDisplayer::TextureDisplayer(std::string pathImage)
+    
+TextureDisplayer::TextureDisplayer(const std::string& filename)
 {    
-    this->image = new sf::Image();
-    if (!this->image->loadFromFile(pathImage))
-    {
-        std::cout << "Error loading element picture: " << pathImage << "\n";
-    }
-    this->texture = new sf::Texture();
-    this->texture->loadFromImage(*(this->image));
+    std::unique_ptr<sf::Texture> resource(new sf::Texture());
+	if (!resource->loadFromFile(filename))
+		throw std::runtime_error("Holder::load - Failed to load " + filename);
+
+    texture = std::move(resource);
 
     int nameStartPosition = 0;
-    for(unsigned i = 0; i < pathImage.size(); i++){
-        if (pathImage[i] == ('/')){
+    for(unsigned i = 0; i < filename.size(); i++){
+        if (filename[i] == ('/')){
             nameStartPosition = i;
         }
     }
-
-    this->type = pathImage.substr(nameStartPosition + 1, pathImage.size() - nameStartPosition - 5);
-}
-/*!
- * \brief Destructor
- */
-TextureDisplayer::~TextureDisplayer()
-{    
-    //delete this->texture;
+    
+    this->type = filename.substr(nameStartPosition + 1, filename.size() - nameStartPosition - 5);
 }
 
 /*!
@@ -51,8 +26,9 @@ TextureDisplayer::~TextureDisplayer()
  */
 void TextureDisplayer::addMapSprite()
 {
-    sf::Sprite* newSprite = new sf::Sprite(*(this->texture));
-    this->sprites.push_back(*newSprite);
+    std::unique_ptr<sf::Sprite> sprite(new sf::Sprite());
+    sprite->setTexture(*texture);
+    sprites.push_back(std::move(sprite));
 }
 
 /*!
@@ -66,11 +42,11 @@ void TextureDisplayer::addMapSprite()
  */
 void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, int yOffset, std::array<int, 2> hexSize)
 {
-    xOffset += hexSize[0] != 0 ? (hexSize[0] - this->sprites.at(index).getLocalBounds().width) / 2 : 0;
-    yOffset += hexSize[1] != 0 ? (hexSize[1] - this->sprites.at(index).getLocalBounds().height) / 2 : 0;
+    xOffset += hexSize[0] != 0 ? (hexSize[0] - this->sprites.at(index)->getLocalBounds().width) / 2 : 0;
+    yOffset += hexSize[1] != 0 ? (hexSize[1] - this->sprites.at(index)->getLocalBounds().height) / 2 : 0;
 
-    int xHexSize = hexSize[0] != 0 ? hexSize[0] : this->sprites.at(index).getLocalBounds().width;
-    int yHexSize = hexSize[1] != 0 ? hexSize[1] : this->sprites.at(index).getLocalBounds().height;
+    int xHexSize = hexSize[0] != 0 ? hexSize[0] : this->sprites.at(index)->getLocalBounds().width;
+    int yHexSize = hexSize[1] != 0 ? hexSize[1] : this->sprites.at(index)->getLocalBounds().height;
 
     if (y%2==0) {
         //if (x !=14 ){
@@ -89,7 +65,7 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
         x = xOffset + x * (xHexSize - 1);
         y = yOffset + y + y * (yHexSize - 1) * 3 / 4;
     }
-    this->sprites.at(index).setPosition(sf::Vector2f(x, y));
+    this->sprites.at(index)->setPosition(sf::Vector2f(x, y));
 }
 
 /*!
@@ -101,8 +77,8 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
 void TextureDisplayer::mooveSpritePosition(int xOffset, int yOffset)
 {
     for (unsigned i = 0; i < this->sprites.size(); i++){
-        sf::Vector2f pos = this->sprites[i].getPosition();
-        this->sprites[i].setPosition(pos.x + xOffset, pos.y + yOffset);
+        sf::Vector2f pos = this->sprites[i]->getPosition();
+        this->sprites[i]->setPosition(pos.x + xOffset, pos.y + yOffset);
 
     }
 }
@@ -120,8 +96,8 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
     else if (this->type =="tech-wheel") {
         xPos=  windowLength;
         yPos= windowWidth;
-        sprites[0].setOrigin(getWidth()/2, getHeight()/2);
-        sprites[0].rotate(rotation);
+        sprites[0]->setOrigin(getWidth()/2, getHeight()/2);
+        sprites[0]->rotate(rotation);
     }
 
       else if (this->type == "barbare-wheel-0" || this->type == "barbare-wheel-1" || this->type == "barbare-wheel-2" || this->type == "barbare-wheel-3" || this->type == "barbare-wheel-4") {
@@ -146,8 +122,8 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         yPos = upOffset*windowWidth + (getHeight()*scale+10)*actionCardNumber;
     }
 
-    this->sprites[0].setScale(scale, scale);
-    this->sprites[0].setPosition(xPos, yPos);
+    this->sprites[0]->setScale(scale, scale);
+    this->sprites[0]->setPosition(xPos, yPos);
 }
 /*!
  * \brief Get the number of sprite in a TextureDisplayer
@@ -161,23 +137,23 @@ unsigned TextureDisplayer::getSize()
  *
  * @param index is the position of the sprite in the textureDisplayer list of Sprite
  */
-sf::Sprite* TextureDisplayer::getSprite(unsigned index)
-{
-    return &sprites.at((int)(index));
+sf::Sprite& TextureDisplayer::getSprite(unsigned index)
+{    
+    return *sprites[index];
 }
 /*!
  * \brief Get the Width of the texture
  */
 int TextureDisplayer::getWidth()
 {    
-    return getSize() > 0 ? this->sprites[0].getLocalBounds().width : 0;
+    return getSize() > 0 ? this->sprites[0]->getLocalBounds().width : 0;
 }
 /*!
  * \brief Get the Height of the texture
  */
 int TextureDisplayer::getHeight()
 {    
-    return getSize() > 0 ? this->sprites[0].getLocalBounds().height : 0;
+    return getSize() > 0 ? this->sprites[0]->getLocalBounds().height : 0;
 }
 
 }
