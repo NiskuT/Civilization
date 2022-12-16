@@ -14,7 +14,7 @@
 #define TURN_NUMBER 2
 
 #ifndef RESOURCES_PATH
-    #define RESOURCES_PATH "../resources/"
+    #define RESOURCES_PATH "../resources"
 #endif
 
 namespace client
