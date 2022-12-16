@@ -90,6 +90,8 @@ set(SFML_LIBRARIES sfml-graphics sfml-network sfml-window sfml-system)
 
 add_subdirectory(3rdParty)
 
+add_compile_definitions(RESOURCES_PATH="${PROJECT_SOURCE_DIR}/resources")
+
 # Add source subdirectories
 add_subdirectory(src/shared)
 add_subdirectory(src/client)

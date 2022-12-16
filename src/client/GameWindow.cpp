@@ -16,6 +16,10 @@
 
 #define TURN_NUMBER 2
 
+#ifndef RESOURCES_PATH
+    #define RESOURCES_PATH "../resources"
+#endif
+
 namespace client
 {
 
@@ -185,7 +189,7 @@ GameWindow::GameWindow() {
 
         mapShared.generateRandomMap(123456789);
 
-        std::string hexagonImgPath = "../ressources/img/map/field-";
+        std::string hexagonImgPath = RESOURCES_PATH "/img/map/field-";
         std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
                                                 "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
                                                 "wonder-messa", "wonder-pantanal", "wonder-volcanic"};
@@ -209,7 +213,7 @@ GameWindow::GameWindow() {
 
         std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-        std::ifstream file("../ressources/img/map/files.json");
+        std::ifstream file(RESOURCES_PATH "/img/map/files.json");
         // check is file is correctly open
         if (!file.is_open())
         {
@@ -228,7 +232,7 @@ GameWindow::GameWindow() {
         for (unsigned index = 0; index < data.size(); ++index)
         {
 
-            mapTextureToDisplay.emplace_back(data[index]["path"].asString());
+            mapTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
 
             mapTextureToDisplay.back().addMapSprite();
 
@@ -240,12 +244,12 @@ GameWindow::GameWindow() {
 
         int rotation = 0; 
 
-        backgroundTexture = (std::unique_ptr<TextureDisplayer>) new TextureDisplayer("../ressources/img/hud/background.png");
+        backgroundTexture = (std::unique_ptr<TextureDisplayer>) new TextureDisplayer(RESOURCES_PATH "/img/hud/background.png");
         backgroundTexture->addMapSprite();
         float backgroundScale = 1/(float(backgroundTexture->getWidth())/float(WINDOW_LENGTH));
         backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation);
 
-        std::ifstream file("../ressources/img/hud/files.json");
+        std::ifstream file(RESOURCES_PATH "/img/hud/files.json");
         // check is file is correctly open
         if (!file.is_open()) {
             std::cout << "Error while opening json ressources file" << std::endl;
@@ -262,7 +266,7 @@ GameWindow::GameWindow() {
 
         for (unsigned index = 0; index < data.size(); ++index) {
 
-            hudTextureToDisplay.emplace_back(data[index]["path"].asString());
+            hudTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
 
             hudTextureToDisplay.back().addMapSprite();
 
