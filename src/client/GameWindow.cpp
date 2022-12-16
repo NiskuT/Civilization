@@ -88,7 +88,7 @@ GameWindow::GameWindow() {
 
                         int minimumDistance = WINDOW_LENGTH;
                         std::array<int, 2> hexagonOnClick = {0, 0};
-                        std::array<int, 2> firstHexagon = {WINDOW_LENGTH, WINDOW_WIDTH};
+                        std::array<int, 2> firstHexagonPosition = {WINDOW_LENGTH, WINDOW_WIDTH};
 
                         sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
                         cursorRect.left = clickStartingPoint[0];
@@ -104,21 +104,21 @@ GameWindow::GameWindow() {
 
                                 sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
 
-                                if (firstHexagon[0] > spriteBounds.left) firstHexagon[0] = spriteBounds.left;
-                                if (firstHexagon[1] > spriteBounds.top) firstHexagon[1] = spriteBounds.top;
+                                if (firstHexagonPosition[0] > spriteBounds.left) firstHexagonPosition[0] = spriteBounds.left;
+                                if (firstHexagonPosition[1] > spriteBounds.top) firstHexagonPosition[1] = spriteBounds.top;
 
                                 if (spriteBounds.intersects(cursorRect)) {
 
                                     isClickable = true;
 
-                                    int distance = pow( pow(spriteBounds.left + spriteBounds.width/2 - cursorRect.left, 2) 
-                                                    + pow(spriteBounds.top + spriteBounds.height/2 - cursorRect.top, 2), 0.5);
+                                    int distance = sqrt(pow(spriteBounds.left + spriteBounds.width/2 - cursorRect.left, 2) 
+                                                      + pow(spriteBounds.top + spriteBounds.height/2 - cursorRect.top, 2));
 
                                     if (distance < minimumDistance){
 
                                         minimumDistance = distance;
-                                        hexagonOnClick[1] =  (int)((spriteBounds.top - firstHexagon[1]))/(int)((spriteBounds.height * 3 / 4));
-                                        hexagonOnClick[0] =  (int)((spriteBounds.left - firstHexagon[0])) /(int)((spriteBounds.width - 1));
+                                        hexagonOnClick[1] =  (int)((spriteBounds.top - firstHexagonPosition[1]))/(int)((spriteBounds.height * 3 / 4));
+                                        hexagonOnClick[0] =  (int)((spriteBounds.left - firstHexagonPosition[0])) /(int)((spriteBounds.width - 1));
                                     }
                                 } 
                             }
