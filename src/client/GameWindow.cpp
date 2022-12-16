@@ -177,7 +177,7 @@ GameWindow::GameWindow() {
         // check is file is correctly open
         if (!file.is_open())
         {
-            std::cout << "Error while opening json ressources file" << std::endl;
+            std::cout << "Error while opening json s file" << std::endl;
             exit(1);
         }
         std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -212,7 +212,7 @@ GameWindow::GameWindow() {
         std::ifstream file(RESOURCES_PATH "/img/hud/files.json");
         // check is file is correctly open
         if (!file.is_open()) {
-            std::cout << "Error while opening json ressources file" << std::endl;
+            std::cout << "Error while opening json s file" << std::endl;
             exit(1);
         }
         std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
