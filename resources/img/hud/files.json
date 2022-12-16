@@ -2,37 +2,37 @@
     "data" : 
     [
         {
-            "path": "../ressources/img/hud/barbare-wheel-0.png",
+            "path": "/img/hud/barbare-wheel-0.png",
             "scale": 0.0956,
             "rotation": 45
         },
         {
-            "path": "../ressources/img/hud/barbare-wheel-1.png",
+            "path": "/img/hud/barbare-wheel-1.png",
             "scale": 0.0956,
             "rotation": 45
         },
         {
-            "path": "../ressources/img/hud/barbare-wheel-2.png",
+            "path": "/img/hud/barbare-wheel-2.png",
             "scale": 0.0956,
             "rotation": 45
         },
         {
-            "path": "../ressources/img/hud/barbare-wheel-3.png",
+            "path": "/img/hud/barbare-wheel-3.png",
             "scale": 0.0956,
             "rotation": 45
         },
         {
-            "path": "../ressources/img/hud/barbare-wheel-4.png",
+            "path": "/img/hud/barbare-wheel-4.png",
             "scale": 0.0956,
             "rotation": 45
         },
         {
-            "path": "../ressources/img/hud/tech-wheel.png",
+            "path": "/img/hud/tech-wheel.png",
             "scale": 0.187,
             "rotation": 45
         },
         {
-            "path": "../ressources/img/hud/ladder.png",
+            "path": "/img/hud/ladder.png",
             "scale": 0.78,
             "rotation": 0
         }
