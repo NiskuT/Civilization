@@ -85,7 +85,7 @@ void determine_referenced_classes (declaration *d, batch *b)
     } else {
         umlclasslist cl = list_classes (d->u.this_class, b, 1);
         while (cl != NULL) {
-            if (!is_enum_stereo(cl->key->stereotype)) {
+            if (!is_enum_stereo(cl->key->stereotype) && !is_enum_stereo2(cl->key->stereotype)) {
                 push_include (cl);
             }
             cl = cl->next;
