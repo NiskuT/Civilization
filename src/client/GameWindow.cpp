@@ -42,21 +42,20 @@ GameWindow::GameWindow() {
 
         clientGameWindow.draw(backgroundTexture->getSprite());
 
-        for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ )
-
-            for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++ )
-
+        for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ ){
+            for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++ ){
                 clientGameWindow.draw(mapTextureToDisplay[i].getSprite(j));
+            }
+        }
 
 
         clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER%5).getSprite());
         
-        for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ )
-
-            for(unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++ )
-            
+        for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ ){
+            for(unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++ ){            
                 clientGameWindow.draw(hudTextureToDisplay[i].getSprite(j));
-
+            }
+        }
         clientGameWindow.display();
     }
 
