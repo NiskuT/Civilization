@@ -285,7 +285,7 @@ namespace client
         for (unsigned index = 0; index < priorityData.size(); ++index)
         {
             priorityCards.emplace_back();
-            priorityCards.back().texture = new TextureDisplayer(priorityData[index]["path"].asString());
+            priorityCards.back().texture = (std::unique_ptr<client::TextureDisplayer>) new TextureDisplayer(priorityData[index]["path"].asString());
             priorityCards.back().texture->addMapSprite();
             float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
             priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
