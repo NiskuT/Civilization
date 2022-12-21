@@ -521,7 +521,7 @@ Stone => S  /  Antic => A  /  Oil => O  /  Diamond => D
   <tr>
    <td>Chichen Itza
    </td>
-   <td>Pawns can be places on any forest cases without s
+   <td>Pawns can be places on any forest cases without resource
    </td>
    <td>10
    </td>
@@ -829,7 +829,7 @@ Bonus: +1 wonders production
    <td>
 Player pawns are considered yours for mature cities
    </td>
-   <td>If your caravan go to player capital city, place a box on a card of this player and obtain a 
+   <td>If your caravan go to player capital city, place a box on a card of this player and obtain a resource
    </td>
   </tr>
   <tr>
