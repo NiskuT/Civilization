@@ -3,7 +3,7 @@
     [
         {
             "type": "economy",
-            "path": "../ressources/img/hud/priority-card-economy.png",
+            "path": "/img/hud/priority-card-economy.png",
             "text": [
                 "ECONOMY",
                 "This is a test with a long long string and still long long hello hello hello",
@@ -15,7 +15,7 @@
         },
         {
             "type": "army",
-            "path": "../ressources/img/hud/priority-card-army.png",
+            "path": "/img/hud/priority-card-army.png",
             "text": [
                 "ARMY",
                 "army 1",
@@ -26,7 +26,7 @@
         },
         {
             "type": "science",
-            "path": "../ressources/img/hud/priority-card-science.png",
+            "path": "/img/hud/priority-card-science.png",
             "text": [
                 "SCIENCE",
                 "science 1",
@@ -37,7 +37,7 @@
         },
         {
             "type": "culture",
-            "path": "../ressources/img/hud/priority-card-culture.png",
+            "path": "/img/hud/priority-card-culture.png",
             "text": [
                 "CULTURE",
                 "culture 1",
@@ -48,7 +48,7 @@
         },
         {
             "type": "industry",
-            "path": "../ressources/img/hud/priority-card-industry.png",
+            "path": "/img/hud/priority-card-industry.png",
             "text": [
                 "INDUSTRY",
                 "tech 1",

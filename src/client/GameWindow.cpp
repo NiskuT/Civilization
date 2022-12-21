@@ -1,11 +1,16 @@
 #include <client.hpp>
 #include <iostream>
 #include <fstream>
+#include <math.h>
 #include <json/json.h>
 #include <cmath>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
+#define MAP_WIDTH 15
+#define MAP_HEIGHT 11
+
+#define NUMBER_OF_FIELD 12
 
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
@@ -17,324 +22,354 @@
 #define BODY_PROPORTION_Y 0.05
 #define MAX_CHARACTER_SIZE 18
 #define NBR_CHAR_MAX_PER_LIGNE 25 
+#define TURN_NUMBER 2
 
-
-
+#ifndef RESOURCES_PATH
+    #define RESOURCES_PATH "../resources"
+#endif
 
 namespace client
 {
 
-    /*!
-     * \brief Constructeur
-     *
-     * Constructor of GameWindow class
-     */
-    GameWindow::GameWindow()
-    {
-        clientGameWindow.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
-        clientGameWindow.setPosition(sf::Vector2i(0, 0));
+/*!
+ * \brief Constructeur
+ *
+ * Constructor of GameWindow class
+ */
+GameWindow::GameWindow() {
+    clientGameWindow.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
+    clientGameWindow.setPosition(sf::Vector2i(0, 0));
+}
+
+/*!
+* \brief Display all the different variable in the screen
+*/
+void GameWindow::displayWindow() {
+
+    clientGameWindow.clear(sf::Color::Blue);
+
+    clientGameWindow.draw(backgroundTexture->getSprite());
+
+    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ ){
+        for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++ ){
+            clientGameWindow.draw(mapTextureToDisplay[i].getSprite(j));
+        }
     }
 
-    /*!
-     * \brief Display all the different variable in the screen
-     */
-    void GameWindow::displayWindow(int numberTurn)
-    {
-
-        clientGameWindow.clear(sf::Color::Blue);
-
-        clientGameWindow.draw(*backgroundTexture->getSprite(0));
-
-        for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-        {
-            for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
-            {
-                clientGameWindow.draw(*mapTextureToDisplay[i].getSprite(j));
-            }
-        }
-
-        /*for(unsigned i = 0; i < actionCards.size(); i++ ){
-
-            for(unsigned j = 0; j < actionCards.at(i).getSize(); j++ ){
-
-                clientGameWindow.draw(*actionCards.at(i).getSprite(j));
-            }
-        }*/
-
-
-        for (unsigned i = 0; i < priorityCards.size(); i++){
-            clientGameWindow.draw(*priorityCards[i].texture->getSprite(0));
-            clientGameWindow.draw(*priorityCards[i].title);
-            clientGameWindow.draw(*priorityCards[i].body);
-        }
-
-        clientGameWindow.draw(*hudTextureToDisplay[numberTurn % 5].getSprite(0));
-
-        for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
-        {
-
-            for (unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++)
-            {
-
-                clientGameWindow.draw(*hudTextureToDisplay[i].getSprite(j));
-            }
-        }
-
-        clientGameWindow.display();
+    for (unsigned i = 0; i < priorityCards.size(); i++){
+        clientGameWindow.draw(priorityCards[i].texture->getSprite(0));
+        clientGameWindow.draw(*priorityCards[i].title);
+        clientGameWindow.draw(*priorityCards[i].body);
     }
 
-    /*!
-     * \brief Loop that look for events to happend and call displayWindow()
-     */
-    void GameWindow::clientWindow()
-    {
+    clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER%5).getSprite());
+    
+    for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ ){
+        for(unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++ ){            
+            clientGameWindow.draw(hudTextureToDisplay[i].getSprite(j));
+        }
+    }
+    clientGameWindow.display();
+}
 
-        int turn = 0;
+/*!
+    * \brief Loop that look for events to happend and call displayWindow()
+    */
+void GameWindow::clientWindow()
+{
 
-        bool dragging = false;
+    int turn = 0;
+    int mooveMode = false;
 
-        while (clientGameWindow.isOpen())
+    std::array<int, 2> clickStartingPoint = {0, 0};
+    std::array<int, 2> newMapOffset = {0, 0};
+
+    while (clientGameWindow.isOpen()){
+
+        // handle events
+        sf::Event event;
+        while (clientGameWindow.pollEvent(event))
         {
-
-            // handle events
-            sf::Event event;
-            while (clientGameWindow.pollEvent(event))
+            switch (event.type)
             {
-                switch (event.type)
+            case sf::Event::MouseButtonPressed:
+        
+                clickStartingPoint = {  sf::Mouse::getPosition(clientGameWindow).x, 
+                                        sf::Mouse::getPosition(clientGameWindow).y};
+
+                if (!mooveMode) {
+
+                    int minimumDistance = WINDOW_LENGTH;
+                    std::array<int, 2> hexagonOnClick = {0, 0};
+                    std::array<int, 2> firstHexagonPosition = {WINDOW_LENGTH, WINDOW_WIDTH};
+
+                    sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
+                    cursorRect.left = clickStartingPoint[0];
+                    cursorRect.top = clickStartingPoint[1];
+                    cursorRect.width = 1;
+                    cursorRect.height = 1;
+
+                    bool isClickable = false;
+
+                    for(int i = 0; i < NUMBER_OF_FIELD; i++){
+
+                        for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++){
+
+                            sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
+
+                            if (firstHexagonPosition[0] > spriteBounds.left) firstHexagonPosition[0] = spriteBounds.left;
+                            if (firstHexagonPosition[1] > spriteBounds.top) firstHexagonPosition[1] = spriteBounds.top;
+
+                            if (spriteBounds.intersects(cursorRect)) {
+
+                                isClickable = true;
+
+                                int distance = sqrt(pow(spriteBounds.left + spriteBounds.width/2 - cursorRect.left, 2) 
+                                                    + pow(spriteBounds.top + spriteBounds.height/2 - cursorRect.top, 2));
+
+                                if (distance < minimumDistance){
+
+                                    minimumDistance = distance;
+                                    hexagonOnClick[1] =  (int)((spriteBounds.top - firstHexagonPosition[1]))/(int)((spriteBounds.height * 3 / 4));
+                                    hexagonOnClick[0] =  (int)((spriteBounds.left - firstHexagonPosition[0])) /(int)((spriteBounds.width - 1));
+                                }
+                            } 
+                        }
+                    }
+                    if (isClickable) std::cout << "User click on the Hex x=" << hexagonOnClick[0] << " & y=" << hexagonOnClick[1] << "\n";
+                }
+
+                break;
+
+            case sf::Event::MouseButtonReleased:
+            
+                if (mooveMode){
+
+                    newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint[0],
+                                    sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint[1]};
+
+                    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                        mapTextureToDisplay[i].mooveSpritePosition(newMapOffset[0], newMapOffset[1]);
+
+                }
+
+                break;
+
+            case sf::Event::KeyPressed:
+
+                switch (event.key.code)
                 {
-                case sf::Event::MouseButtonPressed:
-                    dragging = true;
-                    // clickStartingPoint = {sf::Mouse::getPosition(clientGameWindow).x, sf::Mouse::getPosition(clientGameWindow).y};
-                    break;
+                case sf::Keyboard::M:
 
-                case sf::Event::MouseButtonReleased:
-                    dragging = false;
-                    break;
-
-                case sf::Event::Closed:
-                    clientGameWindow.close();
+                    if (mooveMode){
+                        mooveMode = false;
+                        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
+                            clientGameWindow.setMouseCursor(clientCursor);
+                    } 
+                    else {
+                        mooveMode = true;
+                        if (clientCursor.loadFromSystem(sf::Cursor::Hand)) 
+                            clientGameWindow.setMouseCursor(clientCursor);
+                    }
                     break;
 
                 default:
                     break;
                 }
+                break;
 
-                if (dragging == true)
-                {
-                    /*
-                    if (sf::Event::MouseMoved)
-                    {
-                        newMapOffset = {MAP_X_OFFSET + sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint.at(0),
-                                        MAP_Y_OFFSET + sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint.at(1)};
+            case sf::Event::Closed:
+                clientGameWindow.close();
+                break;
 
-                        clientMap.setOffset(newMapOffset.at(0), newMapOffset.at(1));
-                    }
-                    */
-                }
+            default:
+                break;
             }
-
+            
             // draw the map
-            if (turn == 0)
-            {
+            if (turn == 0) {
                 loadMapTexture();
                 loadHudTexture();
                 turn += 1;
             }
-            displayWindow(turn);
+            displayWindow();
         }
     }
+}
 
-    /*!
-     * \brief Load all the textures of the map
-     */
-    void GameWindow::loadMapTexture()
+/*!
+* \brief Load all the textures of the map
+*/
+void GameWindow::loadMapTexture() 
+{
+
+    mapShared.generateRandomMap(123456789);
+
+    std::string hexagonImgPath = RESOURCES_PATH "/img/map/field-";
+    std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
+                                            "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
+                                            "wonder-messa", "wonder-pantanal", "wonder-volcanic"};
+
+    for (unsigned i{0}; i < mapField.size(); i++)
     {
-
-        std::array<int, 165> level =
-            {
-                0, 0, 5, 4, 4, 2, 5, 2, 1, 2, 5, 0, 0, 0, 0,
-                0, 0, 0, 5, 0, 1, 5, 5, 5, 5, 1, 1, 0, 0, 0,
-                0, 0, 0, 3, 0, 1, 5, 0, 1, 1, 3, 4, 0, 0, 0,
-                0, 0, 0, 0, 1, 2, 5, 3, 2, 3, 1, 4, 0, 0, 0,
-                0, 0, 0, 0, 4, 5, 5, 2, 3, 0, 3, 2, 0, 0, 0,
-                0, 0, 0, 0, 2, 5, 1, 3, 3, 2, 2, 5, 0, 0, 0,
-                0, 0, 5, 1, 2, 1, 5, 3, 1, 5, 2, 5, 4, 0, 0,
-                0, 0, 0, 1, 2, 0, 4, 2, 5, 3, 1, 4, 5, 0, 0,
-                0, 0, 0, 0, 2, 0, 5, 4, 2, 0, 0, 3, 2, 2, 0,
-                0, 0, 0, 0, 1, 1, 5, 3, 0, 5, 2, 4, 2, 2, 0,
-                0, 0, 0, 0, 0, 1, 5, 5, 0, 1, 0, 0, 4, 2, 0};
-
-        std::string hexagonImgPath = "../ressources/img/map/field-";
-        std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
-                                                "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
-                                                "wonder-messa", "wonder-pantanal", "wonder-volcanic"};
-
-        for (unsigned i{0}; i < mapField.size(); i++)
-        {
-
-            std::string mapElementPath = hexagonImgPath + mapField[i] + ".png";
-            mapTextureToDisplay.emplace_back(mapElementPath);
-        }
-
-        for (int i = 0; i < 165; i++)
-        {
-
-            int indexSprite = mapTextureToDisplay[level[i]].getSize();
-
-            mapTextureToDisplay[level[i]].addMapSprite();
-
-            // mapTextureToDisplay.at(mapTexture.at(mapShared(i%15,(int)(i/15))->getFieldLevel())).addMapSprite();
-
-            mapTextureToDisplay[level[i]].setSpritePosition(indexSprite, i % 15, i / 15, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
-        }
-
-        std::array<int, 2> hexSize = {mapTextureToDisplay[0].getWidth(), mapTextureToDisplay[0].getHeight()};
-
-        std::ifstream file("../ressources/img/map/files.json");
-        // check is file is correctly open
-        if (!file.is_open())
-        {
-            std::cout << "Error while opening json ressources file" << std::endl;
-            exit(1);
-        }
-        std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-        std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-        Json::Value obj;
-        std::string errors;
-        reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
-
-        const Json::Value &data = obj["data"];
-
-        for (unsigned index = 0; index < data.size(); ++index)
-        {
-
-            mapTextureToDisplay.emplace_back(data[index]["path"].asString());
-
-            mapTextureToDisplay.back().addMapSprite();
-
-            int rank = data[index]["x"].asInt() * 15 + data[index]["y"].asInt();
-
-            mapTextureToDisplay.back().setSpritePosition(0, rank % 15, rank / 15, MAP_X_OFFSET, MAP_Y_OFFSET, hexSize);
-        }
+        std::string mapElementPath = hexagonImgPath + mapField.at(i) + ".png";
+        mapTextureToDisplay.emplace_back(mapElementPath);
     }
 
-    void GameWindow::loadHudTexture()
+    for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
+    {
+        for (unsigned j = 0; j < mapShared.getMapWidth(); j++)
+        {
+            int indexSprite = mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).getSize();
+            mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).addMapSprite();
+            mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).setSpritePosition(indexSprite, j, i, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
+        }
+
+    }
+
+    std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
+
+    std::ifstream file(RESOURCES_PATH "/img/map/files.json");
+    // check is file is correctly open
+    if (!file.is_open())
+    {
+        std::cout << "Error while opening json ressources file" << std::endl;
+        exit(1);
+    }
+    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+    Json::Value obj;
+    std::string errors;
+    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
+
+    const Json::Value &data = obj["data"];
+
+    for (unsigned index = 0; index < data.size(); ++index)
     {
 
-        int rotation = 0;
-        int priorityCardIndex = 0;
+        mapTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
 
-        backgroundTexture = new TextureDisplayer("../ressources/img/hud/background.png");
-        backgroundTexture->addMapSprite();
-        float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
-        backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);
+        mapTextureToDisplay.back().addMapSprite();
 
-        std::ifstream file("../ressources/img/hud/files.json");
-        // check is file is correctly open
-        if (!file.is_open())
-        {
-            std::cout << "Error while opening json ressources file" << std::endl;
-            exit(1);
-        }
-        std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+        mapTextureToDisplay.back().setSpritePosition(0, data[index]["y"].asInt(), data[index]["x"].asInt(), MAP_X_OFFSET, MAP_Y_OFFSET, hexSize);
+    }
+}
 
-        std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-        Json::Value obj;
-        std::string errors;
-        reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
+void GameWindow::loadHudTexture()
+{
 
-        const Json::Value &data = obj["data"];
+    int rotation = 0;
+    int priorityCardIndex = 0;
 
-        for (unsigned index = 0; index < data.size(); ++index)
-        {
+    backgroundTexture = (std::unique_ptr<TextureDisplayer>) new TextureDisplayer(RESOURCES_PATH "/img/hud/background.png");    backgroundTexture->addMapSprite();
+    float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
+    backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);
 
-            hudTextureToDisplay.emplace_back(data[index]["path"].asString());
+    std::ifstream file(RESOURCES_PATH "/img/hud/files.json");
+    // check is file is correctly open
+    if (!file.is_open())
+    {
+        std::cout << "Error while opening json ressources file" << std::endl;
+        exit(1);
+    }
+    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
-            hudTextureToDisplay.back().addMapSprite();
+    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+    Json::Value obj;
+    std::string errors;
+    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
 
-            float scale = data[index]["scale"].asFloat() / (float(hudTextureToDisplay.back().getWidth()) / float(WINDOW_LENGTH));
+    const Json::Value &data = obj["data"];
 
-            hudTextureToDisplay.back().setImageType((HudTextureType)index);
+    for (unsigned index = 0; index < data.size(); ++index)
+    {
 
-            hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index]["rotation"].asInt(), priorityCardIndex);
+        hudTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
 
-        }
+        hudTextureToDisplay.back().addMapSprite();
+
+        float scale = data[index]["scale"].asFloat() / (float(hudTextureToDisplay.back().getWidth()) / float(WINDOW_LENGTH));
+
+        hudTextureToDisplay.back().setImageType((HudTextureType)index);
+
+        hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index]["rotation"].asInt(), priorityCardIndex);
+
+    }
+
+    // load the priorityCard
+    if(!priorityFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf")) {
+        std::cout << "Font not loaded\n" ;
+    }
+
+    std::ifstream priorityFile(RESOURCES_PATH "/img/hud/priority-card.json");
+    // check is priorityFile is correctly open
+    if (!priorityFile.is_open())
+    {
+        std::cout << "Error while opening json ressources priorityFile" << std::endl;
+        exit(1);
+    }
+    std::string priorityStr((std::istreambuf_iterator<char>(priorityFile)), std::istreambuf_iterator<char>());
+
+    std::unique_ptr<Json::CharReader> prorityReader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+    Json::Value priorityObj;
+    std::string prorityErrors;
+    prorityReader->parse(priorityStr.c_str(), priorityStr.c_str() + priorityStr.size(), &priorityObj, &prorityErrors);
+
+    const Json::Value &priorityData = priorityObj["data"];
+    for (unsigned index = 0; index < priorityData.size(); ++index)
+    {
+        priorityCards.emplace_back();
+        priorityCards.back().texture = (std::unique_ptr<client::TextureDisplayer>) new TextureDisplayer(RESOURCES_PATH + priorityData[index]["path"].asString());
+        priorityCards.back().texture->addMapSprite();
+        float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
+        priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
+        priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
 
 
-        // load the priorityCard
-        if(!priorityFont.loadFromFile("../ressources/img/hud/font.otf")) {
-            std::cout << "Font not loaded\n" ;
-        }
+        // display the title on the card
+        priorityCards.back().title = (std::unique_ptr<sf::Text>) new sf::Text(priorityData[index]["text"][0].asString(), priorityFont, TITLE_PROPORTION*WINDOW_LENGTH);
+        priorityCards.back().title->setStyle(sf::Text::Bold);
+        priorityCards.back().title->setFillColor(sf::Color::Black);
+        auto titleSize = priorityCards.back().title->getLocalBounds();
+        int xTitleOffset = (priorityCards.back().texture->getWidth() - titleSize.width)/2;
+        int xTitlePosition = priorityCards.back().texture->getSprite().getPosition().x + xTitleOffset;
+        int yTitlePosition = priorityCards.back().texture->getSprite().getPosition().y;
+        priorityCards.back().title->setPosition( xTitlePosition, yTitlePosition);
 
-        std::ifstream priorityFile("../ressources/img/hud/priority-card.json");
-        // check is priorityFile is correctly open
-        if (!priorityFile.is_open())
-        {
-            std::cout << "Error while opening json ressources priorityFile" << std::endl;
-            exit(1);
-        }
-        std::string priorityStr((std::istreambuf_iterator<char>(priorityFile)), std::istreambuf_iterator<char>());
+        // display the body on the card
+        priorityCards.back().level = 1;
+        std::string body = priorityData[index]["text"][priorityCards.back().level].asString();
+        priorityCards.back().body = (std::unique_ptr<sf::Text>) new sf::Text(body, priorityFont, 30);
 
-        std::unique_ptr<Json::CharReader> prorityReader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-        Json::Value priorityObj;
-        std::string prorityErrors;
-        prorityReader->parse(priorityStr.c_str(), priorityStr.c_str() + priorityStr.size(), &priorityObj, &prorityErrors);
-
-        const Json::Value &priorityData = priorityObj["data"];
-        for (unsigned index = 0; index < priorityData.size(); ++index)
-        {
-            priorityCards.emplace_back();
-            priorityCards.back().texture = (std::unique_ptr<client::TextureDisplayer>) new TextureDisplayer(priorityData[index]["path"].asString());
-            priorityCards.back().texture->addMapSprite();
-            float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
-            priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
-            priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
-
-
-            // display the title on the card
-            priorityCards.back().title = (std::unique_ptr<sf::Text>) new sf::Text(priorityData[index]["text"][0].asString(), priorityFont, TITLE_PROPORTION*WINDOW_LENGTH);
-            priorityCards.back().title->setStyle(sf::Text::Bold);
-            priorityCards.back().title->setFillColor(sf::Color::Black);
-            auto titleSize = priorityCards.back().title->getLocalBounds();
-            int xTitleOffset = (priorityCards.back().texture->getWidth() - titleSize.width)/2;
-            int xTitlePosition = priorityCards.back().texture->sprites[0].getPosition().x + xTitleOffset;
-            int yTitlePosition = priorityCards.back().texture->sprites[0].getPosition().y;
-            priorityCards.back().title->setPosition( xTitlePosition, yTitlePosition);
-
-            // display the body on the card
-            priorityCards.back().level = 1;
-            std::string body = priorityData[index]["text"][priorityCards.back().level].asString();
-            priorityCards.back().body = (std::unique_ptr<sf::Text>) new sf::Text(body, priorityFont, 30);
-
-            //to have the text on several lines without exceeding the card
-            int countEndLine = 1;
-            while(priorityCards.back().body->getLocalBounds().width > priorityCards.back().texture->getWidth()-10){
-                for (int i = countEndLine*NBR_CHAR_MAX_PER_LIGNE; i > 0 ; i--){
-                    if ((char)body[i] == ' ') {
-                        body.insert(i, "\n");
-                        countEndLine++;
-                        break;
-                    }
+        //to have the text on several lines without exceeding the card
+        int countEndLine = 1;
+        while(priorityCards.back().body->getLocalBounds().width > priorityCards.back().texture->getWidth()-10){
+            for (int i = countEndLine*NBR_CHAR_MAX_PER_LIGNE; i > 0 ; i--){
+                if ((char)body[i] == ' ') {
+                    body.insert(i, "\n");
+                    countEndLine++;
+                    break;
                 }
-                priorityCards.back().body->setString(body);
             }
-
-            priorityCards.back().body->setFillColor(sf::Color::Black);
-            int xBodyOffset = BODY_PROPORTION_X*WINDOW_LENGTH;
-            int yBodyOffset = BODY_PROPORTION_Y*WINDOW_WIDTH;
-            int xBodyPosition = priorityCards.back().texture->sprites[0].getPosition().x + xBodyOffset;
-            int yBodyPosition = priorityCards.back().texture->sprites[0].getPosition().y + yBodyOffset;
-            priorityCards.back().body->setPosition(xBodyPosition, yBodyPosition);        
-
+            priorityCards.back().body->setString(body);
         }
 
-        /*
-        // load the actionCard
-        actionCards.emplace_back("../ressources/img/hud/action-card-army.png");
-        actionCards.back().addMapSprite();
-        //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-        actionCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex); */
+        priorityCards.back().body->setFillColor(sf::Color::Black);
+        int xBodyOffset = BODY_PROPORTION_X*WINDOW_LENGTH;
+        int yBodyOffset = BODY_PROPORTION_Y*WINDOW_WIDTH;
+        int xBodyPosition = priorityCards.back().texture->getSprite().getPosition().x + xBodyOffset;
+        int yBodyPosition = priorityCards.back().texture->getSprite().getPosition().y + yBodyOffset;
+        priorityCards.back().body->setPosition(xBodyPosition, yBodyPosition);        
+
     }
+
+    /*
+    // load the actionCard
+    actionCards.emplace_back(RESOURCES_PATH "/img/hud/action-card-army.png");
+    actionCards.back().addMapSprite();
+    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
+    actionCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex); */
+}
 
 }

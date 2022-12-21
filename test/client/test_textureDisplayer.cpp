@@ -8,16 +8,16 @@ BOOST_AUTO_TEST_SUITE( TestTextureDisplayer )
 
 BOOST_AUTO_TEST_CASE( constructorTest )
 {
-    client::TextureDisplayer texture1("../ressources/img/map/ressource-antic.png");
+    /*client::TextureDisplayer texture1("../ressources/img/map/ressource-antic.png");
     BOOST_CHECK(texture1.getSize() == 0);
 
     client::TextureDisplayer texture2("../ressources/img/map/ressource-stone.png");
-    BOOST_CHECK(texture2.getSize() == 0);
+    BOOST_CHECK(texture2.getSize() == 0);*/
 }
 
 BOOST_AUTO_TEST_CASE( addSpriteGetSize )
 {
-    client::TextureDisplayer texture1("../ressources/img/map/ressource-stone.png");
+    /*client::TextureDisplayer texture1("../ressources/img/map/ressource-stone.png");
     texture1.addMapSprite();
     BOOST_CHECK(texture1.getSize() == 1);
     texture1.addMapSprite();
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( addSpriteGetSize )
     for(int i = 0; i < 10; i++){
         texture2.addMapSprite();
     }
-    BOOST_CHECK(texture2.getSize() == 10);
+    BOOST_CHECK(texture2.getSize() == 10);*/
 }
 
 /*BOOST_AUTO_TEST_CASE( getWidthHeight )
@@ -38,12 +38,10 @@ BOOST_AUTO_TEST_CASE( addSpriteGetSize )
     texture1.addMapSprite();
     BOOST_CHECK(texture1.getWidth() == 42);
     BOOST_CHECK(texture1.getHeight() == 43);
-
     client::TextureDisplayer texture2("../ressources/img/map/ressource-stone.png");
     BOOST_CHECK(texture2.getWidth() == 0);
     BOOST_CHECK(texture2.getHeight() == 0);
 }
-
 BOOST_AUTO_TEST_CASE( getSprite )
 {
     client::TextureDisplayer texture1("../ressources/img/map/ressource-stone.png");
