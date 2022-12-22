@@ -23,18 +23,20 @@
  @licend  The above is the entire license notice for the JavaScript code in this file
 */
 var menudata={children:[
-{text:"Documentation",url:"index.html"},
+{text:"Main Page",url:"index.html"},
+{text:"Diagram explanation",url:"./md_docs_diagram_explanation.html"},
+{text:"The game",url:"./md_docs_rules_rules.html",children:[
+{text:"Rules",url:"./md_docs_rules_rules.html"},
+{text:"Specific actions",url:"./md_docs_rules_recap_of_specific_actions.html"},
+{text:"Graphic s",url:"./md_docs_rules_graphic_elements.html"},
+{text:"Rendering",url:"./md_docs_rendering.html"}]},
+{text:"Development",url:"./md_docs_development_process.html",children:[
+{text:"Our development process ",url:"./md_docs_development_process.html"},
+{text:"CI/CD",url:"./md_docs_continuous_integration.html"}]},
+{text:"Code",url:"https://github.com/NiskuT/Civilization",children:[
 {text:"Source code",url:"https://github.com/NiskuT/Civilization"},
-{text:"Dev process ",url:"https://niskut.github.io/Civilization/md_docs_development_process.html"},
-{text:"Rules",url:"https://niskut.github.io/Civilization/md_docs_rules_rules.html"},
-{text:"Specific actions",url:"https://niskut.github.io/Civilization/md_docs_rules_recap_of_specific_actions.html"},
-{text:"Graphic ressources",url:"https://niskut.github.io/Civilization/md_docs_rules_graphic_elements.html"},
-{text:"Diagram explanation",url:"https://niskut.github.io/Civilization/md_docs_diagram_explanation.html"},
-{text:"CI/CD",url:"https://niskut.github.io/Civilization/md_docs_continuous_integration.html"},
-{text:"Credits",url:"https://niskut.github.io/Civilization/md_docs_credits.html"},
-{text:"List of pages",url:"pages.html"},
 {text:"Modules",url:"modules.html"},
-{text:"Classes",url:"annotated.html",children:[
+{text:"Class List",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},
 {text:"Class Hierarchy",url:"inherits.html"},
@@ -85,4 +87,5 @@ var menudata={children:[
 {text:"y",url:"functions_vars.html#index_y"}]},
 {text:"Enumerator",url:"functions_eval.html"}]}]},
 {text:"Source files",url:"files.html",children:[
-{text:"File List",url:"files.html"}]}]}
+{text:"File List",url:"files.html"}]}]},
+{text:"Code-coverage",url:"./code-coverage/index.html"}]}

@@ -75,6 +75,10 @@ State diagram</h1>
 <p>If you want to know more information about it, we would recommand you to read carefully the rules (<a href="https://niskut.github.io/Civilization/md_docs_rules_rules.html">here</a>)</p>
 <h1><a class="anchor" id="autotoc_md12"></a>
 Class Diagram</h1>
+<p><div class="diagraph">
+<img src="dia_class-diagram.png" />
+</div>
+</p>
 <p>Each player has various resources, wonders, action cards and counters. He can also create cities, exchange cards and play some of them. He is linked to the caravan class, control pawn class and the city class, which also have their own attributes.</p>
 <p>Each hexagonal map cell has a level attribute, which symbolizes its nature (grassland, hill, desert, forest...) and another one, named special which can have several arguments like natural wonder, city state, barbarian village or resource.</p>
 <p>The rule class allows to define all the possible actions for a card or a player. When a player starts his turn, he chooses an action to play first from a list of different possible actions. This list is actually a list of rule objects that define each action. These objects are instantiated from a json file that defines the set of possible rules like a manual.</p>

@@ -67,21 +67,11 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_docs_home_page"></a> This is a school project of four french students of the <a href="https://www.ensea.fr/fr">ENSEA</a>. During our last year of school, we were ask to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".</p>
 <h1><a class="anchor" id="autotoc_md14"></a>
-Project report</h1>
-<p>Development process: <a href="https://niskut.github.io/Civilization/md_docs_development_process.html">here</a></p>
-<p>Documentation, rules, code and report: <a href="https://niskut.github.io/Civilization/index.html">here</a></p>
-<p>Link to rules: <a href="https://niskut.github.io/Civilization/md_docs_rules_rules.html">here</a></p>
-<p>Link to the recap of specific actions: <a href="https://niskut.github.io/Civilization/md_docs_rules_recap_of_specific_actions.html">here</a></p>
-<p>Link to graphic resources : <a href="https://niskut.github.io/Civilization/md_docs_rules_graphic_elements.html">here</a></p>
-<p>Link to the diagram explanation: <a href="https://niskut.github.io/Civilization/md_docs_diagram_explanation.html">here</a></p>
-<p>Link to the code-coverage: <a href="https://niskut.github.io/Civilization/code-coverage/index.html">here</a></p>
-<p>Link to the credits: <a href="https://niskut.github.io/Civilization/md_docs_credits.html">here</a></p>
-<h1><a class="anchor" id="autotoc_md15"></a>
 Principle</h1>
 <p>This game is a strategy board game in which two to four players act as the leaders of history’s most memorable civilizations. Over the course of the game, they will expand their domains, gain new technologies, and build many of humanity’s greatest wonders. In the end, one civilization will rise above all others to leave its indelible mark upon history.</p>
-<p>If you want to know more about the rules and the documentation of the game you can click <a href="https://niskut.github.io/Civilization/index.html">here</a>. To read the rules, go fisrt on the tab called "List of pages" and then click on "rules".</p>
+<p>If you want to know more about the rules and the documentation of the game you can click <a href="./index.html">here</a>. To read the rules, go fisrt on the tab called "List of pages" and then click on "rules".</p>
 <p><img src="hud.png" alt="" width="1000" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Constraints</h1>
 <p>Our build system must use <a href="https://github.com/cbares/plt">this template</a>.</p>
 <p>Other constraints are:</p>
@@ -91,23 +81,24 @@ Constraints</h1>
 <li>The game must be multiplayer with a server part.</li>
 <li>The game must implement 3 different types of AI.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Build documentation</h1>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 Prerequisites</h2>
 <p>To build the documentation, you must install doxygen, graphviz, libpng-dev and dia.</p>
 <p>From the root of the project, you can now build the site with:</p>
 <div class="fragment"><div class="line">doxygen docs/Doxyfile</div>
 </div><!-- fragment --><p>Then, you can access the documentation from <code>html/index.html</code></p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Windows</h2>
 <p>To build our project on Windows, you must have installed <b>MinGW</b> with all its default libraries and it lpthread libraries. You must also have <b>CMake</b> and <b>git</b> installed on your machine.</p>
 <p>Now go to the <code>Civilization\build</code> folder and type <code>cmake -G "MinGW Makefiles" ..</code>. Finally, type <code>cmake --build .</code> to launch the project.</p>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 Linux</h2>
 <p>To build our project on Linux, you must have installed <b>git</b>, <b>gcc</b>/<b>g++</b>, <b>cmake</b> and <b>libsfml-dev</b>.</p>
 <p>If you also want to build testing, you will need to install <b>libboost-dev</b>. For building code coverage, add in addition to that <b>lcov</b> and <b>gcovr</b>.</p>
-<p>Now go to the <code>Civilization\build</code> folder and type <code>cmake ..</code>. You can add the following options: <b>-DCMAKE_BUILD_TYPE=Release</b>, <b>-DBUILD_TESTING=ON</b> and <b>-DBUILD_CODE_COVERAGE=ON</b>. Finally, type <code>cmake --build .</code> to build the project. Then, you can start the programs located in build/bin. </p>
+<p>Now go to the <code>Civilization\build</code> folder and type <code>cmake ..</code>. You can add the following options: <b>-DCMAKE_BUILD_TYPE=Release</b>, <b>-DBUILD_TESTING=ON</b> and <b>-DBUILD_CODE_COVERAGE=ON</b>. Finally, type <code>cmake --build .</code> to build the project. Then, you can start the programs located in build/bin.</p>
+<p><a href="./md_docs_credits.html">Credits</a> </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->

@@ -66,19 +66,19 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><blockquote class="doxtable">
-<p>By Quentin Souvigent, Lucas Marquet, Violaine Bec and Antoine Coutant </p>
+<p>By Quentin Souvignet, Lucas Marquet, Violaine Bec and Antoine Coutant </p>
 </blockquote>
 <p>This is a school project of four french students of the <a href="www.ensea.fr/">ENSEA</a>. During our last year of school, we were asked to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".</p>
 <p>Develop branch build: <a href="https://github.com/NiskuT/Civilization/actions/workflows/nightly.yml"><img src="https://github.com/NiskuT/Civilization/actions/workflows/nightly.yml/badge.svg?branch=develop" alt="Nightly build" style="pointer-events: none;" class="inline"/></a></p>
-<h1><a class="anchor" id="autotoc_md77"></a>
+<h1><a class="anchor" id="autotoc_md80"></a>
 &lt;a href="https://niskut.github.io/Civilization/index.html"&gt;Project report - here&lt;/a&gt;</h1>
 <p><b>Documentation</b>, rules, code and report.</p>
-<h1><a class="anchor" id="autotoc_md78"></a>
+<h1><a class="anchor" id="autotoc_md81"></a>
 Principle</h1>
 <p>This game is a strategy board game in which two to four players act as the leaders of history’s most memorable civilizations. Over the course of the game, they will expand their domains, gain new technologies, and build many of humanity’s greatest wonders. In the end, one civilization will rise above all others to leave its indelible mark upon history.</p>
 <p>If you want to know more about the rules and the documentation of the game you can click <a href="https://niskut.github.io/Civilization/index.html">here</a>. To read the rules, go fisrt on the tab called "List of pages" and then click on "rules".</p>
-<p><img src="./ressources/img/hud/hud.png" alt="" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md79"></a>
+<p><img src="./resources/img/hud/hud.png" alt="" class="inline"/></p>
+<h1><a class="anchor" id="autotoc_md82"></a>
 Constraints</h1>
 <p>Our build system must use <a href="www.github.com/cbares/plt">this template</a>.</p>
 <p>Other constraints are:</p>
@@ -88,19 +88,19 @@ Constraints</h1>
 <li>The game must be multiplayer with a server part.</li>
 <li>The game must implement 3 different types of AI.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md80"></a>
+<h1><a class="anchor" id="autotoc_md83"></a>
 Build documentation</h1>
-<h2><a class="anchor" id="autotoc_md81"></a>
+<h2><a class="anchor" id="autotoc_md84"></a>
 Prerequisites</h2>
 <p>To build the documentation, you must install doxygen, graphviz, libpng-dev and dia.</p>
 <p>From the root of the project, you can now build the site with:</p>
 <div class="fragment"><div class="line">doxygen docs/Doxyfile</div>
 </div><!-- fragment --><p>Then, you can access the documentation from <code>html/index.html</code></p>
-<h2><a class="anchor" id="autotoc_md82"></a>
+<h2><a class="anchor" id="autotoc_md85"></a>
 Windows</h2>
 <p>To build our project on Windows, you must have installed <b>MinGW</b> with all its default libraries and it lpthread libraries. You must also have <b>CMake</b> and <b>git</b> installed on your machine.</p>
 <p>Now go to the <code>Civilization\build</code> folder and type <code>cmake -G "MinGW Makefiles" ..</code>. Finally, type <code>cmake --build .</code> to launch the project.</p>
-<h2><a class="anchor" id="autotoc_md83"></a>
+<h2><a class="anchor" id="autotoc_md86"></a>
 Linux</h2>
 <p>To build our project on Linux, you must have installed <b>git</b>, <b>gcc</b>/<b>g++</b>, <b>cmake</b> and <b>libsfml-dev</b>.</p>
 <p>If you also want to build testing, you will need to install <b>libboost-dev</b>. For building code coverage, add in addition to that <b>lcov</b> and <b>gcovr</b>.</p>
