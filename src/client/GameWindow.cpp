@@ -338,7 +338,7 @@ void GameWindow::loadHudTexture()
         priorityCards.back().title->setPosition( xTitlePosition, yTitlePosition);
 
         // display the body on the card
-        priorityCards.back().level = 1;
+        priorityCards.back().level = 1;  // function get and set PriorityCardLevel in the future
         std::string body = priorityData[index]["text"][priorityCards.back().level].asString();
         priorityCards.back().body = (std::unique_ptr<sf::Text>) new sf::Text(body, priorityFont, 30);
 
