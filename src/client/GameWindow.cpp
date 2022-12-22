@@ -233,7 +233,7 @@ void GameWindow::loadMapTexture()
     // check is file is correctly open
     if (!file.is_open())
     {
-        std::cout << "Error while opening json ressources file" << std::endl;
+        std::cerr << "Error while opening json ressources file" << std::endl;
         exit(1);
     }
     std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -270,7 +270,7 @@ void GameWindow::loadHudTexture()
     // check is file is correctly open
     if (!file.is_open())
     {
-        std::cout << "Error while opening json ressources file" << std::endl;
+        std::cerr << "Error while opening json ressources file" << std::endl;
         exit(1);
     }
     std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -299,14 +299,14 @@ void GameWindow::loadHudTexture()
 
     // load the priorityCard
     if(!priorityFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf")) {
-        std::cout << "Font not loaded\n" ;
+        std::cerr << "Font not loaded" << std::endl;
     }
 
     std::ifstream priorityFile(RESOURCES_PATH "/img/hud/priority-card.json");
     // check is priorityFile is correctly open
     if (!priorityFile.is_open())
     {
-        std::cout << "Error while opening json ressources priorityFile" << std::endl;
+        std::cerr << "Error while opening json ressources priorityFile" << std::endl;
         exit(1);
     }
     std::string priorityStr((std::istreambuf_iterator<char>(priorityFile)), std::istreambuf_iterator<char>());
