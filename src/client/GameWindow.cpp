@@ -79,7 +79,7 @@ void GameWindow::clientWindow()
 {
 
     int turn = 0;
-    int mooveMode = false;
+    int moveMode = false;
 
     std::array<int, 2> clickStartingPoint = {0, 0};
     std::array<int, 2> newMapOffset = {0, 0};
@@ -97,7 +97,7 @@ void GameWindow::clientWindow()
                 clickStartingPoint = {  sf::Mouse::getPosition(clientGameWindow).x, 
                                         sf::Mouse::getPosition(clientGameWindow).y};
 
-                if (!mooveMode) {
+                if (!moveMode) {
 
                     int minimumDistance = WINDOW_LENGTH;
                     std::array<int, 2> hexagonOnClick = {0, 0};
@@ -143,13 +143,13 @@ void GameWindow::clientWindow()
 
             case sf::Event::MouseButtonReleased:
             
-                if (mooveMode){
+                if (moveMode){
 
                     newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint[0],
                                     sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint[1]};
 
                     for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-                        mapTextureToDisplay[i].mooveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                        mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
 
                 }
 
@@ -161,13 +161,13 @@ void GameWindow::clientWindow()
                 {
                 case sf::Keyboard::M:
 
-                    if (mooveMode){
-                        mooveMode = false;
+                    if (moveMode){
+                        moveMode = false;
                         if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
                             clientGameWindow.setMouseCursor(clientCursor);
                     } 
                     else {
-                        mooveMode = true;
+                        moveMode = true;
                         if (clientCursor.loadFromSystem(sf::Cursor::Hand)) 
                             clientGameWindow.setMouseCursor(clientCursor);
                     }
@@ -196,6 +196,32 @@ void GameWindow::clientWindow()
         }
     }
 }
+
+/*!
+* \brief Open JSON File
+*/
+const auto GameWindow::openJsonFile(std::string path) {
+    
+    std::ifstream file(RESOURCES_PATH + path);
+    // check is file is correctly open
+    if (!file.is_open())
+    {
+        std::cerr << "Error while opening json ressources file" << std::endl;
+        exit(1);
+    }
+    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+    Json::Value obj;
+    std::string errors;
+    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
+
+    const Json::Value &data = obj["data"];
+
+    return data;
+
+}
+
 
 /*!
 * \brief Load all the textures of the map
@@ -229,21 +255,7 @@ void GameWindow::loadMapTexture()
 
     std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-    std::ifstream file(RESOURCES_PATH "/img/map/files.json");
-    // check is file is correctly open
-    if (!file.is_open())
-    {
-        std::cerr << "Error while opening json ressources file" << std::endl;
-        exit(1);
-    }
-    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-    Json::Value obj;
-    std::string errors;
-    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
-
-    const Json::Value &data = obj["data"];
+    const Json::Value &data = openJsonFile("/img/map/files.json");
 
     for (unsigned index = 0; index < data.size(); ++index)
     {
@@ -256,31 +268,22 @@ void GameWindow::loadMapTexture()
     }
 }
 
+/*!
+* \brief Load all the HUD textures
+*/
+
 void GameWindow::loadHudTexture()
 {
 
     int rotation = 0;
     int priorityCardIndex = 0;
 
-    backgroundTexture = (std::unique_ptr<TextureDisplayer>) new TextureDisplayer(RESOURCES_PATH "/img/hud/background.png");    backgroundTexture->addMapSprite();
+    backgroundTexture = (std::unique_ptr<TextureDisplayer>) new TextureDisplayer(RESOURCES_PATH "/img/hud/background.png");    
+    backgroundTexture->addMapSprite();
     float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
     backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);
 
-    std::ifstream file(RESOURCES_PATH "/img/hud/files.json");
-    // check is file is correctly open
-    if (!file.is_open())
-    {
-        std::cerr << "Error while opening json ressources file" << std::endl;
-        exit(1);
-    }
-    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-    Json::Value obj;
-    std::string errors;
-    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
-
-    const Json::Value &data = obj["data"];
+    const Json::Value &data = openJsonFile("/img/hud/files.json");
 
     for (unsigned index = 0; index < data.size(); ++index)
     {
@@ -297,26 +300,14 @@ void GameWindow::loadHudTexture()
 
     }
 
+
     // load the priorityCard
     if(!priorityFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf")) {
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    std::ifstream priorityFile(RESOURCES_PATH "/img/hud/priority-card.json");
-    // check is priorityFile is correctly open
-    if (!priorityFile.is_open())
-    {
-        std::cerr << "Error while opening json ressources priorityFile" << std::endl;
-        exit(1);
-    }
-    std::string priorityStr((std::istreambuf_iterator<char>(priorityFile)), std::istreambuf_iterator<char>());
+    const Json::Value &priorityData = openJsonFile( "/img/hud/priority-card.json");
 
-    std::unique_ptr<Json::CharReader> prorityReader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-    Json::Value priorityObj;
-    std::string prorityErrors;
-    prorityReader->parse(priorityStr.c_str(), priorityStr.c_str() + priorityStr.size(), &priorityObj, &prorityErrors);
-
-    const Json::Value &priorityData = priorityObj["data"];
     for (unsigned index = 0; index < priorityData.size(); ++index)
     {
         priorityCards.emplace_back();

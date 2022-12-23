@@ -1,9 +1,9 @@
 #include <client.hpp>
 #include <iostream>
 
-#define  FIRST_OFFSET_SCALE  float(185) / float(1600)       // Offset of the first priority card (185/1600)
-#define  PRIORITY_CARD_OFFSET float(249) / float(1600)      // Offset between each card (249/1600)
-#define  PROPORTION_WIDTH  float(140) / float(900)          // 140/900
+#define  FIRST_OFFSET_SCALE  (float(185) / float(1600))       // Offset of the first priority card 
+#define  PRIORITY_CARD_OFFSET (float(249) / float(1600))      // Offset between each card
+#define  PROPORTION_WIDTH  (float(140) / float(900))         
 
 namespace client {
     
@@ -37,7 +37,7 @@ void TextureDisplayer::addMapSprite()
  * @param xOffset is the X offset of the map in the screen
  * @param yOffset is the Y offset of the map in the screen
  */
-void TextureDisplayer::mooveSpritePosition(int xOffset, int yOffset)
+void TextureDisplayer::moveSpritePosition(int xOffset, int yOffset)
 {
     for (unsigned i = 0; i < this->sprites.size(); i++){
         sf::Vector2f pos = getSprite(i).getPosition();
