@@ -4,8 +4,8 @@
         {
             "type": "economy",
             "path": "/img/hud/priority-card-economy.png",
-            "text": [
-                "ECONOMY",
+            "title": "ECONOMY",
+            "body": [
                 "economy 1",
                 "economy 2",
                 "economy 3",
@@ -16,8 +16,8 @@
         {
             "type": "army",
             "path": "/img/hud/priority-card-army.png",
-            "text": [
-                "ARMY",
+            "title": "ARMY",
+            "body": [
                 "army 1",
                 "army 2",
                 "army 3",
@@ -27,8 +27,8 @@
         {
             "type": "science",
             "path": "/img/hud/priority-card-science.png",
-            "text": [
-                "SCIENCE",
+            "title": "SCIENCE",
+            "body": [
                 "science 1",
                 "science 2",
                 "science 3",
@@ -38,8 +38,8 @@
         {
             "type": "culture",
             "path": "/img/hud/priority-card-culture.png",
-            "text": [
-                "CULTURE",
+            "title": "CULTURE",
+            "body": [
                 "culture 1",
                 "culture 2",
                 "culture 3",
@@ -49,8 +49,8 @@
         {
             "type": "industry",
             "path": "/img/hud/priority-card-industry.png",
-            "text": [
-                "INDUSTRY",
+            "title": "INDUSTRY",
+            "body": [
                 "tech 1",
                 "tech 2",
                 "tech 3",

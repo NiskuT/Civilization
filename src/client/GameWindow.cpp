@@ -319,7 +319,7 @@ void GameWindow::loadHudTexture()
 
 
         // display the title on the card
-        priorityCards.back().title = (std::unique_ptr<sf::Text>) new sf::Text(priorityData[index]["text"][0].asString(), priorityFont, TITLE_PROPORTION*WINDOW_LENGTH);
+        priorityCards.back().title = (std::unique_ptr<sf::Text>) new sf::Text(priorityData[index]["title"].asString(), priorityFont, TITLE_PROPORTION*WINDOW_LENGTH);
         priorityCards.back().title->setStyle(sf::Text::Bold);
         priorityCards.back().title->setFillColor(sf::Color::Black);
         auto titleSize = priorityCards.back().title->getLocalBounds();
@@ -329,8 +329,8 @@ void GameWindow::loadHudTexture()
         priorityCards.back().title->setPosition( xTitlePosition, yTitlePosition);
 
         // display the body on the card
-        priorityCards.back().level = 1;  // function get and set PriorityCardLevel in the future
-        std::string body = priorityData[index]["text"][priorityCards.back().level].asString();
+        priorityCards.back().level = 0;  // function get and set PriorityCardLevel in the future
+        std::string body = priorityData[index]["body"][priorityCards.back().level].asString();
         priorityCards.back().body = (std::unique_ptr<sf::Text>) new sf::Text(body, priorityFont, 30);
 
         //to have the text on several lines without exceeding the card
