@@ -1,6 +1,6 @@
 # Home - Project Civilization
 
-> By Quentin Souvigent, Lucas Marquet, Violaine Bec and Antoine Coutant
+> By Quentin Souvignet, Lucas Marquet, Violaine Bec and Antoine Coutant
 
 This is a school project of four french students of the [ENSEA](<www.ensea.fr/>). During our last year of school, we were asked to adapt a board game into a video game. Thus, we choose to implement the game "Civilization: A New Dawn".
 
@@ -16,7 +16,7 @@ This game is a strategy board game in which two to four players act as the leade
 If you want to know more about the rules and the documentation of the game you can click [here](https://niskut.github.io/Civilization/index.html).
 To read the rules, go fisrt on the tab called "List of pages" and then click on "rules".
 
-<img src="./ressources/img/hud/hud.png">
+<img src="./resources/img/hud/hud.png">
 
 
 ## Constraints
