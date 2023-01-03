@@ -62,6 +62,11 @@ void GameWindow::displayWindow() {
         clientGameWindow.draw(*priorityCards[i].body);
     }
 
+    for (unsigned i = 0; i < actionCardsToDisplay.size(); i++){
+        clientGameWindow.draw(actionCardsToDisplay[i].texture->getSprite(0));
+    }
+
+
     clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER%5).getSprite());
     
     for(unsigned i = 5; i < hudTextureToDisplay.size(); i++ ){
@@ -287,17 +292,11 @@ void GameWindow::loadHudTexture()
 
     for (unsigned index = 0; index < data.size(); ++index)
     {
-
         hudTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
-
         hudTextureToDisplay.back().addMapSprite();
-
         float scale = data[index]["scale"].asFloat() / (float(hudTextureToDisplay.back().getWidth()) / float(WINDOW_LENGTH));
-
         hudTextureToDisplay.back().setImageType((HudTextureType)index);
-
         hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index]["rotation"].asInt(), priorityCardIndex);
-
     }
 
 
@@ -355,12 +354,22 @@ void GameWindow::loadHudTexture()
 
     }
 
-    /*
-    // load the actionCard
-    actionCards.emplace_back(RESOURCES_PATH "/img/hud/action-card-army.png");
-    actionCards.back().addMapSprite();
-    //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
-    actionCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex); */
+    
+    /* load the actionCard */
+
+    const Json::Value &actionCardData = openJsonFile( "/img/hud/action-card.json");
+    std::vector<int> actionCardOwned = {1,5,7};   // array that will be sent by shared
+
+    for (unsigned index = 0; index < actionCardOwned.size(); ++index)
+    {
+        actionCardsToDisplay.emplace_back();
+        actionCardsToDisplay.back().texture = (std::unique_ptr<client::TextureDisplayer>) new TextureDisplayer(RESOURCES_PATH + actionCardData[actionCardOwned[index]]["path"].asString());
+        actionCardsToDisplay.back().texture->addMapSprite();
+        float actionScale = ACTION_CARD_PROPORTION / (float(actionCardsToDisplay.back().texture->getWidth()) / float(WINDOW_LENGTH));
+        actionCardsToDisplay.back().texture->setImageType((HudTextureType)(actionCardOwned[index] + 11)); // +11 to go to the action cards in the HudTextureType (enum class)
+        actionCardsToDisplay.back().texture->setHudSpritePosition(actionScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
+    }
+    
 }
 
 }

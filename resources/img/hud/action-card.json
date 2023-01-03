@@ -1,0 +1,97 @@
+{
+    "data" : 
+    [
+        {
+            "type": "Carthage",
+            "path": "/img/hud/action-card-army.png",
+            "body":"+1 fight score against other state city for each pawn at 2 steps from the attacker (except Carthage)"     
+        },
+
+        {
+            "type": "Kaboul",
+            "path": "/img/hud/action-card-army.png",
+            "body": "+3 fight score against other state cities (except Kaboul)"     
+        },
+
+        {
+            "type": "Mohenjo Daro",
+            "path": "/img/hud/action-card-culture.png",
+            "body": "Priority level for placing pawns = priority-1"      
+        },
+
+        {
+            "type": "Kumasi",
+            "path": "/img/hud/action-card-culture.png",
+            "body": "Industry or Culture cards => Forest priority lvl = 1"    
+        },
+
+        {
+            "type": "Seoul",
+            "path": "/img/hud/action-card-science.png",
+            "body": "At the beginning of each round, Move a barbarian to a close empty field (not water) "     
+        },
+
+        {
+            "type": "Geneva",
+            "path": "/img/hud/action-card-science.png",
+            "body": "At the beginning of each round, exchange a player diplomacy card you have to another one"      
+        },
+
+        {
+            "type": "Buenos Aires",
+            "path": "/img/hud/action-card-industry.png",
+            "body": "Wonders cost 2 less resources if you haven't it"     
+        },
+
+        {
+            "type": "Bruxelles",
+            "path": "/img/hud/action-card-industry.png",
+            "body": "Wonders cost 1 less resources for each mature city"      
+        },
+
+        { 
+            "type": "Player 1",
+            "path": "/img/hud/action-card-player-1.png",
+            "body": [
+                "Player pawns are considered yours for mature cities",
+                "If your caravan go to player capital city, place a box on a card of this player and obtain a resource",
+                "Attack +2 fight score except against Player",
+                "Defense +2 fight score except against Player"
+            ]
+        },
+
+        { 
+            "type": "Player 2",
+            "path": "/img/hud/action-card-player-2.png",
+            "body": [
+                "Player pawns are considered yours for mature cities",
+                "If your caravan go to player capital city, place a box on a card of this player and obtain a resource",
+                "Attack +2 fight score except against Player",
+                "Defense +2 fight score except against Player"
+            ]
+        },
+
+        { 
+            "type": "Player 3",
+            "path": "/img/hud/action-card-player-3.png",
+            "body": [
+                "Player pawns are considered yours for mature cities",
+                "If your caravan go to player capital city, place a box on a card of this player and obtain a resource",
+                "Attack +2 fight score except against Player",
+                "Defense +2 fight score except against Player"
+            ]
+        },
+
+        { 
+            "type": "Player 4",
+            "path": "/img/hud/action-card-player-4.png",
+            "body": [
+                "Player pawns are considered yours for mature cities",
+                "If your caravan go to player capital city, place a box on a card of this player and obtain a resource",
+                "Attack +2 fight score except against Player",
+                "Defense +2 fight score except against Player"
+            ]
+        }
+
+    ]
+}
