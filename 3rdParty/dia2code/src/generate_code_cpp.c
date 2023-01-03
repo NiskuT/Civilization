@@ -56,7 +56,7 @@ int is_scalar_type(char* name) {
         return 1;
     }    
     umlclassnode *ref = find_by_name (gb->classlist, name);
-    if (ref && (is_enum_stereo(ref->key->stereotype) || is_enum_stereo2(ref->key->stereotype))) {
+    if (ref && (is_enum_stereo(ref->key->stereotype) || is_enum_class_stereo(ref->key->stereotype) || is_union_stereo(ref->key->stereotype))) {
         return 1;
     }
     return 0;
@@ -105,7 +105,8 @@ pass_by_reference (umlclass *cl)
     }
     return (!is_const_stereo (st) 
             && !is_enum_stereo (st) 
-            && !is_enum_stereo2 (st));
+            && !is_enum_class_stereo (st)
+            && !is_union_stereo (st));
 }
 
 static int
@@ -120,8 +121,9 @@ is_oo_class (umlclass *cl)
     return (!is_const_stereo (st) &&
             !is_typedef_stereo (st) &&
             !is_enum_stereo (st) &&
-            !is_enum_stereo2 (st) &&
+            !is_enum_class_stereo (st) &&
             !is_struct_stereo (st) &&
+            !is_union_stereo (st) &&
             !eq (st, "CORBAUnion") &&
             !eq (st, "CORBAException"));
 }
@@ -612,7 +614,7 @@ gen_decl (declaration *d)
         indentlevel--;
         print ("};\n\n");
 
-    } else if (is_enum_stereo2 (stype)) {
+    } else if (is_enum_class_stereo (stype)) {
         print ("enum class %s {\n", name);
         indentlevel++;
         while (umla != NULL) {
@@ -633,6 +635,20 @@ gen_decl (declaration *d)
 
     } else if (is_struct_stereo (stype)) {
         print ("struct %s {\n", name);
+        indentlevel++;
+        while (umla != NULL) {
+            check_umlattr (&umla->key, name);
+            print ("%s %s", cppname (umla->key.type), umla->key.name);
+            if (strlen (umla->key.value) > 0)
+                print (" = %s", umla->key.value);
+            emit (";\n");
+            umla = umla->next;
+        }
+        indentlevel--;
+        print ("};\n\n");
+
+    } else if (is_union_stereo (stype)) {
+        print ("union %s {\n", name);
         indentlevel++;
         while (umla != NULL) {
             check_umlattr (&umla->key, name);
@@ -717,6 +733,7 @@ struct stdlib_includes {
    int random;
    int sfmlGraphics;
    int jsoncpp;
+   int boostAsio;
 };
 
 void print_include_stdlib(struct stdlib_includes* si,char* name) {
@@ -818,6 +835,10 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        && (strstr(name,"Json::") == name)) {
            print ("#include <json/json.h>\n");
            si->jsoncpp = 1;
+       }
+       if (!si->boostAsio && strstr(name,"boost::asio")) {
+           print ("#include <boost/asio.hpp>\n");
+           si->boostAsio = 1;
        }       
     }
 }
