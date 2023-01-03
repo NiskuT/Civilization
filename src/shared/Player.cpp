@@ -1,20 +1,46 @@
 #include <shared.hpp>
 
+namespace shared
+{
 
-namespace shared {
+    Player::Player(boost::asio::ip::tcp::socket &clientSocket)
+    {
 
-Player::Player(std::string username) {
-    this->username = username;
-    for (int i = 1; i < 4; i++) {
-        this->ressources[i] = 0;
-        this->wonderRessources[i] = 0;
+        this->playerSocket = std::make_shared<boost::asio::ip::tcp::socket>(std::move(clientSocket));
+        this->state = PlayerState::WaitingForGame;
+        for (int i = 1; i < 4; i++)
+        {
+            this->ressources[i] = 0;
+            this->wonderRessources[i] = 0;
+        }
     }
-}
 
-std::string Player::getName() {
-    return this->username;
-}
+    void Player::setUsername(std::string username)
+    {
+        this->username = username;
+    }
 
+    std::string Player::getName()
+    {
+        return this->username;
+    }
 
+    bool Player::operator==(Player &otherPlayer)
+    {
+        return (this->getName() == otherPlayer.getName() && this->state == PlayerState::WaitingForGame && otherPlayer.state == PlayerState::Disconnected) || (this->getName() == otherPlayer.getName() && this->state == PlayerState::Disconnected && otherPlayer.state == PlayerState::WaitingForGame);
+    }
+
+    boost::asio::ip::tcp::socket &Player::getSocket()
+    {
+        return this->playerSocket;
+    }
+
+    void Player::disconnectPlayer()
+    {
+        state = shared::PlayerState::Disconnected;
+        std::lock_guard<std::mutex> socketLock(socketMutex);
+        playerSocket->close();
+        playerSocket.reset();
+    }
 
 }
