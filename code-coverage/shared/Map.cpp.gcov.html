@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-12-23 17:01:18</td>
+            <td class="headerValue">2023-01-03 15:10:48</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -120,21 +120,21 @@
 <a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :                 case 0:</span></a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Water);</span></a>
 <a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :                     break;</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         11 :                 case 1:</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         11 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Grassland);</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         11 :                     break;</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         56 :                 case 2:</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         56 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Hill);</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         56 :                     break;</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        142 :                 case 3:</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        142 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Forest);</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        142 :                     break;</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         80 :                 case 4:</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         80 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Desert);</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         80 :                     break;</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         11 :                 case 5:</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         11 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Mountain);</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">         11 :                     break;</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          6 :                 case 1:</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          6 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Grassland);</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          6 :                     break;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         78 :                 case 2:</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         78 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Hill);</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         78 :                     break;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        133 :                 case 3:</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        133 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Forest);</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        133 :                     break;</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         78 :                 case 4:</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         78 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Desert);</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         78 :                     break;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          5 :                 case 5:</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          5 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Mountain);</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          5 :                     break;</span></a>
 <a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 default:</span></a>
 <a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                     mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Water);</span></a>
 <a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :                     break;</span></a>
@@ -148,13 +148,13 @@
 <a name="86"><span class="lineNum">      86 </span>            :                 {</a>
 <a name="87"><span class="lineNum">      87 </span>            :                     // 70% chance to be water</a>
 <a name="88"><span class="lineNum">      88 </span><span class="lineCov">         58 :                     if (rand() % 10 &lt; 7)</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         40 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Water);</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         41 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Water);</span></a>
 <a name="90"><span class="lineNum">      90 </span>            :                 }</a>
 <a name="91"><span class="lineNum">      91 </span><span class="lineCov">        176 :                 else if (i == 2 || i == this-&gt;height - 3 || j == 2 || j == this-&gt;width - 3)</span></a>
 <a name="92"><span class="lineNum">      92 </span>            :                 {</a>
 <a name="93"><span class="lineNum">      93 </span>            :                     // 30% chance to be water</a>
 <a name="94"><span class="lineNum">      94 </span><span class="lineCov">         50 :                     if (rand() % 10 &lt; 3)</span></a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">         18 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Water);</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">         20 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::Water);</span></a>
 <a name="96"><span class="lineNum">      96 </span>            :                 }</a>
 <a name="97"><span class="lineNum">      97 </span>            :                 else</a>
 <a name="98"><span class="lineNum">      98 </span>            :                 {</a>
@@ -162,14 +162,14 @@
 <a name="100"><span class="lineNum">     100 </span><span class="lineCov">        126 :                     if (rand() % 100 &lt; 1)</span></a>
 <a name="101"><span class="lineNum">     101 </span><span class="lineCov">          1 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::WonderEverest);</span></a>
 <a name="102"><span class="lineNum">     102 </span><span class="lineCov">        125 :                     else if (rand() % 100 &lt; 1)</span></a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          1 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::WonderGalapagos);</span></a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineCov">        124 :                     else if (rand() % 100 &lt; 1)</span></a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::WonderKilimanjaro);</span></a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        124 :                     else if (rand() % 100 &lt; 1)</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::WonderGalapagos);</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineCov">        125 :                     else if (rand() % 100 &lt; 1)</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">          2 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::WonderKilimanjaro);</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        123 :                     else if (rand() % 100 &lt; 1)</span></a>
 <a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::WonderMessa);</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">        124 :                     else if (rand() % 100 &lt; 1)</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">        123 :                     else if (rand() % 100 &lt; 1)</span></a>
 <a name="109"><span class="lineNum">     109 </span><span class="lineCov">          2 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::WonderPantanal);</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">        122 :                     else if (rand() % 100 &lt; 1)</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">        121 :                     else if (rand() % 100 &lt; 1)</span></a>
 <a name="111"><span class="lineNum">     111 </span><span class="lineCov">          1 :                         mapOfTheGame[i * this-&gt;width + j]-&gt;setFieldType(FieldLevel::WonderVolcanic);</span></a>
 <a name="112"><span class="lineNum">     112 </span>            :                 }</a>
 <a name="113"><span class="lineNum">     113 </span>            :             }</a>
