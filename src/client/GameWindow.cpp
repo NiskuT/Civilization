@@ -24,7 +24,6 @@
 #define MAX_CHARACTER_SIZE 18
 #define NBR_CHAR_MAX_PER_LIGNE 25 
 #define TURN_NUMBER 2
-#define REFRESH_ELEMENT 1
 
 #ifndef RESOURCES_PATH
     #define RESOURCES_PATH "../resources"
@@ -41,6 +40,8 @@ namespace client
 GameWindow::GameWindow() {
     clientGameWindow.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
     clientGameWindow.setPosition(sf::Vector2i(0, 0));
+
+    firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
 }
 
 /*!
@@ -81,20 +82,15 @@ void GameWindow::displayWindow() {
 }
 
 /*!
-    * \brief Loop that look for events to happend and call displayWindow()
-    */
+ * \brief Loop that look for events to happend and call displayWindow()
+ */
 void GameWindow::clientWindow()
 {
-
-    int turn = 0;
     int moveMode = false;
-    time_t currentTimer;
-    time(&currentTimer);
-    time_t lastUpdateTimer;
-    time(&lastUpdateTimer);
+    int clickMode = false;
 
-    std::array<int, 2> clickStartingPoint = {0, 0};
-    std::array<int, 2> newMapOffset = {0, 0};
+    sf::Vector2i clickStartingPoint;
+    std::array<int, 2> newMapOffset;
 
     while (clientGameWindow.isOpen()){
 
@@ -102,59 +98,33 @@ void GameWindow::clientWindow()
         sf::Event event;
         while (clientGameWindow.pollEvent(event))
         {
+
+            displayWindow();
+            
             switch (event.type)
             {
             case sf::Event::MouseButtonPressed:
+
+                clickMode = true;
         
-                clickStartingPoint = {  sf::Mouse::getPosition(clientGameWindow).x, 
-                                        sf::Mouse::getPosition(clientGameWindow).y};
+                clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
 
-                if (!moveMode) {
-
-                    int minimumDistance = WINDOW_LENGTH;
-                    std::array<int, 2> hexagonOnClick = {0, 0};
-
-                    sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
-                    cursorRect.left = clickStartingPoint[0];
-                    cursorRect.top = clickStartingPoint[1];
-                    cursorRect.width = 1;
-                    cursorRect.height = 1;
-
-                    bool isClickable = false;
-
-                    for(int i = 0; i < NUMBER_OF_FIELD; i++){
-
-                        for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++){
-
-                            sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
-
-                            if (spriteBounds.intersects(cursorRect)) {
-
-                                isClickable = true;
-
-                                int distance = sqrt(pow(spriteBounds.left + spriteBounds.width/2 - cursorRect.left, 2) 
-                                                    + pow(spriteBounds.top + spriteBounds.height/2 - cursorRect.top, 2));
-
-                                if (distance < minimumDistance){
-
-                                    minimumDistance = distance;
-                                    hexagonOnClick[1] =  (int)((spriteBounds.top - firstHexagonPosition[1]))/(int)((spriteBounds.height * 3 / 4));
-                                    hexagonOnClick[0] =  (int)((spriteBounds.left - firstHexagonPosition[0])) /(int)((spriteBounds.width - 1));
-                                }
-                            } 
-                        }
-                    }
-                    if (isClickable) std::cout << "User click on the Hex x=" << hexagonOnClick[0] << " & y=" << hexagonOnClick[1] << "\n";
-                }
+                if (!moveMode) clickAction(clickStartingPoint);
 
                 break;
 
             case sf::Event::MouseButtonReleased:
-            
-                if (moveMode){
 
-                    newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint[0],
-                                    sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint[1]};
+                clickMode = false;
+
+                break;
+
+            case sf::Event::MouseMoved:
+
+                if (moveMode && clickMode){
+
+                    newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint.x,
+                                    sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint.y};
 
                     firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0], 
                                             firstHexagonPosition[1] + newMapOffset[1]};
@@ -165,9 +135,10 @@ void GameWindow::clientWindow()
                     for(unsigned i = 0; i < elementTextureToDisplay.size(); i++)
                         elementTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
 
-                }
+                    clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
 
-                break;
+
+                }
 
             case sf::Event::KeyPressed:
 
@@ -199,23 +170,46 @@ void GameWindow::clientWindow()
             default:
                 break;
             }
-            
-            // draw the map
-            if (turn == 0) {
-                firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
-                loadMapTexture();
-                loadElementTexture();
-                loadHudTexture();
-                turn += 1;
-            }
-            time(&currentTimer);
-            if (currentTimer - lastUpdateTimer > REFRESH_ELEMENT ){
-                loadElementTexture();
-                time(&lastUpdateTimer);
-            }
-            displayWindow();
         }
     }
+}
+
+void GameWindow::clickAction(sf::Vector2i clickPosition) {
+
+    int minimumDistance = WINDOW_LENGTH;
+    std::array<int, 2> hexagonOnClick = {0, 0};
+
+    sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
+    cursorRect.left = clickPosition.x;
+    cursorRect.top = clickPosition.y;
+    cursorRect.width = 1;
+    cursorRect.height = 1;
+
+    bool isClickable = false;
+
+    for(int i = 0; i < NUMBER_OF_FIELD; i++){
+
+        for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++){
+
+            sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
+
+            if (spriteBounds.intersects(cursorRect)) {
+
+                isClickable = true;
+
+                int distance = sqrt(pow(spriteBounds.left + spriteBounds.width/2 - cursorRect.left, 2) 
+                                    + pow(spriteBounds.top + spriteBounds.height/2 - cursorRect.top, 2));
+
+                if (distance < minimumDistance){
+
+                    minimumDistance = distance;
+                    hexagonOnClick[1] =  (int)((spriteBounds.top - firstHexagonPosition[1]))/(int)((spriteBounds.height * 3 / 4));
+                    hexagonOnClick[0] =  (int)((spriteBounds.left - firstHexagonPosition[0])) /(int)((spriteBounds.width - 1));
+                }
+            } 
+        }
+    }
+    if (isClickable) std::cout << "User click on the Hex x=" << hexagonOnClick[0] << " & y=" << hexagonOnClick[1] << "\n";
 }
 
 /*!
