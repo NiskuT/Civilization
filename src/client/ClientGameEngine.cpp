@@ -1,6 +1,7 @@
 #include <client.hpp>
 #include <iostream>
 #include <thread>
+#include <mutex>
 
 #define REFRESH_ELEMENT 1
 
@@ -27,7 +28,9 @@ void ClientGameEngine::renderGame() {
 
         time(&currentTimer);
         if (currentTimer - lastUpdateTimer > REFRESH_ELEMENT ){
-            //clientGame.loadElementTexture();
+            clientGame.mutexGame.lock();
+            clientGame.loadElementTexture();
+            clientGame.mutexGame.unlock();
             time(&lastUpdateTimer);
             turn++;
         }

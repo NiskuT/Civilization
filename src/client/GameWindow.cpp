@@ -4,7 +4,8 @@
 #include <math.h>
 #include <json/json.h>
 #include <cmath>
-#include <time.h> 
+#include <time.h>
+#include <mutex>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -98,8 +99,9 @@ void GameWindow::clientWindow()
         sf::Event event;
         while (clientGameWindow.pollEvent(event))
         {
-
+            mutexGame.lock();
             displayWindow();
+            mutexGame.unlock();
             
             switch (event.type)
             {
@@ -129,11 +131,13 @@ void GameWindow::clientWindow()
                     firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0], 
                                             firstHexagonPosition[1] + newMapOffset[1]};
 
+                    mutexGame.lock();
                     for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
                         mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
 
                     for(unsigned i = 0; i < elementTextureToDisplay.size(); i++)
                         elementTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                    mutexGame.unlock();
 
                     clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
 
@@ -156,6 +160,25 @@ void GameWindow::clientWindow()
                         if (clientCursor.loadFromSystem(sf::Cursor::Hand)) 
                             clientGameWindow.setMouseCursor(clientCursor);
                     }
+                    break;
+
+                case sf::Keyboard::R:
+
+                    newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
+                                    MAP_Y_OFFSET - firstHexagonPosition[1]};
+
+                    firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
+
+                    mutexGame.lock();
+                    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                        mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+
+                    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++)
+                        elementTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                    mutexGame.unlock();
+
+                    clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
+
                     break;
 
                 default:
