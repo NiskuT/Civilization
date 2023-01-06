@@ -50,6 +50,13 @@ void TextureDisplayer::moveSpritePosition(int xOffset, int yOffset)
 }
 
 /*!
+ * \brief Delete all sprites
+ */
+void TextureDisplayer::clearSprites(){
+    this->sprites.clear();
+}
+
+/*!
  * \brief Set a particular Sprite Position
  * @param index is the index position of the sprite
  * @param x is the X position of the sprite in the Map

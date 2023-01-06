@@ -2,8 +2,13 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+#include <sys/stat.h>
 
-#define REFRESH_ELEMENT 100
+#define REFRESH_ELEMENT 1
+
+#ifndef RESOURCES_PATH
+#define RESOURCES_PATH "../resources"
+#endif
 
 namespace client
 {
@@ -21,17 +26,32 @@ void ClientGameEngine::renderGame()
 {
     std::thread t(&ClientGameEngine::startGameWindow, this);
 
-    long lastUpdateTimer = clientGame.getCurrentTime(false);
+    long lastUpdateTimer = clientGame.getCurrentTime();
+    struct stat file_stat;
+    std::string file_path = RESOURCES_PATH "/img/map/files.json";
+    if (stat(file_path.c_str(), &file_stat) == -1) {
+        std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
+    }
+    time_t last_modified = file_stat.st_mtime;
 
     while(1){
         
-        if (clientGame.getCurrentTime(false) - lastUpdateTimer > REFRESH_ELEMENT ){
-            std::lock_guard<std::mutex> lock(clientGame.mutexGame);
-            turn++;
-            clientGame.loadElementTexture();
-            lastUpdateTimer = clientGame.getCurrentTime(false);
-        }
+        if (clientGame.getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT ){
 
+            if (stat(file_path.c_str(), &file_stat) == -1) {
+                std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
+            }
+
+            time_t modified = file_stat.st_mtime;
+            lastUpdateTimer = clientGame.getCurrentTime();
+
+            if (modified != last_modified){
+                last_modified = modified;
+                std::lock_guard<std::mutex> lock(clientGame.mutexGame);
+                turn++;
+                clientGame.updateElementTexture();
+            }
+        }
     }
 
     t.join();
