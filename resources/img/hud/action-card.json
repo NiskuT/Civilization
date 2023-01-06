@@ -4,19 +4,19 @@
         {
             "type": "Carthage",
             "path": "/img/hud/action-card-army.png",
-            "body":"+1 fight score against other state city for each pawn at 2 steps from the attacker (except Carthage)"     
+            "body":"+1 FS agnst other SC for each pawn at 2 steps from the attacker"     
         },
 
         {
             "type": "Kaboul",
             "path": "/img/hud/action-card-army.png",
-            "body": "+3 fight score against other state cities (except Kaboul)"     
+            "body": "+3 FS agnst other SC"     
         },
 
         {
             "type": "Mohenjo Daro",
             "path": "/img/hud/action-card-culture.png",
-            "body": "Priority level for placing pawns = priority-1"      
+            "body": "Priority level to place pawns = priority-1"      
         },
 
         {
@@ -28,13 +28,14 @@
         {
             "type": "Seoul",
             "path": "/img/hud/action-card-science.png",
-            "body": "At the beginning of each round, Move a barbarian to a close empty field (not water) "     
+            "body": "Round beginning : move a barbarian to a close empty field"
+
         },
 
         {
             "type": "Geneva",
             "path": "/img/hud/action-card-science.png",
-            "body": "At the beginning of each round, exchange a player diplomacy card you have to another one"      
+            "body": " Round beginning: exchange a player diplomacy card"      
         },
 
         {

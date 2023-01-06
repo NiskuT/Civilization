@@ -21,7 +21,7 @@
 #define BODY_PROPORTION_X 0.0075
 #define BODY_PROPORTION_Y 0.05
 #define MAX_CHARACTER_SIZE 18
-#define NBR_CHAR_MAX_PER_LIGNE 25 
+#define NBR_CHAR_MAX_PER_LIGNE 22 
 #define TURN_NUMBER 2
 
 #ifndef RESOURCES_PATH
@@ -56,14 +56,19 @@ void GameWindow::displayWindow() {
         }
     }
 
+
     for (unsigned i = 0; i < priorityCards.size(); i++){
-        clientGameWindow.draw(priorityCards[i].texture->getSprite(0));
+        clientGameWindow.draw(priorityCards[i].texture->getSprite(0));   
         clientGameWindow.draw(*priorityCards[i].title);
         clientGameWindow.draw(*priorityCards[i].body);
     }
 
     for (unsigned i = 0; i < actionCardsToDisplay.size(); i++){
         clientGameWindow.draw(actionCardsToDisplay[i].texture->getSprite(0));
+        clientGameWindow.draw(*actionCardsToDisplay[i].title);
+        clientGameWindow.draw(*actionCardsToDisplay[i].body);
+
+
     }
 
 
@@ -227,6 +232,49 @@ const auto GameWindow::openJsonFile(std::string path) {
 
 }
 
+/*!
+* \brief Display text on the cards
+*/
+void GameWindow::displayText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *font)  {
+
+    // display the title on the card    
+    cards->back().title = (std::unique_ptr<sf::Text>) new sf::Text(title, *font, TITLE_PROPORTION*WINDOW_LENGTH);  
+    cards->back().title->setStyle(sf::Text::Bold);
+    cards->back().title->setFillColor(sf::Color::Black);
+    auto titleSize = cards->back().title->getLocalBounds();
+    int xTitleOffset = (cards->back().texture->getWidth() - titleSize.width)/2;
+    int xTitlePosition = cards->back().texture->getSprite().getPosition().x + xTitleOffset;
+    int yTitlePosition = cards->back().texture->getSprite().getPosition().y;
+    cards->back().title->setPosition( xTitlePosition, yTitlePosition);
+
+    // display the body on the card
+    cards->back().body = (std::unique_ptr<sf::Text>) new sf::Text(body, *font, 30);
+
+    //to have the text on several lines without exceeding the card
+    int countEndLine = 1;
+    while(cards->back().body->getLocalBounds().width > cards->back().texture->getWidth()-10){
+
+        for (int i = countEndLine*NBR_CHAR_MAX_PER_LIGNE; i > 0 ; i--){
+            if ((char)body[i] == ' ') {
+                body.insert(i, "\n");
+                countEndLine++;
+                break;
+            }
+        }
+        cards->back().body->setString(body);
+    }
+
+
+    cards->back().body->setFillColor(sf::Color::Black);
+    int xBodyOffset = BODY_PROPORTION_X*WINDOW_LENGTH;
+    int yBodyOffset = BODY_PROPORTION_Y*WINDOW_WIDTH;
+    int xBodyPosition = cards->back().texture->getSprite().getPosition().x + xBodyOffset;
+    int yBodyPosition = cards->back().texture->getSprite().getPosition().y + yBodyOffset;
+    cards->back().body->setPosition(xBodyPosition, yBodyPosition);
+
+
+}
+
 
 /*!
 * \brief Load all the textures of the map
@@ -315,50 +363,17 @@ void GameWindow::loadHudTexture()
         float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
         priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
         priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
+        priorityCards.back().level = 0;
 
-
-        // display the title on the card
-        priorityCards.back().title = (std::unique_ptr<sf::Text>) new sf::Text(priorityData[index]["title"].asString(), priorityFont, TITLE_PROPORTION*WINDOW_LENGTH);
-        priorityCards.back().title->setStyle(sf::Text::Bold);
-        priorityCards.back().title->setFillColor(sf::Color::Black);
-        auto titleSize = priorityCards.back().title->getLocalBounds();
-        int xTitleOffset = (priorityCards.back().texture->getWidth() - titleSize.width)/2;
-        int xTitlePosition = priorityCards.back().texture->getSprite().getPosition().x + xTitleOffset;
-        int yTitlePosition = priorityCards.back().texture->getSprite().getPosition().y;
-        priorityCards.back().title->setPosition( xTitlePosition, yTitlePosition);
-
-        // display the body on the card
-        priorityCards.back().level = 0;  // function get and set PriorityCardLevel in the future
-        std::string body = priorityData[index]["body"][priorityCards.back().level].asString();
-        priorityCards.back().body = (std::unique_ptr<sf::Text>) new sf::Text(body, priorityFont, 30);
-
-        //to have the text on several lines without exceeding the card
-        int countEndLine = 1;
-        while(priorityCards.back().body->getLocalBounds().width > priorityCards.back().texture->getWidth()-10){
-            for (int i = countEndLine*NBR_CHAR_MAX_PER_LIGNE; i > 0 ; i--){
-                if ((char)body[i] == ' ') {
-                    body.insert(i, "\n");
-                    countEndLine++;
-                    break;
-                }
-            }
-            priorityCards.back().body->setString(body);
-        }
-
-        priorityCards.back().body->setFillColor(sf::Color::Black);
-        int xBodyOffset = BODY_PROPORTION_X*WINDOW_LENGTH;
-        int yBodyOffset = BODY_PROPORTION_Y*WINDOW_WIDTH;
-        int xBodyPosition = priorityCards.back().texture->getSprite().getPosition().x + xBodyOffset;
-        int yBodyPosition = priorityCards.back().texture->getSprite().getPosition().y + yBodyOffset;
-        priorityCards.back().body->setPosition(xBodyPosition, yBodyPosition);        
-
+        displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont);
+     
     }
 
     
-    /* load the actionCard */
+    //load the actionCard 
 
     const Json::Value &actionCardData = openJsonFile( "/img/hud/action-card.json");
-    std::vector<int> actionCardOwned = {1,5,7};   // array that will be sent by shared
+    std::vector<int> actionCardOwned = {1,3,7};   // array that will be sent by shared
 
     for (unsigned index = 0; index < actionCardOwned.size(); ++index)
     {
@@ -368,6 +383,12 @@ void GameWindow::loadHudTexture()
         float actionScale = ACTION_CARD_PROPORTION / (float(actionCardsToDisplay.back().texture->getWidth()) / float(WINDOW_LENGTH));
         actionCardsToDisplay.back().texture->setImageType((HudTextureType)(actionCardOwned[index] + 11)); // +11 to go to the action cards in the HudTextureType (enum class)
         actionCardsToDisplay.back().texture->setHudSpritePosition(actionScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
+
+        std::string titleCardAction = actionCardData[actionCardOwned[index]]["type"].asString();
+        std::string bodyCardAction = actionCardData[actionCardOwned[index]]["body"].asString();
+
+        displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &priorityFont);
+
     }
     
 }
