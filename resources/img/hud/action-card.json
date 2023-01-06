@@ -55,9 +55,9 @@
             "path": "/img/hud/action-card-player-1.png",
             "body": [
                 "Player pawns are considered yours for mature cities",
-                "If your caravan go to player capital city, place a box on a card of this player and obtain a resource",
-                "Attack +2 fight score except against Player",
-                "Defense +2 fight score except against Player"
+                "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
+                "Attack +2 FS except against Player",
+                "Defense +2 FS except against Player"
             ]
         },
 
@@ -66,9 +66,9 @@
             "path": "/img/hud/action-card-player-2.png",
             "body": [
                 "Player pawns are considered yours for mature cities",
-                "If your caravan go to player capital city, place a box on a card of this player and obtain a resource",
-                "Attack +2 fight score except against Player",
-                "Defense +2 fight score except against Player"
+                "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
+                "Attack +2 FS except against Player",
+                "Defense +2 FS except against Player"
             ]
         },
 
@@ -77,9 +77,9 @@
             "path": "/img/hud/action-card-player-3.png",
             "body": [
                 "Player pawns are considered yours for mature cities",
-                "If your caravan go to player capital city, place a box on a card of this player and obtain a resource",
-                "Attack +2 fight score except against Player",
-                "Defense +2 fight score except against Player"
+                "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
+                "Attack +2 FS except against Player",
+                "Defense +2 FS except against Player"
             ]
         },
 
@@ -88,7 +88,7 @@
             "path": "/img/hud/action-card-player-4.png",
             "body": [
                 "Player pawns are considered yours for mature cities",
-                "If your caravan go to player capital city, place a box on a card of this player and obtain a resource",
+                "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
                 "Attack +2 fight score except against Player",
                 "Defense +2 fight score except against Player"
             ]
