@@ -3,7 +3,10 @@
 
 #define  FIRST_OFFSET_SCALE  (float(185) / float(1600))       // Offset of the first priority card 
 #define  PRIORITY_CARD_OFFSET (float(249) / float(1600))      // Offset between each card
-#define  PROPORTION_WIDTH  (float(140) / float(900))         
+#define  PRIORITY_SCALE  (float(140) / float(900))
+#define  ACTION_SCALE (float(200) / float(1600))
+#define  FIRST_OFFSET_ACTION_SCALE (float(200) / float(900))   
+#define  ACTION_CARD_OFFSET (float(140)/ float(900))            // Offset between each action cards      
 
 namespace client {
     
@@ -83,7 +86,7 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
     getSprite(index).setPosition(sf::Vector2f(x, y));
 }
 
-void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation, int priorityCardIndex)
+void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation, int index)
 {
     int xPos = 0;
     int yPos = 0;
@@ -123,8 +126,26 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
     case HudTextureType::priorityCardCulture:
     case HudTextureType::priorityCardIndustry:
     {
-        xPos = PRIORITY_CARD_OFFSET * windowLength * priorityCardIndex + FIRST_OFFSET_SCALE * windowLength;
-        yPos = windowWidth - getHeight() * scale + PROPORTION_WIDTH * windowWidth;
+        xPos = PRIORITY_CARD_OFFSET * windowLength * index + FIRST_OFFSET_SCALE * windowLength;
+        yPos = windowWidth - getHeight() * scale + PRIORITY_SCALE * windowWidth;
+        break;
+    }
+
+    case HudTextureType::bruxelles:
+    case HudTextureType::buenosAires:
+    case HudTextureType::carthage:
+    case HudTextureType::geneva:
+    case HudTextureType::kaboul:
+    case HudTextureType::kumasi:
+    case HudTextureType::seoul:
+    case HudTextureType::mohenjoDaro:
+    case HudTextureType::actionCardPlayer1:
+    case HudTextureType::actionCardPlayer2:
+    case HudTextureType::actionCardPlayer3:
+    case HudTextureType::actionCardPlayer4:
+    {
+        xPos = windowLength - getWidth() * scale;
+        yPos = FIRST_OFFSET_ACTION_SCALE * windowWidth + index * ACTION_CARD_OFFSET * windowWidth;
         break;
     }
 
