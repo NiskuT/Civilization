@@ -4,6 +4,7 @@
 #include <math.h>
 #include <json/json.h>
 #include <cmath>
+#include <time.h> 
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -23,6 +24,7 @@
 #define MAX_CHARACTER_SIZE 18
 #define NBR_CHAR_MAX_PER_LIGNE 22 
 #define TURN_NUMBER 2
+#define REFRESH_ELEMENT 1
 
 #ifndef RESOURCES_PATH
     #define RESOURCES_PATH "../resources"
@@ -56,6 +58,11 @@ void GameWindow::displayWindow() {
         }
     }
 
+    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++ ){
+        for(unsigned j = 0; j < elementTextureToDisplay[i].getSize(); j++ ){
+            clientGameWindow.draw(elementTextureToDisplay[i].getSprite(j));
+        }
+    }
 
     for (unsigned i = 0; i < priorityCards.size(); i++){
         clientGameWindow.draw(priorityCards[i].texture->getSprite(0));   
@@ -90,6 +97,10 @@ void GameWindow::clientWindow()
 
     int turn = 0;
     int moveMode = false;
+    time_t currentTimer;
+    time(&currentTimer);
+    time_t lastUpdateTimer;
+    time(&lastUpdateTimer);
 
     std::array<int, 2> clickStartingPoint = {0, 0};
     std::array<int, 2> newMapOffset = {0, 0};
@@ -111,7 +122,6 @@ void GameWindow::clientWindow()
 
                     int minimumDistance = WINDOW_LENGTH;
                     std::array<int, 2> hexagonOnClick = {0, 0};
-                    std::array<int, 2> firstHexagonPosition = {WINDOW_LENGTH, WINDOW_WIDTH};
 
                     sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
                     cursorRect.left = clickStartingPoint[0];
@@ -126,9 +136,6 @@ void GameWindow::clientWindow()
                         for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++){
 
                             sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
-
-                            if (firstHexagonPosition[0] > spriteBounds.left) firstHexagonPosition[0] = spriteBounds.left;
-                            if (firstHexagonPosition[1] > spriteBounds.top) firstHexagonPosition[1] = spriteBounds.top;
 
                             if (spriteBounds.intersects(cursorRect)) {
 
@@ -158,8 +165,14 @@ void GameWindow::clientWindow()
                     newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint[0],
                                     sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint[1]};
 
+                    firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0], 
+                                            firstHexagonPosition[1] + newMapOffset[1]};
+
                     for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
                         mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+
+                    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++)
+                        elementTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
 
                 }
 
@@ -198,9 +211,16 @@ void GameWindow::clientWindow()
             
             // draw the map
             if (turn == 0) {
+                firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
                 loadMapTexture();
+                loadElementTexture();
                 loadHudTexture();
                 turn += 1;
+            }
+            time(&currentTimer);
+            if (currentTimer - lastUpdateTimer > REFRESH_ELEMENT ){
+                loadElementTexture();
+                time(&lastUpdateTimer);
             }
             displayWindow();
         }
@@ -305,19 +325,27 @@ void GameWindow::loadMapTexture()
         }
 
     }
+}
 
+/*!
+* \brief Load all the textures of the map
+*/
+void GameWindow::loadElementTexture() 
+{
     std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
     const Json::Value &data = openJsonFile("/img/map/files.json");
 
+    elementTextureToDisplay.clear();
+
     for (unsigned index = 0; index < data.size(); ++index)
     {
 
-        mapTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
+        elementTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
 
-        mapTextureToDisplay.back().addMapSprite();
+        elementTextureToDisplay.back().addMapSprite();
 
-        mapTextureToDisplay.back().setSpritePosition(0, data[index]["y"].asInt(), data[index]["x"].asInt(), MAP_X_OFFSET, MAP_Y_OFFSET, hexSize);
+        elementTextureToDisplay.back().setSpritePosition(0, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
     }
 }
 
