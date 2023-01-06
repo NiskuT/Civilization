@@ -5,8 +5,6 @@
 
 #define REFRESH_ELEMENT 100
 
-long getCurrentTime();
-
 namespace client
 {
 

@@ -4,7 +4,6 @@
 #include <math.h>
 #include <json/json.h>
 #include <cmath>
-#include <mutex>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -63,9 +62,9 @@ void GameWindow::displayWindow() {
         }
     }
 
-    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++ ){
-        for(unsigned j = 0; j < elementTextureToDisplay[i].getSize(); j++ ){
-            clientGameWindow.draw(elementTextureToDisplay[i].getSprite(j));
+    for(auto& kv : elementTextureToDisplay){
+        for(unsigned j = 0; j < kv.second->getSize(); j++ ){
+            clientGameWindow.draw(kv.second->getSprite(j));
         }
     }
 
@@ -155,9 +154,9 @@ void GameWindow::clientWindow(std::function<void(int, int)> callback)
                         mutexGame.unlock();
                     }
 
-                    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++){
+                    for(auto& kv : elementTextureToDisplay){
                         mutexGame.lock();
-                        elementTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                        kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
                         mutexGame.unlock();
                     }
 
@@ -196,9 +195,9 @@ void GameWindow::clientWindow(std::function<void(int, int)> callback)
                         mutexGame.unlock();
                     }
 
-                    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++){
+                    for(auto& kv : elementTextureToDisplay){
                         mutexGame.lock();
-                        elementTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                        kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
                         mutexGame.unlock();
                     }
 
@@ -370,14 +369,19 @@ void GameWindow::loadElementTexture()
 
     elementTextureToDisplay.clear();
 
+    for(const auto& kv : elementTextureToDisplay){
+        elementTextureToDisplay.erase(kv.first);
+    }
+
     for (unsigned index = 0; index < data.size(); ++index)
     {
+        std::string path = RESOURCES_PATH + data[index]["path"].asString();
 
-        elementTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
+        elementTextureToDisplay[path] = (std::unique_ptr<client::TextureDisplayer>) new TextureDisplayer(path);
 
-        elementTextureToDisplay.back().addMapSprite();
+        elementTextureToDisplay[path]->addMapSprite();
 
-        elementTextureToDisplay.back().setSpritePosition(0, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+        elementTextureToDisplay[path]->setSpritePosition(0, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
     }
 }
 
