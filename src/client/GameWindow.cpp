@@ -33,7 +33,7 @@ namespace client
 {
 
 /*!
- * \brief Constructeur
+ * \brief Constructor
  *
  * Constructor of GameWindow class
  */
@@ -88,7 +88,7 @@ void GameWindow::displayWindow() {
 /*!
  * \brief Loop that look for events to happend and call displayWindow()
  */
-void GameWindow::clientWindow()
+void GameWindow::clientWindow(std::function<void(int, int)> callback)
 {
     int moveMode = false;
     int clickMode = false;
@@ -100,16 +100,17 @@ void GameWindow::clientWindow()
 
     while (clientGameWindow.isOpen()){
 
+        if (getCurrentTime(false) - lastUpdateTimer > (100/3)){
+            mutexGame.lock();
+            displayWindow();
+            mutexGame.unlock();
+            lastUpdateTimer = getCurrentTime(false);
+        }
+        
         // handle events
         sf::Event event;
         while (clientGameWindow.pollEvent(event))
         {
-            if (getCurrentTime(false) - lastUpdateTimer > (100/3)){
-                mutexGame.lock();
-                displayWindow();
-                mutexGame.unlock();
-                lastUpdateTimer = getCurrentTime(false);
-            }
             
             switch (event.type)
             {
@@ -119,7 +120,7 @@ void GameWindow::clientWindow()
         
                 clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
 
-                if (!moveMode) clickAction(clickStartingPoint);
+                if (!moveMode) clickAction(clickStartingPoint, callback);
 
                 break;
 
@@ -212,7 +213,7 @@ void GameWindow::clientWindow()
     }
 }
 
-void GameWindow::clickAction(sf::Vector2i clickPosition) {
+void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback) {
 
     int minimumDistance = WINDOW_LENGTH;
     std::array<int, 2> hexagonOnClick = {0, 0};
@@ -247,7 +248,7 @@ void GameWindow::clickAction(sf::Vector2i clickPosition) {
             } 
         }
     }
-    if (isClickable) std::cout << "User click on the Hex x=" << hexagonOnClick[0] << " & y=" << hexagonOnClick[1] << "\n";
+    if (isClickable) callback(hexagonOnClick[0], hexagonOnClick[1]);
 }
 
 /*!
@@ -274,7 +275,6 @@ const auto GameWindow::openJsonFile(std::string path) {
     return data;
 
 }
-
 
 /*!
 * \brief Load all the textures of the map
