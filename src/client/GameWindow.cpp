@@ -4,7 +4,6 @@
 #include <math.h>
 #include <json/json.h>
 #include <cmath>
-#include <time.h>
 #include <mutex>
 
 #define MAP_X_OFFSET 175
@@ -43,6 +42,10 @@ GameWindow::GameWindow() {
     clientGameWindow.setPosition(sf::Vector2i(0, 0));
 
     firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
+
+    loadMapTexture();
+    loadElementTexture();
+    loadHudTexture();
 }
 
 /*!
@@ -93,15 +96,20 @@ void GameWindow::clientWindow()
     sf::Vector2i clickStartingPoint;
     std::array<int, 2> newMapOffset;
 
+    long lastUpdateTimer = getCurrentTime(false);
+
     while (clientGameWindow.isOpen()){
 
         // handle events
         sf::Event event;
         while (clientGameWindow.pollEvent(event))
         {
-            mutexGame.lock();
-            displayWindow();
-            mutexGame.unlock();
+            if (getCurrentTime(false) - lastUpdateTimer > (100/3)){
+                mutexGame.lock();
+                displayWindow();
+                mutexGame.unlock();
+                lastUpdateTimer = getCurrentTime(false);
+            }
             
             switch (event.type)
             {
@@ -131,18 +139,21 @@ void GameWindow::clientWindow()
                     firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0], 
                                             firstHexagonPosition[1] + newMapOffset[1]};
 
-                    mutexGame.lock();
-                    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++){
+                        mutexGame.lock();
                         mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                        mutexGame.unlock();
+                    }
 
-                    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++)
+                    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++){
+                        mutexGame.lock();
                         elementTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                    mutexGame.unlock();
+                        mutexGame.unlock();
+                    }
 
                     clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
-
-
                 }
+                break;
 
             case sf::Event::KeyPressed:
 
@@ -169,13 +180,17 @@ void GameWindow::clientWindow()
 
                     firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
 
-                    mutexGame.lock();
-                    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                    for(unsigned i = 0; i < mapTextureToDisplay.size(); i++){
+                        mutexGame.lock();
                         mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                        mutexGame.unlock();
+                    }
 
-                    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++)
+                    for(unsigned i = 0; i < elementTextureToDisplay.size(); i++){
+                        mutexGame.lock();
                         elementTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                    mutexGame.unlock();
+                        mutexGame.unlock();
+                    }
 
                     clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
 
@@ -407,6 +422,11 @@ void GameWindow::loadHudTexture()
     actionCards.back().addMapSprite();
     //float barbareWheelScale = float(BARBARE_WHEEL_PROPORTION)/(float(hudTextureToDisplay.back().getWidth())/float(WINDOW_LENGTH));
     actionCards.back().setHudSpritePosition(1, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex); */
+}
+
+long GameWindow::getCurrentTime(bool timeSecond){
+    if (timeSecond) return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    else return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 }
