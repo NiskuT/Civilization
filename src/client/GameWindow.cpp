@@ -284,7 +284,7 @@ void GameWindow::loadMapTexture()
 
     mapShared.generateRandomMap(123456789);
 
-    std::string hexagonImgPath = RESOURCES_PATH "/img/map/field-";
+    std::string hexagonImgPath = RESOURCES_PATH "/img/map/field/field-";
     std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
                                             "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
                                             "wonder-messa", "wonder-pantanal", "wonder-volcanic"};
@@ -303,7 +303,6 @@ void GameWindow::loadMapTexture()
             mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).addMapSprite();
             mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).setSpritePosition(indexSprite, j, i, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
         }
-
     }
 }
 
