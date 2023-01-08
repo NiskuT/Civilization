@@ -1,5 +1,6 @@
 #include <server.hpp>
 #include <boost/asio.hpp>
+#include <boost/asio/ip/tcp.hpp>
 
 #define PORT 8080
 
@@ -32,6 +33,7 @@ namespace server
         std::istream requestStream(&request);
         std::string gameId;
         std::string username;
+        std::shared_ptr<GameEngine> game = nullptr;
         requestStream >> gameId >> username;
         player->setUsername(username);
 
@@ -39,12 +41,12 @@ namespace server
         if (gameId.compare("new") == 0)
         {
             player->setUsername(username);
-            createNewGame(player);
+            game = createNewGame(player);
         }
         // Connection to existing game
         else
         {
-            GameEngine *game = getGameById(gameId);
+            game = getGameById(gameId);
             if (game != nullptr)
             {
                 connectPlayerToGame(player, game);
@@ -58,74 +60,90 @@ namespace server
             }
         }
 
-        // Envoi de la confirmation au client
         std::string response = "OK\n";
         boost::asio::write(player->getSocket(), boost::asio::buffer(response));
 
-        // Attente des prochaines actions du client
-        while (true)
+        while (player->state == shared::PlayerState::Connected)
         {
-            // Lecture de l'action envoyée par le client
-            boost::asio::streambuf request;
-            boost::asio::read_until(player->getSocket(), request, "\n");
+            // Réception d'un message du client
+            boost::asio::streambuf receiveBuffer;
+            boost::system::error_code error;
+            {
+                std::lock_guard<std::mutex> lock(player->socketReadMutex);
+                boost::asio::read_until(player->getSocket(), receiveBuffer, '\n', error);
+            }
 
-            // Traitement de l'action
-            // ...
+            if (error == boost::asio::error::operation_aborted)
+            {
+                player->disconnectPlayer();
+                continue;
+            }
 
-            // Envoi de la réponse au client
-            // ...
+            std::string messageReceived(
+                boost::asio::buffers_begin(receiveBuffer.data()),
+                boost::asio::buffers_end(receiveBuffer.data()));
+            receiveBuffer.consume(receiveBuffer.size());
+
+            if (messageReceived.find("response") == 0)
+            {
+                registerClientAnswer(messageReceived, player);
+            }
+            else
+            {
+                game->processClientRequest(messageReceived, player);
+            }
         }
     }
 
-    GameEngine *Server::getGameById(std::string gameId)
+    std::shared_ptr<GameEngine> Server::getGameById(std::string gameId)
     {
-        GameEngine *game = nullptr;
         std::lock_guard<std::mutex> lock(gamesMutex);
         for (auto &g : games)
         {
             if (g->getId() == gameId)
             {
-                game = g.get();
-                break;
+                return g;
             }
         }
+        return nullptr;
+    }
+
+    void Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
+    {
+        // check if a player with the same username already exists in the game and is in disconnected state
+        for (auto &p : game->getPlayers())
+        {
+            if (p.get() == player.get())
+            {
+                p->reconnect(player->getSocket());
+                player.swap(p);
+                return;
+            }
+        }
+        bool res = game->addPlayer(player);
+        if (!res)
+        {
+            // a changer (appeler disconnect ?)
+            player->state = shared::PlayerState::Disconnected;
+        }
+    }
+
+    std::shared_ptr<GameEngine> Server::createNewGame(std::shared_ptr<shared::Player> player)
+    {
+        auto game = std::make_shared<GameEngine>(games, player);
+
+        game->addPlayer(player);
+        std::lock_guard<std::mutex> lock(gamesMutex);
+        games.push_back(game);
         return game;
     }
 
-    void Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, GameEngine *game)
+    void Server::registerClientAnswer(const std::string &response, std::shared_ptr<shared::Player> player)
     {
-        // check if a player with the same username already exists in the game and is in disconnected state
-        bool reconnected = false;
-        for (auto &p : game->getPlayers())
-        {
-            if (p == *player)
-            {
-                p->state = shared::PlayerState::Connected;
-                p->socket = std::move(player->getSocket());
-                reconnected = true;
-                break;
-            }
-        }
-        if (!reconnected)
-        {
-            bool res = game->addPlayer(player);
-            if (!res)
-            {
-                player->state = shared::PlayerState::Disconnected;
-            }
-        }
+        std::lock_guard<std::mutex> lock(player->qAndA.sharedDataMutex);
+        player->qAndA.answer = response;
+        player->qAndA.answerReady = true;
+        player->qAndA.condition.notify_one();
     }
 
-    void Server::createNewGame(std::shared_ptr<shared::Player> player)
-    {
-        // Création d'une nouvelle partie avec un ID unique
-        auto game = std::make_shared<GameEngine>(games);
-
-        // Ajout du joueur à la partie
-        game->addPlayer(player);
-
-        // Ajout de la partie à la liste des parties en cours
-        std::lock_guard<std::mutex> lock(gamesMutex);
-        games.push_back(game);
-    }
 }

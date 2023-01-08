@@ -32,15 +32,21 @@ namespace shared
 
     boost::asio::ip::tcp::socket &Player::getSocket()
     {
-        return this->playerSocket;
+        return *(this->playerSocket.get());
     }
 
     void Player::disconnectPlayer()
     {
         state = shared::PlayerState::Disconnected;
-        std::lock_guard<std::mutex> socketLock(socketMutex);
+        std::lock_guard<std::mutex> socketLock(socketReadMutex);
+        std::lock_guard<std::mutex> socketLock2(socketWriteMutex);
         playerSocket->close();
         playerSocket.reset();
     }
 
+    void Player::reconnect (boost::asio::ip::tcp::socket& clientSocket)
+    {
+        state = shared::PlayerState::Connected;
+        this->playerSocket = std::make_shared<boost::asio::ip::tcp::socket>(std::move(clientSocket));
+    }
 }
