@@ -91,15 +91,15 @@ Collaboration diagram for client::GameWindow:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1b064394880a240c6cc66cfe02e2652a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a1b064394880a240c6cc66cfe02e2652a">GameWindow</a> ()</td></tr>
-<tr class="memdesc:a1b064394880a240c6cc66cfe02e2652a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructeur.  <a href="classclient_1_1GameWindow.html#a1b064394880a240c6cc66cfe02e2652a">More...</a><br /></td></tr>
+<tr class="memdesc:a1b064394880a240c6cc66cfe02e2652a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classclient_1_1GameWindow.html#a1b064394880a240c6cc66cfe02e2652a">More...</a><br /></td></tr>
 <tr class="separator:a1b064394880a240c6cc66cfe02e2652a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a912a354636f1456ea83b688edd3b6d73"><td class="memItemLeft" align="right" valign="top"><a id="a912a354636f1456ea83b688edd3b6d73"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>menuWindow</b> ()</td></tr>
 <tr class="separator:a912a354636f1456ea83b688edd3b6d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bb51c90a8eeeddcb0a157cfd1c156b8"><td class="memItemLeft" align="right" valign="top"><a id="a6bb51c90a8eeeddcb0a157cfd1c156b8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a6bb51c90a8eeeddcb0a157cfd1c156b8">clientWindow</a> ()</td></tr>
-<tr class="memdesc:a6bb51c90a8eeeddcb0a157cfd1c156b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loop that look for events to happend and call <a class="el" href="classclient_1_1GameWindow.html#a07f644281b6df7aba39ce08526d12ca5" title="Display all the different variable in the screen.">displayWindow()</a> <br /></td></tr>
-<tr class="separator:a6bb51c90a8eeeddcb0a157cfd1c156b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c75969f8eefb83799ab65b14a4461e6"><td class="memItemLeft" align="right" valign="top"><a id="a5c75969f8eefb83799ab65b14a4461e6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a5c75969f8eefb83799ab65b14a4461e6">clientWindow</a> (std::function&lt; void(int, int)&gt; callback)</td></tr>
+<tr class="memdesc:a5c75969f8eefb83799ab65b14a4461e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loop that look for events to happend and call <a class="el" href="classclient_1_1GameWindow.html#a07f644281b6df7aba39ce08526d12ca5" title="Display all the different variable in the screen.">displayWindow()</a> <br /></td></tr>
+<tr class="separator:a5c75969f8eefb83799ab65b14a4461e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07f644281b6df7aba39ce08526d12ca5"><td class="memItemLeft" align="right" valign="top"><a id="a07f644281b6df7aba39ce08526d12ca5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a07f644281b6df7aba39ce08526d12ca5">displayWindow</a> ()</td></tr>
 <tr class="memdesc:a07f644281b6df7aba39ce08526d12ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display all the different variable in the screen. <br /></td></tr>
@@ -116,34 +116,48 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a1314448989a94d8d1127f3df02c1ecac">loadHudTexture</a> ()</td></tr>
 <tr class="memdesc:a1314448989a94d8d1127f3df02c1ecac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all the HUD textures. <br /></td></tr>
 <tr class="separator:a1314448989a94d8d1127f3df02c1ecac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa1bb198702cbda73ba5c96b4c177d93"><td class="memItemLeft" align="right" valign="top"><a id="afa1bb198702cbda73ba5c96b4c177d93"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#afa1bb198702cbda73ba5c96b4c177d93">updateElementTexture</a> ()</td></tr>
+<tr class="memdesc:afa1bb198702cbda73ba5c96b4c177d93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all the textures of the map. <br /></td></tr>
+<tr class="separator:afa1bb198702cbda73ba5c96b4c177d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01f802444fe9777488a680f944faa8a4"><td class="memItemLeft" align="right" valign="top"><a id="a01f802444fe9777488a680f944faa8a4"></a>
 const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a01f802444fe9777488a680f944faa8a4">openJsonFile</a> (std::string path)</td></tr>
 <tr class="memdesc:a01f802444fe9777488a680f944faa8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open JSON File. <br /></td></tr>
 <tr class="separator:a01f802444fe9777488a680f944faa8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a514340729f56886bf616f18d7c3492f5"><td class="memItemLeft" align="right" valign="top"><a id="a514340729f56886bf616f18d7c3492f5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a514340729f56886bf616f18d7c3492f5">displayText</a> (std::vector&lt; <a class="el" href="classclient_1_1CardStruct.html">CardStruct</a> &gt; *cards, std::string title, std::string body, sf::Font *font)</td></tr>
+<tr class="memdesc:a514340729f56886bf616f18d7c3492f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display text on the cards. <br /></td></tr>
+<tr class="separator:a514340729f56886bf616f18d7c3492f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc080a45f2889cbaaf891a4445d00404"><td class="memItemLeft" align="right" valign="top"><a id="afc080a45f2889cbaaf891a4445d00404"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>clickAction</b> (sf::Vector2i clickPosition, std::function&lt; void(int, int)&gt; callback)</td></tr>
+<tr class="separator:afc080a45f2889cbaaf891a4445d00404"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c3eec515f5ffe0b584736af3ab3d61b"><td class="memItemLeft" align="right" valign="top"><a id="a6c3eec515f5ffe0b584736af3ab3d61b"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><b>getCurrentTime</b> (bool timeSecond=true)</td></tr>
+<tr class="separator:a6c3eec515f5ffe0b584736af3ab3d61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2c96e569554c9e1bf8c643929fb65234"><td class="memItemLeft" align="right" valign="top"><a id="a2c96e569554c9e1bf8c643929fb65234"></a>
-sf::RenderWindow&#160;</td><td class="memItemRight" valign="bottom"><b>clientGameWindow</b></td></tr>
-<tr class="separator:a2c96e569554c9e1bf8c643929fb65234"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee97c48a22869cd9109dbdce674e32e5"><td class="memItemLeft" align="right" valign="top"><a id="aee97c48a22869cd9109dbdce674e32e5"></a>
+std::shared_ptr&lt; sf::RenderWindow &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>clientGameWindow</b></td></tr>
+<tr class="separator:aee97c48a22869cd9109dbdce674e32e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a3375f70a4b1162c5b4f04e47a76dd2"><td class="memItemLeft" align="right" valign="top"><a id="a8a3375f70a4b1162c5b4f04e47a76dd2"></a>
 std::unique_ptr&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>backgroundTexture</b></td></tr>
 <tr class="separator:a8a3375f70a4b1162c5b4f04e47a76dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cee851fe9948f42c48db85b43dfa480"><td class="memItemLeft" align="right" valign="top"><a id="a4cee851fe9948f42c48db85b43dfa480"></a>
 std::vector&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mapTextureToDisplay</b></td></tr>
 <tr class="separator:a4cee851fe9948f42c48db85b43dfa480"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a4c2624d5a9553115a52172aa90aaab"><td class="memItemLeft" align="right" valign="top"><a id="a3a4c2624d5a9553115a52172aa90aaab"></a>
-std::vector&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>elementTextureToDisplay</b></td></tr>
-<tr class="separator:a3a4c2624d5a9553115a52172aa90aaab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a457288e7d9b288783f3bf7a385a7664f"><td class="memItemLeft" align="right" valign="top"><a id="a457288e7d9b288783f3bf7a385a7664f"></a>
+std::unordered_map&lt; std::string, std::unique_ptr&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>elementTextureToDisplay</b></td></tr>
+<tr class="separator:a457288e7d9b288783f3bf7a385a7664f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ab44818a65b3143f9c8a7b68efb1a15"><td class="memItemLeft" align="right" valign="top"><a id="a4ab44818a65b3143f9c8a7b68efb1a15"></a>
 std::vector&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hudTextureToDisplay</b></td></tr>
 <tr class="separator:a4ab44818a65b3143f9c8a7b68efb1a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc69680e60bcf8632559e0af31ceb397"><td class="memItemLeft" align="right" valign="top"><a id="adc69680e60bcf8632559e0af31ceb397"></a>
-std::vector&lt; <a class="el" href="classclient_1_1PriorityCardStruct.html">PriorityCardStruct</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>priorityCards</b></td></tr>
-<tr class="separator:adc69680e60bcf8632559e0af31ceb397"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1e7c2824712bc110f1a2c720625880b"><td class="memItemLeft" align="right" valign="top"><a id="ac1e7c2824712bc110f1a2c720625880b"></a>
-std::vector&lt; <a class="el" href="classclient_1_1ActionCardStruct.html">ActionCardStruct</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>actionCards</b></td></tr>
-<tr class="separator:ac1e7c2824712bc110f1a2c720625880b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac381f1a34462367023072cee70252509"><td class="memItemLeft" align="right" valign="top"><a id="ac381f1a34462367023072cee70252509"></a>
+std::vector&lt; <a class="el" href="classclient_1_1CardStruct.html">CardStruct</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>priorityCards</b></td></tr>
+<tr class="separator:ac381f1a34462367023072cee70252509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bf0a2ec5f1590e390099a8d0ae95b38"><td class="memItemLeft" align="right" valign="top"><a id="a9bf0a2ec5f1590e390099a8d0ae95b38"></a>
+std::vector&lt; <a class="el" href="classclient_1_1CardStruct.html">CardStruct</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>actionCardsToDisplay</b></td></tr>
+<tr class="separator:a9bf0a2ec5f1590e390099a8d0ae95b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d5351344023bdd039bf93413dfcf045"><td class="memItemLeft" align="right" valign="top"><a id="a6d5351344023bdd039bf93413dfcf045"></a>
 <a class="el" href="classshared_1_1Map.html">shared::Map</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mapShared</b></td></tr>
 <tr class="separator:a6d5351344023bdd039bf93413dfcf045"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,7 +189,7 @@ std::array&lt; int, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b
       </table>
 </div><div class="memdoc">
 
-<p>Constructeur. </p>
+<p>Constructor. </p>
 <p>Constructor of <a class="el" href="classclient_1_1GameWindow.html" title="class GameWindow -">GameWindow</a> class </p>
 
 </div>

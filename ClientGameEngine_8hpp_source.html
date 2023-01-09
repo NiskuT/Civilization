@@ -77,40 +77,48 @@ $(function() {
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>shared {</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">class </span>Network;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="keyword">class </span>Map;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;};</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>client {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <span class="keyword">class </span>GameWindow;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;shared/Network.hpp&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;shared/Map.hpp&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;GameWindow.hpp&quot;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">namespace </span>client {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;};</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>client {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="keyword">class </span>GameWindow;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;};</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>shared {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">class </span>Map;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;shared/Network.hpp&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;GameWindow.hpp&quot;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;shared/Map.hpp&quot;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classclient_1_1ClientGameEngine.html">   22</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classclient_1_1ClientGameEngine.html">ClientGameEngine</a> {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">// Associations</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// Attributes</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="classshared_1_1Network.html">shared::Network</a> network;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classclient_1_1ClientGameEngine.html#a648d0263c846bef9a7de8201e9a9d325">   28</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="classclient_1_1ClientGameEngine.html#a648d0263c846bef9a7de8201e9a9d325">inputEvent</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    std::vector&lt;int&gt; map;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="comment">// Operations</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">void</span> eventHandler ();</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classclient_1_1ClientGameEngine.html#a9c8a27b50e4e592b2442c4f453fab550">   35</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1ClientGameEngine.html#a9c8a27b50e4e592b2442c4f453fab550">createElementFromHash</a> (<a class="code" href="classshared_1_1Map.html">shared::Map</a> gameMap);</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classclient_1_1ClientGameEngine.html#aa2aa12c60a8a8d539e6b269801a9c2ec">   37</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1ClientGameEngine.html#aa2aa12c60a8a8d539e6b269801a9c2ec">applyModifier</a> ();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// Setters and Getters</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  };</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;};</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassclient_1_1ClientGameEngine_html"><div class="ttname"><a href="classclient_1_1ClientGameEngine.html">client::ClientGameEngine</a></div><div class="ttdoc">class ClientGameEngine -</div><div class="ttdef"><b>Definition:</b> ClientGameEngine.hpp:22</div></div>
-<div class="ttc" id="aclassclient_1_1ClientGameEngine_html_a648d0263c846bef9a7de8201e9a9d325"><div class="ttname"><a href="classclient_1_1ClientGameEngine.html#a648d0263c846bef9a7de8201e9a9d325">client::ClientGameEngine::inputEvent</a></div><div class="ttdeci">void * inputEvent</div><div class="ttdoc">void* to be replaced by sf::Event</div><div class="ttdef"><b>Definition:</b> ClientGameEngine.hpp:28</div></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">namespace </span>client {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classclient_1_1ClientGameEngine.html">   24</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classclient_1_1ClientGameEngine.html">ClientGameEngine</a> {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="comment">// Associations</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// Attributes</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="classshared_1_1Network.html">shared::Network</a> network;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classclient_1_1ClientGameEngine.html#a648d0263c846bef9a7de8201e9a9d325">   30</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="classclient_1_1ClientGameEngine.html#a648d0263c846bef9a7de8201e9a9d325">inputEvent</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    std::vector&lt;int&gt; map;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="classclient_1_1GameWindow.html">GameWindow</a> clientGame;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">int</span> turn     = 0;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">// Operations</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">void</span> eventHandler ();</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classclient_1_1ClientGameEngine.html#a9c8a27b50e4e592b2442c4f453fab550">   39</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1ClientGameEngine.html#a9c8a27b50e4e592b2442c4f453fab550">createElementFromHash</a> (<a class="code" href="classshared_1_1Map.html">shared::Map</a> gameMap);</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classclient_1_1ClientGameEngine.html#aa2aa12c60a8a8d539e6b269801a9c2ec">   41</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1ClientGameEngine.html#aa2aa12c60a8a8d539e6b269801a9c2ec">applyModifier</a> ();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">void</span> renderGame ();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">void</span> handleInformation (<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">void</span> startGameWindow ();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// Setters and Getters</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  };</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;};</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassclient_1_1ClientGameEngine_html"><div class="ttname"><a href="classclient_1_1ClientGameEngine.html">client::ClientGameEngine</a></div><div class="ttdoc">class ClientGameEngine -</div><div class="ttdef"><b>Definition:</b> ClientGameEngine.hpp:24</div></div>
+<div class="ttc" id="aclassclient_1_1ClientGameEngine_html_a648d0263c846bef9a7de8201e9a9d325"><div class="ttname"><a href="classclient_1_1ClientGameEngine.html#a648d0263c846bef9a7de8201e9a9d325">client::ClientGameEngine::inputEvent</a></div><div class="ttdeci">void * inputEvent</div><div class="ttdoc">void* to be replaced by sf::Event</div><div class="ttdef"><b>Definition:</b> ClientGameEngine.hpp:30</div></div>
 <div class="ttc" id="aclassclient_1_1ClientGameEngine_html_a9c8a27b50e4e592b2442c4f453fab550"><div class="ttname"><a href="classclient_1_1ClientGameEngine.html#a9c8a27b50e4e592b2442c4f453fab550">client::ClientGameEngine::createElementFromHash</a></div><div class="ttdeci">void createElementFromHash(shared::Map gameMap)</div></div>
 <div class="ttc" id="aclassclient_1_1ClientGameEngine_html_aa2aa12c60a8a8d539e6b269801a9c2ec"><div class="ttname"><a href="classclient_1_1ClientGameEngine.html#aa2aa12c60a8a8d539e6b269801a9c2ec">client::ClientGameEngine::applyModifier</a></div><div class="ttdeci">void applyModifier()</div><div class="ttdoc">This function apply a modification either on an element, on a player or anything else.</div></div>
+<div class="ttc" id="aclassclient_1_1GameWindow_html"><div class="ttname"><a href="classclient_1_1GameWindow.html">client::GameWindow</a></div><div class="ttdoc">class GameWindow -</div><div class="ttdef"><b>Definition:</b> GameWindow.hpp:28</div></div>
 <div class="ttc" id="aclassshared_1_1Map_html"><div class="ttname"><a href="classshared_1_1Map.html">shared::Map</a></div><div class="ttdoc">class Map -</div><div class="ttdef"><b>Definition:</b> Map.hpp:19</div></div>
 <div class="ttc" id="aclassshared_1_1Network_html"><div class="ttname"><a href="classshared_1_1Network.html">shared::Network</a></div><div class="ttdoc">class Network -</div><div class="ttdef"><b>Definition:</b> Network.hpp:9</div></div>
 </div><!-- fragment --></div><!-- contents -->
