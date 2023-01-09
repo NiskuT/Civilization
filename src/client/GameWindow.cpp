@@ -408,7 +408,7 @@ namespace client
 
         std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-        //Data are temporarly charge on the json but it will be soon charge from the shared
+        //Data are temporary loaded with the json file but it will be updated from the server soon
         const Json::Value &data = openJsonFile("/img/map/files.json");
 
         for (unsigned index = 0; index < data.size(); ++index)
