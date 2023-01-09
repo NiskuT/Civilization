@@ -24,9 +24,15 @@
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
 
+#define OFFSET_BETWEEN_UP_PLAYER 90
+#define UP_PLAYER_TEXT_SIZE 20
+#define NB_OF_PLAYER 3
+
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
 #endif
+
+const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 
 namespace client
 {
@@ -38,6 +44,7 @@ namespace client
      */
     GameWindow::GameWindow()
     {
+        
         clientGameWindow = std::make_shared<sf::RenderWindow>();
         clientGameWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
         clientGameWindow->setPosition(sf::Vector2i(0, 0));
@@ -86,6 +93,13 @@ namespace client
             clientGameWindow->draw(*actionCardsToDisplay[i].title);
             clientGameWindow->draw(*actionCardsToDisplay[i].body);
         }
+
+        for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
+        {
+            clientGameWindow->draw(whoIsPlayingButtons[i]);
+            clientGameWindow->draw(whoIsPlayingTexts[i]);
+        }
+
 
         clientGameWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
@@ -268,10 +282,11 @@ namespace client
             callback(hexagonOnClick[0], hexagonOnClick[1]);
     }
 
+    
     /*!
      * \brief Open JSON File
      */
-    const auto GameWindow::openJsonFile(std::string path)
+   const auto GameWindow::openJsonFile(std::string path)
     {
 
         std::ifstream file(RESOURCES_PATH + path);
@@ -279,6 +294,7 @@ namespace client
         if (!file.is_open())
         {
             std::cerr << "Error while opening json ressources file" << std::endl;
+            std::cerr << path << std::endl;
             exit(1);
         }
         std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -292,6 +308,7 @@ namespace client
 
         return data;
     }
+
 
     /*!
      * \brief Display text on the cards
@@ -340,7 +357,7 @@ namespace client
     /*!
      * \brief Load all the textures of the map
      */
-    void GameWindow::loadMapTexture()
+   void GameWindow::loadMapTexture()
     {
 
         mapShared.generateRandomMap(123456789);
@@ -370,7 +387,7 @@ namespace client
     /*!
      * \brief Load all the textures of the map
      */
-    void GameWindow::loadElementTexture()
+     void GameWindow::loadElementTexture()
     {
         std::string folder_path = RESOURCES_PATH "/img/map/element/";
         std::vector<std::string> png_files;
@@ -422,6 +439,29 @@ namespace client
         }
     }
 
+    void GameWindow::addButtonElements(sf::RectangleShape *button, sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, sf::Text *buttonText, int textSize, sf::Vector2f textOffset, std::string text, sf::Font *font, bool isPlaying)
+    {
+        button->setSize(buttonSize);
+        button->setPosition(buttonPos);
+        button->setFillColor(buttonColor);
+        if (isPlaying) {
+            button->setOutlineColor(sf::Color::Red);
+            button->setOutlineThickness(2.0f);
+        }
+        else {
+            button->setOutlineColor(sf::Color::Black);
+            button->setOutlineThickness(1.0f);
+        }
+
+        buttonText->setFont(*font);
+        buttonText->setString(text);
+        buttonText->setCharacterSize(textSize);
+        int xPosText = buttonPos.x + (buttonSize.x - buttonText->getGlobalBounds().width) / 2 + textOffset.x;
+        int yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2  - buttonText->getGlobalBounds().height/2 + textOffset.y ;
+        buttonText->setPosition(sf::Vector2f(xPosText, yPosText));
+        buttonText->setFillColor(sf::Color::Black);
+    }
+
     /*!
      * \brief Load all the HUD textures
      */
@@ -469,7 +509,7 @@ namespace client
             displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont);
         }
 
-        // load the actionCard
+        // actionCard
 
         const Json::Value &actionCardData = openJsonFile("/img/hud/action-card.json");
         std::vector<int> actionCardOwned = {1, 3, 7}; // array that will be sent by shared
@@ -488,8 +528,28 @@ namespace client
 
             displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &priorityFont);
         }
-    }
 
+        // isPlaying buttons
+        
+        int whoIsPlaying = 2; // sent by the server (temporary)
+
+        for (int i = 0; i < NB_OF_PLAYER; i++)
+
+        {
+            bool isPlaying;
+            (i+1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
+            whoIsPlayingTexts.emplace_back();
+            std::string text = "Player ";
+            text += std::to_string(i + 1);
+            whoIsPlayingButtons.emplace_back();
+
+            int upPosition = (WINDOW_LENGTH + (float(2/3) - NB_OF_PLAYER) * OFFSET_BETWEEN_UP_PLAYER) / 2;
+
+            addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(OFFSET_BETWEEN_UP_PLAYER * float(float(2)/float(3)), OFFSET_BETWEEN_UP_PLAYER / 2), sf::Vector2f(upPosition + OFFSET_BETWEEN_UP_PLAYER * i, 0), PLAYER_COLOR[i], &whoIsPlayingTexts.back(), UP_PLAYER_TEXT_SIZE, sf::Vector2f(0, 0), text, &priorityFont, isPlaying);
+        }
+    }
+    
+    
     long GameWindow::getCurrentTime(bool timeSecond)
     {
         if (timeSecond)
