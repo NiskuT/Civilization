@@ -146,7 +146,6 @@ namespace client
 
                     if (!moveMode)
                         clickAction(clickStartingPoint, callback);
-
                     break;
 
                 case sf::Event::MouseButtonReleased:
@@ -235,13 +234,75 @@ namespace client
         }
     }
 
+
+       void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
+    {
+        int minimumDistance = WINDOW_LENGTH;
+        std::array<int, 2> hexagonOnClick = {0, 0};
+
+        sf::FloatRect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
+        cursorRect.left = clickPosition.x;
+        cursorRect.top = clickPosition.y;
+        cursorRect.width = 1;
+        cursorRect.height = 1;
+
+        bool isClickable = false;
+        bool isAPriorityCardClicked = false;
+        int priorityCardClicked = 0;
+
+        for(unsigned i = 0; i < priorityCards.size(); i++ )
+        {
+            sf::FloatRect spriteBounds = priorityCards[i].texture->getSprite().getGlobalBounds();
+
+
+                if (spriteBounds.intersects(cursorRect))
+                {
+                    isAPriorityCardClicked = true;
+                    priorityCardClicked = i+1;
+                    std::cout << "Click on priority card: " << i+1 <<std::endl;
+                }
+        }
+
+        if(!isAPriorityCardClicked) {
+
+            for (int i = 0; i < NUMBER_OF_FIELD; i++)
+            {
+
+                for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
+                {
+
+                    sf::FloatRect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
+
+                    if (spriteBounds.intersects(cursorRect))
+                    {
+
+                        isClickable = true;
+
+                        int distance = sqrt(pow(spriteBounds.left + spriteBounds.width / 2 - cursorRect.left, 2) + pow(spriteBounds.top + spriteBounds.height / 2 - cursorRect.top, 2));
+
+                        if (distance < minimumDistance)
+                        {
+
+                            minimumDistance = distance;
+                            hexagonOnClick[1] = (int)((spriteBounds.top - firstHexagonPosition[1])) / (int)((spriteBounds.height * 3 / 4));
+                            hexagonOnClick[0] = (int)((spriteBounds.left - firstHexagonPosition[0])) / (int)((spriteBounds.width - 1));
+                        }
+                    }
+                }
+            }
+            if (isClickable)
+                callback(hexagonOnClick[0], hexagonOnClick[1]);
+        }
+    }
+
+/*
     void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
     {
 
         int minimumDistance = WINDOW_LENGTH;
         std::array<int, 2> hexagonOnClick = {0, 0};
 
-        sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
+        sf::FloatRect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
         cursorRect.left = clickPosition.x;
         cursorRect.top = clickPosition.y;
         cursorRect.width = 1;
@@ -255,7 +316,7 @@ namespace client
             for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
             {
 
-                sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
+                sf::FloatRect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
 
                 if (spriteBounds.intersects(cursorRect))
                 {
@@ -277,7 +338,7 @@ namespace client
         if (isClickable)
             callback(hexagonOnClick[0], hexagonOnClick[1]);
     }
-
+*/
     
     /*!
      * \brief Open JSON File
