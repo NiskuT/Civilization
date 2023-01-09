@@ -44,11 +44,6 @@ namespace client
      */
     GameWindow::GameWindow()
     {
-        
-        clientGameWindow = std::make_shared<sf::RenderWindow>();
-        clientGameWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
-        clientGameWindow->setPosition(sf::Vector2i(0, 0));
-
         firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
 
         loadMapTexture();
@@ -116,8 +111,10 @@ namespace client
     /*!
      * \brief Loop that look for events to happend and call displayWindow()
      */
-    void GameWindow::clientWindow(std::function<void(int, int)> callback)
+    void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void()> quitGame, std::function<void(int, int)> callback)
     {
+        clientGameWindow = clientWindow;
+
         int moveMode = false;
         int clickMode = false;
 
@@ -202,6 +199,13 @@ namespace client
                         }
                         break;
 
+                    case sf::Keyboard::Q:
+
+                        quitGame();
+                        return;
+
+                        break;
+
                     case sf::Keyboard::R:
 
                         newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
@@ -245,7 +249,7 @@ namespace client
         int minimumDistance = WINDOW_LENGTH;
         std::array<int, 2> hexagonOnClick = {0, 0};
 
-        sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
+        sf::FloatRect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
         cursorRect.left = clickPosition.x;
         cursorRect.top = clickPosition.y;
         cursorRect.width = 1;
@@ -259,7 +263,7 @@ namespace client
             for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
             {
 
-                sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
+                sf::FloatRect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
 
                 if (spriteBounds.intersects(cursorRect))
                 {
@@ -378,7 +382,7 @@ namespace client
             for (unsigned j = 0; j < mapShared.getMapWidth(); j++)
             {
                 int indexSprite = mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).getSize();
-                mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).addMapSprite();
+                mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).addSprite();
                 mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).setSpritePosition(indexSprite, j, i, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
             }
         }
@@ -433,7 +437,7 @@ namespace client
 
             std::string path = RESOURCES_PATH + data[index]["path"].asString();
 
-            elementTextureToDisplay[path]->addMapSprite();
+            elementTextureToDisplay[path]->addSprite();
 
             elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
         }
@@ -473,7 +477,7 @@ namespace client
         int priorityCardIndex = 0;
 
         backgroundTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/hud/background.png");
-        backgroundTexture->addMapSprite();
+        backgroundTexture->addSprite();
         float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
         backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);
 
@@ -482,7 +486,7 @@ namespace client
         for (unsigned index = 0; index < data.size(); ++index)
         {
             hudTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
-            hudTextureToDisplay.back().addMapSprite();
+            hudTextureToDisplay.back().addSprite();
             float scale = data[index]["scale"].asFloat() / (float(hudTextureToDisplay.back().getWidth()) / float(WINDOW_LENGTH));
             hudTextureToDisplay.back().setImageType((HudTextureType)index);
             hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index]["rotation"].asInt(), priorityCardIndex);
@@ -500,7 +504,7 @@ namespace client
         {
             priorityCards.emplace_back();
             priorityCards.back().texture = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH + priorityData[index]["path"].asString());
-            priorityCards.back().texture->addMapSprite();
+            priorityCards.back().texture->addSprite();
             float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
             priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
             priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
@@ -518,7 +522,7 @@ namespace client
         {
             actionCardsToDisplay.emplace_back();
             actionCardsToDisplay.back().texture = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH + actionCardData[actionCardOwned[index]]["path"].asString());
-            actionCardsToDisplay.back().texture->addMapSprite();
+            actionCardsToDisplay.back().texture->addSprite();
             float actionScale = ACTION_CARD_PROPORTION / (float(actionCardsToDisplay.back().texture->getWidth()) / float(WINDOW_LENGTH));
             actionCardsToDisplay.back().texture->setImageType((HudTextureType)(actionCardOwned[index] + 11)); // +11 to go to the action cards in the HudTextureType (enum class)
             actionCardsToDisplay.back().texture->setHudSpritePosition(actionScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
