@@ -26,19 +26,11 @@
 #define TURN_NUMBER 2
 #define REFRESH_ELEMENT 1
 
- /*Player 1: 119 238 217
-        Player 2: 251 76 255
-        Player 3: 93 109 126
-        PLayer 4: 230 176 170*/
-
-
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
 #endif
 
-const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160),sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160),sf::Color(230, 176, 170,160)};
-
-
+const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 
 namespace client
 {
@@ -63,38 +55,42 @@ namespace client
         clientGameWindow.clear(sf::Color::Blue);
 
         clientGameWindow.draw(backgroundTexture->getSprite());
-        /*
-            for(unsigned i = 0; i < mapTextureToDisplay.size(); i++ ){
-                for(unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++ ){
-                    clientGameWindow.draw(mapTextureToDisplay[i].getSprite(j));
-                }
+
+        for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+        {
+            for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
+            {
+                clientGameWindow.draw(mapTextureToDisplay[i].getSprite(j));
             }
+        }
 
-            for(unsigned i = 0; i < elementTextureToDisplay.size(); i++ ){
-                for(unsigned j = 0; j < elementTextureToDisplay[i].getSize(); j++ ){
-                    clientGameWindow.draw(elementTextureToDisplay[i].getSprite(j));
-                }
+        for (unsigned i = 0; i < elementTextureToDisplay.size(); i++)
+        {
+            for (unsigned j = 0; j < elementTextureToDisplay[i].getSize(); j++)
+            {
+                clientGameWindow.draw(elementTextureToDisplay[i].getSprite(j));
             }
+        }
 
-            for (unsigned i = 0; i < priorityCards.size(); i++){
-                clientGameWindow.draw(priorityCards[i].texture->getSprite(0));
-                clientGameWindow.draw(*priorityCards[i].title);
-                clientGameWindow.draw(*priorityCards[i].body);
-            }
+        for (unsigned i = 0; i < priorityCards.size(); i++)
+        {
+            clientGameWindow.draw(priorityCards[i].texture->getSprite(0));
+            clientGameWindow.draw(*priorityCards[i].title);
+            clientGameWindow.draw(*priorityCards[i].body);
+        }
 
-            for (unsigned i = 0; i < actionCardsToDisplay.size(); i++){
-                clientGameWindow.draw(actionCardsToDisplay[i].texture->getSprite(0));
-                clientGameWindow.draw(*actionCardsToDisplay[i].title);
-                clientGameWindow.draw(*actionCardsToDisplay[i].body);
+        for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
+        {
+            clientGameWindow.draw(actionCardsToDisplay[i].texture->getSprite(0));
+            clientGameWindow.draw(*actionCardsToDisplay[i].title);
+            clientGameWindow.draw(*actionCardsToDisplay[i].body);
+        }
 
-
-            }*/
-
-        for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++) {
+        for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
+        {
             clientGameWindow.draw(whoIsPlayingButtons[i]);
             clientGameWindow.draw(whoIsPlayingTexts[i]);
         }
-        
 
         clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
@@ -377,18 +373,25 @@ namespace client
         }
     }
 
-    void GameWindow::addButtonElements (sf::RectangleShape* button, sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, sf::Text* buttonText, int textSize, sf::Vector2f textOffset, std::string text, sf::Font* font){
+    void GameWindow::addButtonElements(sf::RectangleShape *button, sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, sf::Text *buttonText, int textSize, sf::Vector2f textOffset, std::string text, sf::Font *font, bool isPlaying)
+    {
         button->setSize(buttonSize);
         button->setPosition(buttonPos);
         button->setFillColor(buttonColor);
-        button->setOutlineColor(sf::Color::Black);
-        button->setOutlineThickness(1.0f);
+        if (isPlaying) {
+            button->setOutlineColor(sf::Color::Red);
+            button->setOutlineThickness(2.0f);
+        }
+        else {
+            button->setOutlineColor(sf::Color::Black);
+            button->setOutlineThickness(1.0f);
+        }
 
-        buttonText->setFont(*font); 
+        buttonText->setFont(*font);
         buttonText->setString(text);
         buttonText->setCharacterSize(textSize);
-        int xPosText = buttonPos.x + (buttonSize.x-buttonText->getGlobalBounds().width)/2 + textOffset.x;
-        int yPosText = buttonPos.y + (buttonSize.y-buttonText->getGlobalBounds().height)/2 + textOffset.y;
+        int xPosText = buttonPos.x + (buttonSize.x - buttonText->getGlobalBounds().width) / 2 + textOffset.x;
+        int yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2  - buttonText->getGlobalBounds().height/2 + textOffset.y ;
         buttonText->setPosition(sf::Vector2f(xPosText, yPosText));
         buttonText->setFillColor(sf::Color::Black);
     }
@@ -440,7 +443,7 @@ namespace client
             displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont);
         }
 
-        // load the actionCard
+        // actionCard
 
         const Json::Value &actionCardData = openJsonFile("/img/hud/action-card.json");
         std::vector<int> actionCardOwned = {1, 3, 7}; // array that will be sent by shared
@@ -460,16 +463,21 @@ namespace client
             displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &priorityFont);
         }
 
+        // isPlaying buttons
         
+        int whoIsPlaying = 2; // sent by the server (temporary)
 
-        for (int i = 0; i<4; i++) {
+        for (int i = 0; i < 4; i++)
+
+        {
+            bool isPlaying;
+            (i+1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
             whoIsPlayingTexts.emplace_back();
             std::string text = "Player ";
-            text += std::to_string(i+1);            
+            text += std::to_string(i + 1);
             whoIsPlayingButtons.emplace_back();
-            addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(60,90), sf::Vector2f(635 + 90*i,0), PLAYER_COLOR[i], &whoIsPlayingTexts.back(), 20, sf::Vector2f(0,0), text, &priorityFont);
-
-        }  
+            addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(60, 45), sf::Vector2f(635 + 90 * i, 0), PLAYER_COLOR[i], &whoIsPlayingTexts.back(), 20, sf::Vector2f(0, 0), text, &priorityFont, isPlaying);
+        }
     }
 
 }
