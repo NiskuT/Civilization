@@ -24,6 +24,10 @@
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
 
+#define OFFSET_BETWEEN_UP_PLAYER 90
+#define UP_PLAYER_TEXT_SIZE 20
+#define NB_OF_PLAYER 3
+
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
 #endif
@@ -290,6 +294,7 @@ namespace client
         if (!file.is_open())
         {
             std::cerr << "Error while opening json ressources file" << std::endl;
+            std::cerr << path << std::endl;
             exit(1);
         }
         std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -528,7 +533,7 @@ namespace client
         
         int whoIsPlaying = 2; // sent by the server (temporary)
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < NB_OF_PLAYER; i++)
 
         {
             bool isPlaying;
@@ -537,7 +542,10 @@ namespace client
             std::string text = "Player ";
             text += std::to_string(i + 1);
             whoIsPlayingButtons.emplace_back();
-            addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(60, 45), sf::Vector2f(635 + 90 * i, 0), PLAYER_COLOR[i], &whoIsPlayingTexts.back(), 20, sf::Vector2f(0, 0), text, &priorityFont, isPlaying);
+
+            int upPosition = (WINDOW_LENGTH + (float(2/3) - NB_OF_PLAYER) * OFFSET_BETWEEN_UP_PLAYER) / 2;
+
+            addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(OFFSET_BETWEEN_UP_PLAYER * float(float(2)/float(3)), OFFSET_BETWEEN_UP_PLAYER / 2), sf::Vector2f(upPosition + OFFSET_BETWEEN_UP_PLAYER * i, 0), PLAYER_COLOR[i], &whoIsPlayingTexts.back(), UP_PLAYER_TEXT_SIZE, sf::Vector2f(0, 0), text, &priorityFont, isPlaying);
         }
     }
     
