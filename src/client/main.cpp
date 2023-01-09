@@ -29,6 +29,10 @@ int main(int argc, char *argv[])
         {
             std::cout << "Hello world" << std::endl;
         }
+        else if (arg.compare("network") == 0)
+        {
+            client::ClientGameEngine gameEngine("127.0.0.1", 8080);
+        }
         else
         {
             std::cout << "Unkown command, use -h for help." << std::endl;

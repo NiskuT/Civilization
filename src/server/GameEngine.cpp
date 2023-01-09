@@ -33,7 +33,7 @@ namespace server
         return players;
     }
 
-    static std::string generateRandomId(const std::vector<std::shared_ptr<GameEngine>> &games)
+    std::string GameEngine::generateRandomId(const std::vector<std::shared_ptr<GameEngine>> &games)
     {
         static const std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         static std::mt19937 generator(std::random_device{}());
@@ -90,7 +90,7 @@ namespace server
         }
     }
 
-    static std::vector<std::string> splitString(std::string str, char delimiter)
+    std::vector<std::string> GameEngine::splitString(std::string str, char delimiter)
     {
         std::vector<std::string> components;
         std::stringstream ss(str);

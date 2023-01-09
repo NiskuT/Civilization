@@ -25,7 +25,7 @@ int main(int argc,char* argv[])
         }
         else if (!arg.compare("-s")) {
             server::Server server;
-            //server.start();
+            server.start();
         }
         else if (!arg.compare("-hello")) {
             std::cout << "Hello world" << std::endl;

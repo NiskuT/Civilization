@@ -1,6 +1,7 @@
 #include <server.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
+#include <iostream>
 
 #define PORT 8080
 
@@ -9,13 +10,13 @@ namespace server
 
     void Server::start()
     {
-        boost::asio::io_service io_service;
-        boost::asio::ip::tcp::acceptor acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT));
+        boost::asio::io_context io_context;
+        boost::asio::ip::tcp::acceptor acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT));
 
         while (true)
         {
 
-            boost::asio::ip::tcp::socket socket(io_service);
+            boost::asio::ip::tcp::socket socket(io_context);
             acceptor.accept(socket);
 
             std::thread t(&Server::handleClient, this, std::move(socket));
@@ -25,11 +26,17 @@ namespace server
 
     void Server::handleClient(boost::asio::ip::tcp::socket socket)
     {
+        std::cout << "New client connected" << std::endl;
         auto player = std::make_shared<shared::Player>(socket);
 
-        // Attente de la demande du client pour rejoindre une partie
         boost::asio::streambuf request;
-        boost::asio::read_until(player->getSocket(), request, "\n");
+        try {
+            boost::asio::read_until(player->getSocket(), request, "\n");
+        } catch (const boost::system::system_error &e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+            player->disconnectPlayer();
+            return;
+        }
         std::istream requestStream(&request);
         std::string gameId;
         std::string username;
@@ -62,15 +69,26 @@ namespace server
 
         std::string response = "OK\n";
         boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+        player->state = shared::PlayerState::Connected;
 
         while (player->state == shared::PlayerState::Connected)
         {
+            std::cout << "Waiting for message" << std::endl;
             // Réception d'un message du client
             boost::asio::streambuf receiveBuffer;
             boost::system::error_code error;
+            std::size_t bytesTransferred {0};
+
+            try
             {
                 std::lock_guard<std::mutex> lock(player->socketReadMutex);
-                boost::asio::read_until(player->getSocket(), receiveBuffer, '\n', error);
+                bytesTransferred = boost::asio::read_until(player->getSocket(), receiveBuffer, '\n', error);
+            }
+            catch (const boost::system::system_error &e)
+            {
+                std::cerr << "Error: " << e.what() << std::endl;
+                //player->disconnectPlayer();
+                //continue;
             }
 
             if (error == boost::asio::error::operation_aborted)
@@ -78,19 +96,33 @@ namespace server
                 player->disconnectPlayer();
                 continue;
             }
-
-            std::string messageReceived(
-                boost::asio::buffers_begin(receiveBuffer.data()),
-                boost::asio::buffers_end(receiveBuffer.data()));
-            receiveBuffer.consume(receiveBuffer.size());
-
-            if (messageReceived.find("response") == 0)
+            else if (error == boost::asio::error::eof)
             {
-                registerClientAnswer(messageReceived, player);
+                player->disconnectPlayer();
+                continue;
             }
-            else
+            else if (error)
             {
-                game->processClientRequest(messageReceived, player);
+                std::cerr << "Error: " << error.message() << std::endl;
+                player->disconnectPlayer();
+                continue;
+            }
+
+            if (bytesTransferred)
+            {
+                std::string messageReceived(
+                    boost::asio::buffers_begin(receiveBuffer.data()),
+                    boost::asio::buffers_end(receiveBuffer.data()));
+                receiveBuffer.consume(receiveBuffer.size());
+
+                if (messageReceived.find("response") == 0)
+                {
+                    registerClientAnswer(messageReceived, player);
+                }
+                else
+                {
+                    game->processClientRequest(messageReceived, player);
+                }
             }
         }
     }
