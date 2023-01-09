@@ -26,9 +26,19 @@
 #define TURN_NUMBER 2
 #define REFRESH_ELEMENT 1
 
+ /*Player 1: 119 238 217
+        Player 2: 251 76 255
+        Player 3: 93 109 126
+        PLayer 4: 230 176 170*/
+
+
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
 #endif
+
+const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160),sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160),sf::Color(230, 176, 170,160)};
+
+
 
 namespace client
 {
@@ -80,8 +90,11 @@ namespace client
 
             }*/
 
-        clientGameWindow.draw(whoIsPlayingButton);
-        clientGameWindow.draw(whoIsPlayingText);
+        for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++) {
+            clientGameWindow.draw(whoIsPlayingButtons[i]);
+            clientGameWindow.draw(whoIsPlayingTexts[i]);
+        }
+        
 
         clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
@@ -364,13 +377,19 @@ namespace client
         }
     }
 
-    void GameWindow::addButtonElements (sf::RectangleShape* button, sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Text* buttonText, int textSize, sf::Vector2f textPos, std::string text, sf::Font* font){
+    void GameWindow::addButtonElements (sf::RectangleShape* button, sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, sf::Text* buttonText, int textSize, sf::Vector2f textOffset, std::string text, sf::Font* font){
         button->setSize(buttonSize);
         button->setPosition(buttonPos);
+        button->setFillColor(buttonColor);
+        button->setOutlineColor(sf::Color::Black);
+        button->setOutlineThickness(1.0f);
+
         buttonText->setFont(*font); 
         buttonText->setString(text);
-        buttonText->setCharacterSize(20);
-        buttonText->setPosition(sf::Vector2f(800, 40));
+        buttonText->setCharacterSize(textSize);
+        int xPosText = buttonPos.x + (buttonSize.x-buttonText->getGlobalBounds().width)/2 + textOffset.x;
+        int yPosText = buttonPos.y + (buttonSize.y-buttonText->getGlobalBounds().height)/2 + textOffset.y;
+        buttonText->setPosition(sf::Vector2f(xPosText, yPosText));
         buttonText->setFillColor(sf::Color::Black);
     }
 
@@ -441,11 +460,16 @@ namespace client
             displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &priorityFont);
         }
 
-        /* Indicators saying who is playing*/
+        
 
-        addButtonElements(&whoIsPlayingButton, sf::Vector2f(60,90), sf::Vector2f(800,0), &whoIsPlayingText, 20, sf::Vector2f(800,0), "Player 1", &priorityFont);
+        for (int i = 0; i<4; i++) {
+            whoIsPlayingTexts.emplace_back();
+            std::string text = "Player ";
+            text += std::to_string(i+1);            
+            whoIsPlayingButtons.emplace_back();
+            addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(60,90), sf::Vector2f(635 + 90*i,0), PLAYER_COLOR[i], &whoIsPlayingTexts.back(), 20, sf::Vector2f(0,0), text, &priorityFont);
 
-  
+        }  
     }
 
 }
