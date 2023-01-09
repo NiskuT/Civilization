@@ -17,8 +17,7 @@ TextureDisplayer::TextureDisplayer(const std::string& filename)
 		throw std::runtime_error("Holder::load - Failed to load " + filename);
 
     texture = std::move(resource);
-    mutexTexture = new std::mutex;
-
+    mutexTexture = std::unique_ptr<std::mutex>(new std::mutex);
 }
 
 void TextureDisplayer::setImageType(HudTextureType imageType)
@@ -31,6 +30,7 @@ void TextureDisplayer::setImageType(HudTextureType imageType)
  */
 void TextureDisplayer::addMapSprite()
 {
+    std::lock_guard<std::mutex> lock(*mutexTexture);
     std::unique_ptr<sf::Sprite> sprite(new sf::Sprite());
     sprite->setTexture(*texture);
     sprites.push_back(std::move(sprite));
@@ -44,10 +44,10 @@ void TextureDisplayer::addMapSprite()
  */
 void TextureDisplayer::moveSpritePosition(int xOffset, int yOffset)
 {
+    std::lock_guard<std::mutex> lock(*mutexTexture);
     for (unsigned i = 0; i < this->sprites.size(); i++){
         sf::Vector2f pos = getSprite(i).getPosition();
         getSprite(i).setPosition(pos.x + xOffset, pos.y + yOffset);
-
     }
 }
 
@@ -55,6 +55,7 @@ void TextureDisplayer::moveSpritePosition(int xOffset, int yOffset)
  * \brief Delete all sprites
  */
 void TextureDisplayer::clearSprites(){
+    std::lock_guard<std::mutex> lock(*mutexTexture);
     this->sprites.clear();
 }
 
@@ -69,6 +70,8 @@ void TextureDisplayer::clearSprites(){
  */
 void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, int yOffset, std::array<int, 2> hexSize)
 {
+
+    std::lock_guard<std::mutex> lock(*mutexTexture);
     xOffset += hexSize[0] != 0 ? (hexSize[0] - getSprite(index).getLocalBounds().width) / 2 : 0;
     yOffset += hexSize[1] != 0 ? (hexSize[1] - getSprite(index).getLocalBounds().height) / 2 : 0;
 
@@ -200,6 +203,13 @@ int TextureDisplayer::getWidth()
 int TextureDisplayer::getHeight()
 {    
     return getSize() > 0 ? getSprite().getLocalBounds().height : 0;
+}
+
+void TextureDisplayer::drawElementSprite(std::shared_ptr<sf::RenderWindow> window){
+    for (unsigned j = 0; j < getSize(); j++){
+        std::lock_guard<std::mutex> lock(*mutexTexture);
+        window->draw(getSprite(j));
+    }
 }
 
 }

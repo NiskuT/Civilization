@@ -38,8 +38,9 @@ namespace client
      */
     GameWindow::GameWindow()
     {
-        clientGameWindow.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
-        clientGameWindow.setPosition(sf::Vector2i(0, 0));
+        clientGameWindow = std::make_shared<sf::RenderWindow>();
+        clientGameWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
+        clientGameWindow->setPosition(sf::Vector2i(0, 0));
 
         firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
 
@@ -55,52 +56,47 @@ namespace client
     void GameWindow::displayWindow()
     {
 
-        clientGameWindow.clear(sf::Color::Blue);
+        clientGameWindow->clear(sf::Color::Blue);
 
-        clientGameWindow.draw(backgroundTexture->getSprite());
+        clientGameWindow->draw(backgroundTexture->getSprite());
 
         for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
         {
             for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
             {
-                clientGameWindow.draw(mapTextureToDisplay[i].getSprite(j));
+                clientGameWindow->draw(mapTextureToDisplay[i].getSprite(j));
             }
         }
 
         for (auto &kv : elementTextureToDisplay)
         {
-            for (unsigned j = 0; j < kv.second->getSize(); j++)
-            {
-                std::unique_lock<std::mutex> lock(*kv.second->mutexTexture);
-                clientGameWindow.draw(kv.second->getSprite(j));
-                lock.unlock();
-            }
+            kv.second->drawElementSprite(clientGameWindow);
         }
 
         for (unsigned i = 0; i < priorityCards.size(); i++)
         {
-            clientGameWindow.draw(priorityCards[i].texture->getSprite(0));
-            clientGameWindow.draw(*priorityCards[i].title);
-            clientGameWindow.draw(*priorityCards[i].body);
+            clientGameWindow->draw(priorityCards[i].texture->getSprite(0));
+            clientGameWindow->draw(*priorityCards[i].title);
+            clientGameWindow->draw(*priorityCards[i].body);
         }
 
         for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
         {
-            clientGameWindow.draw(actionCardsToDisplay[i].texture->getSprite(0));
-            clientGameWindow.draw(*actionCardsToDisplay[i].title);
-            clientGameWindow.draw(*actionCardsToDisplay[i].body);
+            clientGameWindow->draw(actionCardsToDisplay[i].texture->getSprite(0));
+            clientGameWindow->draw(*actionCardsToDisplay[i].title);
+            clientGameWindow->draw(*actionCardsToDisplay[i].body);
         }
 
-        clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
+        clientGameWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
         for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
         {
             for (unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++)
             {
-                clientGameWindow.draw(hudTextureToDisplay[i].getSprite(j));
+                clientGameWindow->draw(hudTextureToDisplay[i].getSprite(j));
             }
         }
-        clientGameWindow.display();
+        clientGameWindow->display();
     }
 
     /*!
@@ -116,7 +112,7 @@ namespace client
 
         long lastUpdateTimer = getCurrentTime(false);
 
-        while (clientGameWindow.isOpen())
+        while (clientGameWindow->isOpen())
         {
 
             if (getCurrentTime(false) - lastUpdateTimer > (100 / 3))
@@ -127,7 +123,7 @@ namespace client
 
             // handle events
             sf::Event event;
-            while (clientGameWindow.pollEvent(event))
+            while (clientGameWindow->pollEvent(event))
             {
 
                 switch (event.type)
@@ -136,7 +132,7 @@ namespace client
 
                     clickMode = true;
 
-                    clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
+                    clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
 
                     if (!moveMode)
                         clickAction(clickStartingPoint, callback);
@@ -154,8 +150,8 @@ namespace client
                     if (moveMode && clickMode)
                     {
 
-                        newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint.x,
-                                        sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint.y};
+                        newMapOffset = {sf::Mouse::getPosition(*clientGameWindow).x - clickStartingPoint.x,
+                                        sf::Mouse::getPosition(*clientGameWindow).y - clickStartingPoint.y};
 
                         firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0],
                                                 firstHexagonPosition[1] + newMapOffset[1]};
@@ -165,12 +161,10 @@ namespace client
 
                         for (auto &kv : elementTextureToDisplay)
                         {
-                            std::unique_lock<std::mutex> lock(*kv.second->mutexTexture);
                             kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                            lock.unlock();
                         }
 
-                        clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
+                        clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
                     }
                     break;
 
@@ -184,13 +178,13 @@ namespace client
                         {
                             moveMode = false;
                             if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-                                clientGameWindow.setMouseCursor(clientCursor);
+                                clientGameWindow->setMouseCursor(clientCursor);
                         }
                         else
                         {
                             moveMode = true;
                             if (clientCursor.loadFromSystem(sf::Cursor::Hand))
-                                clientGameWindow.setMouseCursor(clientCursor);
+                                clientGameWindow->setMouseCursor(clientCursor);
                         }
                         break;
 
@@ -208,12 +202,10 @@ namespace client
 
                         for (auto &kv : elementTextureToDisplay)
                         {
-                            std::unique_lock<std::mutex> lock(*kv.second->mutexTexture);
                             kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                            lock.unlock();
                         }
 
-                        clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
+                        clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
 
                         break;
 
@@ -223,7 +215,7 @@ namespace client
                     break;
 
                 case sf::Event::Closed:
-                    clientGameWindow.close();
+                    clientGameWindow->close();
                     break;
 
                 default:
@@ -411,9 +403,7 @@ namespace client
     {
 
         for (auto &kv : elementTextureToDisplay){
-            std::unique_lock<std::mutex> lock(*kv.second->mutexTexture);
             kv.second->clearSprites();
-            lock.unlock();
         }
 
         std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
@@ -426,13 +416,9 @@ namespace client
 
             std::string path = RESOURCES_PATH + data[index]["path"].asString();
 
-            std::unique_lock<std::mutex> lock(*elementTextureToDisplay[path]->mutexTexture);
-
             elementTextureToDisplay[path]->addMapSprite();
 
             elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
-            
-            lock.unlock();
         }
     }
 
