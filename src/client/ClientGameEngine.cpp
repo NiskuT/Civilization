@@ -1,7 +1,6 @@
 #include <client.hpp>
 #include <iostream>
 #include <thread>
-#include <mutex>
 #include <sys/stat.h>
 
 #define REFRESH_ELEMENT 1
@@ -25,6 +24,7 @@ void ClientGameEngine::startGameWindow(){
 void ClientGameEngine::renderGame() 
 {
     std::thread t(&ClientGameEngine::startGameWindow, this);
+    t.detach();
 
     long lastUpdateTimer = clientGame.getCurrentTime();
     struct stat file_stat;
@@ -47,14 +47,10 @@ void ClientGameEngine::renderGame()
 
             if (modified != last_modified){
                 last_modified = modified;
-                std::lock_guard<std::mutex> lock(clientGame.mutexGame);
-                turn++;
                 clientGame.updateElementTexture();
             }
         }
     }
-
-    t.join();
 }
     
 }

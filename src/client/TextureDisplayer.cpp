@@ -17,6 +17,8 @@ TextureDisplayer::TextureDisplayer(const std::string& filename)
 		throw std::runtime_error("Holder::load - Failed to load " + filename);
 
     texture = std::move(resource);
+    mutexTexture = new std::mutex;
+
 }
 
 void TextureDisplayer::setImageType(HudTextureType imageType)

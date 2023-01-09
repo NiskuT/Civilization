@@ -1,10 +1,9 @@
 #include <client.hpp>
+#include <dirent.h>
 #include <iostream>
 #include <fstream>
-#include <math.h>
 #include <json/json.h>
 #include <cmath>
-#include <dirent.h>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -72,7 +71,9 @@ namespace client
         {
             for (unsigned j = 0; j < kv.second->getSize(); j++)
             {
+                std::unique_lock<std::mutex> lock(*kv.second->mutexTexture);
                 clientGameWindow.draw(kv.second->getSprite(j));
+                lock.unlock();
             }
         }
 
@@ -120,9 +121,7 @@ namespace client
 
             if (getCurrentTime(false) - lastUpdateTimer > (100 / 3))
             {
-                mutexGame.lock();
                 displayWindow();
-                mutexGame.unlock();
                 lastUpdateTimer = getCurrentTime(false);
             }
 
@@ -162,17 +161,13 @@ namespace client
                                                 firstHexagonPosition[1] + newMapOffset[1]};
 
                         for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-                        {
-                            mutexGame.lock();
                             mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                            mutexGame.unlock();
-                        }
 
                         for (auto &kv : elementTextureToDisplay)
                         {
-                            mutexGame.lock();
+                            std::unique_lock<std::mutex> lock(*kv.second->mutexTexture);
                             kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                            mutexGame.unlock();
+                            lock.unlock();
                         }
 
                         clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
@@ -208,16 +203,14 @@ namespace client
 
                         for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
                         {
-                            mutexGame.lock();
                             mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                            mutexGame.unlock();
                         }
 
                         for (auto &kv : elementTextureToDisplay)
                         {
-                            mutexGame.lock();
+                            std::unique_lock<std::mutex> lock(*kv.second->mutexTexture);
                             kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                            mutexGame.unlock();
+                            lock.unlock();
                         }
 
                         clickStartingPoint = sf::Mouse::getPosition(clientGameWindow);
@@ -418,11 +411,14 @@ namespace client
     {
 
         for (auto &kv : elementTextureToDisplay){
+            std::unique_lock<std::mutex> lock(*kv.second->mutexTexture);
             kv.second->clearSprites();
+            lock.unlock();
         }
 
         std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
+        //Data are temporarly charge on the json but it will be soon charge from the shared
         const Json::Value &data = openJsonFile("/img/map/files.json");
 
         for (unsigned index = 0; index < data.size(); ++index)
@@ -430,9 +426,13 @@ namespace client
 
             std::string path = RESOURCES_PATH + data[index]["path"].asString();
 
+            std::unique_lock<std::mutex> lock(*elementTextureToDisplay[path]->mutexTexture);
+
             elementTextureToDisplay[path]->addMapSprite();
 
             elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+            
+            lock.unlock();
         }
     }
 
