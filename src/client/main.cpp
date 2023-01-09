@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
         }
         else if (arg.compare("-r") == 0 || arg.compare("render") == 0)
         {
-            client::GameWindow clientGame;
-            clientGame.clientWindow();
+            client::ClientGameEngine clientGameEngine;
+            clientGameEngine.renderGame();
         }
         else if (arg.compare("hello") == 0)
         {

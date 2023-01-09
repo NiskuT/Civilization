@@ -1,10 +1,9 @@
 #include <client.hpp>
+#include <dirent.h>
 #include <iostream>
 #include <fstream>
-#include <math.h>
 #include <json/json.h>
 #include <cmath>
-#include <time.h>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -24,7 +23,6 @@
 #define MAX_CHARACTER_SIZE 18
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
-#define REFRESH_ELEMENT 1
 
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
@@ -36,14 +34,23 @@ namespace client
 {
 
     /*!
-     * \brief Constructeur
+     * \brief Constructor
      *
      * Constructor of GameWindow class
      */
     GameWindow::GameWindow()
     {
-        clientGameWindow.create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
-        clientGameWindow.setPosition(sf::Vector2i(0, 0));
+        
+        clientGameWindow = std::make_shared<sf::RenderWindow>();
+        clientGameWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
+        clientGameWindow->setPosition(sf::Vector2i(0, 0));
+
+        firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
+
+        loadMapTexture();
+        loadElementTexture();
+        updateElementTexture();
+        loadHudTexture();
     }
 
     /*!
@@ -52,140 +59,109 @@ namespace client
     void GameWindow::displayWindow()
     {
 
-        clientGameWindow.clear(sf::Color::Blue);
+        clientGameWindow->clear(sf::Color::Blue);
 
-        clientGameWindow.draw(backgroundTexture->getSprite());
+        clientGameWindow->draw(backgroundTexture->getSprite());
 
         for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
         {
             for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
             {
-                clientGameWindow.draw(mapTextureToDisplay[i].getSprite(j));
+                clientGameWindow->draw(mapTextureToDisplay[i].getSprite(j));
             }
         }
 
-        for (unsigned i = 0; i < elementTextureToDisplay.size(); i++)
+        for (auto &kv : elementTextureToDisplay)
         {
-            for (unsigned j = 0; j < elementTextureToDisplay[i].getSize(); j++)
-            {
-                clientGameWindow.draw(elementTextureToDisplay[i].getSprite(j));
-            }
+            kv.second->drawElementSprite(clientGameWindow);
         }
 
         for (unsigned i = 0; i < priorityCards.size(); i++)
         {
-            clientGameWindow.draw(priorityCards[i].texture->getSprite(0));
-            clientGameWindow.draw(*priorityCards[i].title);
-            clientGameWindow.draw(*priorityCards[i].body);
+            clientGameWindow->draw(priorityCards[i].texture->getSprite(0));
+            clientGameWindow->draw(*priorityCards[i].title);
+            clientGameWindow->draw(*priorityCards[i].body);
         }
 
         for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
         {
-            clientGameWindow.draw(actionCardsToDisplay[i].texture->getSprite(0));
-            clientGameWindow.draw(*actionCardsToDisplay[i].title);
-            clientGameWindow.draw(*actionCardsToDisplay[i].body);
+            clientGameWindow->draw(actionCardsToDisplay[i].texture->getSprite(0));
+            clientGameWindow->draw(*actionCardsToDisplay[i].title);
+            clientGameWindow->draw(*actionCardsToDisplay[i].body);
         }
 
         for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
         {
-            clientGameWindow.draw(whoIsPlayingButtons[i]);
-            clientGameWindow.draw(whoIsPlayingTexts[i]);
+            clientGameWindow->draw(whoIsPlayingButtons[i]);
+            clientGameWindow->draw(whoIsPlayingTexts[i]);
         }
 
-        clientGameWindow.draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
+
+        clientGameWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
         for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
         {
             for (unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++)
             {
-                clientGameWindow.draw(hudTextureToDisplay[i].getSprite(j));
+                clientGameWindow->draw(hudTextureToDisplay[i].getSprite(j));
             }
         }
-        clientGameWindow.display();
+        clientGameWindow->display();
     }
 
     /*!
      * \brief Loop that look for events to happend and call displayWindow()
      */
-    void GameWindow::clientWindow()
+    void GameWindow::clientWindow(std::function<void(int, int)> callback)
     {
-
-        int turn = 0;
         int moveMode = false;
-        time_t currentTimer;
-        time(&currentTimer);
-        time_t lastUpdateTimer;
-        time(&lastUpdateTimer);
+        int clickMode = false;
 
-        std::array<int, 2> clickStartingPoint = {0, 0};
-        std::array<int, 2> newMapOffset = {0, 0};
+        sf::Vector2i clickStartingPoint;
+        std::array<int, 2> newMapOffset;
 
-        while (clientGameWindow.isOpen())
+        long lastUpdateTimer = getCurrentTime(false);
+
+        while (clientGameWindow->isOpen())
         {
+
+            if (getCurrentTime(false) - lastUpdateTimer > (100 / 3))
+            {
+                displayWindow();
+                lastUpdateTimer = getCurrentTime(false);
+            }
 
             // handle events
             sf::Event event;
-            while (clientGameWindow.pollEvent(event))
+            while (clientGameWindow->pollEvent(event))
             {
+
                 switch (event.type)
                 {
                 case sf::Event::MouseButtonPressed:
 
-                    clickStartingPoint = {sf::Mouse::getPosition(clientGameWindow).x,
-                                          sf::Mouse::getPosition(clientGameWindow).y};
+                    clickMode = true;
+
+                    clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
 
                     if (!moveMode)
-                    {
-
-                        int minimumDistance = WINDOW_LENGTH;
-                        std::array<int, 2> hexagonOnClick = {0, 0};
-
-                        sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
-                        cursorRect.left = clickStartingPoint[0];
-                        cursorRect.top = clickStartingPoint[1];
-                        cursorRect.width = 1;
-                        cursorRect.height = 1;
-
-                        bool isClickable = false;
-
-                        for (int i = 0; i < NUMBER_OF_FIELD; i++)
-                        {
-
-                            for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
-                            {
-
-                                sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
-
-                                if (spriteBounds.intersects(cursorRect))
-                                {
-
-                                    isClickable = true;
-
-                                    int distance = sqrt(pow(spriteBounds.left + spriteBounds.width / 2 - cursorRect.left, 2) + pow(spriteBounds.top + spriteBounds.height / 2 - cursorRect.top, 2));
-
-                                    if (distance < minimumDistance)
-                                    {
-
-                                        minimumDistance = distance;
-                                        hexagonOnClick[1] = (int)((spriteBounds.top - firstHexagonPosition[1])) / (int)((spriteBounds.height * 3 / 4));
-                                        hexagonOnClick[0] = (int)((spriteBounds.left - firstHexagonPosition[0])) / (int)((spriteBounds.width - 1));
-                                    }
-                                }
-                            }
-                        }
-                        if (isClickable)
-                            std::cout << "User click on the Hex x=" << hexagonOnClick[0] << " & y=" << hexagonOnClick[1] << "\n";
-                    }
+                        clickAction(clickStartingPoint, callback);
 
                     break;
 
                 case sf::Event::MouseButtonReleased:
 
-                    if (moveMode)
+                    clickMode = false;
+
+                    break;
+
+                case sf::Event::MouseMoved:
+
+                    if (moveMode && clickMode)
                     {
 
-                        newMapOffset = {sf::Mouse::getPosition(clientGameWindow).x - clickStartingPoint[0],
-                                        sf::Mouse::getPosition(clientGameWindow).y - clickStartingPoint[1]};
+                        newMapOffset = {sf::Mouse::getPosition(*clientGameWindow).x - clickStartingPoint.x,
+                                        sf::Mouse::getPosition(*clientGameWindow).y - clickStartingPoint.y};
 
                         firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0],
                                                 firstHexagonPosition[1] + newMapOffset[1]};
@@ -193,10 +169,13 @@ namespace client
                         for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
                             mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
 
-                        for (unsigned i = 0; i < elementTextureToDisplay.size(); i++)
-                            elementTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                    }
+                        for (auto &kv : elementTextureToDisplay)
+                        {
+                            kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                        }
 
+                        clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
+                    }
                     break;
 
                 case sf::Event::KeyPressed:
@@ -209,14 +188,35 @@ namespace client
                         {
                             moveMode = false;
                             if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-                                clientGameWindow.setMouseCursor(clientCursor);
+                                clientGameWindow->setMouseCursor(clientCursor);
                         }
                         else
                         {
                             moveMode = true;
                             if (clientCursor.loadFromSystem(sf::Cursor::Hand))
-                                clientGameWindow.setMouseCursor(clientCursor);
+                                clientGameWindow->setMouseCursor(clientCursor);
                         }
+                        break;
+
+                    case sf::Keyboard::R:
+
+                        newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
+                                        MAP_Y_OFFSET - firstHexagonPosition[1]};
+
+                        firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
+
+                        for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                        {
+                            mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                        }
+
+                        for (auto &kv : elementTextureToDisplay)
+                        {
+                            kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                        }
+
+                        clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
+
                         break;
 
                     default:
@@ -225,37 +225,64 @@ namespace client
                     break;
 
                 case sf::Event::Closed:
-                    clientGameWindow.close();
+                    clientGameWindow->close();
                     break;
 
                 default:
                     break;
                 }
-
-                // draw the map
-                if (turn == 0)
-                {
-                    firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
-                    loadMapTexture();
-                    loadElementTexture();
-                    loadHudTexture();
-                    turn += 1;
-                }
-                time(&currentTimer);
-                if (currentTimer - lastUpdateTimer > REFRESH_ELEMENT)
-                {
-                    loadElementTexture();
-                    time(&lastUpdateTimer);
-                }
-                displayWindow();
             }
         }
     }
 
+    void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
+    {
+
+        int minimumDistance = WINDOW_LENGTH;
+        std::array<int, 2> hexagonOnClick = {0, 0};
+
+        sf::Rect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
+        cursorRect.left = clickPosition.x;
+        cursorRect.top = clickPosition.y;
+        cursorRect.width = 1;
+        cursorRect.height = 1;
+
+        bool isClickable = false;
+
+        for (int i = 0; i < NUMBER_OF_FIELD; i++)
+        {
+
+            for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
+            {
+
+                sf::Rect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
+
+                if (spriteBounds.intersects(cursorRect))
+                {
+
+                    isClickable = true;
+
+                    int distance = sqrt(pow(spriteBounds.left + spriteBounds.width / 2 - cursorRect.left, 2) + pow(spriteBounds.top + spriteBounds.height / 2 - cursorRect.top, 2));
+
+                    if (distance < minimumDistance)
+                    {
+
+                        minimumDistance = distance;
+                        hexagonOnClick[1] = (int)((spriteBounds.top - firstHexagonPosition[1])) / (int)((spriteBounds.height * 3 / 4));
+                        hexagonOnClick[0] = (int)((spriteBounds.left - firstHexagonPosition[0])) / (int)((spriteBounds.width - 1));
+                    }
+                }
+            }
+        }
+        if (isClickable)
+            callback(hexagonOnClick[0], hexagonOnClick[1]);
+    }
+
+    
     /*!
      * \brief Open JSON File
      */
-    const auto GameWindow::openJsonFile(std::string path)
+   const auto GameWindow::openJsonFile(std::string path)
     {
 
         std::ifstream file(RESOURCES_PATH + path);
@@ -276,6 +303,7 @@ namespace client
 
         return data;
     }
+
 
     /*!
      * \brief Display text on the cards
@@ -324,12 +352,12 @@ namespace client
     /*!
      * \brief Load all the textures of the map
      */
-    void GameWindow::loadMapTexture()
+   void GameWindow::loadMapTexture()
     {
 
         mapShared.generateRandomMap(123456789);
 
-        std::string hexagonImgPath = RESOURCES_PATH "/img/map/field-";
+        std::string hexagonImgPath = RESOURCES_PATH "/img/map/field/field-";
         std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
                                                 "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
                                                 "wonder-messa", "wonder-pantanal", "wonder-volcanic"};
@@ -354,22 +382,55 @@ namespace client
     /*!
      * \brief Load all the textures of the map
      */
-    void GameWindow::loadElementTexture()
+     void GameWindow::loadElementTexture()
     {
+        std::string folder_path = RESOURCES_PATH "/img/map/element/";
+        std::vector<std::string> png_files;
+        DIR* dir = opendir(folder_path.c_str());
+
+        struct dirent* entry;
+        while ((entry = readdir(dir)) != nullptr) {
+
+            if (entry->d_name[0] == '.') continue;
+
+            std::string filename = entry->d_name;
+            if (filename.size() >= 4 && filename.substr(filename.size() - 4) == ".png") {
+            png_files.push_back(filename);
+            }
+        }
+
+        closedir(dir);
+
+        // Affiche les noms de fichiers trouvés
+        for (const std::string& filename : png_files) {
+            std::string path = RESOURCES_PATH "/img/map/element/" + filename;
+            elementTextureToDisplay[path] = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(path);
+        }
+    }
+
+    /*!
+     * \brief Load all the textures of the map
+     */
+    void GameWindow::updateElementTexture()
+    {
+
+        for (auto &kv : elementTextureToDisplay){
+            kv.second->clearSprites();
+        }
+
         std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
+        //Data are temporary loaded with the json file but it will be updated from the server soon
         const Json::Value &data = openJsonFile("/img/map/files.json");
-
-        elementTextureToDisplay.clear();
 
         for (unsigned index = 0; index < data.size(); ++index)
         {
 
-            elementTextureToDisplay.emplace_back(RESOURCES_PATH + data[index]["path"].asString());
+            std::string path = RESOURCES_PATH + data[index]["path"].asString();
 
-            elementTextureToDisplay.back().addMapSprite();
+            elementTextureToDisplay[path]->addMapSprite();
 
-            elementTextureToDisplay.back().setSpritePosition(0, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+            elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
         }
     }
 
@@ -478,6 +539,15 @@ namespace client
             whoIsPlayingButtons.emplace_back();
             addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(60, 45), sf::Vector2f(635 + 90 * i, 0), PLAYER_COLOR[i], &whoIsPlayingTexts.back(), 20, sf::Vector2f(0, 0), text, &priorityFont, isPlaying);
         }
+    }
+    
+    
+    long GameWindow::getCurrentTime(bool timeSecond)
+    {
+        if (timeSecond)
+            return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        else
+            return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     }
 
 }
