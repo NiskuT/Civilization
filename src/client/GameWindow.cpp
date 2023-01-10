@@ -91,10 +91,9 @@ namespace client
 
         for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
         {
-            clientGameWindow->draw(whoIsPlayingButtons[i]);
-            clientGameWindow->draw(whoIsPlayingTexts[i]);
+            clientGameWindow->draw(*whoIsPlayingButtons[i].buttonRect);
+            clientGameWindow->draw(*whoIsPlayingButtons[i].buttonText);
         }
-
 
         clientGameWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
@@ -201,6 +200,8 @@ namespace client
 
                     case sf::Keyboard::Q:
 
+                        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
+                                clientGameWindow->setMouseCursor(clientCursor);
                         quitGame();
                         return;
 
@@ -443,29 +444,6 @@ namespace client
         }
     }
 
-    void GameWindow::addButtonElements(sf::RectangleShape *button, sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, sf::Text *buttonText, int textSize, sf::Vector2f textOffset, std::string text, sf::Font *font, bool isPlaying)
-    {
-        button->setSize(buttonSize);
-        button->setPosition(buttonPos);
-        button->setFillColor(buttonColor);
-        if (isPlaying) {
-            button->setOutlineColor(sf::Color::Red);
-            button->setOutlineThickness(2.0f);
-        }
-        else {
-            button->setOutlineColor(sf::Color::Black);
-            button->setOutlineThickness(1.0f);
-        }
-
-        buttonText->setFont(*font);
-        buttonText->setString(text);
-        buttonText->setCharacterSize(textSize);
-        int xPosText = buttonPos.x + (buttonSize.x - buttonText->getGlobalBounds().width) / 2 + textOffset.x;
-        int yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2  - buttonText->getGlobalBounds().height/2 + textOffset.y ;
-        buttonText->setPosition(sf::Vector2f(xPosText, yPosText));
-        buttonText->setFillColor(sf::Color::Black);
-    }
-
     /*!
      * \brief Load all the HUD textures
      */
@@ -542,14 +520,13 @@ namespace client
         {
             bool isPlaying;
             (i+1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
-            whoIsPlayingTexts.emplace_back();
             std::string text = "Player ";
             text += std::to_string(i + 1);
-            whoIsPlayingButtons.emplace_back();
 
             int upPosition = (WINDOW_LENGTH + (float(2/3) - NB_OF_PLAYER) * OFFSET_BETWEEN_UP_PLAYER) / 2;
 
-            addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(OFFSET_BETWEEN_UP_PLAYER * float(float(2)/float(3)), OFFSET_BETWEEN_UP_PLAYER / 2), sf::Vector2f(upPosition + OFFSET_BETWEEN_UP_PLAYER * i, 0), PLAYER_COLOR[i], &whoIsPlayingTexts.back(), UP_PLAYER_TEXT_SIZE, sf::Vector2f(0, 0), text, &priorityFont, isPlaying);
+            whoIsPlayingButtons.emplace_back(sf::Vector2f(OFFSET_BETWEEN_UP_PLAYER * float(float(2)/float(3)), OFFSET_BETWEEN_UP_PLAYER / 2), sf::Vector2f(upPosition + OFFSET_BETWEEN_UP_PLAYER * i, 0), PLAYER_COLOR[i], isPlaying);
+            whoIsPlayingButtons.back().setText(UP_PLAYER_TEXT_SIZE, sf::Vector2f(0, 0), text, &priorityFont);
         }
     }
     
