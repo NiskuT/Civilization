@@ -15,7 +15,6 @@
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
 
-#define PRIORITY_CARD_PROPORTION 0.144
 #define ACTION_CARD_PROPORTION 0.125
 #define TITLE_PROPORTION 0.025
 #define BODY_PROPORTION_X 0.0075
@@ -30,6 +29,7 @@
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 
+
 namespace client
 {
 
@@ -40,7 +40,7 @@ namespace client
      */
     GameWindow::GameWindow()
     {
-        
+
         clientGameWindow = std::make_shared<sf::RenderWindow>();
         clientGameWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
         clientGameWindow->setPosition(sf::Vector2i(0, 0));
@@ -96,7 +96,6 @@ namespace client
             clientGameWindow->draw(whoIsPlayingTexts[i]);
         }
 
-
         clientGameWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
         for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
@@ -106,6 +105,7 @@ namespace client
                 clientGameWindow->draw(hudTextureToDisplay[i].getSprite(j));
             }
         }
+        
         clientGameWindow->display();
     }
 
@@ -234,8 +234,33 @@ namespace client
         }
     }
 
+        /*!
+     * \brief Open JSON File
+     */
+    const auto GameWindow::openJsonFile(std::string path)
+    {
 
-       void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
+        std::ifstream file(RESOURCES_PATH + path);
+        // check is file is correctly open
+        if (!file.is_open())
+        {
+            std::cerr << "Error while opening json ressources file" << std::endl;
+            std::cerr << path << std::endl;
+            exit(1);
+        }
+        std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+        std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+        Json::Value obj;
+        std::string errors;
+        reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
+
+        const Json::Value &data = obj["data"];
+
+        return data;
+    }
+
+    void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
     {
         int minimumDistance = WINDOW_LENGTH;
         std::array<int, 2> hexagonOnClick = {0, 0};
@@ -248,22 +273,50 @@ namespace client
 
         bool isClickable = false;
         bool isAPriorityCardClicked = false;
-        int priorityCardClicked = 0;
+        int yPos =0;
+        int xPos = 0;
+        int xTitlePos = 0;
+        int xBodyPosition = 0;
 
-        for(unsigned i = 0; i < priorityCards.size(); i++ )
+        const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
+
+
+        for (unsigned i = 0; i < priorityCards.size(); i++)
         {
             sf::FloatRect spriteBounds = priorityCards[i].texture->getSprite().getGlobalBounds();
 
+            if (spriteBounds.intersects(cursorRect))
+            {
+                isAPriorityCardClicked = true;
+                callback(-1, i + 1); // -1 to signify that the space clicked is a priority card
+                float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(priorityCards[i].texture->getWidth()) / float(WINDOW_LENGTH));
 
-                if (spriteBounds.intersects(cursorRect))
+                if (!priorityCards[i].isUp)
                 {
-                    isAPriorityCardClicked = true;
-                    priorityCardClicked = i+1;
-                    std::cout << "Click on priority card: " << i+1 <<std::endl;
+                    yPos = WINDOW_WIDTH - priorityCards[i].texture->getHeight() * priorityScale;
+                    priorityCards[i].isUp = true;
                 }
+                else
+                {
+                    yPos = WINDOW_WIDTH - priorityCards[i].texture->getHeight() * priorityScale + dataNumber["priority-card-up-scale"].asFloat() * WINDOW_WIDTH;                    
+                    priorityCards[i].isUp = false;
+                }
+
+                xPos = priorityCards[i].texture->getSprite().getPosition().x;
+                xTitlePos = priorityCards[i].title->getPosition().x;
+                xBodyPosition =  priorityCards[i].body->getPosition().x;
+
+                int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
+
+                priorityCards[i].texture->getSprite().setPosition(xPos, yPos);
+                priorityCards[i].title->setPosition(xTitlePos, yPos);
+                priorityCards[i].body->setPosition(xBodyPosition, yPos + yBodyOffset);
+
+            }
         }
 
-        if(!isAPriorityCardClicked) {
+        if (!isAPriorityCardClicked)
+        {
 
             for (int i = 0; i < NUMBER_OF_FIELD; i++)
             {
@@ -293,77 +346,6 @@ namespace client
             if (isClickable)
                 callback(hexagonOnClick[0], hexagonOnClick[1]);
         }
-    }
-
-/*
-    void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
-    {
-
-        int minimumDistance = WINDOW_LENGTH;
-        std::array<int, 2> hexagonOnClick = {0, 0};
-
-        sf::FloatRect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
-        cursorRect.left = clickPosition.x;
-        cursorRect.top = clickPosition.y;
-        cursorRect.width = 1;
-        cursorRect.height = 1;
-
-        bool isClickable = false;
-
-        for (int i = 0; i < NUMBER_OF_FIELD; i++)
-        {
-
-            for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
-            {
-
-                sf::FloatRect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
-
-                if (spriteBounds.intersects(cursorRect))
-                {
-
-                    isClickable = true;
-
-                    int distance = sqrt(pow(spriteBounds.left + spriteBounds.width / 2 - cursorRect.left, 2) + pow(spriteBounds.top + spriteBounds.height / 2 - cursorRect.top, 2));
-
-                    if (distance < minimumDistance)
-                    {
-
-                        minimumDistance = distance;
-                        hexagonOnClick[1] = (int)((spriteBounds.top - firstHexagonPosition[1])) / (int)((spriteBounds.height * 3 / 4));
-                        hexagonOnClick[0] = (int)((spriteBounds.left - firstHexagonPosition[0])) / (int)((spriteBounds.width - 1));
-                    }
-                }
-            }
-        }
-        if (isClickable)
-            callback(hexagonOnClick[0], hexagonOnClick[1]);
-    }
-*/
-    
-    /*!
-     * \brief Open JSON File
-     */
-   const auto GameWindow::openJsonFile(std::string path)
-    {
-
-        std::ifstream file(RESOURCES_PATH + path);
-        // check is file is correctly open
-        if (!file.is_open())
-        {
-            std::cerr << "Error while opening json ressources file" << std::endl;
-            std::cerr << path << std::endl;
-            exit(1);
-        }
-        std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-        std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-        Json::Value obj;
-        std::string errors;
-        reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
-
-        const Json::Value &data = obj["data"];
-
-        return data;
     }
 
 
@@ -414,7 +396,7 @@ namespace client
     /*!
      * \brief Load all the textures of the map
      */
-   void GameWindow::loadMapTexture()
+    void GameWindow::loadMapTexture()
     {
 
         mapShared.generateRandomMap(123456789);
@@ -444,27 +426,31 @@ namespace client
     /*!
      * \brief Load all the textures of the map
      */
-     void GameWindow::loadElementTexture()
+    void GameWindow::loadElementTexture()
     {
         std::string folder_path = RESOURCES_PATH "/img/map/element/";
         std::vector<std::string> png_files;
-        DIR* dir = opendir(folder_path.c_str());
+        DIR *dir = opendir(folder_path.c_str());
 
-        struct dirent* entry;
-        while ((entry = readdir(dir)) != nullptr) {
+        struct dirent *entry;
+        while ((entry = readdir(dir)) != nullptr)
+        {
 
-            if (entry->d_name[0] == '.') continue;
+            if (entry->d_name[0] == '.')
+                continue;
 
             std::string filename = entry->d_name;
-            if (filename.size() >= 4 && filename.substr(filename.size() - 4) == ".png") {
-            png_files.push_back(filename);
+            if (filename.size() >= 4 && filename.substr(filename.size() - 4) == ".png")
+            {
+                png_files.push_back(filename);
             }
         }
 
         closedir(dir);
 
         // Affiche les noms de fichiers trouvés
-        for (const std::string& filename : png_files) {
+        for (const std::string &filename : png_files)
+        {
             std::string path = RESOURCES_PATH "/img/map/element/" + filename;
             elementTextureToDisplay[path] = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(path);
         }
@@ -476,13 +462,14 @@ namespace client
     void GameWindow::updateElementTexture()
     {
 
-        for (auto &kv : elementTextureToDisplay){
+        for (auto &kv : elementTextureToDisplay)
+        {
             kv.second->clearSprites();
         }
 
         std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-        //Data are temporary loaded with the json file but it will be updated from the server soon
+        // Data are temporary loaded with the json file but it will be updated from the server soon
         const Json::Value &data = openJsonFile("/img/map/files.json");
 
         for (unsigned index = 0; index < data.size(); ++index)
@@ -501,11 +488,13 @@ namespace client
         button->setSize(buttonSize);
         button->setPosition(buttonPos);
         button->setFillColor(buttonColor);
-        if (isPlaying) {
+        if (isPlaying)
+        {
             button->setOutlineColor(sf::Color::Red);
             button->setOutlineThickness(2.0f);
         }
-        else {
+        else
+        {
             button->setOutlineColor(sf::Color::Black);
             button->setOutlineThickness(1.0f);
         }
@@ -514,7 +503,7 @@ namespace client
         buttonText->setString(text);
         buttonText->setCharacterSize(textSize);
         int xPosText = buttonPos.x + (buttonSize.x - buttonText->getGlobalBounds().width) / 2 + textOffset.x;
-        int yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2  - buttonText->getGlobalBounds().height/2 + textOffset.y ;
+        int yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2 - buttonText->getGlobalBounds().height / 2 + textOffset.y;
         buttonText->setPosition(sf::Vector2f(xPosText, yPosText));
         buttonText->setFillColor(sf::Color::Black);
     }
@@ -560,10 +549,11 @@ namespace client
             priorityCards.emplace_back();
             priorityCards.back().texture = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH + priorityData[index]["path"].asString());
             priorityCards.back().texture->addMapSprite();
-            float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
+            float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
             priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
             priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
             priorityCards.back().level = 0;
+            priorityCards.back().isUp = false;
 
             displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont);
         }
@@ -589,28 +579,27 @@ namespace client
         }
 
         // isPlaying buttons
-        
+
         int whoIsPlaying = 2; // sent by the server (temporary)
 
         for (int i = 0; i < dataNumber["nb-player"].asInt(); i++)
 
         {
             bool isPlaying;
-            (i+1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
+            (i + 1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
             whoIsPlayingTexts.emplace_back();
             std::string text = "Player ";
             text += std::to_string(i + 1);
             whoIsPlayingButtons.emplace_back();
 
             int offset = dataNumber["offset-between-up-player"].asInt();
-            int upPosition = (WINDOW_LENGTH + (float(2/3) - dataNumber["nb-player"].asInt()) * offset) / 2;
+            int upPosition = (WINDOW_LENGTH + (float(2 / 3) - dataNumber["nb-player"].asInt()) * offset) / 2;
 
-            addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(offset* float(float(2)/float(3)), offset / 2), sf::Vector2f(upPosition + offset * i, 0), PLAYER_COLOR[i], 
-            &whoIsPlayingTexts.back(), dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &priorityFont, isPlaying);
+            addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(offset * float(float(2) / float(3)), offset / 2), sf::Vector2f(upPosition + offset * i, 0), PLAYER_COLOR[i],
+                              &whoIsPlayingTexts.back(), dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &priorityFont, isPlaying);
         }
     }
-    
-    
+
     long GameWindow::getCurrentTime(bool timeSecond)
     {
         if (timeSecond)

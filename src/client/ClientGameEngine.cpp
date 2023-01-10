@@ -14,7 +14,12 @@ namespace client
 
 void ClientGameEngine::handleInformation(int x, int y)
 {
-    std::cout << "User click on the Hex x=" << x << " & y=" << y << "\n";
+    if (x == -1) {
+        std::cout << "User click on the priority card " << y << std::endl;
+    }
+    else {
+        std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
+    }
 }
 
 void ClientGameEngine::startGameWindow(){

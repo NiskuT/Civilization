@@ -1,9 +1,15 @@
 {
     "data" : 
         {
-            "nb-player": 3,
+            "nb-player": 2,
+            
+            "priority-card-proportion": 0.144,
+            "priority-card-up-scale": 0.156,
+
+            
             "up-player-text-size": 20,
             "offset-between-up-player": 90
-        }
+        
+    }
 }
 
