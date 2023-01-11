@@ -24,10 +24,6 @@
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
 
-#define OFFSET_BETWEEN_UP_PLAYER 90
-#define UP_PLAYER_TEXT_SIZE 20
-#define NB_OF_PLAYER 3
-
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
 #endif
@@ -459,6 +455,8 @@ namespace client
         int rotation = 0;
         int priorityCardIndex = 0;
 
+        const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
+
         backgroundTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/hud/background.png");
         backgroundTexture->addSprite();
         float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
@@ -520,18 +518,18 @@ namespace client
 
         int whoIsPlaying = 2; // sent by the server (temporary)
 
-        for (int i = 0; i < NB_OF_PLAYER; i++)
+        for (int i = 0; i < dataNumber["nb-player"].asInt(); i++)
 
         {
             bool isPlaying;
             (i + 1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
             std::string text = "Player ";
             text += std::to_string(i + 1);
+            int offset = dataNumber["offset-between-up-player"].asInt();
+            int upPosition = (WINDOW_LENGTH + (float(2/3) - dataNumber["nb-player"].asInt()) * offset) / 2;
 
-            int upPosition = (WINDOW_LENGTH + (float(2 / 3) - NB_OF_PLAYER) * OFFSET_BETWEEN_UP_PLAYER) / 2;
-
-            whoIsPlayingButtons.emplace_back(sf::Vector2f(OFFSET_BETWEEN_UP_PLAYER * float(float(2) / float(3)), OFFSET_BETWEEN_UP_PLAYER / 2), sf::Vector2f(upPosition + OFFSET_BETWEEN_UP_PLAYER * i, 0), PLAYER_COLOR[i], isPlaying);
-            whoIsPlayingButtons.back().setText(UP_PLAYER_TEXT_SIZE, sf::Vector2f(0, 0), text, &priorityFont);
+            whoIsPlayingButtons.emplace_back(sf::Vector2f(offset* float(float(2)/float(3)), offset / 2), sf::Vector2f(upPosition + offset * i, 0), PLAYER_COLOR[i], isPlaying);
+            whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &priorityFont);
         }
     }
 
