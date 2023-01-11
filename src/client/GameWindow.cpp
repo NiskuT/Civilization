@@ -20,7 +20,7 @@
 #define BODY_PROPORTION_X 0.0075
 #define BODY_PROPORTION_Y 0.05
 #define MAX_CHARACTER_SIZE 18
-#define NBR_CHAR_MAX_PER_LIGNE 22
+#define NBR_CHAR_MAX_PER_LIGNE 23
 #define TURN_NUMBER 2
 
 #ifndef RESOURCES_PATH
@@ -28,11 +28,10 @@
 #endif
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
-
+const sf::Color TEXT_COLOR = sf::Color(240,230,230);
 
 namespace client
 {
-
     /*!
      * \brief Constructor
      *
@@ -80,7 +79,9 @@ namespace client
         {
             clientGameWindow->draw(priorityCards[i].texture->getSprite(0));
             clientGameWindow->draw(*priorityCards[i].title);
+            if (priorityCards[i].isUp) {
             clientGameWindow->draw(*priorityCards[i].body);
+            }
         }
 
         for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
@@ -260,6 +261,41 @@ namespace client
         return data;
     }
 
+
+    void GameWindow::moveUpPriorityCard(CardStruct* card) {
+
+        const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
+
+        float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(card->texture->getWidth()) / float(WINDOW_LENGTH));
+        
+        int yPos =0;
+        int xPos = 0;
+        int xTitlePos = 0;
+        int xBodyPosition = 0;
+
+        if (!card->isUp)
+        {
+            yPos = WINDOW_WIDTH - card->texture->getHeight() * priorityScale;
+            card->isUp = true;
+        }
+        else
+        {
+            yPos = WINDOW_WIDTH - card->texture->getHeight() * priorityScale + dataNumber["priority-card-up-scale"].asFloat() * WINDOW_WIDTH;                    
+            card->isUp = false;
+        }
+
+        xPos = card->texture->getSprite().getPosition().x;
+        xTitlePos = card->title->getPosition().x;
+        xBodyPosition =  card->body->getPosition().x;
+
+        int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
+
+        card->texture->getSprite().setPosition(xPos, yPos);
+        card->title->setPosition(xTitlePos, yPos);
+        card->body->setPosition(xBodyPosition, yPos + yBodyOffset);
+
+    }
+
     void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
     {
         int minimumDistance = WINDOW_LENGTH;
@@ -273,13 +309,6 @@ namespace client
 
         bool isClickable = false;
         bool isAPriorityCardClicked = false;
-        int yPos =0;
-        int xPos = 0;
-        int xTitlePos = 0;
-        int xBodyPosition = 0;
-
-        const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
-
 
         for (unsigned i = 0; i < priorityCards.size(); i++)
         {
@@ -289,32 +318,10 @@ namespace client
             {
                 isAPriorityCardClicked = true;
                 callback(-1, i + 1); // -1 to signify that the space clicked is a priority card
-                float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(priorityCards[i].texture->getWidth()) / float(WINDOW_LENGTH));
-
-                if (!priorityCards[i].isUp)
-                {
-                    yPos = WINDOW_WIDTH - priorityCards[i].texture->getHeight() * priorityScale;
-                    priorityCards[i].isUp = true;
-                }
-                else
-                {
-                    yPos = WINDOW_WIDTH - priorityCards[i].texture->getHeight() * priorityScale + dataNumber["priority-card-up-scale"].asFloat() * WINDOW_WIDTH;                    
-                    priorityCards[i].isUp = false;
-                }
-
-                xPos = priorityCards[i].texture->getSprite().getPosition().x;
-                xTitlePos = priorityCards[i].title->getPosition().x;
-                xBodyPosition =  priorityCards[i].body->getPosition().x;
-
-                int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
-
-                priorityCards[i].texture->getSprite().setPosition(xPos, yPos);
-                priorityCards[i].title->setPosition(xTitlePos, yPos);
-                priorityCards[i].body->setPosition(xBodyPosition, yPos + yBodyOffset);
-
+                moveUpPriorityCard(&priorityCards[i]);
             }
         }
-
+            
         if (!isAPriorityCardClicked)
         {
 
@@ -352,13 +359,15 @@ namespace client
     /*!
      * \brief Display text on the cards
      */
-    void GameWindow::displayText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *font)
+    void GameWindow::displayText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *font, float titleTextSizeProportion, float bodyTextSizeProportion)
     {
+        int titleTextSize = titleTextSizeProportion * WINDOW_LENGTH;
+        int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;
 
         // display the title on the card
-        cards->back().title = (std::unique_ptr<sf::Text>)new sf::Text(title, *font, TITLE_PROPORTION * WINDOW_LENGTH);
+        cards->back().title = (std::unique_ptr<sf::Text>)new sf::Text(title, *font, titleTextSize);
         cards->back().title->setStyle(sf::Text::Bold);
-        cards->back().title->setFillColor(sf::Color::Black);
+        cards->back().title->setFillColor(TEXT_COLOR);
         auto titleSize = cards->back().title->getLocalBounds();
         int xTitleOffset = (cards->back().texture->getWidth() - titleSize.width) / 2;
         int xTitlePosition = cards->back().texture->getSprite().getPosition().x + xTitleOffset;
@@ -366,11 +375,11 @@ namespace client
         cards->back().title->setPosition(xTitlePosition, yTitlePosition);
 
         // display the body on the card
-        cards->back().body = (std::unique_ptr<sf::Text>)new sf::Text(body, *font, 30);
+        cards->back().body = (std::unique_ptr<sf::Text>)new sf::Text(body, *font, bodyTextSize);
 
         // to have the text on several lines without exceeding the card
         int countEndLine = 1;
-        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - 10)
+        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - 15)
         {
 
             for (int i = countEndLine * NBR_CHAR_MAX_PER_LIGNE; i > 0; i--)
@@ -385,7 +394,7 @@ namespace client
             cards->back().body->setString(body);
         }
 
-        cards->back().body->setFillColor(sf::Color::Black);
+        cards->back().body->setFillColor(TEXT_COLOR);
         int xBodyOffset = BODY_PROPORTION_X * WINDOW_LENGTH;
         int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
         int xBodyPosition = cards->back().texture->getSprite().getPosition().x + xBodyOffset;
@@ -543,6 +552,9 @@ namespace client
         }
 
         const Json::Value &priorityData = openJsonFile("/img/hud/priority-card.json");
+        float priorityTitleTextProportion = dataNumber["priority-card-title-proportion"].asFloat();
+        float priorityBodyTextProportion = dataNumber["priority-card-body-proportion"].asFloat();
+
 
         for (unsigned index = 0; index < priorityData.size(); ++index)
         {
@@ -555,12 +567,16 @@ namespace client
             priorityCards.back().level = 0;
             priorityCards.back().isUp = false;
 
-            displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont);
+            displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont, priorityTitleTextProportion, priorityBodyTextProportion);
         }
 
         // actionCard
 
         const Json::Value &actionCardData = openJsonFile("/img/hud/action-card.json");
+        float actionTitleTextProportion = dataNumber["action-card-title-proportion"].asFloat();
+        float actionBodyTextProportion = dataNumber["action-card-body-proportion"].asFloat();
+
+
         std::vector<int> actionCardOwned = {1, 3, 7}; // array that will be sent by shared
 
         for (unsigned index = 0; index < actionCardOwned.size(); ++index)
@@ -575,7 +591,7 @@ namespace client
             std::string titleCardAction = actionCardData[actionCardOwned[index]]["type"].asString();
             std::string bodyCardAction = actionCardData[actionCardOwned[index]]["body"].asString();
 
-            displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &priorityFont);
+            displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &priorityFont, actionTitleTextProportion, actionBodyTextProportion);
         }
 
         // isPlaying buttons

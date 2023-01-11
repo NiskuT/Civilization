@@ -5,6 +5,12 @@
             
             "priority-card-proportion": 0.144,
             "priority-card-up-scale": 0.156,
+            "priority-card-title-proportion": 0.025,
+            "priority-card-body-proportion": 0.018,
+
+            "action-card-title-proportion": 0.021,
+            "action-card-body-proportion": 0.014,
+
 
             
             "up-player-text-size": 20,
