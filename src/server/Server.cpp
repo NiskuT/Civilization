@@ -27,11 +27,12 @@ namespace server
     void Server::handleClient(boost::asio::ip::tcp::socket socket)
     {
         std::cout << "New client connected" << std::endl;
-        auto player = std::make_shared<shared::Player>(socket);
+        auto player = std::make_shared<shared::Player>();
+        player->setSocket(socket);
 
         boost::asio::streambuf request;
         try {
-            boost::asio::read_until(player->getSocket(), request, "\n");
+            boost::asio::read_until(player->getSocket(), request, '\n');
         } catch (const boost::system::system_error &e) {
             std::cerr << "Error: " << e.what() << std::endl;
             player->disconnectPlayer();
@@ -73,8 +74,6 @@ namespace server
 
         while (player->state == shared::PlayerState::Connected)
         {
-            std::cout << "Waiting for message" << std::endl;
-            // Réception d'un message du client
             boost::asio::streambuf receiveBuffer;
             boost::system::error_code error;
             std::size_t bytesTransferred {0};
@@ -87,16 +86,9 @@ namespace server
             catch (const boost::system::system_error &e)
             {
                 std::cerr << "Error: " << e.what() << std::endl;
-                //player->disconnectPlayer();
-                //continue;
             }
 
-            if (error == boost::asio::error::operation_aborted)
-            {
-                player->disconnectPlayer();
-                continue;
-            }
-            else if (error == boost::asio::error::eof)
+            if (error == boost::asio::error::operation_aborted || error == boost::asio::error::eof)
             {
                 player->disconnectPlayer();
                 continue;
@@ -125,6 +117,7 @@ namespace server
                 }
             }
         }
+        std::cout << "Client disconnected" << std::endl;
     }
 
     std::shared_ptr<GameEngine> Server::getGameById(std::string gameId)
@@ -147,7 +140,7 @@ namespace server
         {
             if (p.get() == player.get())
             {
-                p->reconnect(player->getSocket());
+                p->setSocket(player->getSocket());
                 player.swap(p);
                 return;
             }

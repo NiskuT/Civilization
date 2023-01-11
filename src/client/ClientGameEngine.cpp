@@ -4,14 +4,13 @@
 namespace client
 {
 
-    ClientGameEngine::ClientGameEngine(const std::string &serverAddress, int serverPort)
+    ClientGameEngine::ClientGameEngine()
     {
-        this->serverAddress = serverAddress;
-        this->serverPort = serverPort;
-        this->connect();
+        myself = std::make_shared<shared::Player>();
+        myself->setUsername("PlayerTest");
     }
 
-    void ClientGameEngine::connect()
+    void ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
     {
         boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(serverAddress), serverPort);
 
@@ -25,20 +24,24 @@ namespace client
             std::cout << "Error: " << e.what() << std::endl;
             exit(1);
         }
-        myself = std::make_shared<shared::Player>(clientSocket);
+        myself->setSocket(clientSocket);
         myself->state = shared::PlayerState::Connected;
 
         std::thread t(&ClientGameEngine::startReceiving, this);
-        t.join();
+
+        {
+            std::lock_guard<std::mutex> lock(myself->socketWriteMutex);
+            std::string msg = this->gameId + " " + myself->getName() + "\n";
+            boost::asio::write(myself->getSocket(), boost::asio::buffer(msg));
+        }
+
+        t.detach();
     }
 
     void ClientGameEngine::startReceiving()
     {
         std::cout << "Starting receiving" << std::endl;
 
-        std::unique_lock<std::mutex> lock(myself->socketWriteMutex);
-        boost::asio::write(myself->getSocket(), boost::asio::buffer("new quentin\n"));
-        lock.unlock();
         while (myself->state == shared::PlayerState::Connected)
         {
 
@@ -59,20 +62,48 @@ namespace client
                 std::string messageReceived(
                     boost::asio::buffers_begin(receiveBuffer.data()),
                     boost::asio::buffers_end(receiveBuffer.data()));
-                std::cout << "try received: " << receiveBuffer.size() << std::endl;
-                receiveBuffer.consume(receiveBuffer.size());
-                std::cout << "Received: " << messageReceived << std::endl;
-                // std::cout << "end Received: " << std::endl;
 
-                /*if (messageReceived.find("response") == 0)
+                receiveBuffer.consume(receiveBuffer.size());
+
+                if (messageReceived.find("response") == 0)
                 {
-                    registerClientAnswer(messageReceived, player);
+                    registerServerAnswer(messageReceived);
                 }
                 else
                 {
-                    game->processClientRequest(messageReceived, player);
-                } */
+                    processServerRequest(messageReceived);
+                }
             }
         }
+    }
+
+    void ClientGameEngine::registerServerAnswer(const std::string &response)
+    {
+        std::lock_guard<std::mutex> lock(myself->qAndA.sharedDataMutex);
+        myself->qAndA.answer = response;
+        myself->qAndA.answerReady = true;
+        myself->qAndA.condition.notify_one();
+    }
+
+    void ClientGameEngine::processServerRequest(const std::string &request)
+    {
+        std::cout << "Received request: " << request << std::endl;
+    }
+
+    void ClientGameEngine::askServer()
+    {
+        myself->qAndA.answerReady = false;
+        {
+            std::lock_guard<std::mutex> lock(myself->socketWriteMutex);
+            boost::asio::write(myself->getSocket(), boost::asio::buffer(myself->qAndA.question));
+        }
+
+        std::unique_lock<std::mutex> responseLock(myself->qAndA.sharedDataMutex);
+        myself->qAndA.condition.wait(responseLock, [&]
+                                     { return myself->qAndA.answerReady; });
+
+        std::string response = myself->qAndA.answer;
+        std::cout << "Received response: " << response << std::endl;
+        myself->qAndA.answerReady = false;
     }
 }

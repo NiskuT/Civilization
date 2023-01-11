@@ -66,18 +66,9 @@ namespace server
         std::string command = requestComponents[0];
 
         std::string response;
-        if (command.compare("move") == 0)
+        if (command.find("getstate") == 0)
         {
-            response = "OK\n";
-        }
-        else if (command.compare("use_item") == 0)
-        {
-            response = "OK\n";
-        }
-        else if (command.compare("disconnect") == 0)
-        {
-            player->disconnectPlayer();
-            response = "OK\n";
+            response = "response" + player->getName() + " is connected\n";
         }
         else
         {

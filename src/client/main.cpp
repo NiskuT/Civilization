@@ -31,7 +31,17 @@ int main(int argc, char *argv[])
         }
         else if (arg.compare("network") == 0)
         {
-            client::ClientGameEngine gameEngine("127.0.0.1", 8080);
+            client::ClientGameEngine maGame;
+            maGame.connect("127.0.0.1", 8080);
+            while(true)
+            {
+                sleep(3);
+                std::unique_lock<std::mutex> lock(maGame.myself->qAndA.sharedDataMutex);
+                maGame.myself->qAndA.question = "getstate\n";
+                lock.unlock();
+                maGame.askServer();
+
+            }
         }
         else
         {
