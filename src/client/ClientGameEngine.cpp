@@ -20,19 +20,26 @@ void ClientGameEngine::handleInformation(int x, int y)
     std::cout << "User click on the Hex x=" << x << " & y=" << y << "\n";
 }
 
-void ClientGameEngine::handleQuitMenu()
+void ClientGameEngine::handleQuitMenu(bool quitDef)
 {
     std::lock_guard<std::mutex> lock(mutexRunningEngine);
-    isWindowRunning[1] = !isWindowRunning[1];
-    isWindowRunning[2] = !isWindowRunning[2];
+    if (quitDef){
+        isWindowRunning[0] = false;
+        isWindowRunning[1] = false;
+        isWindowRunning[2] = false;
+    } 
+    else{
+        isWindowRunning[1] = !isWindowRunning[1];
+        isWindowRunning[2] = !isWindowRunning[2];
+    }
 }
 
 void ClientGameEngine::startGameWindow(){
-    clientGame.startGame(clientWindow, [this]() { handleQuitMenu(); }, [this](int x, int y) { handleInformation(x, y); });
+    clientGame.startGame(clientWindow, [this](bool quitDef) { handleQuitMenu(quitDef); }, [this](int x, int y) { handleInformation(x, y); });
 }
 
 void ClientGameEngine::startMenuWindow(){
-    clientMenu.startMenu(clientWindow, [this]() { handleQuitMenu(); });
+    clientMenu.startMenu(clientWindow, [this](bool quitDef) { handleQuitMenu(quitDef); });
 }
 
 void ClientGameEngine::renderGame() 
@@ -46,7 +53,8 @@ void ClientGameEngine::renderGame()
         std::unique_lock<std::mutex> lockGlobalWhile(mutexRunningEngine);
         if (!isWindowRunning[0]) {
             lockGlobalWhile.unlock();
-            break;
+            clientWindow->close();
+            return;
         }
         lockGlobalWhile.unlock();
         
@@ -62,7 +70,6 @@ void ClientGameEngine::playGame()
         lockIf.unlock();
 
         std::thread t(&ClientGameEngine::startGameWindow, this);
-        t.detach();
 
         long lastUpdateTimer = clientGame.getCurrentTime();
         struct stat file_stat;
@@ -77,6 +84,7 @@ void ClientGameEngine::playGame()
             std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
             if (!isWindowRunning[2]) {
                 lockWhile.unlock();
+                t.join();
                 break;
             }
             lockWhile.unlock();
@@ -110,18 +118,16 @@ void ClientGameEngine::playMenu()
         lockIf.unlock();
 
         std::thread t(&ClientGameEngine::startMenuWindow, this);
-        t.detach();
 
         while (true) {
 
             std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
             if (!isWindowRunning[1]) {
                 lockWhile.unlock();
+                t.join();
                 break;
             }
             lockWhile.unlock();
-
-            // Corps de la boucle while
         }
     }
     else{

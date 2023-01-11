@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
         {
             client::ClientGameEngine clientGameEngine;
             clientGameEngine.renderGame();
+            std::cout << "Thanks for playing our game !" << std::endl;
         }
         else if (arg.compare("hello") == 0)
         {
@@ -34,4 +35,5 @@ int main(int argc, char *argv[])
             std::cout << "Unkown command, use -h for help." << std::endl;
         }
     }
+    exit(0);
 }

@@ -110,7 +110,7 @@ namespace client
     /*!
      * \brief Loop that look for events to happend and call displayWindow()
      */
-    void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void()> quitGame, std::function<void(int, int)> callback)
+    void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(int, int)> callback)
     {
         clientGameWindow = clientWindow;
 
@@ -198,16 +198,18 @@ namespace client
                         }
                         break;
 
-                    case sf::Keyboard::Q:
-
+                    case sf::Keyboard::K:
+                    
                         if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
                                 clientGameWindow->setMouseCursor(clientCursor);
-                        quitGame();
+                        quitGame(false);
                         return;
 
-                        break;
+                    case sf::Keyboard::Escape:
+                        quitGame(true);
+                        return;
 
-                    case sf::Keyboard::R:
+                    case sf::Keyboard::L:
 
                         newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
                                         MAP_Y_OFFSET - firstHexagonPosition[1]};
@@ -234,8 +236,8 @@ namespace client
                     break;
 
                 case sf::Event::Closed:
-                    clientGameWindow->close();
-                    break;
+                    quitGame(true);
+                    return;
 
                 default:
                     break;
@@ -525,7 +527,9 @@ namespace client
 
             int upPosition = (WINDOW_LENGTH + (float(2/3) - NB_OF_PLAYER) * OFFSET_BETWEEN_UP_PLAYER) / 2;
 
-            whoIsPlayingButtons.emplace_back(sf::Vector2f(OFFSET_BETWEEN_UP_PLAYER * float(float(2)/float(3)), OFFSET_BETWEEN_UP_PLAYER / 2), sf::Vector2f(upPosition + OFFSET_BETWEEN_UP_PLAYER * i, 0), PLAYER_COLOR[i], isPlaying);
+            whoIsPlayingButtons.emplace_back( sf::Vector2f(OFFSET_BETWEEN_UP_PLAYER * float(float(2)/float(3)), OFFSET_BETWEEN_UP_PLAYER / 2)
+                                            , sf::Vector2f(upPosition + OFFSET_BETWEEN_UP_PLAYER * i, 0)
+                                            , PLAYER_COLOR[i], isPlaying);
             whoIsPlayingButtons.back().setText(UP_PLAYER_TEXT_SIZE, sf::Vector2f(0, 0), text, &priorityFont);
         }
     }
