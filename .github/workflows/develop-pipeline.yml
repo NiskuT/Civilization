@@ -16,7 +16,7 @@ jobs:
     
     - name: Install tools
       run: |
-        sudo apt clean 
+        sudo apt update 
         sudo apt install lcov
         sudo apt install gcovr
         sudo apt install libboost-all-dev
@@ -101,7 +101,7 @@ jobs:
     
     - name: Install tools
       run: |
-        sudo apt clean 
+        sudo apt update 
         sudo apt install libboost-all-dev
         sudo apt-get install libsfml-dev
         
