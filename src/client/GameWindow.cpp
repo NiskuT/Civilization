@@ -199,9 +199,9 @@ namespace client
                         break;
 
                     case sf::Keyboard::K:
-                    
+
                         if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-                                clientGameWindow->setMouseCursor(clientCursor);
+                            clientGameWindow->setMouseCursor(clientCursor);
                         quitGame(false);
                         return;
 
@@ -289,11 +289,10 @@ namespace client
             callback(hexagonOnClick[0], hexagonOnClick[1]);
     }
 
-    
     /*!
      * \brief Open JSON File
      */
-   const auto GameWindow::openJsonFile(std::string path)
+    const auto GameWindow::openJsonFile(std::string path)
     {
 
         std::ifstream file(RESOURCES_PATH + path);
@@ -315,7 +314,6 @@ namespace client
 
         return data;
     }
-
 
     /*!
      * \brief Display text on the cards
@@ -364,7 +362,7 @@ namespace client
     /*!
      * \brief Load all the textures of the map
      */
-   void GameWindow::loadMapTexture()
+    void GameWindow::loadMapTexture()
     {
 
         mapShared.generateRandomMap(123456789);
@@ -394,27 +392,31 @@ namespace client
     /*!
      * \brief Load all the textures of the map
      */
-     void GameWindow::loadElementTexture()
+    void GameWindow::loadElementTexture()
     {
         std::string folder_path = RESOURCES_PATH "/img/map/element/";
         std::vector<std::string> png_files;
-        DIR* dir = opendir(folder_path.c_str());
+        DIR *dir = opendir(folder_path.c_str());
 
-        struct dirent* entry;
-        while ((entry = readdir(dir)) != nullptr) {
+        struct dirent *entry;
+        while ((entry = readdir(dir)) != nullptr)
+        {
 
-            if (entry->d_name[0] == '.') continue;
+            if (entry->d_name[0] == '.')
+                continue;
 
             std::string filename = entry->d_name;
-            if (filename.size() >= 4 && filename.substr(filename.size() - 4) == ".png") {
-            png_files.push_back(filename);
+            if (filename.size() >= 4 && filename.substr(filename.size() - 4) == ".png")
+            {
+                png_files.push_back(filename);
             }
         }
 
         closedir(dir);
 
         // Affiche les noms de fichiers trouvés
-        for (const std::string& filename : png_files) {
+        for (const std::string &filename : png_files)
+        {
             std::string path = RESOURCES_PATH "/img/map/element/" + filename;
             elementTextureToDisplay[path] = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(path);
         }
@@ -426,13 +428,14 @@ namespace client
     void GameWindow::updateElementTexture()
     {
 
-        for (auto &kv : elementTextureToDisplay){
+        for (auto &kv : elementTextureToDisplay)
+        {
             kv.second->clearSprites();
         }
 
         std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-        //Data are temporary loaded with the json file but it will be updated from the server soon
+        // Data are temporary loaded with the json file but it will be updated from the server soon
         const Json::Value &data = openJsonFile("/img/map/files.json");
 
         for (unsigned index = 0; index < data.size(); ++index)
@@ -514,27 +517,24 @@ namespace client
         }
 
         // isPlaying buttons
-        
+
         int whoIsPlaying = 2; // sent by the server (temporary)
 
         for (int i = 0; i < NB_OF_PLAYER; i++)
 
         {
             bool isPlaying;
-            (i+1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
+            (i + 1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
             std::string text = "Player ";
             text += std::to_string(i + 1);
 
-            int upPosition = (WINDOW_LENGTH + (float(2/3) - NB_OF_PLAYER) * OFFSET_BETWEEN_UP_PLAYER) / 2;
+            int upPosition = (WINDOW_LENGTH + (float(2 / 3) - NB_OF_PLAYER) * OFFSET_BETWEEN_UP_PLAYER) / 2;
 
-            whoIsPlayingButtons.emplace_back( sf::Vector2f(OFFSET_BETWEEN_UP_PLAYER * float(float(2)/float(3)), OFFSET_BETWEEN_UP_PLAYER / 2)
-                                            , sf::Vector2f(upPosition + OFFSET_BETWEEN_UP_PLAYER * i, 0)
-                                            , PLAYER_COLOR[i], isPlaying);
+            whoIsPlayingButtons.emplace_back(sf::Vector2f(OFFSET_BETWEEN_UP_PLAYER * float(float(2) / float(3)), OFFSET_BETWEEN_UP_PLAYER / 2), sf::Vector2f(upPosition + OFFSET_BETWEEN_UP_PLAYER * i, 0), PLAYER_COLOR[i], isPlaying);
             whoIsPlayingButtons.back().setText(UP_PLAYER_TEXT_SIZE, sf::Vector2f(0, 0), text, &priorityFont);
         }
     }
-    
-    
+
     long GameWindow::getCurrentTime(bool timeSecond)
     {
         if (timeSecond)

@@ -1,5 +1,7 @@
 #include <client.hpp>
 #include <iostream>
+#include <json/json.h>
+#include <fstream>
 
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
@@ -37,7 +39,7 @@ namespace client
         for (unsigned i = 0; i < menuButtons.size(); i++)
         {
             clientMenuWindow->draw(*menuButtons[i].buttonRect);
-            //menuButtons->draw(*whoIsPlayingButtons[i].buttonText);
+            clientMenuWindow->draw(*menuButtons[i].buttonText);
         }
 
         clientMenuWindow->display();
@@ -73,7 +75,7 @@ namespace client
                     std::cout << "Click \n";
 
                     break;
-                
+
                 case sf::Event::KeyPressed:
 
                     switch (event.key.code)
@@ -103,36 +105,48 @@ namespace client
         }
     }
 
-    void MenuWindow::loadMenuTexture(){
+    void MenuWindow::loadMenuTexture()
+    {
 
         backgroundTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/menu/background.png");
         backgroundTexture->addSprite();
         float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
         backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, 0);
 
-        menuFont = (std::unique_ptr<sf::Font>) new sf::Font();
+        menuFont = (std::unique_ptr<sf::Font>)new sf::Font();
         if (!menuFont->loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
             std::cerr << "Font not loaded" << std::endl;
-    
+
         gameTitle = (std::unique_ptr<sf::Text>)new sf::Text("Civilization 7", *menuFont, TITLE_SIZE);
         gameTitle->setStyle(sf::Text::Bold);
         gameTitle->setFillColor(sf::Color::Black);
         gameTitle->setPosition(WINDOW_LENGTH - gameTitle->getLocalBounds().height - gameTitle->getLocalBounds().width, WINDOW_WIDTH - 2.5 * gameTitle->getLocalBounds().height);
 
-        menuButtons.emplace_back( sf::Vector2f(gameTitle->getLocalBounds().width / 2, gameTitle->getLocalBounds().height)
-                                , sf::Vector2f(gameTitle->getPosition().x + gameTitle->getLocalBounds().width / 2, gameTitle->getPosition().y - gameTitle->getLocalBounds().height)
-                                , sf::Color(0, 0, 0, 1/2));
+        sf::Color buttonColor = sf::Color(247, 200, 195, 255);
 
-        menuButtons.emplace_back( sf::Vector2f(gameTitle->getLocalBounds().width / 2, gameTitle->getLocalBounds().height / 2)
-                                , sf::Vector2f(menuButtons.back().buttonRect->getPosition().x, menuButtons.back().buttonRect->getPosition().y - 4/4 * menuButtons.back().buttonRect->getSize().y)
-                                , sf::Color(0, 0, 0, 1/2));
+        std::ifstream file(RESOURCES_PATH "/img/menu/menu.json");
+        if (!file.is_open())
+        {
+            std::cerr << "Error while opening json ressources file /img/menu/menu.json" << std::endl;
+            exit(1);
+        }
+        std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
-        menuButtons.emplace_back( menuButtons.back().buttonRect->getSize()
-                                , sf::Vector2f(menuButtons.back().buttonRect->getPosition().x, menuButtons.back().buttonRect->getPosition().y - 2 *menuButtons.back().buttonRect->getSize().y)
-                                , sf::Color(0, 0, 0, 1/2));
+        std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+        Json::Value obj;
+        std::string errors;
+        reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
 
+        const Json::Value &data = obj["data"];
+
+        for (unsigned index = 0; index < data.size(); ++index)
+        {
+            menuButtons.emplace_back(   sf::Vector2f(data[index]["width"].asFloat() * gameTitle->getLocalBounds().width, data[index]["height"].asFloat() * gameTitle->getLocalBounds().height), 
+                                        sf::Vector2f(   gameTitle->getPosition().x + data[index]["x"].asFloat() * gameTitle->getLocalBounds().width, 
+                                                        gameTitle->getPosition().y - data[index]["y"].asFloat() * gameTitle->getLocalBounds().height), buttonColor);
+            menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), &(*menuFont));
+        }
     }
-
 
     long MenuWindow::getCurrentTime(bool timeSecond)
     {

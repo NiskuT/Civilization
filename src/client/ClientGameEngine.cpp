@@ -23,15 +23,8 @@ void ClientGameEngine::handleInformation(int x, int y)
 void ClientGameEngine::handleQuitMenu(bool quitDef)
 {
     std::lock_guard<std::mutex> lock(mutexRunningEngine);
-    if (quitDef){
-        isWindowRunning[0] = false;
-        isWindowRunning[1] = false;
-        isWindowRunning[2] = false;
-    } 
-    else{
-        isWindowRunning[1] = !isWindowRunning[1];
-        isWindowRunning[2] = !isWindowRunning[2];
-    }
+    if (quitDef) runningWindow = 0;
+    else runningWindow = runningWindow == 1 ? 2 : 1;
 }
 
 void ClientGameEngine::startGameWindow(){
@@ -51,7 +44,7 @@ void ClientGameEngine::renderGame()
     while (true) {
 
         std::unique_lock<std::mutex> lockGlobalWhile(mutexRunningEngine);
-        if (!isWindowRunning[0]) {
+        if (!runningWindow) {
             lockGlobalWhile.unlock();
             clientWindow->close();
             return;
@@ -66,7 +59,7 @@ void ClientGameEngine::renderGame()
 void ClientGameEngine::playGame() 
 {
     std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
-    if (isWindowRunning[2]) {
+    if (runningWindow == 2) {
         lockIf.unlock();
 
         std::thread t(&ClientGameEngine::startGameWindow, this);
@@ -82,7 +75,7 @@ void ClientGameEngine::playGame()
         while (true) {
 
             std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
-            if (!isWindowRunning[2]) {
+            if (runningWindow != 2) {
                 lockWhile.unlock();
                 t.join();
                 break;
@@ -114,7 +107,7 @@ void ClientGameEngine::playGame()
 void ClientGameEngine::playMenu() 
 {
     std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
-    if (isWindowRunning[1]) {
+    if (runningWindow == 1) {
         lockIf.unlock();
 
         std::thread t(&ClientGameEngine::startMenuWindow, this);
@@ -122,7 +115,7 @@ void ClientGameEngine::playMenu()
         while (true) {
 
             std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
-            if (!isWindowRunning[1]) {
+            if (runningWindow != 2) {
                 lockWhile.unlock();
                 t.join();
                 break;
