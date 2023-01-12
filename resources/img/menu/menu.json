@@ -1,0 +1,40 @@
+{
+    "data" : 
+    [
+        {
+            "width": 0.5,
+            "height": 1,
+            "x": 0.5,
+            "y": 1,
+            "text": ""
+        },
+        {
+            "width": 0.5,
+            "height": 0.4,
+            "x": 0.5,
+            "y": 1.5,
+            "text": "Create new Game"
+        },
+        {
+            "width": 0.5,
+            "height": 0.4,
+            "x": 0.5,
+            "y": 2,
+            "text": "Enter Username"
+        },
+        {
+            "width": 0.2,
+            "height": 0.4,
+            "x": 0.5,
+            "y": 2.5,
+            "text": "default.com"
+        },
+        {
+            "width": 0.2,
+            "height": 0.4,
+            "x": 0.8,
+            "y": 2.5,
+            "text": "8080"
+        }
+    ]
+}
