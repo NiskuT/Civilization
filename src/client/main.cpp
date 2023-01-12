@@ -19,17 +19,19 @@ int main(int argc, char *argv[])
             std::cout << "  -h\t\t\tShow this help" << std::endl;
             std::cout << "  -r\t\t\tStart client" << std::endl;
             std::cout << "  hello\t\t\tPrint hello world" << std::endl;
+            std::cout << "  -n\t\t\tStart network client" << std::endl;
         }
         else if (arg.compare("-r") == 0 || arg.compare("render") == 0)
         {
-            client::GameWindow clientGame;
-            clientGame.clientWindow();
+            client::ClientGameEngine clientGameEngine;
+            clientGameEngine.renderGame();
+            std::cout << "Thanks for playing our game !" << std::endl;
         }
         else if (arg.compare("hello") == 0)
         {
             std::cout << "Hello world" << std::endl;
         }
-        else if (arg.compare("network") == 0)
+        else if (arg.compare("-n") == 0 || arg.compare("network") == 0)
         {
             client::ClientGameEngine maGame;
             maGame.connect("127.0.0.1", 8080);
@@ -48,4 +50,5 @@ int main(int argc, char *argv[])
             std::cout << "Unkown command, use -h for help." << std::endl;
         }
     }
+    exit(0);
 }

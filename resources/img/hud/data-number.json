@@ -1,0 +1,9 @@
+{
+    "data" : 
+        {
+            "nb-player": 3,
+            "up-player-text-size": 20,
+            "offset-between-up-player": 90
+        }
+}
+
