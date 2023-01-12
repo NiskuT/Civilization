@@ -18,9 +18,9 @@
 #define ACTION_CARD_PROPORTION 0.125
 #define TITLE_PROPORTION 0.025
 #define BODY_PROPORTION_X 0.0075
-#define BODY_PROPORTION_Y 0.05
-#define MAX_CHARACTER_SIZE 18
-#define NBR_CHAR_MAX_PER_LIGNE 23
+#define BODY_PROPORTION_Y 0.055
+#define MAX_CHARACTER_SIZE 19
+#define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
 
 #ifndef RESOURCES_PATH
@@ -361,13 +361,13 @@ namespace client
     /*!
      * \brief Display text on the cards
      */
-    void GameWindow::displayText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *font, float titleTextSizeProportion, float bodyTextSizeProportion)
+    void GameWindow::displayText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *titleFont, sf::Font *bodyFont,float titleTextSizeProportion, float bodyTextSizeProportion)
     {
         int titleTextSize = titleTextSizeProportion * WINDOW_LENGTH;
         int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;
 
         // display the title on the card
-        cards->back().title = (std::unique_ptr<sf::Text>)new sf::Text(title, *font, titleTextSize);
+        cards->back().title = (std::unique_ptr<sf::Text>)new sf::Text(title, *titleFont, titleTextSize);
         cards->back().title->setStyle(sf::Text::Bold);
         cards->back().title->setFillColor(TEXT_COLOR);
         auto titleSize = cards->back().title->getLocalBounds();
@@ -377,18 +377,18 @@ namespace client
         cards->back().title->setPosition(xTitlePosition, yTitlePosition);
 
         // display the body on the card
-        cards->back().body = (std::unique_ptr<sf::Text>)new sf::Text(body, *font, bodyTextSize);
+        cards->back().body = (std::unique_ptr<sf::Text>)new sf::Text(body, *bodyFont, bodyTextSize);
 
         // to have the text on several lines without exceeding the card
         int countEndLine = 1;
-        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - 15)
+        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - 18) // 18 to not touch the black border
         {
 
             for (int i = countEndLine * NBR_CHAR_MAX_PER_LIGNE; i > 0; i--)
             {
                 if ((char)body[i] == ' ')
                 {
-                    body.insert(i, "\n");
+                    body.replace(i,1,"\n");
                     countEndLine++;
                     break;
                 }
@@ -397,6 +397,7 @@ namespace client
         }
 
         cards->back().body->setFillColor(TEXT_COLOR);
+        cards->back().body->setLineSpacing(0.9f);
         int xBodyOffset = BODY_PROPORTION_X * WINDOW_LENGTH;
         int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
         int xBodyPosition = cards->back().texture->getSprite().getPosition().x + xBodyOffset;
@@ -574,10 +575,16 @@ namespace client
         std::vector<int> numberOfBoxesPerCard= {2, 4, 2, 1, 0}; // sent by the server
         std::string boxString = "0";
 
-        if (!priorityFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+        if (!titleFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
         {
             std::cerr << "Font not loaded" << std::endl;
         }
+
+        if (!bodyFont.loadFromFile(RESOURCES_PATH "/img/hud/Calibri.ttf"))
+        {
+            std::cerr << "Font not loaded" << std::endl;
+        }
+
 
         const Json::Value &priorityData = openJsonFile("/img/hud/priority-card.json");
         float priorityTitleTextProportion = dataNumber["priority-card-title-proportion"].asFloat();
@@ -597,13 +604,13 @@ namespace client
 
             // title and body
 
-            displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont, priorityTitleTextProportion, priorityBodyTextProportion);
+            displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &titleFont, &bodyFont, priorityTitleTextProportion, priorityBodyTextProportion);
 
             // boxes
 
             boxString = std::to_string(numberOfBoxesPerCard[index]);
             boxString += " x";
-            priorityCards.back().nbOfBoxesText = (std::unique_ptr<sf::Text>)new sf::Text(boxString, priorityFont, dataNumber["box-number-text-size"].asInt());
+            priorityCards.back().nbOfBoxesText = (std::unique_ptr<sf::Text>)new sf::Text(boxString, titleFont, dataNumber["box-number-text-size"].asInt());
             sf::Vector2i boxNumberPosition = getBoxesElementsPosition(dataNumber["box-x-number-offset-proportion"].asFloat(), dataNumber["box-y-number-offset-proportion"].asFloat(), &priorityCards.back()); 
             priorityCards.back().nbOfBoxesText->setPosition(boxNumberPosition.x, boxNumberPosition.y);
 
@@ -635,7 +642,7 @@ namespace client
             std::string titleCardAction = actionCardData[actionCardOwned[index]]["type"].asString();
             std::string bodyCardAction = actionCardData[actionCardOwned[index]]["body"].asString();
 
-            displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &priorityFont, actionTitleTextProportion, actionBodyTextProportion);
+            displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &titleFont, &bodyFont, actionTitleTextProportion, actionBodyTextProportion);
         }
 
         // isPlaying buttons
@@ -656,7 +663,7 @@ namespace client
             int upPosition = (WINDOW_LENGTH + (float(2 / 3) - dataNumber["nb-player"].asInt()) * offset) / 2;
 
             addButtonElements(&whoIsPlayingButtons.back(), sf::Vector2f(offset * float(float(2) / float(3)), offset / 2), sf::Vector2f(upPosition + offset * i, 0), PLAYER_COLOR[i],
-                              &whoIsPlayingTexts.back(), dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &priorityFont, isPlaying);
+                              &whoIsPlayingTexts.back(), dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &titleFont, isPlaying);
         }
     }
 
