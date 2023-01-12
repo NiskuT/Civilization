@@ -1,6 +1,6 @@
 <map id="client::ClientGameEngine" name="client::ClientGameEngine">
-<area shape="rect" id="node1" title="class ClientGameEngine &#45;" alt="" coords="95,184,266,211"/>
-<area shape="rect" id="node2" href="$classclient_1_1GameWindow.html" title="class GameWindow &#45;" alt="" coords="5,95,148,121"/>
-<area shape="rect" id="node3" href="$classshared_1_1Map.html" title="class Map &#45;" alt="" coords="29,5,124,32"/>
-<area shape="rect" id="node4" href="$classshared_1_1Network.html" title="class Network &#45;" alt="" coords="172,95,291,121"/>
+<area shape="rect" id="node1" title="class ClientGameEngine &#45;" alt="" coords="55,184,226,211"/>
+<area shape="rect" id="node2" href="$classclient_1_1MenuWindow.html" title="class MenuWindow &#45;" alt="" coords="5,95,145,121"/>
+<area shape="rect" id="node3" href="$classclient_1_1GameWindow.html" title="class GameWindow &#45;" alt="" coords="169,95,312,121"/>
+<area shape="rect" id="node4" href="$classshared_1_1Map.html" title="class Map &#45;" alt="" coords="193,5,288,32"/>
 </map>
