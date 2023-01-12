@@ -2,7 +2,13 @@
     "data" : 
         {
             "nb-player": 2,
-            
+
+            "box-x-offset-proportion": 0.041 ,
+            "box-y-offset-proportion": 0.059 ,
+            "box-x-number-offset-proportion": 0.015625,
+            "box-y-number-offset-proportion": 0.04111,
+            "box-number-text-size": 40,
+
             "priority-card-proportion": 0.144,
             "priority-card-up-scale": 0.156,
             "priority-card-title-proportion": 0.025,

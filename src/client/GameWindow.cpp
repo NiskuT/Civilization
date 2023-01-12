@@ -79,6 +79,8 @@ namespace client
         {
             clientGameWindow->draw(priorityCards[i].texture->getSprite(0));
             clientGameWindow->draw(*priorityCards[i].title);
+            clientGameWindow->draw(boxTexture->getSprite(i));
+            clientGameWindow->draw(*priorityCards[i].nbOfBoxesText);
             if (priorityCards[i].isUp) {
             clientGameWindow->draw(*priorityCards[i].body);
             }
@@ -517,6 +519,28 @@ namespace client
         buttonText->setFillColor(sf::Color::Black);
     }
 
+     /*!
+     * \brief get position of number of boxes and boxes on priority cards
+     */
+
+    sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, CardStruct* priorityCard)
+    {
+        int xBoxPos = 0;
+        int yBoxPos = 0;
+        int xBoxOffset = 0;
+        int yBoxOffset = 0;
+
+        xBoxOffset = boxXProportion * WINDOW_LENGTH;
+        yBoxOffset = boxYProportion * WINDOW_WIDTH;
+
+        xBoxPos = priorityCard->texture->getSprite().getPosition().x + xBoxOffset;
+        yBoxPos = priorityCard->texture->getSprite().getPosition().y + yBoxOffset;
+
+        return (sf::Vector2i(xBoxPos, yBoxPos));
+
+    }
+
+
     /*!
      * \brief Load all the HUD textures
      */
@@ -546,6 +570,10 @@ namespace client
         }
 
         // load the priorityCard
+        boxTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/hud/box.png");
+        std::vector<int> numberOfBoxesPerCard= {2, 4, 2, 1, 0}; // sent by the server
+        std::string boxString = "0";
+
         if (!priorityFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
         {
             std::cerr << "Font not loaded" << std::endl;
@@ -564,10 +592,26 @@ namespace client
             float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
             priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
             priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
-            priorityCards.back().level = 0;
+            priorityCards.back().level = 0; //sent by the server
             priorityCards.back().isUp = false;
 
+            // title and body
+
             displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont, priorityTitleTextProportion, priorityBodyTextProportion);
+
+            // boxes
+
+            boxString = std::to_string(numberOfBoxesPerCard[index]);
+            boxString += " x";
+            priorityCards.back().nbOfBoxesText = (std::unique_ptr<sf::Text>)new sf::Text(boxString, priorityFont, dataNumber["box-number-text-size"].asInt());
+            sf::Vector2i boxNumberPosition = getBoxesElementsPosition(dataNumber["box-x-number-offset-proportion"].asFloat(), dataNumber["box-y-number-offset-proportion"].asFloat(), &priorityCards.back()); 
+            priorityCards.back().nbOfBoxesText->setPosition(boxNumberPosition.x, boxNumberPosition.y);
+
+
+            boxTexture->addMapSprite();
+            sf::Vector2i boxPosition = getBoxesElementsPosition(dataNumber["box-x-offset-proportion"].asFloat(), dataNumber["box-y-offset-proportion"].asFloat(), &priorityCards.back()); 
+            boxTexture->getSprite(index).setPosition(boxPosition.x, boxPosition.y);
+
         }
 
         // actionCard
