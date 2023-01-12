@@ -8,6 +8,9 @@
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
 
+#define MENU 1
+#define GAME 2
+
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
 #endif
@@ -24,7 +27,7 @@ void ClientGameEngine::handleQuitMenu(bool quitDef)
 {
     std::lock_guard<std::mutex> lock(mutexRunningEngine);
     if (quitDef) runningWindow = 0;
-    else runningWindow = runningWindow == 1 ? 2 : 1;
+    else runningWindow = runningWindow == MENU ? GAME : MENU;
 }
 
 void ClientGameEngine::startGameWindow(){
@@ -59,7 +62,7 @@ void ClientGameEngine::renderGame()
 void ClientGameEngine::playGame() 
 {
     std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
-    if (runningWindow == 2) {
+    if (runningWindow == GAME) {
         lockIf.unlock();
 
         std::thread t(&ClientGameEngine::startGameWindow, this);
@@ -75,7 +78,7 @@ void ClientGameEngine::playGame()
         while (true) {
 
             std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
-            if (runningWindow != 2) {
+            if (runningWindow != GAME) {
                 lockWhile.unlock();
                 t.join();
                 break;
@@ -107,7 +110,7 @@ void ClientGameEngine::playGame()
 void ClientGameEngine::playMenu() 
 {
     std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
-    if (runningWindow == 1) {
+    if (runningWindow == MENU) {
         lockIf.unlock();
 
         std::thread t(&ClientGameEngine::startMenuWindow, this);
@@ -115,7 +118,7 @@ void ClientGameEngine::playMenu()
         while (true) {
 
             std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
-            if (runningWindow != 2) {
+            if (runningWindow != MENU) {
                 lockWhile.unlock();
                 t.join();
                 break;

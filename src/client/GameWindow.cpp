@@ -24,6 +24,8 @@
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
 
+#define ELEMENT_PATH "/img/map/element/"
+
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
 #endif
@@ -413,7 +415,7 @@ namespace client
         // Affiche les noms de fichiers trouvés
         for (const std::string &filename : png_files)
         {
-            std::string path = RESOURCES_PATH "/img/map/element/" + filename;
+            std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
             elementTextureToDisplay[path] = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(path);
         }
     }
