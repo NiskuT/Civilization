@@ -158,6 +158,8 @@ namespace server
         auto game = std::make_shared<GameEngine>(games, player);
 
         game->addPlayer(player);
+        std::cout << "New game created with id: " << game->getId() << std::endl;
+
         std::lock_guard<std::mutex> lock(gamesMutex);
         games.push_back(game);
         return game;

@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <random>
 
+#define MAX_PLAYERS 4
+
 namespace server
 {
     GameEngine::GameEngine(std::vector<std::shared_ptr<GameEngine>> &games, std::shared_ptr<shared::Player> player)
@@ -12,7 +14,7 @@ namespace server
 
     bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
     {
-        if (isPublic && (players.size() < 4))
+        if (isPublic && (players.size() < MAX_PLAYERS))
         {
             players.push_back(player);
         }
@@ -21,7 +23,7 @@ namespace server
             return false;
         }
 
-        if (players.size() == 4)
+        if (players.size() == MAX_PLAYERS)
         {
             state = GameState::Running;
         }
