@@ -20,12 +20,14 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
     buttonRect->setSize(buttonSize);
     buttonRect->setPosition(buttonPos);
     buttonRect->setFillColor(buttonColor);
-    if (border) {
+    if (border) 
+    {
         redBorder = true;
         buttonRect->setOutlineColor(sf::Color::Red);
         buttonRect->setOutlineThickness(2.0f);
     }
-    else {
+    else 
+    {
         redBorder = false;
         buttonRect->setOutlineColor(sf::Color::Black);
         buttonRect->setOutlineThickness(1.0f);

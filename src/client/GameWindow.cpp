@@ -59,32 +59,31 @@ namespace client
 
         clientGameWindow->clear(sf::Color::Blue);
 
-        clientGameWindow->draw(backgroundTexture->getSprite());
+        backgroundTexture->drawTextureDisplayerSprite(clientGameWindow);
 
-        for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+
+        for (auto &mapTexture : mapTextureToDisplay)
         {
-            for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
+            mapTexture.drawTextureDisplayerSprite(clientGameWindow);
+        }
+
+        for (auto &elementTexture : elementTextureToDisplay)
+        {
+            elementTexture.second->drawTextureDisplayerSprite(clientGameWindow);
+        }
+
+        for (auto &priorityCardTexture : priorityCards)
+        {
+            priorityCardTexture.texture->drawTextureDisplayerSprite(clientGameWindow);
+            clientGameWindow->draw(*priorityCardTexture.title);
+            clientGameWindow->draw(*priorityCardTexture.nbOfBoxesText);
+            if (priorityCardTexture.isUp)
             {
-                clientGameWindow->draw(mapTextureToDisplay[i].getSprite(j));
+                clientGameWindow->draw(*priorityCardTexture.body);
             }
         }
 
-        for (auto &kv : elementTextureToDisplay)
-        {
-            kv.second->drawElementSprite(clientGameWindow);
-        }
-
-        for (unsigned i = 0; i < priorityCards.size(); i++)
-        {
-            clientGameWindow->draw(priorityCards[i].texture->getSprite(0));
-            clientGameWindow->draw(*priorityCards[i].title);
-            clientGameWindow->draw(boxTexture->getSprite(i));
-            clientGameWindow->draw(*priorityCards[i].nbOfBoxesText);
-            if (priorityCards[i].isUp)
-            {
-                clientGameWindow->draw(*priorityCards[i].body);
-            }
-        }
+        boxTexture->drawTextureDisplayerSprite(clientGameWindow);
 
         for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
         {
@@ -103,10 +102,7 @@ namespace client
 
         for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
         {
-            for (unsigned j = 0; j < hudTextureToDisplay[i].getSize(); j++)
-            {
-                clientGameWindow->draw(hudTextureToDisplay[i].getSprite(j));
-            }
+            hudTextureToDisplay[i].drawTextureDisplayerSprite(clientGameWindow);
         }
 
         clientGameWindow->display();
@@ -144,7 +140,10 @@ namespace client
             sf::Event event;
             while (clientGameWindow->pollEvent(event))
             {
-                if (gameEventHappened(&event, &clickStartingPoint, moveMode, clickMode)) return;
+                if (gameEventHappened(&event, &clickStartingPoint, moveMode, clickMode))
+                {
+                    return;
+                } 
             }
         }
     }
@@ -168,7 +167,9 @@ namespace client
             *clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
 
             if (!*moveMode)
+            {
                 clickAction(*clickStartingPoint);
+            }
 
             break;
 
@@ -190,7 +191,9 @@ namespace client
                                         firstHexagonPosition[1] + newMapOffset[1]};
 
                 for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                {
                     mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
+                }
 
                 for (auto &kv : elementTextureToDisplay)
                 {
@@ -210,19 +213,25 @@ namespace client
                 {
                     *moveMode = false;
                     if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
+                    {
                         clientGameWindow->setMouseCursor(clientCursor);
+                    }
                 }
                 else
                 {
                     *moveMode = true;
                     if (clientCursor.loadFromSystem(sf::Cursor::Hand))
+                    {
                         clientGameWindow->setMouseCursor(clientCursor);
+                    }
                 }
                 break;
 
             case sf::Keyboard::K:
                 if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
+                {
                     clientGameWindow->setMouseCursor(clientCursor);
+                }
                 quitGameWindow(false);
                 return true;
 
@@ -273,7 +282,6 @@ namespace client
      */
     const auto GameWindow::openJsonFile(std::string path)
     {
-
         std::ifstream file(RESOURCES_PATH + path);
         // check is file is correctly open
         if (!file.is_open())
@@ -454,7 +462,9 @@ namespace client
         {
 
             if (entry->d_name[0] == '.')
+            {
                 continue;
+            }
 
             std::string filename = entry->d_name;
             if (filename.size() >= 4 && filename.substr(filename.size() - 4) == ".png")
@@ -647,7 +657,6 @@ namespace client
         int whoIsPlaying = 2; // sent by the server (temporary)
 
         for (int i = 0; i < dataNumber["nb-player"].asInt(); i++)
-
         {
             bool isPlaying;
             (i + 1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
@@ -668,9 +677,13 @@ namespace client
     long GameWindow::getCurrentTime(bool timeSecond)
     {
         if (timeSecond)
+        {
             return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        } 
         else
+        {
             return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        }
     }
 
 }

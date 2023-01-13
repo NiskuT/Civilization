@@ -70,7 +70,10 @@ namespace client
             sf::Event event;
             while (clientMenuWindow->pollEvent(event))
             {
-                if (menuEventHappened(&event)) return;
+                if (menuEventHappened(&event))
+                {
+                    return;
+                }
             }
         }
     }
@@ -131,7 +134,9 @@ namespace client
 
         menuFont = (std::unique_ptr<sf::Font>)new sf::Font();
         if (!menuFont->loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+        {
             std::cerr << "Font not loaded" << std::endl;
+        }
 
         gameTitle = (std::unique_ptr<sf::Text>)new sf::Text("Civilization 7", *menuFont, TITLE_SIZE);
         gameTitle->setStyle(sf::Text::Bold);
@@ -171,9 +176,13 @@ namespace client
     long MenuWindow::getCurrentTime(bool timeSecond)
     {
         if (timeSecond)
+        {
             return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-        else
+        } 
+        else 
+        {
             return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        }
     }
 
 }

@@ -20,8 +20,6 @@ namespace client
         this->windowWidth = windowWidth;
 
         texture->setHudSpritePosition(priorityScale, windowLength, windowWidth, 0, index);
-
-
     }
 
     GraphicCard::GraphicCard(const std::string& path, float actionProportion, const float windowLength, const float windowWidth, int actionCardNumber, int index)
@@ -37,10 +35,7 @@ namespace client
         this->windowWidth = windowWidth;
 
         texture->setHudSpritePosition(priorityScale, windowLength, windowWidth, 0, index);
-
-
     }
-
 
     /*!
      * \brief Move up priority cards when we click on it
@@ -66,8 +61,6 @@ namespace client
         xPos = texture->getSprite().getPosition().x;
         xTitlePos = title->getPosition().x;
         xBodyPosition = body->getPosition().x;
-
-       
 
         texture->getSprite().setPosition(xPos, yPos);
         title->setPosition(xTitlePos, yPos);
