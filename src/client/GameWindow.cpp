@@ -287,10 +287,9 @@ namespace client
     }
 
     /*!
-     * \brief Function that deteck where the user click and what to send to the engine
-    * @param clickPosition is the position on the cursor when the user click
+     * \brief Move up priority cards when we click on it
      */
-    void GameWindow::clickAction(sf::Vector2i clickPosition)
+    void GameWindow::moveUpPriorityCard(CardStruct *card)
     {
 
         const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
@@ -325,7 +324,8 @@ namespace client
     }
 
     /*!
-     * \brief Dectect click and actions to do after
+     * \brief Function that deteck where the user click and what to send to the engine
+    * @param clickPosition is the position on the cursor when the user click
      */
     void GameWindow::clickAction(sf::Vector2i clickPosition)
     {
