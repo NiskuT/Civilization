@@ -148,7 +148,7 @@ namespace server
         bool res = game->addPlayer(player);
         if (!res)
         {
-            // a changer (appeler disconnect ?)
+            // TODO : a changer (appeler disconnect ?)
             player->state = shared::PlayerState::Disconnected;
         }
     }
