@@ -23,6 +23,8 @@
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
 
+#define CARD_BORDER 18
+
 #define ELEMENT_PATH "/img/map/element/"
 
 #ifndef RESOURCES_PATH
@@ -41,11 +43,6 @@ namespace client
      */
     GameWindow::GameWindow()
     {
-
-        clientGameWindow = std::make_shared<sf::RenderWindow>();
-        clientGameWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
-        clientGameWindow->setPosition(sf::Vector2i(0, 0));
-
         firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
 
         loadMapTexture();
@@ -290,10 +287,10 @@ namespace client
 
         float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(card->texture->getWidth()) / float(WINDOW_LENGTH));
 
-        int yPos = 0;
-        int xPos = 0;
-        int xTitlePos = 0;
-        int xBodyPosition = 0;
+        int yPos;
+        int xPos;
+        int xTitlePos;
+        int xBodyPosition;
 
         if (!card->isUp)
         {
@@ -380,7 +377,7 @@ namespace client
     /*!
      * \brief Display text on the cards
      */
-    void GameWindow::displayText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *titleFont, sf::Font *bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
+    void GameWindow::setUpText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *titleFont, sf::Font *bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
     {
         int titleTextSize = titleTextSizeProportion * WINDOW_LENGTH;
         int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;
@@ -400,7 +397,7 @@ namespace client
 
         // to have the text on several lines without exceeding the card
         int countEndLine = 1;
-        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - 18) // 18 to not touch the black border
+        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - CARD_BORDER) // 18 to not touch the black border
         {
 
             for (int i = countEndLine * NBR_CHAR_MAX_PER_LIGNE; i > 0; i--)
@@ -520,10 +517,10 @@ namespace client
 
     sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, CardStruct *priorityCard)
     {
-        int xBoxPos = 0;
-        int yBoxPos = 0;
-        int xBoxOffset = 0;
-        int yBoxOffset = 0;
+        int xBoxPos;
+        int yBoxPos;
+        int xBoxOffset;
+        int yBoxOffset;
 
         xBoxOffset = boxXProportion * WINDOW_LENGTH;
         yBoxOffset = boxYProportion * WINDOW_WIDTH;
@@ -594,7 +591,7 @@ namespace client
 
             // title and body
 
-            displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &titleFont, &bodyFont, priorityTitleTextProportion, priorityBodyTextProportion);
+            setUpText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &titleFont, &bodyFont, priorityTitleTextProportion, priorityBodyTextProportion);
 
             // boxes
 
@@ -629,7 +626,7 @@ namespace client
             std::string titleCardAction = actionCardData[actionCardOwned[index]]["type"].asString();
             std::string bodyCardAction = actionCardData[actionCardOwned[index]]["body"].asString();
 
-            displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &titleFont, &bodyFont, actionTitleTextProportion, actionBodyTextProportion);
+            setUpText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &titleFont, &bodyFont, actionTitleTextProportion, actionBodyTextProportion);
         }
 
         // isPlaying buttons
