@@ -136,13 +136,12 @@ namespace client
             sf::Event event;
             while (clientGameWindow->pollEvent(event))
             {
-                if (eventHappened(&event, clickStartingPoint, &newMapOffset, moveMode, clickMode)) return;
-                
+                if (gameEventHappened(&event, clickStartingPoint, &newMapOffset, moveMode, clickMode)) return;
             }
         }
     }
 
-    bool GameWindow::eventHappened(sf::Event* event, sf::Vector2i clickStartingPoint, std::array<int, 2>* newMapOffset, bool moveMode, bool clickMode)
+    bool GameWindow::gameEventHappened(sf::Event* event, sf::Vector2i clickStartingPoint, std::array<int, 2>* newMapOffset, bool moveMode, bool clickMode)
     {
         switch (event->type)
         {
@@ -218,7 +217,7 @@ namespace client
             case sf::Keyboard::L:
 
                 *newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
-                                MAP_Y_OFFSET - firstHexagonPosition[1]};
+                                 MAP_Y_OFFSET - firstHexagonPosition[1]};
 
                 firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
 

@@ -50,6 +50,7 @@ namespace client
      */
     void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame)
     {
+        quitMenuWindow = quitGame;
         clientMenuWindow = clientWindow;
 
         long lastUpdateTimer = getCurrentTime(false);
@@ -67,42 +68,48 @@ namespace client
             sf::Event event;
             while (clientMenuWindow->pollEvent(event))
             {
-
-                switch (event.type)
-                {
-                case sf::Event::MouseButtonPressed:
-
-                    std::cout << "Click \n";
-
-                    break;
-
-                case sf::Event::KeyPressed:
-
-                    switch (event.key.code)
-                    {
-                    case sf::Keyboard::K:
-                        quitGame(false);
-                        return;
-
-                    case sf::Keyboard::Escape:
-                        quitGame(true);
-                        return;
-
-                    default:
-                        break;
-                    }
-
-                    break;
-
-                case sf::Event::Closed:
-                    quitGame(true);
-                    return;
-
-                default:
-                    break;
-                }
+                if (menuEventHappened(&event)) return;
             }
         }
+    }
+
+    bool MenuWindow::menuEventHappened(sf::Event* event){
+
+        switch (event->type)
+        {
+        case sf::Event::MouseButtonPressed:
+
+            std::cout << "Click \n";
+
+            break;
+
+        case sf::Event::KeyPressed:
+
+            switch (event->key.code)
+            {
+            case sf::Keyboard::K:
+                quitMenuWindow(false);
+                return true;
+
+            case sf::Keyboard::Escape:
+                quitMenuWindow(true);
+                return true;
+
+            default:
+                break;
+            }
+
+            break;
+
+        case sf::Event::Closed:
+            quitMenuWindow(true);
+            return true;
+
+        default:
+            break;
+        }
+
+        return false;
     }
 
     void MenuWindow::loadMenuTexture()
