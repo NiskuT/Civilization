@@ -345,7 +345,7 @@ namespace client
         int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;
 
         // display the title on the card
-        card.title = (std::unique_ptr<sf::Text>)new sf::Text(title, titleFont, titleTextSize);
+        card.title = std::make_unique<sf::Text>(title, titleFont, titleTextSize);
         card.title->setStyle(sf::Text::Bold);
         card.title->setFillColor(TEXT_COLOR);
         auto titleSize = card.title->getLocalBounds();
@@ -355,7 +355,7 @@ namespace client
         card.title->setPosition(xTitlePosition, yTitlePosition);
 
         // display the body on the card
-        card.body = (std::unique_ptr<sf::Text>)new sf::Text(body, bodyFont, bodyTextSize);
+        card.body = std::make_unique<sf::Text>(body, bodyFont, bodyTextSize);
 
         // to have the text on several lines without exceeding the card
         int countEndLine = 1;
@@ -505,7 +505,7 @@ namespace client
 
         const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
 
-        backgroundTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/hud/background.png");
+        backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/background.png");
         backgroundTexture->addSprite();
         float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
         backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);
@@ -522,7 +522,7 @@ namespace client
         }
 
         // load the priorityCard
-        boxTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/hud/box.png");
+        boxTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/box.png");
         std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
         std::string boxString = "0";
 
@@ -578,8 +578,8 @@ namespace client
 
             boxTexture->addSprite();
             sf::Vector2i boxPosition = getBoxesElementsPosition(
-                dataNumber["box-x-offset-proportion"].asFloat(), 
-                dataNumber["box-y-offset-proportion"].asFloat(), 
+                dataNumber["box-x-offset-proportion"].asFloat(),
+                dataNumber["box-y-offset-proportion"].asFloat(),
                 priorityCards.back());
             boxTexture->getSprite(index).setPosition(boxPosition.x, boxPosition.y);
         }
@@ -629,7 +629,12 @@ namespace client
             int offset = dataNumber["offset-between-up-player"].asInt();
             int upPosition = (WINDOW_LENGTH + (float(2 / 3) - dataNumber["nb-player"].asInt()) * offset) / 2;
 
-            whoIsPlayingButtons.emplace_back(sf::Vector2f(offset * float(float(2) / float(3)), offset / 2), sf::Vector2f(upPosition + offset * i, 0), PLAYER_COLOR[i], isPlaying);
+            whoIsPlayingButtons.emplace_back(
+                sf::Vector2f(offset * float(float(2) / float(3)), offset / 2),
+                sf::Vector2f(upPosition + offset * i, 0),
+                PLAYER_COLOR[i],
+                isPlaying);
+
             whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &titleFont);
         }
     }
