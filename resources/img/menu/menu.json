@@ -20,21 +20,24 @@
             "height": 0.4,
             "x": 0.5,
             "y": 2,
-            "text": "Enter Username"
+            "text": "Enter Username",
+            "sizeMax": 10
         },
         {
             "width": 0.2,
             "height": 0.4,
             "x": 0.5,
             "y": 2.5,
-            "text": "default.com"
+            "text": "default.com",
+            "sizeMax": 20
         },
         {
             "width": 0.2,
             "height": 0.4,
             "x": 0.8,
             "y": 2.5,
-            "text": "8080"
+            "text": "8080",
+            "sizeMax": 4
         }
     ]
 }

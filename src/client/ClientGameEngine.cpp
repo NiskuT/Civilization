@@ -16,13 +16,22 @@
 
 namespace client
 {
-
+    /*!
+     * \brief Constructor
+     *
+     * Constructor of ClientGameEngine class
+     */
     ClientGameEngine::ClientGameEngine()
     {
         myself = std::make_shared<shared::Player>();
         myself->setUsername("PlayerTest");
     }
 
+    /*!
+     * \brief Quentin
+     * @param serverAddress
+     * @param serverPort
+     */
     void ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
     {
         boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(serverAddress), serverPort);
@@ -51,6 +60,9 @@ namespace client
         t.detach();
     }
 
+    /*!
+     * \brief Quentin
+     */
     void ClientGameEngine::startReceiving()
     {
         std::cout << "Starting receiving" << std::endl;
@@ -90,6 +102,10 @@ namespace client
         }
     }
 
+    /*!
+     * \brief Quentin
+     * @param
+     */
     void ClientGameEngine::registerServerAnswer(const std::string &response)
     {
         std::lock_guard<std::mutex> lock(myself->qAndA.sharedDataMutex);
@@ -98,11 +114,18 @@ namespace client
         myself->qAndA.condition.notify_one();
     }
 
+    /*!
+     * \brief Quentin
+     * @param request
+     */
     void ClientGameEngine::processServerRequest(const std::string &request)
     {
         std::cout << "Received request: " << request << std::endl;
     }
 
+    /*!
+     * \brief Quentin
+     */
     void ClientGameEngine::askServer()
     {
         myself->qAndA.answerReady = false;
@@ -120,26 +143,43 @@ namespace client
         myself->qAndA.answerReady = false;
     }
 
+    /*!
+     * \brief Print where the user click on the GameWindow
+     * @param x position on x axis 
+     * @param y position on y axis 
+     */
     void ClientGameEngine::handleInformation(int x, int y)
     {
-        if (x == -1) {
-        std::cout << "User click on the priority card " << y << std::endl;
+        if (x == -1) 
+        {
+            std::cout << "User click on the priority card " << y << std::endl;
         }
-        else {
-        std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
+        else 
+        {
+            std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
         }
     }   
 
-
+    /*!
+     * \brief Change the Window for nothing, Menu or Game
+     * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
+     */
     void ClientGameEngine::handleQuitMenu(bool quitDef)
     {
         std::lock_guard<std::mutex> lock(mutexRunningEngine);
         if (quitDef)
+        {
             runningWindow = 0;
+        }
         else
+        {
             runningWindow = runningWindow == MENU ? GAME : MENU;
+        }
     }
 
+    /*!
+     * \brief Start the loop that manage the GameWindow
+     */
     void ClientGameEngine::startGameWindow()
     {
         clientGame.startGame(
@@ -149,12 +189,18 @@ namespace client
             { handleInformation(x, y); });
     }
 
+    /*!
+     * \brief Start the loop that manage the MenuWindow
+     */
     void ClientGameEngine::startMenuWindow()
     {
         clientMenu.startMenu(clientWindow, [this](bool quitDef)
                              { handleQuitMenu(quitDef); });
     }
 
+    /*!
+     * \brief Loop that manage the entire Engine
+     */
     void ClientGameEngine::renderGame()
     {
         clientWindow = std::make_shared<sf::RenderWindow>();
@@ -178,6 +224,9 @@ namespace client
         }
     }
 
+    /*!
+     * \brief Loop that is used when the client is in GameMode
+     */
     void ClientGameEngine::playGame()
     {
         std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
@@ -234,6 +283,9 @@ namespace client
         }
     }
 
+    /*!
+     * \brief Loop that is used when the client is in MenuMode
+     */
     void ClientGameEngine::playMenu()
     {
         std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
