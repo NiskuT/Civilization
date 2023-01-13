@@ -16,6 +16,7 @@ jobs:
     
     - name: Install tools
       run: |
+        sudo sed -i 's|http://azure.archive.ubuntu.com|http://ubuntu.mirrors.ovh.net|g' /etc/apt/sources.list
         sudo apt update 
         sudo apt install lcov
         sudo apt install gcovr
@@ -101,6 +102,7 @@ jobs:
     
     - name: Install tools
       run: |
+        sudo sed -i 's|http://azure.archive.ubuntu.com|http://ubuntu.mirrors.ovh.net|g' /etc/apt/sources.list
         sudo apt update 
         sudo apt install libboost-all-dev
         sudo apt-get install libsfml-dev
