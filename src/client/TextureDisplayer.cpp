@@ -11,7 +11,7 @@
 namespace client {
 
 /*!
- * \brief Constructor
+ * @brief Constructor
  *
  * Constructor of TextureDisplayer class
  *
@@ -33,7 +33,7 @@ void TextureDisplayer::setImageType(HudTextureType imageType)
 }
 
 /*!
- * \brief Add a Sprite with the texture to the TextureDisplayer
+ * @brief Add a Sprite with the texture to the TextureDisplayer
  */
 void TextureDisplayer::addSprite()
 {
@@ -44,7 +44,7 @@ void TextureDisplayer::addSprite()
 }
 
 /*!
- * \brief Move the sprite Position
+ * @brief Move the sprite Position
  * @param xOffset is the X offset of the map in the screen
  * @param yOffset is the Y offset of the map in the screen
  */
@@ -58,7 +58,7 @@ void TextureDisplayer::moveSpritePosition(int xOffset, int yOffset)
 }
 
 /*!
- * \brief Delete all sprites
+ * @brief Delete all sprites
  */
 void TextureDisplayer::clearSprites(){
     std::lock_guard<std::mutex> lock(*mutexTexture);
@@ -66,7 +66,7 @@ void TextureDisplayer::clearSprites(){
 }
 
 /*!
- * \brief Set a particular Sprite Position
+ * @brief Set a particular Sprite Position
  * @param index is the index position of the sprite
  * @param x is the X position of the sprite in the Map
  * @param y is the Y position of the sprite in the Map
@@ -105,12 +105,12 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
 }
 
 /*!
- * \brief Violaine
- * @param scale
- * @param windowLength
- * @param windowWidth
- * @param rotation
- * @param index
+ * @brief Set the position of all the HUD (barbareWheel, ladder, techWheel, priorityCard, actionCard) considering the type of the HUD
+ * @param scale scale to set the size of the hud image(1 by default if the windowLength is 1600)
+ * @param windowLength window length (1600 by default)
+ * @param windowWidth window width (900 by default)
+ * @param rotation rotation of the image (0 by default), usefull for the techWheel
+ * @param index index of the priorityCard to set the x position of each priorityCard
  */
 void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation, int index)
 {
@@ -189,7 +189,7 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
 }
 
 /*!
- * \brief Get the number of sprite in a TextureDisplayer
+ * @brief Get the number of sprite in a TextureDisplayer
  */
 unsigned TextureDisplayer::getSize()
 {    
@@ -197,7 +197,7 @@ unsigned TextureDisplayer::getSize()
 }
 
 /*!
- * \brief Get a particular sprite
+ * @brief Get a particular sprite
  *
  * @param index is the position of the sprite in the textureDisplayer list of Sprite
  */
@@ -207,7 +207,7 @@ sf::Sprite& TextureDisplayer::getSprite(unsigned index)
 }
 
 /*!
- * \brief Get the Width of the texture
+ * @brief Get the Width of the texture
  */
 int TextureDisplayer::getWidth()
 {    
@@ -215,7 +215,7 @@ int TextureDisplayer::getWidth()
 }
 
 /*!
- * \brief Get the Height of the texture
+ * @brief Get the Height of the texture
  */
 int TextureDisplayer::getHeight()
 {    
@@ -223,7 +223,7 @@ int TextureDisplayer::getHeight()
 }
 
 /*!
- * \brief draw all the sprites of a TextureDisplayer
+ * @brief draw all the sprites of a TextureDisplayer
  * @param window window where the sprites are displayed
  */
 void TextureDisplayer::drawElementSprite(std::shared_ptr<sf::RenderWindow> window){

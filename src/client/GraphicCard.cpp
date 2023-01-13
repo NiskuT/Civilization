@@ -5,7 +5,7 @@ namespace client
 {
 
     /*!
-     * \brief Constructor for the priority cards
+     * @brief Constructor for the priority cards
      * @param path path of the image of the priority card
      * @param dataNumber data in a json file
      * @param windowLength size of the window length (default: 1600)
@@ -28,7 +28,7 @@ namespace client
     }
 
     /*!
-     * \brief Constructor for the action cards
+     * @brief Constructor for the action cards
      * @param path path of the image of the action card
      * @param actionProportion use to set the scale of the action card (usefull to change the window length)
      * @param windowLength size of the window length (default: 1600)
@@ -52,7 +52,7 @@ namespace client
     }
 
     /*!
-     * \brief Move up priority cards when we click on it
+     * @brief Move up priority cards when we click on it
      */
     void GraphicCard::moveUpPriorityCard()
     {
