@@ -107,6 +107,9 @@ namespace client
 
     /*!
      * \brief Loop that look for events to happend and call displayWindow()
+    * @param clientWindow is window that comes from the engine
+    * @param quitGame is the function used to quit the menu, it is load as an attribut
+    * @param callback is the function used to return where the user click on the screen
      */
     void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(int, int)> callback)
     {
@@ -244,6 +247,10 @@ namespace client
         }
     }
 
+    /*!
+     * \brief Function that deteck where the user click and what to send to the engine
+    * @param clickPosition is the position on the cursor when the user click
+     */
     void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
     {
 
@@ -388,7 +395,7 @@ namespace client
     }
 
     /*!
-     * \brief Load all the textures of the map
+     * \brief Load all the textures of the elements
      */
     void GameWindow::loadElementTexture()
     {
@@ -421,7 +428,7 @@ namespace client
     }
 
     /*!
-     * \brief Load all the textures of the map
+     * \brief Update all the textures of the map
      */
     void GameWindow::updateElementTexture()
     {
@@ -535,6 +542,10 @@ namespace client
         }
     }
 
+    /*!
+     * \brief Function that deteck where the user click and what to send to the engine
+    * @param timeSecond is a boolean used to 
+     */
     long GameWindow::getCurrentTime(bool timeSecond)
     {
         if (timeSecond)

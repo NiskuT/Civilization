@@ -18,7 +18,7 @@ namespace client
     /*!
      * \brief Constructor
      *
-     * Constructor of GameWindow class
+     * Constructor of MenuWindow class
      */
     MenuWindow::MenuWindow()
     {
@@ -26,7 +26,7 @@ namespace client
     }
 
     /*!
-     * \brief Display all the different variable in the screen
+     * \brief Display all the menu on the screen
      */
     void MenuWindow::displayWindow()
     {
@@ -46,7 +46,7 @@ namespace client
     }
 
     /*!
-     * \brief Loop that look for events to happend and call displayWindow()
+     * \brief startMenu setup the class and start a loop until the user leave the menu
      */
     void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame)
     {
@@ -105,6 +105,9 @@ namespace client
         }
     }
 
+    /*!
+     * \brief Load all the textures that will be display on the menu
+     */
     void MenuWindow::loadMenuTexture()
     {
 
@@ -148,6 +151,9 @@ namespace client
         }
     }
 
+    /*!
+     * \brief Get the current time
+     */
     long MenuWindow::getCurrentTime(bool timeSecond)
     {
         if (timeSecond)
