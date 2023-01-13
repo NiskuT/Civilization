@@ -110,13 +110,16 @@ namespace client
      */
     void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(int, int)> callback)
     {
+        quitGameWindow = quitGame;
+        clickEvent = callback;
         clientGameWindow = clientWindow;
 
-        int moveMode = false;
-        int clickMode = false;
+        bool moveMode = false;
+        bool clickMode = false;
+
+        std::array<int, 2> newMapOffset;
 
         sf::Vector2i clickStartingPoint;
-        std::array<int, 2> newMapOffset;
 
         long lastUpdateTimer = getCurrentTime(false);
 
@@ -133,118 +136,122 @@ namespace client
             sf::Event event;
             while (clientGameWindow->pollEvent(event))
             {
-
-                switch (event.type)
-                {
-                case sf::Event::MouseButtonPressed:
-
-                    clickMode = true;
-
-                    clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
-
-                    if (!moveMode)
-                        clickAction(clickStartingPoint, callback);
-
-                    break;
-
-                case sf::Event::MouseButtonReleased:
-
-                    clickMode = false;
-
-                    break;
-
-                case sf::Event::MouseMoved:
-
-                    if (moveMode && clickMode)
-                    {
-
-                        newMapOffset = {sf::Mouse::getPosition(*clientGameWindow).x - clickStartingPoint.x,
-                                        sf::Mouse::getPosition(*clientGameWindow).y - clickStartingPoint.y};
-
-                        firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0],
-                                                firstHexagonPosition[1] + newMapOffset[1]};
-
-                        for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-                            mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-
-                        for (auto &kv : elementTextureToDisplay)
-                        {
-                            kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                        }
-
-                        clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
-                    }
-                    break;
-
-                case sf::Event::KeyPressed:
-
-                    switch (event.key.code)
-                    {
-                    case sf::Keyboard::M:
-
-                        if (moveMode)
-                        {
-                            moveMode = false;
-                            if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-                                clientGameWindow->setMouseCursor(clientCursor);
-                        }
-                        else
-                        {
-                            moveMode = true;
-                            if (clientCursor.loadFromSystem(sf::Cursor::Hand))
-                                clientGameWindow->setMouseCursor(clientCursor);
-                        }
-                        break;
-
-                    case sf::Keyboard::K:
-
-                        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-                            clientGameWindow->setMouseCursor(clientCursor);
-                        quitGame(false);
-                        return;
-
-                    case sf::Keyboard::Escape:
-                        quitGame(true);
-                        return;
-
-                    case sf::Keyboard::L:
-
-                        newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
-                                        MAP_Y_OFFSET - firstHexagonPosition[1]};
-
-                        firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
-
-                        for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-                        {
-                            mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                        }
-
-                        for (auto &kv : elementTextureToDisplay)
-                        {
-                            kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                        }
-
-                        clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
-
-                        break;
-
-                    default:
-                        break;
-                    }
-                    break;
-
-                case sf::Event::Closed:
-                    quitGame(true);
-                    return;
-
-                default:
-                    break;
-                }
+                if (eventHappened(&event, clickStartingPoint, &newMapOffset, moveMode, clickMode)) return;
+                
             }
         }
     }
 
-    void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
+    bool GameWindow::eventHappened(sf::Event* event, sf::Vector2i clickStartingPoint, std::array<int, 2>* newMapOffset, bool moveMode, bool clickMode)
+    {
+        switch (event->type)
+        {
+        case sf::Event::MouseButtonPressed:
+
+            clickMode = true;
+
+            clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
+
+            if (!moveMode)
+                clickAction(clickStartingPoint);
+
+            break;
+
+        case sf::Event::MouseButtonReleased:
+
+            clickMode = false;
+
+            break;
+
+        case sf::Event::MouseMoved:
+
+            if (moveMode && clickMode)
+            {
+
+                *newMapOffset = {sf::Mouse::getPosition(*clientGameWindow).x - clickStartingPoint.x,
+                                 sf::Mouse::getPosition(*clientGameWindow).y - clickStartingPoint.y};
+
+                firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset->at(0),
+                                        firstHexagonPosition[1] + newMapOffset->at(1)};
+
+                for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                    mapTextureToDisplay[i].moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+
+                for (auto &kv : elementTextureToDisplay)
+                {
+                    kv.second->moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+                }
+
+                clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
+            }
+            break;
+
+        case sf::Event::KeyPressed:
+
+            switch (event->key.code)
+            {
+            case sf::Keyboard::M:
+                if (moveMode)
+                {
+                    moveMode = false;
+                    if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
+                        clientGameWindow->setMouseCursor(clientCursor);
+                }
+                else
+                {
+                    moveMode = true;
+                    if (clientCursor.loadFromSystem(sf::Cursor::Hand))
+                        clientGameWindow->setMouseCursor(clientCursor);
+                }
+                break;
+
+            case sf::Keyboard::K:
+                if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
+                    clientGameWindow->setMouseCursor(clientCursor);
+                quitGameWindow(false);
+                return true;
+
+            case sf::Keyboard::Escape:
+                quitGameWindow(true);
+                return true;
+
+            case sf::Keyboard::L:
+
+                *newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
+                                MAP_Y_OFFSET - firstHexagonPosition[1]};
+
+                firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
+
+                for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                {
+                    mapTextureToDisplay[i].moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+                }
+
+                for (auto &kv : elementTextureToDisplay)
+                {
+                    kv.second->moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+                }
+
+                clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
+
+                break;
+
+            default:
+                break;
+            }
+            break;
+
+        case sf::Event::Closed:
+            quitGameWindow(true);
+            return true;
+
+        default:
+            break;
+        }
+        return false;
+    }
+
+    void GameWindow::clickAction(sf::Vector2i clickPosition)
     {
 
         int minimumDistance = WINDOW_LENGTH;
@@ -284,7 +291,7 @@ namespace client
             }
         }
         if (isClickable)
-            callback(hexagonOnClick[0], hexagonOnClick[1]);
+            clickEvent(hexagonOnClick[0], hexagonOnClick[1]);
     }
 
     /*!
