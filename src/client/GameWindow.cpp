@@ -297,7 +297,6 @@ namespace client
     /*!
      * \brief Function that deteck where the user click and what to send to the engine
      * @param clickPosition is the position on the cursor when the user click
-     * \brief Dectect click and actions to do after
      */
     void GameWindow::clickAction(sf::Vector2i clickPosition)
     {
@@ -358,13 +357,13 @@ namespace client
 
     /*!
      * \brief Display text on the cards
-    * @param cards pointer to the card you want to setUp the text
+    * @param card pointer to the card you want to setUp the text
     * @param title text to be display on the top of the card
-    * @param body text to be display on body of the card, float 
-    * @param titleFont Font that will be used for the titile of the card
+    * @param body text to be display on body of the card 
+    * @param titleFont Font that will be used for the title of the card
     * @param bodyFont Font that will be used for the body of the card
-    * @param titleTextSizeProportion Proportion of the title 
-    * @param bodyTextSizeProportion Proportion of the body 
+    * @param titleTextSizeProportion Proportion of the title (usefull if we change the windowLength)
+    * @param bodyTextSizeProportion Proportion of the body (usefull if we change the windowLength)
      */
     void GameWindow::setUpText(GraphicCard &card, std::string title, std::string body, sf::Font &titleFont, sf::Font &bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
     {
@@ -502,11 +501,10 @@ namespace client
 
     /*!
      * \brief Get position of number of boxes and boxes on priority cards
-     * @param boxXProportion proportion of the box on x axis
-     * @param boxYProportion proportion of the box on y axis
-     * @param priorityCard pointer to the card you want to setUp the text
+     * @param boxXProportion proportion of the box on x axis (usefull if we change the windowLength)
+     * @param boxYProportion proportion of the box on y axis (usefull if we change the windowWidth)
+     * @param priorityCard pointer to the card on which you want to place the box
      */
-
     sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, GraphicCard &priorityCard)
     {
         int xBoxPos;
