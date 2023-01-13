@@ -730,6 +730,7 @@ struct stdlib_includes {
    int array;   
    int thread;
    int mutex;
+   int condition_variable;
    int random;
    int sfmlGraphics;
    int jsoncpp;
@@ -793,6 +794,10 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        if (!si->mutex && strstr(name,"std::mutex")) {
            print ("#include <mutex>\n");
            si->mutex = 1;
+       }
+       if (!si->condition_variable && strstr(name,"std::condition_variable")) {
+           print ("#include <condition_variable>\n");
+           si->condition_variable = 1;
        }
        if (!si->thread && strstr(name,"std::thread")) {
            print ("#include <thread>\n");
