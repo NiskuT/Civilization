@@ -295,46 +295,9 @@ namespace client
     }
 
     /*!
-     * \brief Move up priority cards when we click on it
-    * @param card pointer to card you want to move up
-     */
-    void GameWindow::moveUpPriorityCard(CardStruct *card)
-    {
-
-        const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
-
-        float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(card->texture->getWidth()) / float(WINDOW_LENGTH));
-
-        int yPos;
-        int xPos;
-        int xTitlePos;
-        int xBodyPosition;
-
-        if (!card->isUp)
-        {
-            yPos = WINDOW_WIDTH - card->texture->getHeight() * priorityScale;
-            card->isUp = true;
-        }
-        else
-        {
-            yPos = WINDOW_WIDTH - card->texture->getHeight() * priorityScale + dataNumber["priority-card-up-scale"].asFloat() * WINDOW_WIDTH;
-            card->isUp = false;
-        }
-
-        xPos = card->texture->getSprite().getPosition().x;
-        xTitlePos = card->title->getPosition().x;
-        xBodyPosition = card->body->getPosition().x;
-
-        int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
-
-        card->texture->getSprite().setPosition(xPos, yPos);
-        card->title->setPosition(xTitlePos, yPos);
-        card->body->setPosition(xBodyPosition, yPos + yBodyOffset);
-    }
-
-    /*!
      * \brief Function that deteck where the user click and what to send to the engine
-    * @param clickPosition is the position on the cursor when the user click
+     * @param clickPosition is the position on the cursor when the user click
+     * \brief Dectect click and actions to do after
      */
     void GameWindow::clickAction(sf::Vector2i clickPosition)
     {
@@ -356,7 +319,7 @@ namespace client
             if (spriteBounds.intersects(cursorRect))
             {
                 clickEvent(-1, i + 1); // -1 to signify that the space clicked is a priority card
-                moveUpPriorityCard(&priorityCards[i]);
+                priorityCards[i].moveUpPriorityCard();
                 return;
             }
         }
@@ -403,27 +366,27 @@ namespace client
     * @param titleTextSizeProportion Proportion of the title 
     * @param bodyTextSizeProportion Proportion of the body 
      */
-    void GameWindow::setUpText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *titleFont, sf::Font *bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
+    void GameWindow::setUpText(GraphicCard &card, std::string title, std::string body, sf::Font &titleFont, sf::Font &bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
     {
         int titleTextSize = titleTextSizeProportion * WINDOW_LENGTH;
         int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;
 
         // display the title on the card
-        cards->back().title = (std::unique_ptr<sf::Text>)new sf::Text(title, *titleFont, titleTextSize);
-        cards->back().title->setStyle(sf::Text::Bold);
-        cards->back().title->setFillColor(TEXT_COLOR);
-        auto titleSize = cards->back().title->getLocalBounds();
-        int xTitleOffset = (cards->back().texture->getWidth() - titleSize.width) / 2;
-        int xTitlePosition = cards->back().texture->getSprite().getPosition().x + xTitleOffset;
-        int yTitlePosition = cards->back().texture->getSprite().getPosition().y;
-        cards->back().title->setPosition(xTitlePosition, yTitlePosition);
+        card.title = (std::unique_ptr<sf::Text>)new sf::Text(title, titleFont, titleTextSize);
+        card.title->setStyle(sf::Text::Bold);
+        card.title->setFillColor(TEXT_COLOR);
+        auto titleSize = card.title->getLocalBounds();
+        int xTitleOffset = (card.texture->getWidth() - titleSize.width) / 2;
+        int xTitlePosition = card.texture->getSprite().getPosition().x + xTitleOffset;
+        int yTitlePosition = card.texture->getSprite().getPosition().y;
+        card.title->setPosition(xTitlePosition, yTitlePosition);
 
         // display the body on the card
-        cards->back().body = (std::unique_ptr<sf::Text>)new sf::Text(body, *bodyFont, bodyTextSize);
+        card.body = (std::unique_ptr<sf::Text>)new sf::Text(body, bodyFont, bodyTextSize);
 
         // to have the text on several lines without exceeding the card
         int countEndLine = 1;
-        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - CARD_BORDER) // 18 to not touch the black border
+        while (card.body->getLocalBounds().width > card.texture->getWidth() - CARD_BORDER) // 18 to not touch the black border
         {
 
             for (int i = countEndLine * NBR_CHAR_MAX_PER_LIGNE; i > 0; i--)
@@ -435,16 +398,16 @@ namespace client
                     break;
                 }
             }
-            cards->back().body->setString(body);
+            card.body->setString(body);
         }
 
-        cards->back().body->setFillColor(TEXT_COLOR);
-        cards->back().body->setLineSpacing(0.9f);
+        card.body->setFillColor(TEXT_COLOR);
+        card.body->setLineSpacing(0.9f);
         int xBodyOffset = BODY_PROPORTION_X * WINDOW_LENGTH;
         int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
-        int xBodyPosition = cards->back().texture->getSprite().getPosition().x + xBodyOffset;
-        int yBodyPosition = cards->back().texture->getSprite().getPosition().y + yBodyOffset;
-        cards->back().body->setPosition(xBodyPosition, yBodyPosition);
+        int xBodyPosition = card.texture->getSprite().getPosition().x + xBodyOffset;
+        int yBodyPosition = card.texture->getSprite().getPosition().y + yBodyOffset;
+        card.body->setPosition(xBodyPosition, yBodyPosition);
     }
 
     /*!
@@ -543,7 +506,8 @@ namespace client
      * @param boxYProportion proportion of the box on y axis
      * @param priorityCard pointer to the card you want to setUp the text
      */
-    sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, CardStruct *priorityCard)
+
+    sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, GraphicCard &priorityCard)
     {
         int xBoxPos;
         int yBoxPos;
@@ -553,8 +517,8 @@ namespace client
         xBoxOffset = boxXProportion * WINDOW_LENGTH;
         yBoxOffset = boxYProportion * WINDOW_WIDTH;
 
-        xBoxPos = priorityCard->texture->getSprite().getPosition().x + xBoxOffset;
-        yBoxPos = priorityCard->texture->getSprite().getPosition().y + yBoxOffset;
+        xBoxPos = priorityCard.texture->getSprite().getPosition().x + xBoxOffset;
+        yBoxPos = priorityCard.texture->getSprite().getPosition().y + yBoxOffset;
 
         return (sf::Vector2i(xBoxPos, yBoxPos));
     }
@@ -607,29 +571,45 @@ namespace client
 
         for (unsigned index = 0; index < priorityData.size(); ++index)
         {
-            priorityCards.emplace_back();
-            priorityCards.back().texture = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH + priorityData[index]["path"].asString());
-            priorityCards.back().texture->addSprite();
-            float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
-            priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
-            priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
-            priorityCards.back().level = 0; // sent by the server
-            priorityCards.back().isUp = false;
+            priorityCards.emplace_back(
+                RESOURCES_PATH + priorityData[index]["path"].asString(),
+                dataNumber,
+                WINDOW_LENGTH,
+                WINDOW_WIDTH,
+                index);
 
             // title and body
 
-            setUpText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &titleFont, &bodyFont, priorityTitleTextProportion, priorityBodyTextProportion);
+            setUpText(
+                priorityCards.back(),
+                priorityData[index]["title"].asString(),
+                priorityData[index]["body"][priorityCards.back().level].asString(),
+                titleFont,
+                bodyFont,
+                priorityTitleTextProportion,
+                priorityBodyTextProportion);
 
             // boxes
 
-            boxString = std::to_string(numberOfBoxesPerCard[index]);
-            boxString += " x";
-            priorityCards.back().nbOfBoxesText = (std::unique_ptr<sf::Text>)new sf::Text(boxString, titleFont, dataNumber["box-number-text-size"].asInt());
-            sf::Vector2i boxNumberPosition = getBoxesElementsPosition(dataNumber["box-x-number-offset-proportion"].asFloat(), dataNumber["box-y-number-offset-proportion"].asFloat(), &priorityCards.back());
+            boxString = std::to_string(numberOfBoxesPerCard[index]) + " x";
+
+            priorityCards.back().nbOfBoxesText = std::make_unique<sf::Text>(
+                boxString,
+                titleFont,
+                dataNumber["box-number-text-size"].asInt());
+
+            sf::Vector2i boxNumberPosition = getBoxesElementsPosition(
+                dataNumber["box-x-number-offset-proportion"].asFloat(),
+                dataNumber["box-y-number-offset-proportion"].asFloat(),
+                priorityCards.back());
+
             priorityCards.back().nbOfBoxesText->setPosition(boxNumberPosition.x, boxNumberPosition.y);
 
             boxTexture->addSprite();
-            sf::Vector2i boxPosition = getBoxesElementsPosition(dataNumber["box-x-offset-proportion"].asFloat(), dataNumber["box-y-offset-proportion"].asFloat(), &priorityCards.back());
+            sf::Vector2i boxPosition = getBoxesElementsPosition(
+                dataNumber["box-x-offset-proportion"].asFloat(), 
+                dataNumber["box-y-offset-proportion"].asFloat(), 
+                priorityCards.back());
             boxTexture->getSprite(index).setPosition(boxPosition.x, boxPosition.y);
         }
 
@@ -642,17 +622,25 @@ namespace client
 
         for (unsigned index = 0; index < actionCardOwned.size(); ++index)
         {
-            actionCardsToDisplay.emplace_back();
-            actionCardsToDisplay.back().texture = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH + actionCardData[actionCardOwned[index]]["path"].asString());
-            actionCardsToDisplay.back().texture->addSprite();
-            float actionScale = ACTION_CARD_PROPORTION / (float(actionCardsToDisplay.back().texture->getWidth()) / float(WINDOW_LENGTH));
-            actionCardsToDisplay.back().texture->setImageType((HudTextureType)(actionCardOwned[index] + 11)); // +11 to go to the action cards in the HudTextureType (enum class)
-            actionCardsToDisplay.back().texture->setHudSpritePosition(actionScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
+            actionCardsToDisplay.emplace_back(
+                RESOURCES_PATH + actionCardData[actionCardOwned[index]]["path"].asString(),
+                ACTION_CARD_PROPORTION,
+                WINDOW_LENGTH,
+                WINDOW_WIDTH,
+                actionCardOwned[index],
+                index);
 
             std::string titleCardAction = actionCardData[actionCardOwned[index]]["type"].asString();
             std::string bodyCardAction = actionCardData[actionCardOwned[index]]["body"].asString();
 
-            setUpText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &titleFont, &bodyFont, actionTitleTextProportion, actionBodyTextProportion);
+            setUpText(
+                actionCardsToDisplay.back(),
+                titleCardAction,
+                bodyCardAction,
+                titleFont,
+                bodyFont,
+                actionTitleTextProportion,
+                actionBodyTextProportion);
         }
 
         // isPlaying buttons
