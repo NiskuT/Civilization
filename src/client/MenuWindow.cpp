@@ -46,7 +46,9 @@ namespace client
     }
 
     /*!
-     * \brief startMenu setup the class and start a loop until the user leave the menu
+     * \brief Loop that look for events to happend and call displayWindow()
+     * @param clientWindow is window that comes from the engine
+     * @param quitGame is the function used to quit the menu, it is load as an attribut
      */
     void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame)
     {
@@ -73,6 +75,10 @@ namespace client
         }
     }
 
+    /*!
+     * \brief Test events and do actions corresponding to the event
+     * @param event pointer to the event
+     */
     bool MenuWindow::menuEventHappened(sf::Event* event){
 
         switch (event->type)
@@ -159,7 +165,8 @@ namespace client
     }
 
     /*!
-     * \brief Get the current time
+     * \brief Function that deteck where the user click and what to send to the engine
+     * @param timeSecond is a boolean used to 
      */
     long MenuWindow::getCurrentTime(bool timeSecond)
     {

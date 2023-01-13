@@ -4,6 +4,16 @@
 namespace client
 {
 
+/*!
+ * \brief Constructor
+ *
+ * Constructor of Button class
+ *
+ * @param buttonSize size of the Button
+ * @param buttonPos position of the Button
+ * @param buttonColor color of the Button
+ * @param border true if the border is red, false if the border is black
+ */
 Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, bool border)
 {
     buttonRect = std::unique_ptr<sf::RectangleShape>(new sf::RectangleShape);
@@ -20,10 +30,16 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
         buttonRect->setOutlineColor(sf::Color::Black);
         buttonRect->setOutlineThickness(1.0f);
     }
-
-    
 }
 
+/*!
+ * \brief Set the text of the Button
+ *
+ * @param textSize size of the text
+ * @param textOffset offset of the text
+ * @param text text of the Button
+ * @param font font of the text
+ */
 void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf::Font *font)
 {
     buttonText = std::unique_ptr<sf::Text>(new sf::Text);

@@ -114,9 +114,9 @@ namespace client
 
     /*!
      * \brief Loop that look for events to happend and call displayWindow()
-    * @param clientWindow is window that comes from the engine
-    * @param quitGame is the function used to quit the menu, it is load as an attribut
-    * @param callback is the function used to return where the user click on the screen
+     * @param clientWindow is window that comes from the engine
+     * @param quitGame is the function used to quit the menu, it is load as an attribut
+     * @param callback is the function used to return where the user click on the screen
      */
     void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(int, int)> callback)
     {
@@ -126,8 +126,6 @@ namespace client
 
         std::shared_ptr<bool> moveMode = std::make_unique<bool>(false);
         std::shared_ptr<bool> clickMode = std::make_unique<bool>(false);
-
-        std::array<int, 2> newMapOffset;
 
         sf::Vector2i clickStartingPoint;
 
@@ -146,13 +144,21 @@ namespace client
             sf::Event event;
             while (clientGameWindow->pollEvent(event))
             {
-                if (gameEventHappened(&event, &clickStartingPoint, &newMapOffset, moveMode, clickMode)) return;
+                if (gameEventHappened(&event, &clickStartingPoint, moveMode, clickMode)) return;
             }
         }
     }
 
-    bool GameWindow::gameEventHappened(sf::Event* event, sf::Vector2i* clickStartingPoint, std::array<int, 2>* newMapOffset, std::shared_ptr<bool> moveMode, std::shared_ptr<bool> clickMode)
+    /*!
+     * \brief Test events and do actions corresponding to the event
+     * @param event pointer to the event
+     * @param clickStartingPoint pointer used to know where the user start pressing mouse
+     * @param moveMode pointer to know if the map is moving on the screen
+     * @param clickMode pointer to know if the user is clicking on the screen
+     */
+    bool GameWindow::gameEventHappened(sf::Event* event, sf::Vector2i* clickStartingPoint, std::shared_ptr<bool> moveMode, std::shared_ptr<bool> clickMode)
     {
+        std::array<int, 2> newMapOffset;
         switch (event->type)
         {
         case sf::Event::MouseButtonPressed:
@@ -177,18 +183,18 @@ namespace client
             if (*moveMode && *clickMode)
             {
 
-                *newMapOffset = {sf::Mouse::getPosition(*clientGameWindow).x - clickStartingPoint->x,
+                newMapOffset = { sf::Mouse::getPosition(*clientGameWindow).x - clickStartingPoint->x,
                                  sf::Mouse::getPosition(*clientGameWindow).y - clickStartingPoint->y};
 
-                firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset->at(0),
-                                        firstHexagonPosition[1] + newMapOffset->at(1)};
+                firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0],
+                                        firstHexagonPosition[1] + newMapOffset[1]};
 
                 for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-                    mapTextureToDisplay[i].moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+                    mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
 
                 for (auto &kv : elementTextureToDisplay)
                 {
-                    kv.second->moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+                    kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
                 }
 
                 *clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
@@ -226,19 +232,19 @@ namespace client
 
             case sf::Keyboard::L:
 
-                *newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
+                newMapOffset = { MAP_X_OFFSET - firstHexagonPosition[0],
                                  MAP_Y_OFFSET - firstHexagonPosition[1]};
 
                 firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
 
                 for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
                 {
-                    mapTextureToDisplay[i].moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+                    mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
                 }
 
                 for (auto &kv : elementTextureToDisplay)
                 {
-                    kv.second->moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+                    kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
                 }
 
                 *clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
@@ -248,6 +254,7 @@ namespace client
             default:
                 break;
             }
+
             break;
 
         case sf::Event::Closed:
@@ -262,6 +269,7 @@ namespace client
 
     /*!
      * \brief Open JSON File
+     * @param path path of the JSON File
      */
     const auto GameWindow::openJsonFile(std::string path)
     {
@@ -288,6 +296,7 @@ namespace client
 
     /*!
      * \brief Move up priority cards when we click on it
+    * @param card pointer to card you want to move up
      */
     void GameWindow::moveUpPriorityCard(CardStruct *card)
     {
@@ -386,6 +395,13 @@ namespace client
 
     /*!
      * \brief Display text on the cards
+    * @param cards pointer to the card you want to setUp the text
+    * @param title text to be display on the top of the card
+    * @param body text to be display on body of the card, float 
+    * @param titleFont Font that will be used for the titile of the card
+    * @param bodyFont Font that will be used for the body of the card
+    * @param titleTextSizeProportion Proportion of the title 
+    * @param bodyTextSizeProportion Proportion of the body 
      */
     void GameWindow::setUpText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *titleFont, sf::Font *bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
     {
@@ -523,8 +539,10 @@ namespace client
 
     /*!
      * \brief Get position of number of boxes and boxes on priority cards
+     * @param boxXProportion proportion of the box on x axis
+     * @param boxYProportion proportion of the box on y axis
+     * @param priorityCard pointer to the card you want to setUp the text
      */
-
     sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, CardStruct *priorityCard)
     {
         int xBoxPos;
@@ -544,7 +562,6 @@ namespace client
     /*!
      * \brief Load all the HUD textures
      */
-
     void GameWindow::loadHudTexture()
     {
 
@@ -617,7 +634,6 @@ namespace client
         }
 
         // actionCard
-
         const Json::Value &actionCardData = openJsonFile("/img/hud/action-card.json");
         float actionTitleTextProportion = dataNumber["action-card-title-proportion"].asFloat();
         float actionBodyTextProportion = dataNumber["action-card-body-proportion"].asFloat();
@@ -640,7 +656,6 @@ namespace client
         }
 
         // isPlaying buttons
-
         int whoIsPlaying = 2; // sent by the server (temporary)
 
         for (int i = 0; i < dataNumber["nb-player"].asInt(); i++)
@@ -660,7 +675,7 @@ namespace client
 
     /*!
      * \brief Function that deteck where the user click and what to send to the engine
-    * @param timeSecond is a boolean used to 
+     * @param timeSecond is a boolean used to 
      */
     long GameWindow::getCurrentTime(bool timeSecond)
     {

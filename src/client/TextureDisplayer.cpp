@@ -9,7 +9,14 @@
 #define  ACTION_CARD_OFFSET (float(140)/ float(900))            // Offset between each action cards      
 
 namespace client {
-    
+
+/*!
+ * \brief Constructor
+ *
+ * Constructor of TextureDisplayer class
+ *
+ * @param filename name of the png path
+ */
 TextureDisplayer::TextureDisplayer(const std::string& filename)
 {    
     std::unique_ptr<sf::Texture> resource(new sf::Texture());
@@ -38,7 +45,6 @@ void TextureDisplayer::addSprite()
 
 /*!
  * \brief Move the sprite Position
- * @param index is the index position of the sprite
  * @param xOffset is the X offset of the map in the screen
  * @param yOffset is the Y offset of the map in the screen
  */
@@ -98,6 +104,14 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
     getSprite(index).setPosition(sf::Vector2f(x, y));
 }
 
+/*!
+ * \brief Violaine
+ * @param scale
+ * @param windowLength
+ * @param windowWidth
+ * @param rotation
+ * @param index
+ */
 void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation, int index)
 {
     int xPos = 0;
@@ -181,6 +195,7 @@ unsigned TextureDisplayer::getSize()
 {    
     return sprites.size();
 }
+
 /*!
  * \brief Get a particular sprite
  *
@@ -190,6 +205,7 @@ sf::Sprite& TextureDisplayer::getSprite(unsigned index)
 {    
     return *sprites[index];
 }
+
 /*!
  * \brief Get the Width of the texture
  */
@@ -197,6 +213,7 @@ int TextureDisplayer::getWidth()
 {    
     return getSize() > 0 ? getSprite().getLocalBounds().width : 0;
 }
+
 /*!
  * \brief Get the Height of the texture
  */
@@ -205,6 +222,10 @@ int TextureDisplayer::getHeight()
     return getSize() > 0 ? getSprite().getLocalBounds().height : 0;
 }
 
+/*!
+ * \brief draw all the sprites of a TextureDisplayer
+ * @param window window where the sprites are displayed
+ */
 void TextureDisplayer::drawElementSprite(std::shared_ptr<sf::RenderWindow> window){
     for (unsigned j = 0; j < getSize(); j++){
         std::lock_guard<std::mutex> lock(*mutexTexture);
