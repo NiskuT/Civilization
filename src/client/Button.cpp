@@ -42,10 +42,10 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
  * @param text text of the Button
  * @param font font of the text
  */
-void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf::Font *font)
+void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf::Font &font)
 {
     buttonText = std::unique_ptr<sf::Text>(new sf::Text);
-    buttonText->setFont(*font);
+    buttonText->setFont(font);
     buttonText->setString(text);
     buttonText->setCharacterSize(textSize);
     sf::Vector2f buttonPos = buttonRect->getPosition();

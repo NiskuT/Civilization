@@ -70,7 +70,7 @@ namespace client
             sf::Event event;
             while (clientMenuWindow->pollEvent(event))
             {
-                if (menuEventHappened(&event))
+                if (menuEventHappened(event))
                 {
                     return;
                 }
@@ -82,9 +82,9 @@ namespace client
      * \brief Test events and do actions corresponding to the event
      * @param event pointer to the event
      */
-    bool MenuWindow::menuEventHappened(sf::Event* event){
+    bool MenuWindow::menuEventHappened(sf::Event& event){
 
-        switch (event->type)
+        switch (event.type)
         {
         case sf::Event::MouseButtonPressed:
 
@@ -94,7 +94,7 @@ namespace client
 
         case sf::Event::KeyPressed:
 
-            switch (event->key.code)
+            switch (event.key.code)
             {
             case sf::Keyboard::K:
                 quitMenuWindow(false);
@@ -165,7 +165,7 @@ namespace client
             menuButtons.emplace_back(   sf::Vector2f(data[index]["width"].asFloat() * gameTitle->getLocalBounds().width, data[index]["height"].asFloat() * gameTitle->getLocalBounds().height), 
                                         sf::Vector2f(   gameTitle->getPosition().x + data[index]["x"].asFloat() * gameTitle->getLocalBounds().width, 
                                                         gameTitle->getPosition().y - data[index]["y"].asFloat() * gameTitle->getLocalBounds().height), buttonColor);
-            menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), &(*menuFont));
+            menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), *menuFont);
         }
     }
 

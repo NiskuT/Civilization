@@ -140,7 +140,7 @@ namespace client
             sf::Event event;
             while (clientGameWindow->pollEvent(event))
             {
-                if (gameEventHappened(&event, &clickStartingPoint, moveMode, clickMode))
+                if (gameEventHappened(event, &clickStartingPoint, moveMode, clickMode))
                 {
                     return;
                 } 
@@ -155,10 +155,10 @@ namespace client
      * @param moveMode pointer to know if the map is moving on the screen
      * @param clickMode pointer to know if the user is clicking on the screen
      */
-    bool GameWindow::gameEventHappened(sf::Event* event, sf::Vector2i* clickStartingPoint, std::shared_ptr<bool> moveMode, std::shared_ptr<bool> clickMode)
+    bool GameWindow::gameEventHappened(sf::Event& event, sf::Vector2i* clickStartingPoint, std::shared_ptr<bool> moveMode, std::shared_ptr<bool> clickMode)
     {
         std::array<int, 2> newMapOffset;
-        switch (event->type)
+        switch (event.type)
         {
         case sf::Event::MouseButtonPressed:
 
@@ -206,7 +206,7 @@ namespace client
 
         case sf::Event::KeyPressed:
 
-            switch (event->key.code)
+            switch (event.key.code)
             {
             case sf::Keyboard::M:
                 if (*moveMode)
@@ -666,7 +666,7 @@ namespace client
             int upPosition = (WINDOW_LENGTH + (float(2 / 3) - dataNumber["nb-player"].asInt()) * offset) / 2;
 
             whoIsPlayingButtons.emplace_back(sf::Vector2f(offset * float(float(2) / float(3)), offset / 2), sf::Vector2f(upPosition + offset * i, 0), PLAYER_COLOR[i], isPlaying);
-            whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &titleFont);
+            whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, titleFont);
         }
     }
 

@@ -6474,7 +6474,7 @@
                 <dia:string>#event#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#sf::Event*#</dia:string>
+                <dia:string>#sf::Event&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -9518,7 +9518,7 @@
                 <dia:string>#event#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#sf::Event*#</dia:string>
+                <dia:string>#sf::Event&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -9980,7 +9980,7 @@
                 <dia:string>#font#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#sf::Font*#</dia:string>
+                <dia:string>#sf::Font&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
