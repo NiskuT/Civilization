@@ -1,6 +1,9 @@
 #include <client.hpp>
 #include <iostream>
 
+#define ACTION_INDEX 11
+#define PRIORITY_INDEX 7
+
 namespace client
 {
 
@@ -8,7 +11,7 @@ namespace client
     {
         texture = std::make_unique<TextureDisplayer>(path);
         texture->addSprite();
-        texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
+        texture->setImageType((HudTextureType)(index + PRIORITY_INDEX)); // +7 to go to the priority cards in the HudTextureType (enum class)
 
         priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(texture->getWidth()) / windowLength);
         upScaleProportion = dataNumber["priority-card-up-scale"].asFloat();
@@ -25,7 +28,7 @@ namespace client
     {
         texture = std::make_unique<TextureDisplayer>(path);
         texture->addSprite();
-        texture->setImageType((HudTextureType)(actionCardNumber + 11)); // +11 to go to the action cards in the HudTextureType (enum class)
+        texture->setImageType((HudTextureType)(actionCardNumber + ACTION_INDEX)); // +11 to go to the action cards in the HudTextureType (enum class)
 
         priorityScale = actionProportion / (float(texture->getWidth()) / windowLength);
         upScaleProportion = 0;
