@@ -28,7 +28,7 @@ void TextureDisplayer::setImageType(HudTextureType imageType)
 /*!
  * \brief Add a Sprite with the texture to the TextureDisplayer
  */
-void TextureDisplayer::addMapSprite()
+void TextureDisplayer::addSprite()
 {
     std::lock_guard<std::mutex> lock(*mutexTexture);
     std::unique_ptr<sf::Sprite> sprite(new sf::Sprite());
