@@ -6,7 +6,7 @@
             "path": "/img/hud/priority-card-economy.png",
             "title": "ECONOMY",
             "body": [
-                "economy 1",
+                "Move 1 caravan from 3 steps on X_field",
                 "economy 2",
                 "economy 3",
                 "economy 4"
@@ -18,7 +18,7 @@
             "path": "/img/hud/priority-card-army.png",
             "title": "ARMY",
             "body": [
-                "army 1",
+                "Reinforce X pawns or 2 attack 2 steps from you with a fight score of X",
                 "army 2",
                 "army 3",
                 "army 4"
@@ -29,7 +29,7 @@
             "path": "/img/hud/priority-card-science.png",
             "title": "SCIENCE",
             "body": [
-                "science 1",
+                "Tech wheel += X",
                 "science 2",
                 "science 3",
                 "science 4"
@@ -40,7 +40,7 @@
             "path": "/img/hud/priority-card-culture.png",
             "title": "CULTURE",
             "body": [
-                "culture 1",
+                "Place 2 pawns on X_field close to the city",
                 "culture 2",
                 "culture 3",
                 "culture 4"
@@ -51,7 +51,7 @@
             "path": "/img/hud/priority-card-industry.png",
             "title": "INDUSTRY",
             "body": [
-                "tech 1",
+                "Build a city from 2 steps from a pawn on X_field or build a wonders from X resources",
                 "tech 2",
                 "tech 3",
                 "tech 4"

@@ -15,14 +15,15 @@
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
 
-#define PRIORITY_CARD_PROPORTION 0.144
 #define ACTION_CARD_PROPORTION 0.125
 #define TITLE_PROPORTION 0.025
 #define BODY_PROPORTION_X 0.0075
-#define BODY_PROPORTION_Y 0.05
-#define MAX_CHARACTER_SIZE 18
+#define BODY_PROPORTION_Y 0.055
+#define MAX_CHARACTER_SIZE 19
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
+
+#define CARD_BORDER 18
 
 #define ELEMENT_PATH "/img/map/element/"
 
@@ -31,10 +32,10 @@
 #endif
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
+const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
 
 namespace client
 {
-
     /*!
      * \brief Constructor
      *
@@ -77,7 +78,12 @@ namespace client
         {
             clientGameWindow->draw(priorityCards[i].texture->getSprite(0));
             clientGameWindow->draw(*priorityCards[i].title);
-            clientGameWindow->draw(*priorityCards[i].body);
+            clientGameWindow->draw(boxTexture->getSprite(i));
+            clientGameWindow->draw(*priorityCards[i].nbOfBoxesText);
+            if (priorityCards[i].isUp)
+            {
+                clientGameWindow->draw(*priorityCards[i].body);
+            }
         }
 
         for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
@@ -102,6 +108,7 @@ namespace client
                 clientGameWindow->draw(hudTextureToDisplay[i].getSprite(j));
             }
         }
+
         clientGameWindow->display();
     }
 
@@ -144,7 +151,6 @@ namespace client
 
                     if (!moveMode)
                         clickAction(clickStartingPoint, callback);
-
                     break;
 
                 case sf::Event::MouseButtonReleased:
@@ -244,49 +250,6 @@ namespace client
         }
     }
 
-    void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
-    {
-
-        int minimumDistance = WINDOW_LENGTH;
-        std::array<int, 2> hexagonOnClick = {0, 0};
-
-        sf::FloatRect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
-        cursorRect.left = clickPosition.x;
-        cursorRect.top = clickPosition.y;
-        cursorRect.width = 1;
-        cursorRect.height = 1;
-
-        bool isClickable = false;
-
-        for (int i = 0; i < NUMBER_OF_FIELD; i++)
-        {
-
-            for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
-            {
-
-                sf::FloatRect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
-
-                if (spriteBounds.intersects(cursorRect))
-                {
-
-                    isClickable = true;
-
-                    int distance = sqrt(pow(spriteBounds.left + spriteBounds.width / 2 - cursorRect.left, 2) + pow(spriteBounds.top + spriteBounds.height / 2 - cursorRect.top, 2));
-
-                    if (distance < minimumDistance)
-                    {
-
-                        minimumDistance = distance;
-                        hexagonOnClick[1] = (int)((spriteBounds.top - firstHexagonPosition[1])) / (int)((spriteBounds.height * 3 / 4));
-                        hexagonOnClick[0] = (int)((spriteBounds.left - firstHexagonPosition[0])) / (int)((spriteBounds.width - 1));
-                    }
-                }
-            }
-        }
-        if (isClickable)
-            callback(hexagonOnClick[0], hexagonOnClick[1]);
-    }
-
     /*!
      * \brief Open JSON File
      */
@@ -314,47 +277,110 @@ namespace client
     }
 
     /*!
+     * \brief Dectect click and actions to do after
+     */
+    void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
+    {
+        int minimumDistance = WINDOW_LENGTH;
+        std::array<int, 2> hexagonOnClick = {0, 0};
+
+        sf::FloatRect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
+        cursorRect.left = clickPosition.x;
+        cursorRect.top = clickPosition.y;
+        cursorRect.width = 1;
+        cursorRect.height = 1;
+
+        bool isClickable = false;
+
+        for (unsigned i = 0; i < priorityCards.size(); i++)
+        {
+            sf::FloatRect spriteBounds = priorityCards[i].texture->getSprite().getGlobalBounds();
+
+            if (spriteBounds.intersects(cursorRect))
+            {
+                callback(-1, i + 1); // -1 to signify that the space clicked is a priority card
+                priorityCards[i].moveUpPriorityCard();
+                return;
+            }
+        }
+
+        for (auto &mapTexture : mapTextureToDisplay)
+        {
+
+            for (unsigned j = 0; j < mapTexture.getSize(); j++)
+            {
+
+                sf::FloatRect spriteBounds = mapTexture.getSprite(j).getGlobalBounds();
+
+                if (spriteBounds.intersects(cursorRect))
+                {
+
+                    isClickable = true;
+
+                    int distance = sqrt(pow(spriteBounds.left + spriteBounds.width / 2 - cursorRect.left, 2) + pow(spriteBounds.top + spriteBounds.height / 2 - cursorRect.top, 2));
+
+                    if (distance < minimumDistance)
+                    {
+
+                        minimumDistance = distance;
+                        hexagonOnClick[1] = (int)((spriteBounds.top - firstHexagonPosition[1])) / (int)((spriteBounds.height * 3 / 4));
+                        hexagonOnClick[0] = (int)((spriteBounds.left - firstHexagonPosition[0])) / (int)((spriteBounds.width - 1));
+                    }
+                }
+            }
+        }
+
+        if (isClickable)
+        {
+            callback(hexagonOnClick[0], hexagonOnClick[1]);
+        }
+    }
+
+    /*!
      * \brief Display text on the cards
      */
-    void GameWindow::displayText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *font)
+    void GameWindow::setUpText(GraphicCard &card, std::string title, std::string body, sf::Font &titleFont, sf::Font &bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
     {
+        int titleTextSize = titleTextSizeProportion * WINDOW_LENGTH;
+        int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;
 
         // display the title on the card
-        cards->back().title = (std::unique_ptr<sf::Text>)new sf::Text(title, *font, TITLE_PROPORTION * WINDOW_LENGTH);
-        cards->back().title->setStyle(sf::Text::Bold);
-        cards->back().title->setFillColor(sf::Color::Black);
-        auto titleSize = cards->back().title->getLocalBounds();
-        int xTitleOffset = (cards->back().texture->getWidth() - titleSize.width) / 2;
-        int xTitlePosition = cards->back().texture->getSprite().getPosition().x + xTitleOffset;
-        int yTitlePosition = cards->back().texture->getSprite().getPosition().y;
-        cards->back().title->setPosition(xTitlePosition, yTitlePosition);
+        card.title = std::make_unique<sf::Text>(title, titleFont, titleTextSize);
+        card.title->setStyle(sf::Text::Bold);
+        card.title->setFillColor(TEXT_COLOR);
+        auto titleSize = card.title->getLocalBounds();
+        int xTitleOffset = (card.texture->getWidth() - titleSize.width) / 2;
+        int xTitlePosition = card.texture->getSprite().getPosition().x + xTitleOffset;
+        int yTitlePosition = card.texture->getSprite().getPosition().y;
+        card.title->setPosition(xTitlePosition, yTitlePosition);
 
         // display the body on the card
-        cards->back().body = (std::unique_ptr<sf::Text>)new sf::Text(body, *font, 30);
+        card.body = std::make_unique<sf::Text>(body, bodyFont, bodyTextSize);
 
         // to have the text on several lines without exceeding the card
         int countEndLine = 1;
-        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - 10)
+        while (card.body->getLocalBounds().width > card.texture->getWidth() - CARD_BORDER) // 18 to not touch the black border
         {
 
             for (int i = countEndLine * NBR_CHAR_MAX_PER_LIGNE; i > 0; i--)
             {
                 if ((char)body[i] == ' ')
                 {
-                    body.insert(i, "\n");
+                    body.replace(i, 1, "\n");
                     countEndLine++;
                     break;
                 }
             }
-            cards->back().body->setString(body);
+            card.body->setString(body);
         }
 
-        cards->back().body->setFillColor(sf::Color::Black);
+        card.body->setFillColor(TEXT_COLOR);
+        card.body->setLineSpacing(0.9f);
         int xBodyOffset = BODY_PROPORTION_X * WINDOW_LENGTH;
         int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
-        int xBodyPosition = cards->back().texture->getSprite().getPosition().x + xBodyOffset;
-        int yBodyPosition = cards->back().texture->getSprite().getPosition().y + yBodyOffset;
-        cards->back().body->setPosition(xBodyPosition, yBodyPosition);
+        int xBodyPosition = card.texture->getSprite().getPosition().x + xBodyOffset;
+        int yBodyPosition = card.texture->getSprite().getPosition().y + yBodyOffset;
+        card.body->setPosition(xBodyPosition, yBodyPosition);
     }
 
     /*!
@@ -448,6 +474,26 @@ namespace client
     }
 
     /*!
+     * \brief Get position of number of boxes and boxes on priority cards
+     */
+
+    sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, GraphicCard &priorityCard)
+    {
+        int xBoxPos;
+        int yBoxPos;
+        int xBoxOffset;
+        int yBoxOffset;
+
+        xBoxOffset = boxXProportion * WINDOW_LENGTH;
+        yBoxOffset = boxYProportion * WINDOW_WIDTH;
+
+        xBoxPos = priorityCard.texture->getSprite().getPosition().x + xBoxOffset;
+        yBoxPos = priorityCard.texture->getSprite().getPosition().y + yBoxOffset;
+
+        return (sf::Vector2i(xBoxPos, yBoxPos));
+    }
+
+    /*!
      * \brief Load all the HUD textures
      */
 
@@ -459,7 +505,7 @@ namespace client
 
         const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
 
-        backgroundTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/hud/background.png");
+        backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/background.png");
         backgroundTexture->addSprite();
         float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
         backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);
@@ -476,44 +522,97 @@ namespace client
         }
 
         // load the priorityCard
-        if (!priorityFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+        boxTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/box.png");
+        std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
+        std::string boxString = "0";
+
+        if (!titleFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+        {
+            std::cerr << "Font not loaded" << std::endl;
+        }
+
+        if (!bodyFont.loadFromFile(RESOURCES_PATH "/img/hud/Calibri.ttf"))
         {
             std::cerr << "Font not loaded" << std::endl;
         }
 
         const Json::Value &priorityData = openJsonFile("/img/hud/priority-card.json");
+        float priorityTitleTextProportion = dataNumber["priority-card-title-proportion"].asFloat();
+        float priorityBodyTextProportion = dataNumber["priority-card-body-proportion"].asFloat();
 
         for (unsigned index = 0; index < priorityData.size(); ++index)
         {
-            priorityCards.emplace_back();
-            priorityCards.back().texture = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH + priorityData[index]["path"].asString());
-            priorityCards.back().texture->addSprite();
-            float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
-            priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
-            priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
-            priorityCards.back().level = 0;
+            priorityCards.emplace_back(
+                RESOURCES_PATH + priorityData[index]["path"].asString(),
+                dataNumber,
+                WINDOW_LENGTH,
+                WINDOW_WIDTH,
+                index);
 
-            displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont);
+            // title and body
+
+            setUpText(
+                priorityCards.back(),
+                priorityData[index]["title"].asString(),
+                priorityData[index]["body"][priorityCards.back().level].asString(),
+                titleFont,
+                bodyFont,
+                priorityTitleTextProportion,
+                priorityBodyTextProportion);
+
+            // boxes
+
+            boxString = std::to_string(numberOfBoxesPerCard[index]) + " x";
+
+            priorityCards.back().nbOfBoxesText = std::make_unique<sf::Text>(
+                boxString,
+                titleFont,
+                dataNumber["box-number-text-size"].asInt());
+
+            sf::Vector2i boxNumberPosition = getBoxesElementsPosition(
+                dataNumber["box-x-number-offset-proportion"].asFloat(),
+                dataNumber["box-y-number-offset-proportion"].asFloat(),
+                priorityCards.back());
+
+            priorityCards.back().nbOfBoxesText->setPosition(boxNumberPosition.x, boxNumberPosition.y);
+
+            boxTexture->addSprite();
+            sf::Vector2i boxPosition = getBoxesElementsPosition(
+                dataNumber["box-x-offset-proportion"].asFloat(),
+                dataNumber["box-y-offset-proportion"].asFloat(),
+                priorityCards.back());
+            boxTexture->getSprite(index).setPosition(boxPosition.x, boxPosition.y);
         }
 
         // actionCard
 
         const Json::Value &actionCardData = openJsonFile("/img/hud/action-card.json");
+        float actionTitleTextProportion = dataNumber["action-card-title-proportion"].asFloat();
+        float actionBodyTextProportion = dataNumber["action-card-body-proportion"].asFloat();
+
         std::vector<int> actionCardOwned = {1, 3, 7}; // array that will be sent by shared
 
         for (unsigned index = 0; index < actionCardOwned.size(); ++index)
         {
-            actionCardsToDisplay.emplace_back();
-            actionCardsToDisplay.back().texture = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH + actionCardData[actionCardOwned[index]]["path"].asString());
-            actionCardsToDisplay.back().texture->addSprite();
-            float actionScale = ACTION_CARD_PROPORTION / (float(actionCardsToDisplay.back().texture->getWidth()) / float(WINDOW_LENGTH));
-            actionCardsToDisplay.back().texture->setImageType((HudTextureType)(actionCardOwned[index] + 11)); // +11 to go to the action cards in the HudTextureType (enum class)
-            actionCardsToDisplay.back().texture->setHudSpritePosition(actionScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
+            actionCardsToDisplay.emplace_back(
+                RESOURCES_PATH + actionCardData[actionCardOwned[index]]["path"].asString(),
+                ACTION_CARD_PROPORTION,
+                WINDOW_LENGTH,
+                WINDOW_WIDTH,
+                actionCardOwned[index],
+                index);
 
             std::string titleCardAction = actionCardData[actionCardOwned[index]]["type"].asString();
             std::string bodyCardAction = actionCardData[actionCardOwned[index]]["body"].asString();
 
-            displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &priorityFont);
+            setUpText(
+                actionCardsToDisplay.back(),
+                titleCardAction,
+                bodyCardAction,
+                titleFont,
+                bodyFont,
+                actionTitleTextProportion,
+                actionBodyTextProportion);
         }
 
         // isPlaying buttons
@@ -528,10 +627,15 @@ namespace client
             std::string text = "Player ";
             text += std::to_string(i + 1);
             int offset = dataNumber["offset-between-up-player"].asInt();
-            int upPosition = (WINDOW_LENGTH + (float(2/3) - dataNumber["nb-player"].asInt()) * offset) / 2;
+            int upPosition = (WINDOW_LENGTH + (float(2 / 3) - dataNumber["nb-player"].asInt()) * offset) / 2;
 
-            whoIsPlayingButtons.emplace_back(sf::Vector2f(offset* float(float(2)/float(3)), offset / 2), sf::Vector2f(upPosition + offset * i, 0), PLAYER_COLOR[i], isPlaying);
-            whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &priorityFont);
+            whoIsPlayingButtons.emplace_back(
+                sf::Vector2f(offset * float(float(2) / float(3)), offset / 2),
+                sf::Vector2f(upPosition + offset * i, 0),
+                PLAYER_COLOR[i],
+                isPlaying);
+
+            whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &titleFont);
         }
     }
 
