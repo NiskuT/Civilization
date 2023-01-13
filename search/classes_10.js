@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['range_1925',['range',['../structrange.html',1,'']]],
-  ['range_1926',['Range',['../structRange.html',1,'']]],
+  ['range_1925',['Range',['../structRange.html',1,'']]],
+  ['range_1926',['range',['../structrange.html',1,'']]],
   ['reader_1927',['reader',['../structstcke_1_1reader.html',1,'stcke']]],
   ['readerlockscoped_1928',['ReaderLockScoped',['../classReaderLockScoped.html',1,'']]],
   ['refcountedclass_1929',['RefCountedClass',['../structRefCountedClass.html',1,'']]],

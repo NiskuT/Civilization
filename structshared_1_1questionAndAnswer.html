@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Civilization: shared::Network Class Reference</title>
+<title>Civilization: shared::questionAndAnswer Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,49 +61,38 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>shared</b></li><li class="navelem"><a class="el" href="classshared_1_1Network.html">Network</a></li>  </ul>
+<li class="navelem"><b>shared</b></li><li class="navelem"><a class="el" href="structshared_1_1questionAndAnswer.html">questionAndAnswer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="classshared_1_1Network-members.html">List of all members</a>  </div>
+<a href="structshared_1_1questionAndAnswer-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">shared::Network Class Reference</div>  </div>
+<div class="title">shared::questionAndAnswer Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>class <a class="el" href="classshared_1_1Network.html" title="class Network -">Network</a> -  
- <a href="classshared_1_1Network.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="Network_8hpp_source.html">Network.hpp</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a2e7cfc82165a9bdb2afa960655e642f1"><td class="memItemLeft" align="right" valign="top"><a id="a2e7cfc82165a9bdb2afa960655e642f1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>sendData</b> ()</td></tr>
-<tr class="separator:a2e7cfc82165a9bdb2afa960655e642f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98ebd3e74c2d2b38a28d6bf1ac832cc5"><td class="memItemLeft" align="right" valign="top"><a id="a98ebd3e74c2d2b38a28d6bf1ac832cc5"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>receiveData</b> ()</td></tr>
-<tr class="separator:a98ebd3e74c2d2b38a28d6bf1ac832cc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad18d58dba2dd8298433233943da9582a"><td class="memItemLeft" align="right" valign="top"><a id="ad18d58dba2dd8298433233943da9582a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>openServer</b> ()</td></tr>
-<tr class="separator:ad18d58dba2dd8298433233943da9582a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a181b6c2698ad9ff04ca63932f477340c"><td class="memItemLeft" align="right" valign="top"><a id="a181b6c2698ad9ff04ca63932f477340c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>connectTo</b> ()</td></tr>
-<tr class="separator:a181b6c2698ad9ff04ca63932f477340c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aebd16e55c1a18a4ccdc7d5c74254c752"><td class="memItemLeft" align="right" valign="top"><a id="aebd16e55c1a18a4ccdc7d5c74254c752"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>gameSocket</b></td></tr>
-<tr class="separator:aebd16e55c1a18a4ccdc7d5c74254c752"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71d1bc7c317d6beb37756ce9069d3468"><td class="memItemLeft" align="right" valign="top"><a id="a71d1bc7c317d6beb37756ce9069d3468"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>question</b></td></tr>
+<tr class="separator:a71d1bc7c317d6beb37756ce9069d3468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb0a26a7f368bf34bb54f45b366c2644"><td class="memItemLeft" align="right" valign="top"><a id="abb0a26a7f368bf34bb54f45b366c2644"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>answer</b></td></tr>
+<tr class="separator:abb0a26a7f368bf34bb54f45b366c2644"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1583f21816169de11e4aec2d535bb71"><td class="memItemLeft" align="right" valign="top"><a id="af1583f21816169de11e4aec2d535bb71"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>answerReady</b> = false</td></tr>
+<tr class="separator:af1583f21816169de11e4aec2d535bb71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7111a9ce2812d91fe99e1a1d219d41aa"><td class="memItemLeft" align="right" valign="top"><a id="a7111a9ce2812d91fe99e1a1d219d41aa"></a>
+std::mutex&#160;</td><td class="memItemRight" valign="bottom"><b>sharedDataMutex</b></td></tr>
+<tr class="separator:a7111a9ce2812d91fe99e1a1d219d41aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d42b261ff331ae2782b24c1eae1eb0"><td class="memItemLeft" align="right" valign="top"><a id="ac0d42b261ff331ae2782b24c1eae1eb0"></a>
+std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><b>condition</b></td></tr>
+<tr class="separator:ac0d42b261ff331ae2782b24c1eae1eb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>class <a class="el" href="classshared_1_1Network.html" title="class Network -">Network</a> - </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/shared/<a class="el" href="Network_8hpp_source.html">Network.hpp</a></li>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>include/shared/<a class="el" href="questionAndAnswer_8hpp_source.html">questionAndAnswer.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

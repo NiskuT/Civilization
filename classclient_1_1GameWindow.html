@@ -124,16 +124,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a01f802444fe9777488a680f944faa8a4">openJsonFile</a> (std::string path)</td></tr>
 <tr class="memdesc:a01f802444fe9777488a680f944faa8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open JSON File. <br /></td></tr>
 <tr class="separator:a01f802444fe9777488a680f944faa8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a514340729f56886bf616f18d7c3492f5"><td class="memItemLeft" align="right" valign="top"><a id="a514340729f56886bf616f18d7c3492f5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a514340729f56886bf616f18d7c3492f5">displayText</a> (std::vector&lt; <a class="el" href="classclient_1_1CardStruct.html">CardStruct</a> &gt; *cards, std::string title, std::string body, sf::Font *font)</td></tr>
-<tr class="memdesc:a514340729f56886bf616f18d7c3492f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display text on the cards. <br /></td></tr>
-<tr class="separator:a514340729f56886bf616f18d7c3492f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9a93fd86efb45b9b7df6bb340a31a77"><td class="memItemLeft" align="right" valign="top"><a id="ac9a93fd86efb45b9b7df6bb340a31a77"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#ac9a93fd86efb45b9b7df6bb340a31a77">setUpText</a> (<a class="el" href="classclient_1_1GraphicCard.html">GraphicCard</a> &amp;card, std::string title, std::string body, sf::Font &amp;titleFont, sf::Font &amp;bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)</td></tr>
+<tr class="memdesc:ac9a93fd86efb45b9b7df6bb340a31a77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display text on the cards. <br /></td></tr>
+<tr class="separator:ac9a93fd86efb45b9b7df6bb340a31a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc080a45f2889cbaaf891a4445d00404"><td class="memItemLeft" align="right" valign="top"><a id="afc080a45f2889cbaaf891a4445d00404"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clickAction</b> (sf::Vector2i clickPosition, std::function&lt; void(int, int)&gt; callback)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#afc080a45f2889cbaaf891a4445d00404">clickAction</a> (sf::Vector2i clickPosition, std::function&lt; void(int, int)&gt; callback)</td></tr>
+<tr class="memdesc:afc080a45f2889cbaaf891a4445d00404"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dectect click and actions to do after. <br /></td></tr>
 <tr class="separator:afc080a45f2889cbaaf891a4445d00404"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c3eec515f5ffe0b584736af3ab3d61b"><td class="memItemLeft" align="right" valign="top"><a id="a6c3eec515f5ffe0b584736af3ab3d61b"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>getCurrentTime</b> (bool timeSecond=true)</td></tr>
 <tr class="separator:a6c3eec515f5ffe0b584736af3ab3d61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a478ce687b25d50fb3b1bfb4add18739a"><td class="memItemLeft" align="right" valign="top"><a id="a478ce687b25d50fb3b1bfb4add18739a"></a>
+sf::Vector2i&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a478ce687b25d50fb3b1bfb4add18739a">getBoxesElementsPosition</a> (float boxXProportion, float boxYProportion, <a class="el" href="classclient_1_1GraphicCard.html">GraphicCard</a> &amp;priorityCard)</td></tr>
+<tr class="memdesc:a478ce687b25d50fb3b1bfb4add18739a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get position of number of boxes and boxes on priority cards. <br /></td></tr>
+<tr class="separator:a478ce687b25d50fb3b1bfb4add18739a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -146,33 +151,39 @@ std::unique_ptr&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">Te
 <tr class="memitem:a4cee851fe9948f42c48db85b43dfa480"><td class="memItemLeft" align="right" valign="top"><a id="a4cee851fe9948f42c48db85b43dfa480"></a>
 std::vector&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mapTextureToDisplay</b></td></tr>
 <tr class="separator:a4cee851fe9948f42c48db85b43dfa480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2ba8cf1f02d4b2c71ea864ea0f02486"><td class="memItemLeft" align="right" valign="top"><a id="ab2ba8cf1f02d4b2c71ea864ea0f02486"></a>
+std::unique_ptr&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>boxTexture</b></td></tr>
+<tr class="separator:ab2ba8cf1f02d4b2c71ea864ea0f02486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a457288e7d9b288783f3bf7a385a7664f"><td class="memItemLeft" align="right" valign="top"><a id="a457288e7d9b288783f3bf7a385a7664f"></a>
 std::unordered_map&lt; std::string, std::unique_ptr&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>elementTextureToDisplay</b></td></tr>
 <tr class="separator:a457288e7d9b288783f3bf7a385a7664f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ab44818a65b3143f9c8a7b68efb1a15"><td class="memItemLeft" align="right" valign="top"><a id="a4ab44818a65b3143f9c8a7b68efb1a15"></a>
 std::vector&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hudTextureToDisplay</b></td></tr>
 <tr class="separator:a4ab44818a65b3143f9c8a7b68efb1a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac381f1a34462367023072cee70252509"><td class="memItemLeft" align="right" valign="top"><a id="ac381f1a34462367023072cee70252509"></a>
-std::vector&lt; <a class="el" href="classclient_1_1CardStruct.html">CardStruct</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>priorityCards</b></td></tr>
-<tr class="separator:ac381f1a34462367023072cee70252509"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bf0a2ec5f1590e390099a8d0ae95b38"><td class="memItemLeft" align="right" valign="top"><a id="a9bf0a2ec5f1590e390099a8d0ae95b38"></a>
-std::vector&lt; <a class="el" href="classclient_1_1CardStruct.html">CardStruct</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>actionCardsToDisplay</b></td></tr>
-<tr class="separator:a9bf0a2ec5f1590e390099a8d0ae95b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad12cb357a360e4c05a122516c899e2ad"><td class="memItemLeft" align="right" valign="top"><a id="ad12cb357a360e4c05a122516c899e2ad"></a>
+std::vector&lt; <a class="el" href="classclient_1_1GraphicCard.html">GraphicCard</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>priorityCards</b></td></tr>
+<tr class="separator:ad12cb357a360e4c05a122516c899e2ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a235f3b23a1c67eb3d9b833c10253703a"><td class="memItemLeft" align="right" valign="top"><a id="a235f3b23a1c67eb3d9b833c10253703a"></a>
+std::vector&lt; <a class="el" href="classclient_1_1GraphicCard.html">GraphicCard</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>actionCardsToDisplay</b></td></tr>
+<tr class="separator:a235f3b23a1c67eb3d9b833c10253703a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d5351344023bdd039bf93413dfcf045"><td class="memItemLeft" align="right" valign="top"><a id="a6d5351344023bdd039bf93413dfcf045"></a>
 <a class="el" href="classshared_1_1Map.html">shared::Map</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mapShared</b></td></tr>
 <tr class="separator:a6d5351344023bdd039bf93413dfcf045"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dbed87aa2526b6cc6fd72193946b51c"><td class="memItemLeft" align="right" valign="top"><a id="a9dbed87aa2526b6cc6fd72193946b51c"></a>
 sf::Cursor&#160;</td><td class="memItemRight" valign="bottom"><b>clientCursor</b></td></tr>
 <tr class="separator:a9dbed87aa2526b6cc6fd72193946b51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dcbc8e6e6ca9a19443da746a4fce226"><td class="memItemLeft" align="right" valign="top"><a id="a6dcbc8e6e6ca9a19443da746a4fce226"></a>
-sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>priorityFont</b></td></tr>
-<tr class="separator:a6dcbc8e6e6ca9a19443da746a4fce226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fc1f20acc69fbcacf98e5deccd23965"><td class="memItemLeft" align="right" valign="top"><a id="a0fc1f20acc69fbcacf98e5deccd23965"></a>
+sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>titleFont</b></td></tr>
+<tr class="separator:a0fc1f20acc69fbcacf98e5deccd23965"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82281f9e78fc3988d22a7c13192be8c8"><td class="memItemLeft" align="right" valign="top"><a id="a82281f9e78fc3988d22a7c13192be8c8"></a>
 std::array&lt; int, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>firstHexagonPosition</b></td></tr>
 <tr class="separator:a82281f9e78fc3988d22a7c13192be8c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c4d47404d0469eecb38fd6bcb1ecd98"><td class="memItemLeft" align="right" valign="top"><a id="a2c4d47404d0469eecb38fd6bcb1ecd98"></a>
 std::vector&lt; <a class="el" href="classclient_1_1Button.html">Button</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>whoIsPlayingButtons</b></td></tr>
 <tr class="separator:a2c4d47404d0469eecb38fd6bcb1ecd98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a161f77cbe57717109a35d9d967e819fc"><td class="memItemLeft" align="right" valign="top"><a id="a161f77cbe57717109a35d9d967e819fc"></a>
+sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td></tr>
+<tr class="separator:a161f77cbe57717109a35d9d967e819fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1GameWindow.html" title="class GameWindow -">GameWindow</a> - </p>

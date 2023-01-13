@@ -80,82 +80,28 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a60af529c8c7d42f8f5a4b6e03a4b694c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1Server.html#a60af529c8c7d42f8f5a4b6e03a4b694c">acceptClient</a> (<a class="el" href="classshared_1_1Player.html">shared::Player</a> &amp;player)</td></tr>
-<tr class="memdesc:a60af529c8c7d42f8f5a4b6e03a4b694c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is used to create a new game.  <a href="classserver_1_1Server.html#a60af529c8c7d42f8f5a4b6e03a4b694c">More...</a><br /></td></tr>
-<tr class="separator:a60af529c8c7d42f8f5a4b6e03a4b694c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95b68db962ef79ca742f856eaa0f632b"><td class="memItemLeft" align="right" valign="top"><a id="a95b68db962ef79ca742f856eaa0f632b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>openGame</b> ()</td></tr>
-<tr class="separator:a95b68db962ef79ca742f856eaa0f632b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad73ae53165ce155fd24cfd166047f3c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1Server.html#ad73ae53165ce155fd24cfd166047f3c3">connectToGame</a> (std::string id, <a class="el" href="classshared_1_1Player.html">shared::Player</a> &amp;player)</td></tr>
-<tr class="separator:ad73ae53165ce155fd24cfd166047f3c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a048cceeffcf392c6b2d71a5c4c38195c"><td class="memItemLeft" align="right" valign="top"><a id="a048cceeffcf392c6b2d71a5c4c38195c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>start</b> ()</td></tr>
+<tr class="separator:a048cceeffcf392c6b2d71a5c4c38195c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cb33874d051bd843f36528a545852c8"><td class="memItemLeft" align="right" valign="top"><a id="a3cb33874d051bd843f36528a545852c8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>handleClient</b> (boost::asio::ip::tcp::socket socket)</td></tr>
+<tr class="separator:a3cb33874d051bd843f36528a545852c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24189173223b2df87f17505e715bd31d"><td class="memItemLeft" align="right" valign="top"><a id="a24189173223b2df87f17505e715bd31d"></a>
+std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createNewGame</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player)</td></tr>
+<tr class="separator:a24189173223b2df87f17505e715bd31d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15585e8d0fe4dfe3f647a5aa2bf34671"><td class="memItemLeft" align="right" valign="top"><a id="a15585e8d0fe4dfe3f647a5aa2bf34671"></a>
+std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getGameById</b> (std::string gameId)</td></tr>
+<tr class="separator:a15585e8d0fe4dfe3f647a5aa2bf34671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bc34b86f870f6ae53d7ee3796586c18"><td class="memItemLeft" align="right" valign="top"><a id="a5bc34b86f870f6ae53d7ee3796586c18"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>connectPlayerToGame</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player, std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt; game)</td></tr>
+<tr class="separator:a5bc34b86f870f6ae53d7ee3796586c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60e940eeb0a413b0de52bb34784fca6c"><td class="memItemLeft" align="right" valign="top"><a id="a60e940eeb0a413b0de52bb34784fca6c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>registerClientAnswer</b> (const std::string &amp;response, std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player)</td></tr>
+<tr class="separator:a60e940eeb0a413b0de52bb34784fca6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classserver_1_1Server.html" title="class Server -">Server</a> - </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a60af529c8c7d42f8f5a4b6e03a4b694c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60af529c8c7d42f8f5a4b6e03a4b694c">&#9670;&nbsp;</a></span>acceptClient()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void server::Server::acceptClient </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classshared_1_1Player.html">shared::Player</a> &amp;&#160;</td>
-          <td class="paramname"><em>player</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function is used to create a new game. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">player</td><td>The player who create the game </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="ad73ae53165ce155fd24cfd166047f3c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad73ae53165ce155fd24cfd166047f3c3">&#9670;&nbsp;</a></span>connectToGame()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void server::Server::connectToGame </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classshared_1_1Player.html">shared::Player</a> &amp;&#160;</td>
-          <td class="paramname"><em>player</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Help to assign a client to a game and transfer needed data </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>(???) </td></tr>
-    <tr><td class="paramname">player</td><td>(???) <br  />
- </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/server/<a class="el" href="Server_8hpp_source.html">Server.hpp</a></li>
 <li>src/server/Server.cpp</li>
 </ul>

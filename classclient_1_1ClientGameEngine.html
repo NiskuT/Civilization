@@ -113,6 +113,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>playGame</b> ()</td><
 <tr class="memitem:ace239326443bce92bec0e7ddaf5d9662"><td class="memItemLeft" align="right" valign="top"><a id="ace239326443bce92bec0e7ddaf5d9662"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>playMenu</b> ()</td></tr>
 <tr class="separator:ace239326443bce92bec0e7ddaf5d9662"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee9d0cd53db3059e9635dda731179e21"><td class="memItemLeft" align="right" valign="top"><a id="aee9d0cd53db3059e9635dda731179e21"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>connect</b> (const std::string &amp;serverAddress, int serverPort)</td></tr>
+<tr class="separator:aee9d0cd53db3059e9635dda731179e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c43f2df347dfdccffc12bf86eeac108"><td class="memItemLeft" align="right" valign="top"><a id="a3c43f2df347dfdccffc12bf86eeac108"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>startReceiving</b> ()</td></tr>
+<tr class="separator:a3c43f2df347dfdccffc12bf86eeac108"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a620494b82971fa2be03b44b1b12daeaf"><td class="memItemLeft" align="right" valign="top"><a id="a620494b82971fa2be03b44b1b12daeaf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>registerServerAnswer</b> (const std::string &amp;response)</td></tr>
+<tr class="separator:a620494b82971fa2be03b44b1b12daeaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ff7766f99eadb1b831277a639c12179"><td class="memItemLeft" align="right" valign="top"><a id="a6ff7766f99eadb1b831277a639c12179"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>processServerRequest</b> (const std::string &amp;request)</td></tr>
+<tr class="separator:a6ff7766f99eadb1b831277a639c12179"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa299f1748d0b8646a498a09b72ac044c"><td class="memItemLeft" align="right" valign="top"><a id="aa299f1748d0b8646a498a09b72ac044c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>askServer</b> ()</td></tr>
+<tr class="separator:aa299f1748d0b8646a498a09b72ac044c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -137,6 +152,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>turn</b> = 0</td></tr>
 <tr class="memitem:a61f4c6820e173b46f4d7ed2e369ac54a"><td class="memItemLeft" align="right" valign="top"><a id="a61f4c6820e173b46f4d7ed2e369ac54a"></a>
 std::mutex&#160;</td><td class="memItemRight" valign="bottom"><b>mutexRunningEngine</b></td></tr>
 <tr class="separator:a61f4c6820e173b46f4d7ed2e369ac54a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb12c8537178de52a826c7a9cad51214"><td class="memItemLeft" align="right" valign="top"><a id="acb12c8537178de52a826c7a9cad51214"></a>
+std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>myself</b></td></tr>
+<tr class="separator:acb12c8537178de52a826c7a9cad51214"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae206c8ea1685207e9d7a3bf9db95c155"><td class="memItemLeft" align="right" valign="top"><a id="ae206c8ea1685207e9d7a3bf9db95c155"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>gameId</b> = &quot;new&quot;</td></tr>
+<tr class="separator:ae206c8ea1685207e9d7a3bf9db95c155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1ClientGameEngine.html" title="class ClientGameEngine -">ClientGameEngine</a> - </p>
