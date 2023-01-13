@@ -15,14 +15,15 @@
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
 
-#define PRIORITY_CARD_PROPORTION 0.144
 #define ACTION_CARD_PROPORTION 0.125
 #define TITLE_PROPORTION 0.025
 #define BODY_PROPORTION_X 0.0075
-#define BODY_PROPORTION_Y 0.05
-#define MAX_CHARACTER_SIZE 18
+#define BODY_PROPORTION_Y 0.055
+#define MAX_CHARACTER_SIZE 19
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
+
+#define CARD_BORDER 18
 
 #define ELEMENT_PATH "/img/map/element/"
 
@@ -31,10 +32,10 @@
 #endif
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
+const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
 
 namespace client
 {
-
     /*!
      * \brief Constructor
      *
@@ -77,7 +78,12 @@ namespace client
         {
             clientGameWindow->draw(priorityCards[i].texture->getSprite(0));
             clientGameWindow->draw(*priorityCards[i].title);
-            clientGameWindow->draw(*priorityCards[i].body);
+            clientGameWindow->draw(boxTexture->getSprite(i));
+            clientGameWindow->draw(*priorityCards[i].nbOfBoxesText);
+            if (priorityCards[i].isUp)
+            {
+                clientGameWindow->draw(*priorityCards[i].body);
+            }
         }
 
         for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
@@ -102,6 +108,7 @@ namespace client
                 clientGameWindow->draw(hudTextureToDisplay[i].getSprite(j));
             }
         }
+
         clientGameWindow->display();
     }
 
@@ -113,13 +120,16 @@ namespace client
      */
     void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(int, int)> callback)
     {
+        quitGameWindow = quitGame;
+        clickEvent = callback;
         clientGameWindow = clientWindow;
 
-        int moveMode = false;
-        int clickMode = false;
+        std::shared_ptr<bool> moveMode = std::make_unique<bool>(false);
+        std::shared_ptr<bool> clickMode = std::make_unique<bool>(false);
+
+        std::array<int, 2> newMapOffset;
 
         sf::Vector2i clickStartingPoint;
-        std::array<int, 2> newMapOffset;
 
         long lastUpdateTimer = getCurrentTime(false);
 
@@ -136,162 +146,118 @@ namespace client
             sf::Event event;
             while (clientGameWindow->pollEvent(event))
             {
-
-                switch (event.type)
-                {
-                case sf::Event::MouseButtonPressed:
-
-                    clickMode = true;
-
-                    clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
-
-                    if (!moveMode)
-                        clickAction(clickStartingPoint, callback);
-
-                    break;
-
-                case sf::Event::MouseButtonReleased:
-
-                    clickMode = false;
-
-                    break;
-
-                case sf::Event::MouseMoved:
-
-                    if (moveMode && clickMode)
-                    {
-
-                        newMapOffset = {sf::Mouse::getPosition(*clientGameWindow).x - clickStartingPoint.x,
-                                        sf::Mouse::getPosition(*clientGameWindow).y - clickStartingPoint.y};
-
-                        firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0],
-                                                firstHexagonPosition[1] + newMapOffset[1]};
-
-                        for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-                            mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-
-                        for (auto &kv : elementTextureToDisplay)
-                        {
-                            kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                        }
-
-                        clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
-                    }
-                    break;
-
-                case sf::Event::KeyPressed:
-
-                    switch (event.key.code)
-                    {
-                    case sf::Keyboard::M:
-
-                        if (moveMode)
-                        {
-                            moveMode = false;
-                            if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-                                clientGameWindow->setMouseCursor(clientCursor);
-                        }
-                        else
-                        {
-                            moveMode = true;
-                            if (clientCursor.loadFromSystem(sf::Cursor::Hand))
-                                clientGameWindow->setMouseCursor(clientCursor);
-                        }
-                        break;
-
-                    case sf::Keyboard::K:
-
-                        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-                            clientGameWindow->setMouseCursor(clientCursor);
-                        quitGame(false);
-                        return;
-
-                    case sf::Keyboard::Escape:
-                        quitGame(true);
-                        return;
-
-                    case sf::Keyboard::L:
-
-                        newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
-                                        MAP_Y_OFFSET - firstHexagonPosition[1]};
-
-                        firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
-
-                        for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
-                        {
-                            mapTextureToDisplay[i].moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                        }
-
-                        for (auto &kv : elementTextureToDisplay)
-                        {
-                            kv.second->moveSpritePosition(newMapOffset[0], newMapOffset[1]);
-                        }
-
-                        clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
-
-                        break;
-
-                    default:
-                        break;
-                    }
-                    break;
-
-                case sf::Event::Closed:
-                    quitGame(true);
-                    return;
-
-                default:
-                    break;
-                }
+                if (gameEventHappened(&event, &clickStartingPoint, &newMapOffset, moveMode, clickMode)) return;
             }
         }
     }
 
-    /*!
-     * \brief Function that deteck where the user click and what to send to the engine
-    * @param clickPosition is the position on the cursor when the user click
-     */
-    void GameWindow::clickAction(sf::Vector2i clickPosition, std::function<void(int, int)> callback)
+    bool GameWindow::gameEventHappened(sf::Event* event, sf::Vector2i* clickStartingPoint, std::array<int, 2>* newMapOffset, std::shared_ptr<bool> moveMode, std::shared_ptr<bool> clickMode)
     {
-
-        int minimumDistance = WINDOW_LENGTH;
-        std::array<int, 2> hexagonOnClick = {0, 0};
-
-        sf::FloatRect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
-        cursorRect.left = clickPosition.x;
-        cursorRect.top = clickPosition.y;
-        cursorRect.width = 1;
-        cursorRect.height = 1;
-
-        bool isClickable = false;
-
-        for (int i = 0; i < NUMBER_OF_FIELD; i++)
+        switch (event->type)
         {
+        case sf::Event::MouseButtonPressed:
 
-            for (unsigned j = 0; j < mapTextureToDisplay[i].getSize(); j++)
+            *clickMode = true;
+
+            *clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
+
+            if (!*moveMode)
+                clickAction(*clickStartingPoint);
+
+            break;
+
+        case sf::Event::MouseButtonReleased:
+
+            *clickMode = false;
+
+            break;
+
+        case sf::Event::MouseMoved:
+
+            if (*moveMode && *clickMode)
             {
 
-                sf::FloatRect spriteBounds = mapTextureToDisplay[i].getSprite(j).getGlobalBounds();
+                *newMapOffset = {sf::Mouse::getPosition(*clientGameWindow).x - clickStartingPoint->x,
+                                 sf::Mouse::getPosition(*clientGameWindow).y - clickStartingPoint->y};
 
-                if (spriteBounds.intersects(cursorRect))
+                firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset->at(0),
+                                        firstHexagonPosition[1] + newMapOffset->at(1)};
+
+                for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                    mapTextureToDisplay[i].moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+
+                for (auto &kv : elementTextureToDisplay)
                 {
-
-                    isClickable = true;
-
-                    int distance = sqrt(pow(spriteBounds.left + spriteBounds.width / 2 - cursorRect.left, 2) + pow(spriteBounds.top + spriteBounds.height / 2 - cursorRect.top, 2));
-
-                    if (distance < minimumDistance)
-                    {
-
-                        minimumDistance = distance;
-                        hexagonOnClick[1] = (int)((spriteBounds.top - firstHexagonPosition[1])) / (int)((spriteBounds.height * 3 / 4));
-                        hexagonOnClick[0] = (int)((spriteBounds.left - firstHexagonPosition[0])) / (int)((spriteBounds.width - 1));
-                    }
+                    kv.second->moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
                 }
+
+                *clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
             }
+            break;
+
+        case sf::Event::KeyPressed:
+
+            switch (event->key.code)
+            {
+            case sf::Keyboard::M:
+                if (*moveMode)
+                {
+                    *moveMode = false;
+                    if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
+                        clientGameWindow->setMouseCursor(clientCursor);
+                }
+                else
+                {
+                    *moveMode = true;
+                    if (clientCursor.loadFromSystem(sf::Cursor::Hand))
+                        clientGameWindow->setMouseCursor(clientCursor);
+                }
+                break;
+
+            case sf::Keyboard::K:
+                if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
+                    clientGameWindow->setMouseCursor(clientCursor);
+                quitGameWindow(false);
+                return true;
+
+            case sf::Keyboard::Escape:
+                quitGameWindow(true);
+                return true;
+
+            case sf::Keyboard::L:
+
+                *newMapOffset = {MAP_X_OFFSET - firstHexagonPosition[0],
+                                 MAP_Y_OFFSET - firstHexagonPosition[1]};
+
+                firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
+
+                for (unsigned i = 0; i < mapTextureToDisplay.size(); i++)
+                {
+                    mapTextureToDisplay[i].moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+                }
+
+                for (auto &kv : elementTextureToDisplay)
+                {
+                    kv.second->moveSpritePosition(newMapOffset->at(0), newMapOffset->at(1));
+                }
+
+                *clickStartingPoint = sf::Mouse::getPosition(*clientGameWindow);
+
+                break;
+
+            default:
+                break;
+            }
+            break;
+
+        case sf::Event::Closed:
+            quitGameWindow(true);
+            return true;
+
+        default:
+            break;
         }
-        if (isClickable)
-            callback(hexagonOnClick[0], hexagonOnClick[1]);
+        return false;
     }
 
     /*!
@@ -321,15 +287,115 @@ namespace client
     }
 
     /*!
-     * \brief Display text on the cards
+     * \brief Function that deteck where the user click and what to send to the engine
+    * @param clickPosition is the position on the cursor when the user click
      */
-    void GameWindow::displayText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *font)
+    void GameWindow::clickAction(sf::Vector2i clickPosition)
     {
 
+        const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
+
+        float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(card->texture->getWidth()) / float(WINDOW_LENGTH));
+
+        int yPos;
+        int xPos;
+        int xTitlePos;
+        int xBodyPosition;
+
+        if (!card->isUp)
+        {
+            yPos = WINDOW_WIDTH - card->texture->getHeight() * priorityScale;
+            card->isUp = true;
+        }
+        else
+        {
+            yPos = WINDOW_WIDTH - card->texture->getHeight() * priorityScale + dataNumber["priority-card-up-scale"].asFloat() * WINDOW_WIDTH;
+            card->isUp = false;
+        }
+
+        xPos = card->texture->getSprite().getPosition().x;
+        xTitlePos = card->title->getPosition().x;
+        xBodyPosition = card->body->getPosition().x;
+
+        int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
+
+        card->texture->getSprite().setPosition(xPos, yPos);
+        card->title->setPosition(xTitlePos, yPos);
+        card->body->setPosition(xBodyPosition, yPos + yBodyOffset);
+    }
+
+    /*!
+     * \brief Dectect click and actions to do after
+     */
+    void GameWindow::clickAction(sf::Vector2i clickPosition)
+    {
+        int minimumDistance = WINDOW_LENGTH;
+        std::array<int, 2> hexagonOnClick = {0, 0};
+
+        sf::FloatRect cursorRect = mapTextureToDisplay[0].getSprite(0).getGlobalBounds();
+        cursorRect.left = clickPosition.x;
+        cursorRect.top = clickPosition.y;
+        cursorRect.width = 1;
+        cursorRect.height = 1;
+
+        bool isClickable = false;
+
+        for (unsigned i = 0; i < priorityCards.size(); i++)
+        {
+            sf::FloatRect spriteBounds = priorityCards[i].texture->getSprite().getGlobalBounds();
+
+            if (spriteBounds.intersects(cursorRect))
+            {
+                clickEvent(-1, i + 1); // -1 to signify that the space clicked is a priority card
+                moveUpPriorityCard(&priorityCards[i]);
+                return;
+            }
+        }
+
+        for (auto &mapTexture : mapTextureToDisplay)
+        {
+
+            for (unsigned j = 0; j < mapTexture.getSize(); j++)
+            {
+
+                sf::FloatRect spriteBounds = mapTexture.getSprite(j).getGlobalBounds();
+
+                if (spriteBounds.intersects(cursorRect))
+                {
+
+                    isClickable = true;
+
+                    int distance = sqrt(pow(spriteBounds.left + spriteBounds.width / 2 - cursorRect.left, 2) + pow(spriteBounds.top + spriteBounds.height / 2 - cursorRect.top, 2));
+
+                    if (distance < minimumDistance)
+                    {
+
+                        minimumDistance = distance;
+                        hexagonOnClick[1] = (int)((spriteBounds.top - firstHexagonPosition[1])) / (int)((spriteBounds.height * 3 / 4));
+                        hexagonOnClick[0] = (int)((spriteBounds.left - firstHexagonPosition[0])) / (int)((spriteBounds.width - 1));
+                    }
+                }
+            }
+        }
+
+        if (isClickable)
+        {
+            clickEvent(hexagonOnClick[0], hexagonOnClick[1]);
+        }
+    }
+
+    /*!
+     * \brief Display text on the cards
+     */
+    void GameWindow::setUpText(std::vector<CardStruct> *cards, std::string title, std::string body, sf::Font *titleFont, sf::Font *bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
+    {
+        int titleTextSize = titleTextSizeProportion * WINDOW_LENGTH;
+        int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;
+
         // display the title on the card
-        cards->back().title = (std::unique_ptr<sf::Text>)new sf::Text(title, *font, TITLE_PROPORTION * WINDOW_LENGTH);
+        cards->back().title = (std::unique_ptr<sf::Text>)new sf::Text(title, *titleFont, titleTextSize);
         cards->back().title->setStyle(sf::Text::Bold);
-        cards->back().title->setFillColor(sf::Color::Black);
+        cards->back().title->setFillColor(TEXT_COLOR);
         auto titleSize = cards->back().title->getLocalBounds();
         int xTitleOffset = (cards->back().texture->getWidth() - titleSize.width) / 2;
         int xTitlePosition = cards->back().texture->getSprite().getPosition().x + xTitleOffset;
@@ -337,18 +403,18 @@ namespace client
         cards->back().title->setPosition(xTitlePosition, yTitlePosition);
 
         // display the body on the card
-        cards->back().body = (std::unique_ptr<sf::Text>)new sf::Text(body, *font, 30);
+        cards->back().body = (std::unique_ptr<sf::Text>)new sf::Text(body, *bodyFont, bodyTextSize);
 
         // to have the text on several lines without exceeding the card
         int countEndLine = 1;
-        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - 10)
+        while (cards->back().body->getLocalBounds().width > cards->back().texture->getWidth() - CARD_BORDER) // 18 to not touch the black border
         {
 
             for (int i = countEndLine * NBR_CHAR_MAX_PER_LIGNE; i > 0; i--)
             {
                 if ((char)body[i] == ' ')
                 {
-                    body.insert(i, "\n");
+                    body.replace(i, 1, "\n");
                     countEndLine++;
                     break;
                 }
@@ -356,7 +422,8 @@ namespace client
             cards->back().body->setString(body);
         }
 
-        cards->back().body->setFillColor(sf::Color::Black);
+        cards->back().body->setFillColor(TEXT_COLOR);
+        cards->back().body->setLineSpacing(0.9f);
         int xBodyOffset = BODY_PROPORTION_X * WINDOW_LENGTH;
         int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
         int xBodyPosition = cards->back().texture->getSprite().getPosition().x + xBodyOffset;
@@ -455,6 +522,26 @@ namespace client
     }
 
     /*!
+     * \brief Get position of number of boxes and boxes on priority cards
+     */
+
+    sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, CardStruct *priorityCard)
+    {
+        int xBoxPos;
+        int yBoxPos;
+        int xBoxOffset;
+        int yBoxOffset;
+
+        xBoxOffset = boxXProportion * WINDOW_LENGTH;
+        yBoxOffset = boxYProportion * WINDOW_WIDTH;
+
+        xBoxPos = priorityCard->texture->getSprite().getPosition().x + xBoxOffset;
+        yBoxPos = priorityCard->texture->getSprite().getPosition().y + yBoxOffset;
+
+        return (sf::Vector2i(xBoxPos, yBoxPos));
+    }
+
+    /*!
      * \brief Load all the HUD textures
      */
 
@@ -483,29 +570,58 @@ namespace client
         }
 
         // load the priorityCard
-        if (!priorityFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+        boxTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/hud/box.png");
+        std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
+        std::string boxString = "0";
+
+        if (!titleFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+        {
+            std::cerr << "Font not loaded" << std::endl;
+        }
+
+        if (!bodyFont.loadFromFile(RESOURCES_PATH "/img/hud/Calibri.ttf"))
         {
             std::cerr << "Font not loaded" << std::endl;
         }
 
         const Json::Value &priorityData = openJsonFile("/img/hud/priority-card.json");
+        float priorityTitleTextProportion = dataNumber["priority-card-title-proportion"].asFloat();
+        float priorityBodyTextProportion = dataNumber["priority-card-body-proportion"].asFloat();
 
         for (unsigned index = 0; index < priorityData.size(); ++index)
         {
             priorityCards.emplace_back();
             priorityCards.back().texture = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH + priorityData[index]["path"].asString());
             priorityCards.back().texture->addSprite();
-            float priorityScale = PRIORITY_CARD_PROPORTION / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
+            float priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(priorityCards.back().texture->getWidth()) / float(WINDOW_LENGTH));
             priorityCards.back().texture->setImageType((HudTextureType)(index + 7)); // +7 to go to the priority cards in the HudTextureType (enum class)
             priorityCards.back().texture->setHudSpritePosition(priorityScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, index);
-            priorityCards.back().level = 0;
+            priorityCards.back().level = 0; // sent by the server
+            priorityCards.back().isUp = false;
 
-            displayText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &priorityFont);
+            // title and body
+
+            setUpText(&priorityCards, priorityData[index]["title"].asString(), priorityData[index]["body"][priorityCards.back().level].asString(), &titleFont, &bodyFont, priorityTitleTextProportion, priorityBodyTextProportion);
+
+            // boxes
+
+            boxString = std::to_string(numberOfBoxesPerCard[index]);
+            boxString += " x";
+            priorityCards.back().nbOfBoxesText = (std::unique_ptr<sf::Text>)new sf::Text(boxString, titleFont, dataNumber["box-number-text-size"].asInt());
+            sf::Vector2i boxNumberPosition = getBoxesElementsPosition(dataNumber["box-x-number-offset-proportion"].asFloat(), dataNumber["box-y-number-offset-proportion"].asFloat(), &priorityCards.back());
+            priorityCards.back().nbOfBoxesText->setPosition(boxNumberPosition.x, boxNumberPosition.y);
+
+            boxTexture->addSprite();
+            sf::Vector2i boxPosition = getBoxesElementsPosition(dataNumber["box-x-offset-proportion"].asFloat(), dataNumber["box-y-offset-proportion"].asFloat(), &priorityCards.back());
+            boxTexture->getSprite(index).setPosition(boxPosition.x, boxPosition.y);
         }
 
         // actionCard
 
         const Json::Value &actionCardData = openJsonFile("/img/hud/action-card.json");
+        float actionTitleTextProportion = dataNumber["action-card-title-proportion"].asFloat();
+        float actionBodyTextProportion = dataNumber["action-card-body-proportion"].asFloat();
+
         std::vector<int> actionCardOwned = {1, 3, 7}; // array that will be sent by shared
 
         for (unsigned index = 0; index < actionCardOwned.size(); ++index)
@@ -520,7 +636,7 @@ namespace client
             std::string titleCardAction = actionCardData[actionCardOwned[index]]["type"].asString();
             std::string bodyCardAction = actionCardData[actionCardOwned[index]]["body"].asString();
 
-            displayText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &priorityFont);
+            setUpText(&actionCardsToDisplay, titleCardAction, bodyCardAction, &titleFont, &bodyFont, actionTitleTextProportion, actionBodyTextProportion);
         }
 
         // isPlaying buttons
@@ -535,10 +651,10 @@ namespace client
             std::string text = "Player ";
             text += std::to_string(i + 1);
             int offset = dataNumber["offset-between-up-player"].asInt();
-            int upPosition = (WINDOW_LENGTH + (float(2/3) - dataNumber["nb-player"].asInt()) * offset) / 2;
+            int upPosition = (WINDOW_LENGTH + (float(2 / 3) - dataNumber["nb-player"].asInt()) * offset) / 2;
 
-            whoIsPlayingButtons.emplace_back(sf::Vector2f(offset* float(float(2)/float(3)), offset / 2), sf::Vector2f(upPosition + offset * i, 0), PLAYER_COLOR[i], isPlaying);
-            whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &priorityFont);
+            whoIsPlayingButtons.emplace_back(sf::Vector2f(offset * float(float(2) / float(3)), offset / 2), sf::Vector2f(upPosition + offset * i, 0), PLAYER_COLOR[i], isPlaying);
+            whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, &titleFont);
         }
     }
 

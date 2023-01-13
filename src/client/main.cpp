@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
             std::cout << "  -h\t\t\tShow this help" << std::endl;
             std::cout << "  -r\t\t\tStart client" << std::endl;
             std::cout << "  hello\t\t\tPrint hello world" << std::endl;
+            std::cout << "  -n\t\t\tStart network client" << std::endl;
         }
         else if (arg.compare("-r") == 0 || arg.compare("render") == 0)
         {
@@ -29,6 +30,20 @@ int main(int argc, char *argv[])
         else if (arg.compare("hello") == 0)
         {
             std::cout << "Hello world" << std::endl;
+        }
+        else if (arg.compare("-n") == 0 || arg.compare("network") == 0)
+        {
+            client::ClientGameEngine maGame;
+            maGame.connect("127.0.0.1", 8080);
+            while(true)
+            {
+                sleep(3);
+                std::unique_lock<std::mutex> lock(maGame.myself->qAndA.sharedDataMutex);
+                maGame.myself->qAndA.question = "getstate\n";
+                lock.unlock();
+                maGame.askServer();
+
+            }
         }
         else
         {
