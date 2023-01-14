@@ -16,7 +16,7 @@ namespace client
 {
 
     /*!
-     * \brief Constructor
+     * @brief Constructor
      *
      * Constructor of MenuWindow class
      */
@@ -26,7 +26,7 @@ namespace client
     }
 
     /*!
-     * \brief Display all the menu on the screen
+     * @brief Display all the menu on the screen
      */
     void MenuWindow::displayWindow()
     {
@@ -46,7 +46,7 @@ namespace client
     }
 
     /*!
-     * \brief Loop that look for events to happend and call displayWindow()
+     * @brief Loop that look for events to happend and call displayWindow()
      * @param clientWindow is window that comes from the engine
      * @param quitGame is the function used to quit the menu, it is load as an attribut
      */
@@ -79,7 +79,7 @@ namespace client
     }
 
     /*!
-     * \brief Test events and do actions corresponding to the event
+     * @brief Test events and do actions corresponding to the event
      * @param event pointer to the event
      */
     bool MenuWindow::menuEventHappened(sf::Event& event){
@@ -122,7 +122,7 @@ namespace client
     }
 
     /*!
-     * \brief Load all the textures that will be display on the menu
+     * @brief Load all the textures that will be display on the menu
      */
     void MenuWindow::loadMenuTexture()
     {
@@ -170,7 +170,7 @@ namespace client
     }
 
     /*!
-     * \brief Function that deteck where the user click and what to send to the engine
+     * @brief Function that deteck where the user click and what to send to the engine
      * @param timeSecond is a boolean used to 
      */
     long MenuWindow::getCurrentTime(bool timeSecond)

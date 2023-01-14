@@ -17,7 +17,7 @@
 namespace client
 {
     /*!
-     * \brief Constructor
+     * @brief Constructor
      *
      * Constructor of ClientGameEngine class
      */
@@ -28,7 +28,7 @@ namespace client
     }
 
     /*!
-     * \brief Quentin
+     * @brief Quentin
      * @param serverAddress
      * @param serverPort
      */
@@ -61,7 +61,7 @@ namespace client
     }
 
     /*!
-     * \brief Quentin
+     * @brief Quentin
      */
     void ClientGameEngine::startReceiving()
     {
@@ -103,7 +103,7 @@ namespace client
     }
 
     /*!
-     * \brief Quentin
+     * @brief Quentin
      * @param
      */
     void ClientGameEngine::registerServerAnswer(const std::string &response)
@@ -115,7 +115,7 @@ namespace client
     }
 
     /*!
-     * \brief Quentin
+     * @brief Quentin
      * @param request
      */
     void ClientGameEngine::processServerRequest(const std::string &request)
@@ -124,7 +124,7 @@ namespace client
     }
 
     /*!
-     * \brief Quentin
+     * @brief Quentin
      */
     void ClientGameEngine::askServer()
     {
@@ -144,7 +144,7 @@ namespace client
     }
 
     /*!
-     * \brief Print where the user click on the GameWindow
+     * @brief Print where the user click on the GameWindow
      * @param x position on x axis 
      * @param y position on y axis 
      */
@@ -161,7 +161,7 @@ namespace client
     }   
 
     /*!
-     * \brief Change the Window for nothing, Menu or Game
+     * @brief Change the Window for nothing, Menu or Game
      * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
      */
     void ClientGameEngine::handleQuitMenu(bool quitDef)
@@ -178,7 +178,7 @@ namespace client
     }
 
     /*!
-     * \brief Start the loop that manage the GameWindow
+     * @brief Start the loop that manage the GameWindow
      */
     void ClientGameEngine::startGameWindow()
     {
@@ -190,7 +190,7 @@ namespace client
     }
 
     /*!
-     * \brief Start the loop that manage the MenuWindow
+     * @brief Start the loop that manage the MenuWindow
      */
     void ClientGameEngine::startMenuWindow()
     {
@@ -199,7 +199,7 @@ namespace client
     }
 
     /*!
-     * \brief Loop that manage the entire Engine
+     * @brief Loop that manage the entire Engine
      */
     void ClientGameEngine::renderGame()
     {
@@ -225,7 +225,7 @@ namespace client
     }
 
     /*!
-     * \brief Loop that is used when the client is in GameMode
+     * @brief Loop that is used when the client is in GameMode
      */
     void ClientGameEngine::playGame()
     {
@@ -284,7 +284,7 @@ namespace client
     }
 
     /*!
-     * \brief Loop that is used when the client is in MenuMode
+     * @brief Loop that is used when the client is in MenuMode
      */
     void ClientGameEngine::playMenu()
     {

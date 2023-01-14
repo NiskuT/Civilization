@@ -5,7 +5,7 @@ namespace client
 {
 
 /*!
- * \brief Constructor
+ * @brief Constructor
  *
  * Constructor of Button class
  *
@@ -35,7 +35,7 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
 }
 
 /*!
- * \brief Set the text of the Button
+ * @brief Set the text of the Button
  *
  * @param textSize size of the text
  * @param textOffset offset of the text

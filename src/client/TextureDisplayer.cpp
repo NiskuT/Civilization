@@ -11,7 +11,7 @@
 namespace client {
 
 /*!
- * \brief Constructor
+ * @brief Constructor
  *
  * Constructor of TextureDisplayer class
  *
@@ -35,7 +35,7 @@ void TextureDisplayer::setImageType(HudTextureType imageType)
 }
 
 /*!
- * \brief Add a Sprite with the texture to the TextureDisplayer
+ * @brief Add a Sprite with the texture to the TextureDisplayer
  */
 void TextureDisplayer::addSprite()
 {
@@ -46,7 +46,7 @@ void TextureDisplayer::addSprite()
 }
 
 /*!
- * \brief Move the sprite Position
+ * @brief Move the sprite Position
  * @param xOffset is the X offset of the map in the screen
  * @param yOffset is the Y offset of the map in the screen
  */
@@ -61,7 +61,7 @@ void TextureDisplayer::moveSpritePosition(int xOffset, int yOffset)
 }
 
 /*!
- * \brief Delete all sprites
+ * @brief Delete all sprites
  */
 void TextureDisplayer::clearSprites(){
     std::lock_guard<std::mutex> lock(*mutexTexture);
@@ -69,7 +69,7 @@ void TextureDisplayer::clearSprites(){
 }
 
 /*!
- * \brief Set a particular Sprite Position
+ * @brief Set a particular Sprite Position
  * @param index is the index position of the sprite
  * @param x is the X position of the sprite in the Map
  * @param y is the Y position of the sprite in the Map
@@ -104,7 +104,7 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
 }
 
 /*!
- * \brief Violaine
+ * @brief Violaine
  * @param scale
  * @param windowLength
  * @param windowWidth
@@ -188,7 +188,7 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
 }
 
 /*!
- * \brief Get the number of sprite in a TextureDisplayer
+ * @brief Get the number of sprite in a TextureDisplayer
  */
 unsigned TextureDisplayer::getSize()
 {    
@@ -196,7 +196,7 @@ unsigned TextureDisplayer::getSize()
 }
 
 /*!
- * \brief Get a particular sprite
+ * @brief Get a particular sprite
  *
  * @param index is the position of the sprite in the textureDisplayer list of Sprite
  */
@@ -206,7 +206,7 @@ sf::Sprite& TextureDisplayer::getSprite(unsigned index)
 }
 
 /*!
- * \brief Get the Width of the texture
+ * @brief Get the Width of the texture
  */
 int TextureDisplayer::getWidth()
 {    
@@ -214,7 +214,7 @@ int TextureDisplayer::getWidth()
 }
 
 /*!
- * \brief Get the Height of the texture
+ * @brief Get the Height of the texture
  */
 int TextureDisplayer::getHeight()
 {    
@@ -222,7 +222,7 @@ int TextureDisplayer::getHeight()
 }
 
 /*!
- * \brief draw all the sprites of a TextureDisplayer
+ * @brief draw all the sprites of a TextureDisplayer
  * @param window window where the sprites are displayed
  */
 void TextureDisplayer::drawTextureDisplayerSprite(std::shared_ptr<sf::RenderWindow> window){

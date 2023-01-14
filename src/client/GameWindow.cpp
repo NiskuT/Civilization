@@ -37,7 +37,7 @@ const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
 namespace client
 {
     /*!
-     * \brief Constructor
+     * @brief Constructor
      *
      * Constructor of GameWindow class
      */
@@ -52,7 +52,7 @@ namespace client
     }
 
     /*!
-     * \brief Display all the different variable in the screen
+     * @brief Display all the different variable in the screen
      */
     void GameWindow::displayWindow()
     {
@@ -108,7 +108,7 @@ namespace client
     }
 
     /*!
-     * \brief Loop that look for events to happend and call displayWindow()
+     * @brief Loop that look for events to happend and call displayWindow()
      * @param clientWindow is window that comes from the engine
      * @param quitGame is the function used to quit the menu, it is load as an attribut
      * @param callback is the function used to return where the user click on the screen
@@ -148,7 +148,7 @@ namespace client
     }
 
     /*!
-     * \brief Test events and do actions corresponding to the event
+     * @brief Test events and do actions corresponding to the event
      * @param event pointer to the event
      * @param clickStartingPoint reference used to know where the user start pressing mouse
      * @param moveMode pointer to know if the map is moving on the screen
@@ -291,7 +291,7 @@ namespace client
     }
 
     /*!
-     * \brief Open JSON File
+     * @brief Open JSON File
      * @param path path of the JSON File
      */
     const auto GameWindow::openJsonFile(std::string path)
@@ -317,9 +317,9 @@ namespace client
     }
 
     /*!
-     * \brief Function that deteck where the user click and what to send to the engine
+     * @brief Function that deteck where the user click and what to send to the engine
      * @param clickPosition is the position on the cursor when the user click
-     * \brief Dectect click and actions to do after
+     * @brief Dectect click and actions to do after
      */
     void GameWindow::clickAction(sf::Vector2i clickPosition)
     {
@@ -379,7 +379,7 @@ namespace client
     }
 
     /*!
-     * \brief Display text on the cards
+     * @brief Display text on the cards
      * @param cards pointer to the card you want to setUp the text
      * @param title text to be display on the top of the card
      * @param body text to be display on body of the card, float
@@ -433,7 +433,7 @@ namespace client
     }
 
     /*!
-     * \brief Load all the textures of the map
+     * @brief Load all the textures of the map
      */
     void GameWindow::loadMapTexture()
     {
@@ -463,7 +463,7 @@ namespace client
     }
 
     /*!
-     * \brief Load all the textures of the elements
+     * @brief Load all the textures of the elements
      */
     void GameWindow::loadElementTexture()
     {
@@ -498,7 +498,7 @@ namespace client
     }
 
     /*!
-     * \brief Update all the textures of the map
+     * @brief Update all the textures of the map
      */
     void GameWindow::updateElementTexture()
     {
@@ -525,7 +525,7 @@ namespace client
     }
 
     /*!
-     * \brief Get position of number of boxes and boxes on priority cards
+     * @brief Get position of number of boxes and boxes on priority cards
      * @param boxXProportion proportion of the box on x axis
      * @param boxYProportion proportion of the box on y axis
      * @param priorityCard pointer to the card you want to setUp the text
@@ -548,7 +548,7 @@ namespace client
     }
 
     /*!
-     * \brief Load all the HUD textures
+     * @brief Load all the HUD textures
      */
     void GameWindow::loadHudTexture()
     {
@@ -690,7 +690,7 @@ namespace client
     }
 
     /*!
-     * \brief Function that deteck where the user click and what to send to the engine
+     * @brief Function that deteck where the user click and what to send to the engine
      * @param timeSecond is a boolean used to
      */
     long GameWindow::getCurrentTime(bool timeSecond)
