@@ -26,18 +26,25 @@ namespace shared
      * @fn void Rules::runTheRule(unsigned numberOfBoxUsed)
      * @brief This function aim to run the rule of the card
      */
-    void Rules::runTheRule(ArgsOfRule *args)
+    void Rules::runTheRule(std::shared_ptr<ArgsOfRule> args)
     {
         switch (this->ruleId)
         {
         case CardsEnum::economy:
             playEconomyCard(args);
             break;
-
         case CardsEnum::science:
             playScienceCard(args);
             break;
-
+        case CardsEnum::military:
+            playMilitaryCard(args);
+            break;
+        case CardsEnum::culture:
+            playCultureCard(args);
+            break;
+        case CardsEnum::industry:
+            playIndustryCard(args);
+            break;
         default:
             std::cout << "This rule doesn't have utility" << std::endl;
         }
@@ -48,11 +55,11 @@ namespace shared
      * @fn void Rules::playEconomyCard()
      * @brief This function aim to run the rule of the economy card
      */
-    void Rules::playEconomyCard(ArgsOfRule *args)
+    void Rules::playEconomyCard(std::shared_ptr<ArgsOfRule> args)
     {
         // retrieve the arguments
-        std::vector<int[2]> *caravanMovementPath = args->economyCardRuleArgs.caravanMovementPath;
-        Map *map = args->economyCardRuleArgs.mapOfTheGame;
+        std::shared_ptr<std::vector<int[2]>> caravanMovementPath = args->economyCardRuleArgs.caravanMovementPath;
+        std::shared_ptr<Map> map = args->economyCardRuleArgs.mapOfTheGame;
         unsigned numberOfBoxUsed = args->economyCardRuleArgs.numberOfBoxUsed;
 
         // check if the player has enough box to play this card
@@ -64,7 +71,7 @@ namespace shared
 
         unsigned cardLevel = this->player->getLevelOfCard(CardsEnum::economy);
 
-        std::vector<Barbarian *> barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
+        std::vector<std::shared_ptr<Barbarian>> barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
         if (barbarianList.size() > 0 && cardLevel != 2)
         {
             std::cout << "You can't kill a barbarian with this card" << std::endl;
@@ -88,7 +95,7 @@ namespace shared
         case 2:
             if (barbarianList.size() > 0)
             {
-                for (int i = 0; i < barbarianList.size(); i++)
+                for (int i = 0; i < (int)barbarianList.size(); i++)
                 {
                     barbarianList.at(i)->kill();
                     this->player->addBox(CardsEnum::economy); // TODO: allow to add box on other card
@@ -119,20 +126,21 @@ namespace shared
      * @fn void Rules::checkIfBarbarianIsOnThePath(std::vector<int[2]> *caravanMovementPath)
      * @brief This function aim to check if a barbarian is on the path of the caravan
      */
-    std::vector<Barbarian *> Rules::checkIfBarbarianIsOnThePath(std::vector<int[2]> *caravanMovementPath, shared::Map *map)
+    std::vector<std::shared_ptr<Barbarian>> Rules::checkIfBarbarianIsOnThePath(std::shared_ptr<std::vector<int[2]>> caravanMovementPath, std::shared_ptr<shared::Map> map)
     {
-        std::vector<Barbarian *> barbarianList;
-        Barbarian *barbarian;
-        for (int i = 0; i < caravanMovementPath->size(); i++)
+        std::vector<std::shared_ptr<Barbarian>> barbarianList;
+        std::shared_ptr<Barbarian> barbarian;
+        for (int i = 0; i < (int)caravanMovementPath->size(); i++)
         {
             unsigned x = caravanMovementPath->at(i)[0];
             unsigned y = caravanMovementPath->at(i)[1];
-            barbarian = map->operator()(x, y)->getBarbarian();
-            if ( barbarian != nullptr)
+            barbarian = map->operator()(x, y)->getElement(ElementEnum::barbarian)->barbarianPtr;
+            if (barbarian != nullptr)
             {
                 barbarianList.push_back(barbarian);
             }
         }
+
         return barbarianList;
     }
 
@@ -140,10 +148,10 @@ namespace shared
      * @file Rules.cpp
      * @fn void Rules::checkIfWaterIsOnThePath(std::vector<int[2]> *caravanMovementPath)
      * @brief This function aim to check if water is on the path of the caravan
-    */
-    bool Rules::checkIfWaterIsOnThePath(std::vector<int[2]> *caravanMovementPath, shared::Map *map)
+     */
+    bool Rules::checkIfWaterIsOnThePath(std::shared_ptr<std::vector<int[2]>> caravanMovementPath, std::shared_ptr<shared::Map> map)
     {
-        for (int i = 0; i < caravanMovementPath->size(); i++)
+        for (int i = 0; i < (int)caravanMovementPath->size(); i++)
         {
             int x = caravanMovementPath->at(i)[0];
             int y = caravanMovementPath->at(i)[1];
@@ -155,192 +163,160 @@ namespace shared
         return false;
     }
 
-    // /**
-    //  * @file Rules.cpp
-    //  * @fn void Rules::playScienceCard()
-    //  * @brief This function aim to run the rule of the science card
-    //  */
-    // void Rules::playScienceCard(ArgsOfRule *args)
-    // {
-    //     if (numberOfBoxUsed > this->player->getNumberOfBox(CardsEnum::science))
-    //     {
-    //         std::cout << "You don't have enough box to play this card" << std::endl;
-    //         exit(EXIT_FAILURE);
-    //     }
+    /**
+     * @file Rules.cpp
+     * @fn void Rules::playScienceCard()
+     * @brief This function aim to run the rule of the science card
+     */
+    void Rules::playScienceCard(std::shared_ptr<ArgsOfRule> args)
+    {
+        unsigned numberOfBoxUsed = args->scienceCardRuleArgs.numberOfBoxUsed;
+        if (numberOfBoxUsed > this->player->getNumberOfBox(CardsEnum::science))
+        {
+            std::cout << "You don't have enough box to play this card" << std::endl;
+            exit(EXIT_FAILURE);
+        }
 
-    //     unsigned cardLevel = this->player->getLevelOfCard(CardsEnum::science);
-    //     switch (cardLevel)
-    //     {
-    //     case 1:
-    //         // do nothing special
-    //         break;
-    //     case 2:
-    //         getABox();
-    //         break;
-    //     case 3:
-    //         getAnUnpossesedRessource();
-    //         break;
-    //     case 4:
-    //         nuke();
-    //         break;
-    //     default:
-    //         std::cout << "invalid card level" << std::endl;
-    //         exit(1);
-    //     }
-    // }
+        CardsEnum cardToGetABox = args->scienceCardRuleArgs.cardToGetABox;
+        ResourceEnum resourceToGet = args->scienceCardRuleArgs.resourceToGet;
+        std::array<unsigned, 2> positionToNuke = args->scienceCardRuleArgs.positionToNuke;
+        std::shared_ptr<Map> gameMap = args->scienceCardRuleArgs.gameMap;
 
-    // /**
-    //  * @file Rules.cpp
-    //  * @fn void Rules::moveCaravan()
-    //  * @brief This function aim to allow the player to move one of his caravans
-    //  */
-    // void Rules::moveCaravan(int distance, int maxLevelReachable, bool caravanKiller, bool canMoveOnWater)
-    // {
-    //     std::vector<int[2]> caravanMovementPath; /**List of coordinates of the path*/
-    //     do
-    //     {
-    //         caravanMovementPath = this->clientGameEngine->moveObject(MovableObjectEnum::caravan, maxLevelReachable, caravanKiller, canMoveOnWater);
-    //         /*
-    //         Create a function in the client game engine that ask the player to move a MoveableObjectEnum
-    //         This function must be named "moveObject"
-    //         This function must return a vector of int[2] that contains the coordinates of the path (std::vector<int[2]>)
-    //         */
-    //     } while (!this->verifyIfPathIsValid(caravanMovementPath, maxLevelReachable /*+ potentialBoost*/));
+        std::vector<std::array<unsigned, 2>> neighbors; // for the nuke
 
-    //     this->player->getCaravanAt(caravanMovementPath.at(0)[0], caravanMovementPath.at(0)[1])->move(caravanMovementPath);
-    // }
+        unsigned cardLevel = this->player->getLevelOfCard(CardsEnum::science);
+        switch (cardLevel)
+        {
+        case 1:
+            // do nothing special
+            break;
+        case 2:
+            this->player->addBox(cardToGetABox);
+            break;
+        case 3:
+            if (this->player->haveResource(resourceToGet))
+            {
+                std::cout << "You already have this resource" << std::endl;
+                exit(EXIT_FAILURE);
+            }
+            this->player->addResource(resourceToGet);
+            break;
+        case 4: // nuke destroy the control pawn around the position =
+            neighbors = getNeighbors(positionToNuke[0], positionToNuke[1], gameMap);
+            neighbors.push_back(positionToNuke);
+            nuke(neighbors, gameMap);
+            break;
+        default:
+            std::cout << "invalid card level" << std::endl;
+            exit(1);
+        }
+    }
 
-    // /**
-    //  * @file Rules.cpp
-    //  * @fn bool Rules::verifyIfPathIsValid()
-    //  * @brief This function verify if a caravan can travel a certain path depending on it's level.
-    //  */
-    // bool Rules::verifyIfPathIsValid(std::vector<int[2]> caravanMovementPath, FieldLevel maxLevelReachable)
-    // {
-    //     long unsigned int i;
-    //     for (i = 0; i < caravanMovementPath.size(); i++)
-    //     {
-    //         if (this->clientGameEngine->mapShared(caravanMovementPath.at(i)[0], caravanMovementPath.at(i)[1])->getFieldLevel() > maxLevelReachable)
-    //         {
-    //             std::cout << "Invalid movement, you can't reach that level" << std::endl;
-    //             return false;
-    //         }
+    void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_ptr<Map> gameMap)
+    {
+        std::shared_ptr<ControlPawn> controlPawn;
+        for (int i = 0; i < (int)neightbors.size(); i++)
+        {
+            unsigned x = neightbors.at(i)[0];
+            unsigned y = neightbors.at(i)[1];
+            controlPawn = gameMap->operator()(x, y)->getElement(ElementEnum::controlPawn)->controlPawn;
+            if (controlPawn != nullptr)
+            {
+                controlPawn->kill();
+            }
+        }
+    }
 
-    //         // boucle avec l'eau ou les barbares
-    //     }
-    //     return true;
-    // }
+    std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned posY, std::shared_ptr<Map> gameMap)
+    {
+        std::vector<std::array<unsigned, 2>> neighbors;
+        unsigned mapSizeX = gameMap->getMapWidth();
+        unsigned mapSizeY = gameMap->getMapHeight();
+        if (posY > 0)
+        {
+            neighbors.push_back({posX, posY - 1});
+        }
+        if (posY > 0 && posX < mapSizeX - 1)
+        {
+            neighbors.push_back({posX + 1, posY - 1});
+        }
+        if (posX < mapSizeX - 1)
+        {
+            neighbors.push_back({posX + 1, posY});
+        }
+        if (posY < mapSizeY - 1)
+        {
+            neighbors.push_back({posX, posY + 1});
+        }
+        if (posY < mapSizeY - 1 && posX > 0)
+        {
+            neighbors.push_back({posX - 1, posY + 1});
+        }
+        if (posX > 0)
+        {
+            neighbors.push_back({posX - 1, posY});
+        }
+        return neighbors;
+    }
 
-    // void Rules::exchangeRessourceWithOtherPlayer()
-    // {
-    //     std::array<PlayerResource, 2> resourceToExchange;
-    //     do
-    //     {
-    //         resourceToExchange = this->clientGameEngine->exchangeResource();
-    //         /**
-    //         Create a function in the client game engine that ask the player to exchange a resource with another player.
-    //         This function must be named "exchangeResource"
-    //         This function must return an array of PlayerResource (first element is the resource to give, second element is the resource to get)
-    //         */
-    //     } while (resourceToExchange[0].player->haveResource(*(resourceToExchange[0].resource)) && resourceToExchange[1].player->haveResource(*(resourceToExchange[1].resource)));
+    void Rules::playCultureCard(std::shared_ptr<ArgsOfRule> args)
+    {
+        unsigned numberOfBoxUsed = args->scienceCardRuleArgs.numberOfBoxUsed;
+        if (numberOfBoxUsed > this->player->getNumberOfBox(CardsEnum::culture))
+        {
+            std::cout << "You don't have enough box to play this card" << std::endl;
+            exit(EXIT_FAILURE);
+        }
 
-    //     resourceToExchange[0].player->removeResource(*(resourceToExchange[0].resource));
-    //     resourceToExchange[0].player->addResource(*(resourceToExchange[1].resource));
-    //     resourceToExchange[1].player->removeResource(*(resourceToExchange[1].resource));
-    //     resourceToExchange[1].player->addResource(*(resourceToExchange[0].resource));
-    // }
+        std::vector<std::array<unsigned, 2>> pawnsPositions = args->cultureCardRuleArgs.pawnsPositions;
+        std::shared_ptr<Map> gameMap = args->scienceCardRuleArgs.gameMap;
 
-    // void Rules::playAnotherCard()
-    // {
-    //     CardsEnum cardPlayed;
-    //     do
-    //     {
-    //         std::vector<CardsEnum> availableCards = {CardsEnum::science, CardsEnum::military, CardsEnum::culture, CardsEnum::industry};
-    //         cardPlayed = this->clientGameEngine->chooseCard(availableCards);
-    //         /**
-    //          * Create a function in the client game engine that ask the player to choose a card to play.
-    //          * This function must be named "chooseCard"
-    //          * This function must return a pointer to a card
-    //          */
-    //     } while (cardPlayed == CardsEnum::economy);
-    //     this->gameEngine->playCard(cardPlayed);
-    //     /**
-    //      * Create a function in the game engine that play a card.
-    //      * This function must be named "playCard"
-    //      * This function must take a pointer to a card as parameter
-    //      */
-    // }
+        unsigned cardLevel = this->player->getLevelOfCard(CardsEnum::culture);
+        switch (cardLevel)
+        {
+        case 1:
+            if (pawnsPositions.size() == 2 + numberOfBoxUsed)
+            {
+                placeControlPawns(pawnsPositions, gameMap);
+            }
+            else
+            {
+                std::cout << "invalid number of pawn positions" << std::endl;
+                exit(1);
+            }
+            break;
+        case 2:
+            // TODO : move one pawn on an empty field
+            break;
+        case 3:
+            // TODO : Place one pawn on next to an ally hexagon
+            break;
+        case 4:
+            // TODO: replace enemy pawn (reinforced or not) by one of your pawn (non reinforced)
+            break;
+        default:
+            std::cout << "invalid card level" << std::endl;
+            exit(1);
+        }
+    }
 
-    // void Rules::incrementTechWheel(unsigned cardLevel)
-    // {
-    //     int cardAmelioration[3] = this->player->incrementTechWheel(cardLevel); // incrementTechWheel function return tab[3] of int.
-    //     // tab[0]: number of cards that can be upgrade from level 1 to 2...
-    //     // this function must reset counter to 17 while 25 is obtained
-    //     for (int i = 0; i < 3; i++)
-    //     {
-    //         for (int numberOfCards = 0; numberOfCards < cardAmelioration[i]; i++)
-    //         {
-    //             unsigned numberOfTheCard; // variable used to verify that the level of card is valid (member of enum class "cardsEnum")
-    //             do
-    //             {
-    //                 numberOfTheCard = this->clientGameEngine->askForUpgrade(i); // tell the client the new level
-    //             } while (this->player->getCardlevel[numberOfTheCard] != cardLevel - 1);
-    //             this->player->upgradeCard(numberOfTheCard);
-    //         }
-    //     }
-    // }
-
-    // void Rules::getABox()
-    // {
-    //     unsigned cardNumber = clientGameEngine.askForNewBoxPosition(); // ask the player where he want to place the box
-    //     this->player->getCard(cardNumber).addBox();
-    // }
-
-    // void Rules::getAnUnpossesedRessource()
-    // {
-    //     unsigned resource;
-    //     do
-    //     {
-    //         resource = clientGameEngine.askForANewResource();       // Resource is the interger associated to the Resource.
-    //     } while (this->player->getNumberOfResource(Resource) != 0); // if the Resource is not already possessed
-
-    //     this->player->addResource(resource); // add the Resource to the list
-    // }
-
-    // void Rules::nuke()
-    // {
-    //     int position[2] = this->clientGameEngine->askForNukePosition();
-    //     for (int x = -1; x < 2; x += 2)
-    //     {
-    //         for (int y = 0; y < 2; y++) // for the 2 up and 2 down cases
-    //         {
-    //             if (map[position[0] + x][position[1] + !(position[0] % 2) + y /*the next cases depends on the line number*/] == Controlpawn)
-    //             {
-    //                 pawn.getPawn(position[0] + x, position[1] + !(position[0] % 2) + y).downgrade(); // get the control pawn and kill or downdrade it
-    //             }
-    //         }
-    //     }
-    //     for (int y = -1; y < 2; y++) // for the 2 cases at the right and left
-    //     {
-    //         if (map[position[0]][position[1] + y] == controlpawn) // check if there is a control pawn on the case
-    //         {
-    //             pawn.getPawn(position[0], position[1] + y).downgrade(); // get the control pawn and kill or downdrade it
-    //         }
-    //     }
-    // }
-
-    // void Rules::reinforcePawn()
-    // {
-    //     int position[2];
-    //     do
-    //     {
-    //         position[2] = clientGameEngine.askForAPawnToFeinforce();
-    //     } while (this->player->haveControlPawnIn(position[0], position[1]) == false);
-    //     this->player->getpawn(position[0], position[1]);
-    // }
-
-    // void Rules::attack()
-    // {
-    // }
+    void Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, std::shared_ptr<Map> gameMap)
+    {
+        for (auto position : positions)
+        {
+            if (gameMap->operator()(position[0], position[1])->getElement(ElementEnum::controlPawn)->controlPawn == nullptr)
+            {
+                ControlPawn controlPawn = ControlPawn();
+                ElementPtr controlPawnPtr;
+                controlPawnPtr.controlPawn = std::make_shared<ControlPawn>(controlPawn);
+                gameMap->operator()(position[0], position[1])->addElement(ElementEnum::controlPawn, std::make_shared<ControlPawn>(controlPawn));
+                // TODO : create a control pawn
+            }
+            else{
+                std::cout << "There is already a control pawn on this position" << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
 
 }

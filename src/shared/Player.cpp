@@ -17,7 +17,7 @@ std::string Player::getName() {
 
 
 Caravan * Player::getCaravanAt(int posX, int posY) {
-    for (int i = 0; i < this->listOfCaravan.size(); i++) {
+    for (int i = 0; i < (int) this->listOfCaravan.size(); i++) {
         if (this->listOfCaravan[i]->getPosX() == posX && this->listOfCaravan[i]->getPosY() == posY) {
             return this->listOfCaravan[i];
         }

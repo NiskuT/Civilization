@@ -12,17 +12,15 @@ namespace shared
         this->level = field;
     }
 
-    bool Hexagon::getElements(std::vector<Element*>* fieldElement)
+    std::shared_ptr<ElementPtr> Hexagon::getElement(ElementEnum elementType)
     {
-        if (fieldElement == NULL)
+        for (std::shared_ptr<Element> element : this->elementsList)
         {
-            return false;
+            if (element->getType() == elementType)
+            {
+                return element->getPtr();
+            }
         }
-        else
-        {
-            *fieldElement = this->listElements;
-            return true;
-        }
+        return nullptr;
     }
-    
 }
