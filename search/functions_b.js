@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['updateelementtexture_2759',['updateElementTexture',['../classclient_1_1GameWindow.html#afa1bb198702cbda73ba5c96b4c177d93',1,'client::GameWindow']]]
+  ['registerserveranswer_2791',['registerServerAnswer',['../classclient_1_1ClientGameEngine.html#a620494b82971fa2be03b44b1b12daeaf',1,'client::ClientGameEngine']]],
+  ['rendergame_2792',['renderGame',['../classclient_1_1ClientGameEngine.html#acc3a4858e07d7538665c75847e910f20',1,'client::ClientGameEngine']]]
 ];
