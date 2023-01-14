@@ -23,15 +23,11 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
     buttonRect->setFillColor(buttonColor);
     if (border) 
     {
-        redBorder = true;
-        buttonRect->setOutlineColor(sf::Color::Red);
-        buttonRect->setOutlineThickness(2.0f);
+        setActive();
     }
     else 
     {
-        redBorder = false;
-        buttonRect->setOutlineColor(sf::Color::Black);
-        buttonRect->setOutlineThickness(1.0f);
+        setInactive();
     }
 }
 
@@ -54,17 +50,38 @@ void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf
     buttonText->setFillColor(sf::Color::Black);
 }
 
+/*!
+ * \brief Add a char to the text
+ *
+ * @param ch char to be add
+ */
 void Button::addChar(std::string ch)
 {
     buttonText->setString(buttonText->getString() + ch);
     if (buttonText->getLocalBounds().width >= buttonRect->getLocalBounds().width)
     {
-        std::cout << "Too long\n";
-        buttonText->setCharacterSize(buttonText->getCharacterSize() - 1);
+        delChar();
     }
     centerText(false);
 }
 
+/*!
+ * \brief Delete a char to the text
+ */
+void Button::delChar()
+{
+    std::string newString = buttonText->getString();
+    newString.pop_back();
+    buttonText->setString(newString);
+    centerText(false);
+}
+
+/*!
+ * \brief Center the text
+ *
+ * @param centerAllAxis true if you also want to center on y Axis
+ * @param textOffset offset on x
+ */
 void Button::centerText(bool centerAllAxis, sf::Vector2f textOffset)
 {
     sf::Vector2f buttonPos = buttonRect->getPosition();
@@ -82,5 +99,39 @@ void Button::centerText(bool centerAllAxis, sf::Vector2f textOffset)
     buttonText->setPosition(sf::Vector2f(xPosText, yPosText));
 }
 
+/*!
+ * \brief Put the border into red border
+ */
+void Button::setActive()
+{
+    redBorder = true;
+    buttonRect->setOutlineColor(sf::Color::Red);
+    buttonRect->setOutlineThickness(2.0f);
+}
+
+/*!
+ * \brief Put the border into black border
+ */
+void Button::setInactive()
+{
+    redBorder = false;
+    buttonRect->setOutlineColor(sf::Color::Black);
+    buttonRect->setOutlineThickness(1.0f);
+}
+
+/*!
+ * \brief Click on the button
+ */
+bool Button::clickButton()
+{
+    if(maxTextSize != 0)
+    {
+        setActive();
+        return false;
+    }
+    else{
+        return true;
+    }
+}
 
 }

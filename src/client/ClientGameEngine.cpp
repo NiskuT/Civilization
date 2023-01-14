@@ -178,15 +178,22 @@ namespace client
     }
 
     /*!
+     * \brief Change the Window for nothing, Menu or Game
+     * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
+     */
+    void ClientGameEngine::handleConnect(std::string id, std::string username)
+    {
+        std::cout << username << " try to connect to the game " << id << std::endl;
+    }
+
+    /*!
      * \brief Start the loop that manage the GameWindow
      */
     void ClientGameEngine::startGameWindow()
     {
-        clientGame.startGame(
-            clientWindow, [this](bool quitDef)
-            { handleQuitMenu(quitDef); },
-            [this](int x, int y)
-            { handleInformation(x, y); });
+        clientGame.startGame(   clientWindow, 
+                                [this](bool quitDef) { handleQuitMenu(quitDef); },
+                                [this](int x, int y) { handleInformation(x, y); });
     }
 
     /*!
@@ -194,8 +201,9 @@ namespace client
      */
     void ClientGameEngine::startMenuWindow()
     {
-        clientMenu.startMenu(clientWindow, [this](bool quitDef)
-                             { handleQuitMenu(quitDef); });
+        clientMenu.startMenu(   clientWindow, 
+                                [this](bool quitDef) { handleQuitMenu(quitDef); },
+                                [this](std::string id, std::string username) { handleConnect(id, username); });
     }
 
     /*!

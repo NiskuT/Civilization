@@ -52,10 +52,11 @@ void MenuWindow::displayWindow()
  * @param clientWindow is window that comes from the engine
  * @param quitGame is the function used to quit the menu, it is load as an attribut
  */
-void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame)
+void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(std::string, std::string)> connectGame)
 {
     quitMenuWindow = quitGame;
     clientMenuWindow = clientWindow;
+    tryConnectGame = connectGame;
 
     long lastUpdateTimer = getCurrentTime(false);
 
@@ -88,12 +89,36 @@ bool MenuWindow::menuEventHappened(sf::Event& event){
 
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
     std::string utf8;
+    sf::Vector2i clickPoint;
+    bool clickAction;
 
     switch (event.type)
     {
     case sf::Event::MouseButtonPressed:
 
-        std::cout << "Click \n";
+        clickPoint = sf::Mouse::getPosition(*clientMenuWindow);
+
+        for (unsigned i = 0; i < menuButtons.size(); i++)
+        {
+            clickAction = false;
+            menuButtons[i].setInactive();
+            if (  clickPoint.x >= menuButtons[i].buttonRect->getGlobalBounds().left 
+                && clickPoint.x <= menuButtons[i].buttonRect->getGlobalBounds().left + menuButtons[i].buttonRect->getGlobalBounds().width 
+                && clickPoint.y >= menuButtons[i].buttonRect->getGlobalBounds().top 
+                && clickPoint.y <= menuButtons[i].buttonRect->getGlobalBounds().top + menuButtons[i].buttonRect->getGlobalBounds().height)
+            {
+                clickAction = menuButtons[i].clickButton();
+            }
+            if (clickAction && i==1)
+            {
+                std::cout << "Create New Game\n";
+            }
+            else if (clickAction && i==6)
+            {
+                tryConnectGame(menuButtons[5].buttonText->getString(), menuButtons[2].buttonText->getString());
+                quitMenuWindow(false);
+            }
+        }
 
         break;
 
@@ -109,10 +134,6 @@ bool MenuWindow::menuEventHappened(sf::Event& event){
 
         switch (event.key.code)
         {
-        case sf::Keyboard::K:
-            quitMenuWindow(false);
-            return true;
-
         case sf::Keyboard::Escape:
             quitMenuWindow(true);
             return true;
@@ -142,7 +163,6 @@ bool MenuWindow::menuEventHappened(sf::Event& event){
  * @param ch letter to add
  */
 void MenuWindow::writeChar(std::string ch){
-    std::cout << ch << "\n";
     for (auto &button : menuButtons)
     {
         std::string newString = button.buttonText->getString();
@@ -154,18 +174,16 @@ void MenuWindow::writeChar(std::string ch){
 }
 
 /*!
- * \brief Add a letter to the selected button
- * @param ch letter to add
+ * \brief Delete a letter to the selected button
  */
 void MenuWindow::deleteChar(){
 
     for (auto &button : menuButtons)
     {
-        std::string newStrong = button.buttonText->getString();
-        if (button.redBorder && newStrong.size() != 0 )
+        std::string newString = button.buttonText->getString();
+        if (button.redBorder && newString.size() != 0 && button.maxTextSize != 0)
         {
-            newStrong.pop_back();
-            button.buttonText->setString(newStrong);
+            button.delChar();
         }
     }
 }
@@ -213,7 +231,7 @@ void MenuWindow::loadMenuTexture()
     {
         menuButtons.emplace_back(   sf::Vector2f(data[index]["width"].asFloat() * gameTitle->getLocalBounds().width, data[index]["height"].asFloat() * gameTitle->getLocalBounds().height), 
                                     sf::Vector2f(   gameTitle->getPosition().x + data[index]["x"].asFloat() * gameTitle->getLocalBounds().width, 
-                                                    gameTitle->getPosition().y - data[index]["y"].asFloat() * gameTitle->getLocalBounds().height), buttonColor, true);
+                                                    gameTitle->getPosition().y - data[index]["y"].asFloat() * gameTitle->getLocalBounds().height), buttonColor);
         menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), *menuFont, data[index]["sizeMax"].asInt());
     }
 }

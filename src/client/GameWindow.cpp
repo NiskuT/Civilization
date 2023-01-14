@@ -243,7 +243,7 @@ bool GameWindow::gameEventHappened(sf::Event& event, sf::Vector2i* clickStarting
         case sf::Keyboard::L:
 
             newMapOffset = { MAP_X_OFFSET - firstHexagonPosition[0],
-                                MAP_Y_OFFSET - firstHexagonPosition[1]};
+                             MAP_Y_OFFSET - firstHexagonPosition[1]};
 
             firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
 

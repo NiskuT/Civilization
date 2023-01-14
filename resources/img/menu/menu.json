@@ -20,7 +20,7 @@
             "height": 0.4,
             "x": 0.5,
             "y": 2,
-            "text": "Enter Username",
+            "text": "Username",
             "sizeMax": 10
         },
         {
@@ -38,6 +38,21 @@
             "y": 2.5,
             "text": "8080",
             "sizeMax": 5
+        },
+        {
+            "width": 0.2,
+            "height": 0.4,
+            "x": 0.525,
+            "y": 0.5,
+            "text": "ID",
+            "sizeMax": 5
+        },
+        {
+            "width": 0.2,
+            "height": 0.4,
+            "x": 0.775,
+            "y": 0.5,
+            "text": "Join"
         }
     ]
 }
