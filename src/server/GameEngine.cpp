@@ -1,6 +1,7 @@
 #include <server.hpp>
 #include <algorithm>
 #include <random>
+#include <boost/archive/binary_oarchive.hpp>
 
 #define MAX_PLAYERS 4
 
@@ -72,6 +73,10 @@ namespace server
         {
             response = "response" + player->getName() + " is connected\n";
         }
+        if (command.find("getmap") == 0)
+        {
+            //sendBinary(map);
+        }
         else
         {
             response = "Error: invalid command\n";
@@ -81,6 +86,21 @@ namespace server
             std::lock_guard<std::mutex> lock(player->socketWriteMutex);
             boost::asio::write(player->getSocket(), boost::asio::buffer(response));
         }
+    }
+
+    template <typename T>
+    void GameEngine::sendBinary(std::shared_ptr<shared::Player> player, T &data)
+    {
+        std::stringstream stream;
+        boost::archive::binary_oarchive oa(stream);
+        oa << data;
+        std::vector<char> serializedData = stream.str();
+
+        std::string header = "binary:" + std::to_string(serializedData.size()) + "\n";
+
+        std::lock_guard<std::mutex> lock(player->socketWriteMutex);
+        boost::asio::write(player->getSocket(), boost::asio::buffer(header));
+        boost::asio::write(player->getSocket(), boost::asio::buffer(serializedData));
     }
 
     std::vector<std::string> GameEngine::splitString(std::string str, char delimiter)

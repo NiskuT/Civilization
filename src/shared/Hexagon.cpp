@@ -12,17 +12,16 @@ namespace shared
         this->level = field;
     }
 
-    bool Hexagon::getElements(std::vector<Element*>* fieldElement)
+    std::vector<std::shared_ptr<Element>>& Hexagon::getElements ()
     {
-        if (fieldElement == NULL)
-        {
-            return false;
-        }
-        else
-        {
-            *fieldElement = this->listElements;
-            return true;
-        }
+        return this->listElements;
     }
-    
+
+    template <class Archive>
+    void Hexagon::serialize(Archive &ar, const unsigned int version)
+    {
+        ar &listElements;
+        ar &level;
+    }
+
 }

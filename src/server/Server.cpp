@@ -99,8 +99,7 @@ namespace server
                 player->disconnectPlayer();
                 continue;
             }
-
-            if (bytesTransferred)
+            else if (bytesTransferred)
             {
                 std::string messageReceived(
                     boost::asio::buffers_begin(receiveBuffer.data()),
@@ -111,6 +110,9 @@ namespace server
                 {
                     registerClientAnswer(messageReceived, player);
                 }
+                /*else if (messageReceived.find("binary") == 0) // server receive something like binary 1024 where 1024 is the size of the binary data
+                {
+                }*/
                 else
                 {
                     game->processClientRequest(messageReceived, player);

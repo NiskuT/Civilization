@@ -19,9 +19,17 @@ namespace shared
         {
             for (unsigned j = 0; j < width; j++)
             {
-                mapOfTheGame.push_back(new Hexagon());
+                mapOfTheGame.push_back(std::make_shared<Hexagon>());
             }
         }
+    }
+
+    template <class Archive>
+    void Map::serialize(Archive &ar, const unsigned int version)
+    {
+        ar &mapOfTheGame;
+        ar &height;
+        ar &width;
     }
 
     unsigned Map::getMapHeight()
@@ -51,7 +59,7 @@ namespace shared
                 double y = (double)i / ((double)this->height);
 
                 double n = pn.noise(10 * x, 10 * y, 0.8);
-                int field = (int)round(n * (NUMBER_OF_FIELDS+1));
+                int field = (int)round(n * (NUMBER_OF_FIELDS + 1));
 
                 switch (field)
                 {
@@ -120,7 +128,7 @@ namespace shared
      * @param y Y coordinate of the hexagon
      * @return Pointer to the hexagon
      */
-    Hexagon *Map::operator()(unsigned x, unsigned y)
+    std::shared_ptr<Hexagon> Map::operator()(unsigned x, unsigned y)
     {
         if (x < this->width && y < this->height && mapOfTheGame.size() > 0)
         {
@@ -129,17 +137,6 @@ namespace shared
         else
         {
             return nullptr;
-        }
-    }
-
-    /*!
-     * @brief Map destructor
-     */
-    Map::~Map()
-    {
-        for (unsigned i = 0; i < mapOfTheGame.size(); i++)
-        {
-            delete mapOfTheGame[i];
         }
     }
 
