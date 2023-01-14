@@ -143,7 +143,6 @@ namespace client
             sf::Event event;
             while (clientGameWindow->pollEvent(event))
             {
-
                 switch (event.type)
                 {
                 case sf::Event::MouseButtonPressed:
@@ -279,6 +278,8 @@ namespace client
         return data;
     }
 
+
+
     /*!
      * \brief Dectect click and actions to do after
      */
@@ -297,9 +298,9 @@ namespace client
 
         for (unsigned i = 0; i < priorityCards.size(); i++)
         {
-            sf::FloatRect spriteBounds = priorityCards[i].texture->getSprite().getGlobalBounds();
+            sf::FloatRect spriteCards = priorityCards[i].texture->getSprite().getGlobalBounds();
 
-            if (spriteBounds.intersects(cursorRect))
+            if (spriteCards.intersects(cursorRect))
             {
                 callback(-1, i + 1); // -1 to signify that the space clicked is a priority card
                 priorityCards[i].moveUpPriorityCard();

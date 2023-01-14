@@ -91,5 +91,6 @@ namespace client
         title->setPosition(xTitlePos, yPos);
         body->setPosition(xBodyPosition, yPos + yBodyOffset);
     }
+
     
 }
