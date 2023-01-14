@@ -16,9 +16,9 @@ namespace client
 {
 
     /*!
-     * \brief Constructor
+     * @brief Constructor
      *
-     * Constructor of GameWindow class
+     * Constructor of MenuWindow class
      */
     MenuWindow::MenuWindow()
     {
@@ -26,7 +26,7 @@ namespace client
     }
 
     /*!
-     * \brief Display all the different variable in the screen
+     * @brief Display all the menu on the screen
      */
     void MenuWindow::displayWindow()
     {
@@ -46,10 +46,13 @@ namespace client
     }
 
     /*!
-     * \brief Loop that look for events to happend and call displayWindow()
+     * @brief Loop that look for events to happend and call displayWindow()
+     * @param clientWindow is window that comes from the engine
+     * @param quitGame is the function used to quit the menu, it is load as an attribut
      */
     void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame)
     {
+        quitMenuWindow = quitGame;
         clientMenuWindow = clientWindow;
 
         long lastUpdateTimer = getCurrentTime(false);
@@ -67,44 +70,60 @@ namespace client
             sf::Event event;
             while (clientMenuWindow->pollEvent(event))
             {
-
-                switch (event.type)
+                if (menuEventHappened(event))
                 {
-                case sf::Event::MouseButtonPressed:
-
-                    std::cout << "Click \n";
-
-                    break;
-
-                case sf::Event::KeyPressed:
-
-                    switch (event.key.code)
-                    {
-                    case sf::Keyboard::K:
-                        quitGame(false);
-                        return;
-
-                    case sf::Keyboard::Escape:
-                        quitGame(true);
-                        return;
-
-                    default:
-                        break;
-                    }
-
-                    break;
-
-                case sf::Event::Closed:
-                    quitGame(true);
                     return;
-
-                default:
-                    break;
                 }
             }
         }
     }
 
+    /*!
+     * @brief Test events and do actions corresponding to the event
+     * @param event pointer to the event
+     */
+    bool MenuWindow::menuEventHappened(sf::Event& event){
+
+        switch (event.type)
+        {
+        case sf::Event::MouseButtonPressed:
+
+            std::cout << "Click \n";
+
+            break;
+
+        case sf::Event::KeyPressed:
+
+            switch (event.key.code)
+            {
+            case sf::Keyboard::K:
+                quitMenuWindow(false);
+                return true;
+
+            case sf::Keyboard::Escape:
+                quitMenuWindow(true);
+                return true;
+
+            default:
+                break;
+            }
+
+            break;
+
+        case sf::Event::Closed:
+            quitMenuWindow(true);
+            return true;
+
+        default:
+            break;
+        }
+
+        return false;
+    }
+
+    /*!
+     * @brief Load all the textures that will be display on the menu
+     */
     void MenuWindow::loadMenuTexture()
     {
 
@@ -115,7 +134,9 @@ namespace client
 
         menuFont = (std::unique_ptr<sf::Font>)new sf::Font();
         if (!menuFont->loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+        {
             std::cerr << "Font not loaded" << std::endl;
+        }
 
         gameTitle = (std::unique_ptr<sf::Text>)new sf::Text("Civilization 7", *menuFont, TITLE_SIZE);
         gameTitle->setStyle(sf::Text::Bold);
@@ -144,16 +165,23 @@ namespace client
             menuButtons.emplace_back(   sf::Vector2f(data[index]["width"].asFloat() * gameTitle->getLocalBounds().width, data[index]["height"].asFloat() * gameTitle->getLocalBounds().height), 
                                         sf::Vector2f(   gameTitle->getPosition().x + data[index]["x"].asFloat() * gameTitle->getLocalBounds().width, 
                                                         gameTitle->getPosition().y - data[index]["y"].asFloat() * gameTitle->getLocalBounds().height), buttonColor);
-            menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), &(*menuFont));
+            menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), *menuFont);
         }
     }
 
+    /*!
+     * @brief Function that deteck where the user click and what to send to the engine
+     * @param timeSecond is a boolean used to 
+     */
     long MenuWindow::getCurrentTime(bool timeSecond)
     {
         if (timeSecond)
+        {
             return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-        else
+        } 
+        else 
+        {
             return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        }
     }
-
 }
