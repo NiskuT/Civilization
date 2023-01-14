@@ -80,9 +80,12 @@ namespace client
             clientGameWindow->draw(*priorityCards[i].title);
             clientGameWindow->draw(boxTexture->getSprite(i));
             clientGameWindow->draw(*priorityCards[i].nbOfBoxesText);
+
             if (priorityCards[i].isUp)
             {
                 clientGameWindow->draw(*priorityCards[i].body);
+                clientGameWindow->draw(*priorityCards[i].validateButton->buttonRect);
+                clientGameWindow->draw(*priorityCards[i].validateButton->buttonText);
             }
         }
 
@@ -547,7 +550,8 @@ namespace client
                 dataNumber,
                 WINDOW_LENGTH,
                 WINDOW_WIDTH,
-                index);
+                index,
+                &bodyFont);
 
             // title and body
 
@@ -582,6 +586,7 @@ namespace client
                 dataNumber["box-y-offset-proportion"].asFloat(),
                 priorityCards.back());
             boxTexture->getSprite(index).setPosition(boxPosition.x, boxPosition.y);
+            
         }
 
         // actionCard

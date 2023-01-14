@@ -4,10 +4,13 @@
 #define ACTION_INDEX 11
 #define PRIORITY_INDEX 7
 
+const sf::Color VALIDATE_BUTTON_COLOR = sf::Color(255, 255, 255, 100);
+
+
 namespace client
 {
 
-    GraphicCard::GraphicCard(const std::string& path, const Json::Value &dataNumber, const float windowLength, const float windowWidth, int index)
+    GraphicCard::GraphicCard(const std::string& path, const Json::Value &dataNumber, const float windowLength, const float windowWidth, int index, sf::Font* font)
     {
         texture = std::make_unique<TextureDisplayer>(path);
         texture->addSprite();
@@ -20,6 +23,21 @@ namespace client
         this->windowWidth = windowWidth;
 
         texture->setHudSpritePosition(priorityScale, windowLength, windowWidth, 0, index);
+
+        int validateButtonPosX = texture->getSprite().getPosition().x + dataNumber["validate-button-offset-x"].asInt();
+        int validateButtonPosY = texture->getSprite().getPosition().y + dataNumber["validate-button-offset-y"].asInt();
+
+        validateButton = std::make_unique<Button>(
+                sf::Vector2f(dataNumber["validate-button-size-x"].asInt() , dataNumber["validate-button-size-y"].asInt()),
+                sf::Vector2f(validateButtonPosX, validateButtonPosY),
+                VALIDATE_BUTTON_COLOR,
+                false);
+
+        validateButton->setText(
+            dataNumber["validate-button-size-text"].asInt(), 
+            sf::Vector2f(0, dataNumber["validate-button-offset-text-y"].asInt()) , 
+            "Play", 
+            font);
 
 
     }
@@ -73,4 +91,5 @@ namespace client
         title->setPosition(xTitlePos, yPos);
         body->setPosition(xBodyPosition, yPos + yBodyOffset);
     }
+    
 }

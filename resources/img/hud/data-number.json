@@ -19,10 +19,18 @@
 
             "body-y-proportion": 0.055,
 
-
-            
             "up-player-text-size": 20,
-            "offset-between-up-player": 90
+            "offset-between-up-player": 90,
+
+            "validate-button-size-x": 50,
+            "validate-button-size-y": 30,
+            "validate-button-offset-x": 150,
+            "validate-button-offset-y": 52,
+            "validate-button-size-text": 18,
+            "validate-button-offset-text-y": 4
+
+
+ 
         
     }
 }
