@@ -5,7 +5,7 @@
 #define PRIORITY_INDEX 7
 
 const sf::Color VALIDATE_BUTTON_COLOR = sf::Color(255, 255, 255, 100);
-
+const std::vector<std::string> typeOfPriorityCards = {"economy", "army", "science", "culture", "industry"};
 
 namespace client
 {
@@ -15,6 +15,8 @@ namespace client
         texture = std::make_unique<TextureDisplayer>(path);
         texture->addSprite();
         texture->setImageType((HudTextureType)(index + PRIORITY_INDEX)); // +7 to go to the priority cards in the HudTextureType (enum class)
+        type = typeOfPriorityCards[index];
+        difficulty = index;
 
         priorityScale = dataNumber["priority-card-proportion"].asFloat() / (float(texture->getWidth()) / windowLength);
         upScaleProportion = dataNumber["priority-card-up-scale"].asFloat();
@@ -86,6 +88,5 @@ namespace client
         title->setPosition(xTitlePos, yPos);
         body->setPosition(xBodyPosition, yPos + yBodyOffset);
     }
-
-    
+   
 }

@@ -33,6 +33,8 @@
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
+std::array<std::string, 5> priorityCardOrder = {"economy", "army", "science", "culture", "industry"};
+
 
 namespace client
 {
@@ -116,10 +118,11 @@ namespace client
      * @param quitGame is the function used to quit the menu, it is load as an attribut
      * @param callback is the function used to return where the user click on the screen
      */
-    void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(int, int)> callback)
+    void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(int, int)> callback, std::function<void(std::string)> playPriorityCard)
     {
         quitGameWindow = quitGame;
         clickEvent = callback;
+        clickPriorityCardEvent = playPriorityCard;
         clientGameWindow = clientWindow;
 
         std::shared_ptr<bool> moveMode = std::make_unique<bool>(false);
@@ -266,16 +269,19 @@ namespace client
      */
     void GameWindow::moveMap(sf::Vector2i &clickStartingPoint, sf::Vector2i position, bool reset)
     {
-        if (reset) {
+        if (reset)
+        {
             clickStartingPoint.x = firstHexagonPosition[0];
             clickStartingPoint.y = firstHexagonPosition[1];
         }
         std::array<int, 2> newMapOffset = {position.x - clickStartingPoint.x, position.y - clickStartingPoint.y};
 
-        if (reset) {
+        if (reset)
+        {
             firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
         }
-        else {
+        else
+        {
             firstHexagonPosition = {firstHexagonPosition[0] + newMapOffset[0],
                                     firstHexagonPosition[1] + newMapOffset[1]};
         }
@@ -319,7 +325,61 @@ namespace client
         return data;
     }
 
+    void GameWindow::moveToRightPriorityCards(int difficulty)
+    {
 
+        for (unsigned i = 0; i< priorityCards.size(); i++) 
+        {
+            std::cout << priorityCards[i].type << " " << "difficulty: " << priorityCards[i].difficulty << std::endl ;
+        }
+
+        for (unsigned i = difficulty; i > 0; i--) 
+        {
+            priorityCards[i-1].difficulty = i;
+            std::iter_swap(priorityCards.begin() + i, priorityCards.begin() + (i-1));
+
+        }
+        priorityCards[0].difficulty = 0;
+
+        std::cout << "\n";
+
+        for (unsigned i = 0; i< priorityCards.size(); i++) 
+        {
+            std::cout << priorityCards[i].type << " " << "difficulty: " << priorityCards[i].difficulty << std::endl ;
+        }
+
+        /*
+        for (unsigned i = 0; i < priorityCards.size(); i++)        {
+            priorityCards[i].texture->getSprite().move(100, 0);
+            priorityCards[i].title->move(100, 0);
+            priorityCards[i].body->move(100, 0);
+        }*/
+    }
+
+    bool GameWindow::priorityCardClickAction(sf::FloatRect cursorRect)
+    {
+
+        for (unsigned i = 0; i < priorityCards.size(); i++)
+        {
+            sf::FloatRect spriteCards = priorityCards[i].texture->getSprite().getGlobalBounds();
+            sf::FloatRect spriteValidateButtonCards = priorityCards[i].validateButton->buttonRect->getGlobalBounds();
+
+            if (spriteValidateButtonCards.intersects(cursorRect) && priorityCards[i].isUp)
+            {
+                clickPriorityCardEvent(priorityCards[i].type);
+                moveToRightPriorityCards(priorityCards[i].difficulty);
+                return true;
+            }
+
+            if (spriteCards.intersects(cursorRect))
+            {
+                priorityCards[i].moveUpPriorityCard();
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /*!
      * @brief Function that deteck where the user click and what to send to the engine
@@ -339,17 +399,8 @@ namespace client
 
         bool isClickable = false;
 
-        for (unsigned i = 0; i < priorityCards.size(); i++)
-        {
-            sf::FloatRect spriteCards = priorityCards[i].texture->getSprite().getGlobalBounds();
-
-            if (spriteCards.intersects(cursorRect))
-            {
-                clickEvent(-1, i + 1); // -1 to signify that the space clicked is a priority card
-                priorityCards[i].moveUpPriorityCard();
-                return;
-            }
-        }
+        if (priorityCardClickAction(cursorRect))
+            return;
 
         for (auto &mapTexture : mapTextureToDisplay)
         {
@@ -641,7 +692,6 @@ namespace client
                 dataNumber["box-y-offset-proportion"].asFloat(),
                 priorityCards.back());
             boxTexture->getSprite(index).setPosition(boxPosition.x, boxPosition.y);
-            
         }
 
         // actionCard
