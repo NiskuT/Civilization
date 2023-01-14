@@ -1,5 +1,7 @@
 #include <client.hpp>
 #include <shared.hpp>
+#include <algorithm>
+#include <vector>
 #include <iostream>
 #include <array>
 
@@ -11,6 +13,9 @@
 
 namespace shared
 {
+
+    typedef std::shared_ptr<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>> elementPtr;
+
     /**
      * @file Rules.cpp
      * @fn Rules::Rules(unsigned ruleId)
@@ -72,7 +77,7 @@ namespace shared
 
         unsigned cardLevel = this->player->getLevelOfCard(CardsEnum::economy);
 
-        std::vector<std::shared_ptr<Barbarian>> barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
+        std::vector<elementPtr> barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
         if (barbarianList.size() > 0 && cardLevel != 2)
         {
             std::cout << "You can't kill a barbarian with this card" << std::endl;
@@ -98,7 +103,7 @@ namespace shared
             {
                 for (int i = 0; i < (int)barbarianList.size(); i++)
                 {
-                    barbarianList.at(i)->kill();
+                    (std::get<Barbarian>(*barbarianList.at(i))).kill();
                     this->player->addBox(CardsEnum::economy); // TODO: allow to add box on other card
                 }
             }
@@ -127,18 +132,23 @@ namespace shared
      * @fn void Rules::checkIfBarbarianIsOnThePath(std::vector<int[2]> *caravanMovementPath)
      * @brief This function aim to check if a barbarian is on the path of the caravan
      */
-    std::vector<std::shared_ptr<Barbarian>> Rules::checkIfBarbarianIsOnThePath(std::shared_ptr<std::vector<int[2]>> caravanMovementPath, std::shared_ptr<shared::Map> map)
+    std::vector<elementPtr> Rules::checkIfBarbarianIsOnThePath(std::shared_ptr<std::vector<int[2]>> caravanMovementPath, std::shared_ptr<shared::Map> map)
     {
-        std::vector<std::shared_ptr<Barbarian>> barbarianList;
-        std::shared_ptr<Barbarian> barbarian;
+        std::vector<elementPtr> barbarianList;
+
         for (int i = 0; i < (int)caravanMovementPath->size(); i++)
         {
             unsigned x = caravanMovementPath->at(i)[0];
             unsigned y = caravanMovementPath->at(i)[1];
-            barbarian = map->operator()(x, y)->getElement(ElementEnum::barbarian)->barbarianPtr;
-            if (barbarian != nullptr)
+            elementPtr element = (map->operator()(x, y)->getElement(ElementEnum::barbarian));
+            if (std::holds_alternative<Barbarian>(*element))
             {
-                barbarianList.push_back(barbarian);
+                barbarianList.push_back(element);
+            }
+            else
+            {
+                std::cout << "This is not a barbarian" << std::endl;
+                exit(EXIT_FAILURE);
             }
         }
 
@@ -216,15 +226,20 @@ namespace shared
 
     void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_ptr<Map> gameMap)
     {
-        std::shared_ptr<ControlPawn> controlPawn;
+        elementPtr controlPawn;
         for (int i = 0; i < (int)neightbors.size(); i++)
         {
             unsigned x = neightbors.at(i)[0];
             unsigned y = neightbors.at(i)[1];
-            controlPawn = gameMap->operator()(x, y)->getElement(ElementEnum::controlPawn)->controlPawn;
-            if (controlPawn != nullptr)
+            controlPawn = gameMap->operator()(x, y)->getElement(ElementEnum::controlPawn);
+            if (std::holds_alternative<ControlPawn>(*controlPawn))
             {
-                controlPawn->kill();
+                std::get<ControlPawn>(*controlPawn).kill();
+            }
+            else
+            {
+                std::cout << "This is not a barbarian" << std::endl;
+                exit(EXIT_FAILURE);
             }
         }
     }
@@ -307,7 +322,7 @@ namespace shared
     {
         for (auto position : positions)
         {
-            if (gameMap->operator()(position[0], position[1])->getElement(ElementEnum::controlPawn)->controlPawn == nullptr)
+            if (std::holds_alternative<ControlPawn>(*gameMap->operator()(position[0], position[1])->getElement(ElementEnum::controlPawn)))
             {
                 // TODO : create a control pawn
             }

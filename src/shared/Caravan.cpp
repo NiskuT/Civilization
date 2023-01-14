@@ -19,8 +19,8 @@ namespace shared {
         this->posY = posY;
     }
 
-    void Caravan::move(std::vector<int[2]> pathToFollow) {
-        for (int i = 0; i < pathToFollow.size(); i++) {
+    void Caravan::move(std::vector<std::array<int,2>> pathToFollow) {
+        for (int i = 0; i < (int) pathToFollow.size(); i++) {
             this->posX = pathToFollow.at(i)[0];
             this->posY = pathToFollow.at(i)[1];
         }
