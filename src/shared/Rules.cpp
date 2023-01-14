@@ -50,6 +50,7 @@ namespace shared
         }
     }
 
+    /// ECONOMY CARD ///
     /**
      * @file Rules.cpp
      * @fn void Rules::playEconomyCard()
@@ -163,6 +164,7 @@ namespace shared
         return false;
     }
 
+    /// SCIENCE CARD ///
     /**
      * @file Rules.cpp
      * @fn void Rules::playScienceCard()
@@ -259,6 +261,7 @@ namespace shared
         return neighbors;
     }
 
+    /// CULTURE CARD ///
     void Rules::playCultureCard(std::shared_ptr<ArgsOfRule> args)
     {
         unsigned numberOfBoxUsed = args->scienceCardRuleArgs.numberOfBoxUsed;
@@ -306,16 +309,111 @@ namespace shared
         {
             if (gameMap->operator()(position[0], position[1])->getElement(ElementEnum::controlPawn)->controlPawn == nullptr)
             {
-                ControlPawn controlPawn = ControlPawn();
-                ElementPtr controlPawnPtr;
-                controlPawnPtr.controlPawn = std::make_shared<ControlPawn>(controlPawn);
-                gameMap->operator()(position[0], position[1])->addElement(ElementEnum::controlPawn, std::make_shared<ControlPawn>(controlPawn));
                 // TODO : create a control pawn
             }
-            else{
+            else
+            {
                 std::cout << "There is already a control pawn on this position" << std::endl;
                 exit(EXIT_FAILURE);
             }
+        }
+    }
+
+    /// MILITARY CARD ///
+    void Rules::playMilitaryCard(std::shared_ptr<ArgsOfRule> args)
+    {
+        if (args->militaryCardRuleArgs.attack == true)
+        {
+            attack(args);
+        }
+        else
+        {
+            reinforce(args);
+        }
+    }
+
+    void Rules::attack(std::shared_ptr<ArgsOfRule> args) // TODO : remake this function
+    {
+        // std::shared_ptr<Map> gameMap = args->scienceCardRuleArgs.gameMap;
+        // std::vector<std::array<unsigned, 2>> pawnsPositions = args->militaryCardRuleArgs.pawnsPositions;
+        // std::shared_ptr<ControlPawn> controlPawn;
+        // for (auto position : pawnsPositions)
+        // {
+        //     controlPawn = gameMap->operator()(position[0], position[1])->getElement(ElementEnum::controlPawn)->controlPawn;
+        //     if (controlPawn != nullptr)
+        //     {
+        //         controlPawn->kill();
+        //     }
+        // }
+    }
+
+    void Rules::reinforce(std::shared_ptr<ArgsOfRule> args)
+    {
+        unsigned numberOfBoxUsed = args->scienceCardRuleArgs.numberOfBoxUsed;
+        if (numberOfBoxUsed > this->player->getNumberOfBox(CardsEnum::military))
+        {
+            std::cout << "You don't have enough box to play this card" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        std::shared_ptr<Map> gameMap = args->scienceCardRuleArgs.gameMap;
+        std::vector<std::array<unsigned, 2>> pawnsPositions = args->militaryCardRuleArgs.pawnsPositions;
+        unsigned cardLevel = this->player->getLevelOfCard(CardsEnum::culture);
+        if (pawnsPositions.size() != cardLevel + numberOfBoxUsed)
+        {
+            std::cout << "invalid number of pawn positions" << std::endl;
+            exit(1);
+        }
+        std::shared_ptr<ControlPawn> controlPawn;
+        for (auto position : pawnsPositions)
+        {
+            controlPawn = gameMap->operator()(position[0], position[1])->getElement(ElementEnum::controlPawn)->controlPawn;
+            if (controlPawn != nullptr)
+            {
+                controlPawn->reinforce();
+            }
+        }
+    }
+
+    /// INDUSTRY CARD ///
+    void Rules::playIndustryCard(std::shared_ptr<ArgsOfRule> args)
+    {
+        if (args->industryCardRuleArgs.buildWonder == true)
+        {
+            buildWonder(args);
+        }
+        else
+        {
+            buildCity(args);
+        }
+    }
+
+    void Rules::buildWonder(std::shared_ptr<ArgsOfRule> args) // TODO : remake this function
+    {
+        std::shared_ptr<Map> gameMap = args->scienceCardRuleArgs.gameMap;
+        std::array<unsigned, 2> position = args->industryCardRuleArgs.position;
+        // std::shared_ptr<Wonder> wonder = gameMap->operator()(position[0], position[1])->getElement(ElementEnum::wonder)->wonder;
+        // if (wonder != nullptr)
+        // {
+        //     wonder->build();
+        // }
+    }
+
+    void Rules::buildCity(std::shared_ptr<ArgsOfRule> args) // TODO : remake this function
+    {
+        unsigned numberOfBoxUsed = args->scienceCardRuleArgs.numberOfBoxUsed;
+        if (numberOfBoxUsed > this->player->getNumberOfBox(CardsEnum::industry))
+        {
+            std::cout << "You don't have enough box to play this card" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        std::shared_ptr<Map> gameMap = args->scienceCardRuleArgs.gameMap;
+        std::array<unsigned, 2> position = args->industryCardRuleArgs.position;
+        std::shared_ptr<City> city = gameMap->operator()(position[0], position[1])->getElement(ElementEnum::city)->city;
+        if (city != nullptr)
+        {
+            city->build();
         }
     }
 
