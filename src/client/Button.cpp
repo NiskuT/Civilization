@@ -1,4 +1,5 @@
 #include <client.hpp>
+#include <iostream>
 
 
 namespace client
@@ -49,12 +50,36 @@ void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf
     buttonText->setFont(font);
     buttonText->setString(text);
     buttonText->setCharacterSize(textSize);
+    centerText(true, textOffset);
+    buttonText->setFillColor(sf::Color::Black);
+}
+
+void Button::addChar(std::string ch)
+{
+    buttonText->setString(buttonText->getString() + ch);
+    if (buttonText->getLocalBounds().width >= buttonRect->getLocalBounds().width)
+    {
+        std::cout << "Too long\n";
+        buttonText->setCharacterSize(buttonText->getCharacterSize() - 1);
+    }
+    centerText(false);
+}
+
+void Button::centerText(bool centerAllAxis, sf::Vector2f textOffset)
+{
     sf::Vector2f buttonPos = buttonRect->getPosition();
     sf::Vector2f buttonSize = buttonRect->getSize();
+    int yPosText;
+    if (centerAllAxis)
+    {
+        yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2  - buttonText->getGlobalBounds().height/2 + textOffset.y ;
+    }
+    else
+    {
+        yPosText = buttonText->getPosition().y;
+    }
     int xPosText = buttonPos.x + (buttonSize.x - buttonText->getGlobalBounds().width) / 2 + textOffset.x;
-    int yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2  - buttonText->getGlobalBounds().height/2 + textOffset.y ;
     buttonText->setPosition(sf::Vector2f(xPosText, yPosText));
-    buttonText->setFillColor(sf::Color::Black);
 }
 
 

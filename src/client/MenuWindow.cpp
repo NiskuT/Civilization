@@ -145,10 +145,10 @@ void MenuWindow::writeChar(std::string ch){
     std::cout << ch << "\n";
     for (auto &button : menuButtons)
     {
-        std::string newStrong = button.buttonText->getString();
-        if (button.redBorder && newStrong.size() < button.maxTextSize)
+        std::string newString = button.buttonText->getString();
+        if (button.redBorder && (int)((std::string)button.buttonText->getString()).size() < button.maxTextSize)
         {
-            button.buttonText->setString(button.buttonText->getString() + ch);
+            button.addChar(ch);
         }
     }
 }
