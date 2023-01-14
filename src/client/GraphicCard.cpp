@@ -10,7 +10,7 @@ const sf::Color VALIDATE_BUTTON_COLOR = sf::Color(255, 255, 255, 100);
 namespace client
 {
 
-    GraphicCard::GraphicCard(const std::string& path, const Json::Value &dataNumber, const float windowLength, const float windowWidth, int index, sf::Font* font)
+    GraphicCard::GraphicCard(const std::string& path, const Json::Value &dataNumber, const float windowLength, const float windowWidth, int index, sf::Font& font)
     {
         texture = std::make_unique<TextureDisplayer>(path);
         texture->addSprite();
@@ -55,13 +55,10 @@ namespace client
         this->windowWidth = windowWidth;
 
         texture->setHudSpritePosition(priorityScale, windowLength, windowWidth, 0, index);
-
-
     }
 
-
     /*!
-     * \brief Move up priority cards when we click on it
+     * @brief Move up priority cards when we click on it
      */
 
     void GraphicCard::moveUpPriorityCard()
@@ -84,8 +81,6 @@ namespace client
         xPos = texture->getSprite().getPosition().x;
         xTitlePos = title->getPosition().x;
         xBodyPosition = body->getPosition().x;
-
-       
 
         texture->getSprite().setPosition(xPos, yPos);
         title->setPosition(xTitlePos, yPos);
