@@ -60,7 +60,7 @@
 #define DBG_GENCODE    6
 #define DBG_CORE       8
 
-#define SMALL_BUFFER    80
+#define SMALL_BUFFER    256
 #define BIG_BUFFER     512
 #define LARGE_BUFFER  4096
 #define HUGE_BUFFER  16384
@@ -330,7 +330,7 @@ char* strndup (const char *s, size_t n);
 #endif
 
 #ifndef MAXNAMLEN
-#define MAXNAMLEN 1024
+#define MAXNAMLEN 2048
 #endif
 
 #ifdef ENABLE_FILE_UPDATE_ON_CHANGE

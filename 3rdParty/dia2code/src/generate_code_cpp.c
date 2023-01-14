@@ -734,6 +734,7 @@ struct stdlib_includes {
    int sfmlGraphics;
    int jsoncpp;
    int boostAsio;
+   int variant;
 };
 
 void print_include_stdlib(struct stdlib_includes* si,char* name) {
@@ -839,7 +840,11 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        if (!si->boostAsio && strstr(name,"boost::asio")) {
            print ("#include <boost/asio.hpp>\n");
            si->boostAsio = 1;
-       }       
+       }   
+       if (!si->variant && strstr(name,"std::variant")) {
+           print ("#include <variant>\n");
+           si->boostAsio = 1;
+       }      
     }
 }
 
