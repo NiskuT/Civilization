@@ -1,5 +1,5 @@
 {
-    "data" : 
+    "welcomeButtons" : 
     [
         {
             "width": 0.5,
@@ -53,6 +53,108 @@
             "x": 0.775,
             "y": 0.5,
             "text": "Join"
+        }
+    ],
+    "welcomeTexts" : 
+    [
+        {
+            "text": "Civilization 7",
+            "size": 200,
+            "xOffset": 1,
+            "yOffset": 2.5,
+            "bold": true
+        },
+        {
+            "text": "Connect to existing Game",
+            "size": 35,
+            "xOffset": 7,
+            "yOffset": 16.5,
+            "bold": false
+        },
+        {
+            "text": "Serveur adress",
+            "size": 35,
+            "xOffset": 13.5,
+            "yOffset": 30,
+            "bold": false
+        },
+        {
+            "text": "Port Number",
+            "size": 35,
+            "xOffset": 5.5,
+            "yOffset": 28.8,
+            "bold": false
+        }
+    ],
+    "newGameTexts" : 
+    [
+        {
+            "text": "Civilization 7",
+            "size": 200,
+            "xOffset": 1,
+            "yOffset": 2.5,
+            "bold": true
+        },
+        {
+            "text": "New Game Parameters",
+            "size": 35,
+            "xOffset": 7.5,
+            "yOffset": 20.9,
+            "bold": false
+        },
+        {
+            "text": "Serveur adress",
+            "size": 35,
+            "xOffset": 13.5,
+            "yOffset": 30,
+            "bold": false
+        },
+        {
+            "text": "Port Number",
+            "size": 35,
+            "xOffset": 5.5,
+            "yOffset": 28.8,
+            "bold": false
+        }
+    ],
+    "newGameButtons" : 
+    [
+        {
+            "width": 0.5,
+            "height": 1.5,
+            "x": 0.5,
+            "y": 1.5,
+            "text": ""
+        },
+        {
+            "width": 0.25,
+            "height": 2.5,
+            "x": 0.2,
+            "y": 2.5,
+            "text": "Load Game"
+        },
+        {
+            "width": 0.2,
+            "height": 0.4,
+            "x": 0.525,
+            "y": 0.5,
+            "text": "Nb of Player",
+            "sizeMax": 1
+        },
+        {
+            "width": 0.45,
+            "height": 0.4,
+            "x": 0.525,
+            "y": 1,
+            "text": "Seed",
+            "sizeMax": 30
+        },
+        {
+            "width": 0.2,
+            "height": 0.4,
+            "x": 0.775,
+            "y": 0.5,
+            "text": "Start"
         }
     ]
 }

@@ -178,12 +178,24 @@ namespace client
     }
 
     /*!
-     * \brief Change the Window for nothing, Menu or Game
-     * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
+     * \brief A player is connecting to a Game
+     * @param id game ID
+     * @param username player username
      */
     void ClientGameEngine::handleConnect(std::string id, std::string username)
     {
         std::cout << username << " try to connect to the game " << id << std::endl;
+    }
+
+    /*!
+     * \brief A player is creating a new Game
+     * @param username player username
+     * @param seed seed of the map for the new game
+     * @param numberOfPlayer number of player in the new game
+     */
+    void ClientGameEngine::handleCreatNewGame(std::string username, std::string seed, int numberOfPlayer)
+    {
+        std::cout << username << " is creating a new game for " << numberOfPlayer << " players with the seed " << seed << std::endl;
     }
 
     /*!
@@ -203,7 +215,8 @@ namespace client
     {
         clientMenu.startMenu(   clientWindow, 
                                 [this](bool quitDef) { handleQuitMenu(quitDef); },
-                                [this](std::string id, std::string username) { handleConnect(id, username); });
+                                [this](std::string id, std::string username) { handleConnect(id, username); },
+                                [this](std::string username, std::string seed, int numberOfPlayer) { handleCreatNewGame(username, seed, numberOfPlayer);});
     }
 
     /*!

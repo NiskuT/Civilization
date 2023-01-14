@@ -8,11 +8,27 @@
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
 
-#define TITLE_SIZE 200
+#define REFRESH_TIME 30
+
+#define BUTTON_CREAT 1
+#define BUTTON_USERNAME 2
+#define BUTTON_SERVER 3
+#define BUTTON_PORT 4
+#define BUTTON_LOAD 4
+#define BUTTON_ID 5
+#define BUTTON_PLAYER 5
+#define BUTTON_SEED 6
+#define BUTTON_CONNECT 6
+#define BUTTON_START 7
+
+#define ASCI_BEGIN 41
+#define ASCI_END 123
 
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
 #endif
+
+const sf::Color buttonColor = sf::Color(247, 200, 195, 255);
 
 namespace client
 {
@@ -25,6 +41,8 @@ namespace client
 MenuWindow::MenuWindow()
 {
     loadMenuTexture();
+    currentMenu = &menuButtons;
+    currentText = &menuTexts;
 }
 
 /*!
@@ -36,14 +54,18 @@ void MenuWindow::displayWindow()
     clientMenuWindow->clear(sf::Color::Blue);
 
     clientMenuWindow->draw(backgroundTexture->getSprite());
-    clientMenuWindow->draw(*gameTitle);
 
-    for (unsigned i = 0; i < menuButtons.size(); i++)
+    for (unsigned i = 0; i < currentMenu->size(); i++)
     {
-        clientMenuWindow->draw(*menuButtons[i].buttonRect);
-        clientMenuWindow->draw(*menuButtons[i].buttonText);
+        clientMenuWindow->draw(*currentMenu->at(i).buttonRect);
+        clientMenuWindow->draw(*currentMenu->at(i).buttonText);
     }
 
+    for (unsigned i = 0; i < currentText->size(); i++)
+    {
+        clientMenuWindow->draw(currentText->at(i));
+    }
+    
     clientMenuWindow->display();
 }
 
@@ -52,18 +74,19 @@ void MenuWindow::displayWindow()
  * @param clientWindow is window that comes from the engine
  * @param quitGame is the function used to quit the menu, it is load as an attribut
  */
-void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(std::string, std::string)> connectGame)
+void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(std::string, std::string)> connectGame, std::function<void(std::string, std::string, int)> createGame)
 {
     quitMenuWindow = quitGame;
     clientMenuWindow = clientWindow;
     tryConnectGame = connectGame;
+    creatNewGame = createGame;
 
     long lastUpdateTimer = getCurrentTime(false);
 
     while (clientMenuWindow->isOpen())
     {
 
-        if (getCurrentTime(false) - lastUpdateTimer > (100 / 3))
+        if (getCurrentTime(false) - lastUpdateTimer > (REFRESH_TIME))
         {
             displayWindow();
             lastUpdateTimer = getCurrentTime(false);
@@ -98,33 +121,46 @@ bool MenuWindow::menuEventHappened(sf::Event& event){
 
         clickPoint = sf::Mouse::getPosition(*clientMenuWindow);
 
-        for (unsigned i = 0; i < menuButtons.size(); i++)
+        for (unsigned i = 0; i < currentMenu->size(); i++)
         {
             clickAction = false;
-            menuButtons[i].setInactive();
-            if (  clickPoint.x >= menuButtons[i].buttonRect->getGlobalBounds().left 
-                && clickPoint.x <= menuButtons[i].buttonRect->getGlobalBounds().left + menuButtons[i].buttonRect->getGlobalBounds().width 
-                && clickPoint.y >= menuButtons[i].buttonRect->getGlobalBounds().top 
-                && clickPoint.y <= menuButtons[i].buttonRect->getGlobalBounds().top + menuButtons[i].buttonRect->getGlobalBounds().height)
+            currentMenu->at(i).setInactive();
+            if (  clickPoint.x >= currentMenu->at(i).buttonRect->getGlobalBounds().left 
+                && clickPoint.x <= currentMenu->at(i).buttonRect->getGlobalBounds().left + currentMenu->at(i).buttonRect->getGlobalBounds().width 
+                && clickPoint.y >= currentMenu->at(i).buttonRect->getGlobalBounds().top 
+                && clickPoint.y <= currentMenu->at(i).buttonRect->getGlobalBounds().top + currentMenu->at(i).buttonRect->getGlobalBounds().height)
             {
-                clickAction = menuButtons[i].clickButton();
+                clickAction = currentMenu->at(i).clickButton();
             }
-            if (clickAction && i==1)
+            if (clickAction && i==BUTTON_CREAT && currentMenu == &menuButtons)
             {
-                std::cout << "Create New Game\n";
+                currentMenu = &newGameButtons;
+                currentText = &newGameTexts;
             }
-            else if (clickAction && i==6)
+            else if (clickAction && i==BUTTON_CONNECT && currentMenu == &menuButtons)
             {
-                tryConnectGame(menuButtons[5].buttonText->getString(), menuButtons[2].buttonText->getString());
+                tryConnectGame(menuButtons[BUTTON_ID].buttonText->getString(), menuButtons[BUTTON_USERNAME].buttonText->getString());
                 quitMenuWindow(false);
+                return true;
+            }
+            else if (clickAction && i==BUTTON_LOAD && currentMenu == &newGameButtons)
+            {
+                std::cout << "Load a Game: Not implemented today\n";
+            }
+            else if (clickAction && i==BUTTON_START && currentMenu == &newGameButtons)
+            {
+                creatNewGame(menuButtons[BUTTON_USERNAME].buttonText->getString(), newGameButtons[BUTTON_SEED].buttonText->getString(), 4);
+                quitMenuWindow(false);
+                currentMenu = &menuButtons;
+                currentText = &menuTexts;
+                return true;
             }
         }
 
         break;
 
     case sf::Event::TextEntered:
-
-        if (event.text.unicode > 41 && event.text.unicode < 123)
+        if (event.text.unicode > ASCI_BEGIN && event.text.unicode < ASCI_END)
         {
             writeChar(converter.to_bytes(event.text.unicode));
         }
@@ -163,12 +199,17 @@ bool MenuWindow::menuEventHappened(sf::Event& event){
  * @param ch letter to add
  */
 void MenuWindow::writeChar(std::string ch){
-    for (auto &button : menuButtons)
+    for (unsigned i = 0; i < currentMenu->size(); i++)
     {
-        std::string newString = button.buttonText->getString();
-        if (button.redBorder && (int)((std::string)button.buttonText->getString()).size() < button.maxTextSize)
+        std::string newString = currentMenu->at(i).buttonText->getString();
+        if (currentMenu->at(i).redBorder && (int)((std::string)currentMenu->at(i).buttonText->getString()).size() < currentMenu->at(i).maxTextSize)
         {
-            button.addChar(ch);
+            currentMenu->at(i).addChar(ch);
+        }
+        if (currentMenu->at(i).redBorder && i==BUTTON_PLAYER && currentMenu == &newGameButtons)
+        {
+            currentMenu->at(i).buttonText->setString(ch);
+            currentMenu->at(i).centerText(true);
         }
     }
 }
@@ -178,7 +219,7 @@ void MenuWindow::writeChar(std::string ch){
  */
 void MenuWindow::deleteChar(){
 
-    for (auto &button : menuButtons)
+    for (auto &button : *currentMenu)
     {
         std::string newString = button.buttonText->getString();
         if (button.redBorder && newString.size() != 0 && button.maxTextSize != 0)
@@ -205,13 +246,6 @@ void MenuWindow::loadMenuTexture()
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    gameTitle = (std::unique_ptr<sf::Text>)new sf::Text("Civilization 7", *menuFont, TITLE_SIZE);
-    gameTitle->setStyle(sf::Text::Bold);
-    gameTitle->setFillColor(sf::Color::Black);
-    gameTitle->setPosition(WINDOW_LENGTH - gameTitle->getLocalBounds().height - gameTitle->getLocalBounds().width, WINDOW_WIDTH - 2.5 * gameTitle->getLocalBounds().height);
-
-    sf::Color buttonColor = sf::Color(247, 200, 195, 255);
-
     std::ifstream file(RESOURCES_PATH "/img/menu/menu.json");
     if (!file.is_open())
     {
@@ -225,14 +259,56 @@ void MenuWindow::loadMenuTexture()
     std::string errors;
     reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
 
-    const Json::Value &data = obj["data"];
+    Json::Value &data = obj["welcomeTexts"];
 
-    for (unsigned index = 0; index < data.size(); ++index)
+    for (auto &dataMenu : data)
     {
-        menuButtons.emplace_back(   sf::Vector2f(data[index]["width"].asFloat() * gameTitle->getLocalBounds().width, data[index]["height"].asFloat() * gameTitle->getLocalBounds().height), 
-                                    sf::Vector2f(   gameTitle->getPosition().x + data[index]["x"].asFloat() * gameTitle->getLocalBounds().width, 
-                                                    gameTitle->getPosition().y - data[index]["y"].asFloat() * gameTitle->getLocalBounds().height), buttonColor);
-        menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), *menuFont, data[index]["sizeMax"].asInt());
+        menuTexts.emplace_back(dataMenu["text"].asString(), *menuFont, dataMenu["size"].asInt());
+        if (dataMenu["bold"].asBool())
+        {
+            menuTexts.back().setStyle(sf::Text::Bold);
+        }
+        menuTexts.back().setFillColor(sf::Color::Black);
+        menuTexts.back().setPosition((int)(WINDOW_LENGTH - dataMenu["xOffset"].asFloat() * menuTexts.back().getLocalBounds().height - menuTexts.back().getLocalBounds().width), 
+                                    (int)(WINDOW_WIDTH - dataMenu["yOffset"].asFloat() * menuTexts.back().getLocalBounds().height));
+    }
+
+    data = obj["newGameTexts"];
+
+    for (auto &dataMenu : data)
+    {
+        newGameTexts.emplace_back(dataMenu["text"].asString(), *menuFont, dataMenu["size"].asInt());
+        if (dataMenu["bold"].asBool())
+        {
+            newGameTexts.back().setStyle(sf::Text::Bold);
+        }
+        newGameTexts.back().setFillColor(sf::Color::Black);
+        newGameTexts.back().setPosition((int)(WINDOW_LENGTH - dataMenu["xOffset"].asFloat() * newGameTexts.back().getLocalBounds().height - newGameTexts.back().getLocalBounds().width), 
+                                        (int)(WINDOW_WIDTH - dataMenu["yOffset"].asFloat() * newGameTexts.back().getLocalBounds().height));
+    }
+    
+    data = obj["welcomeButtons"];
+
+    for (auto &dataMenu : data)
+    {
+        menuButtons.emplace_back(   sf::Vector2f(dataMenu["width"].asFloat() * menuTexts[0].getLocalBounds().width, dataMenu["height"].asFloat() * menuTexts[0].getLocalBounds().height), 
+                                    sf::Vector2f(   menuTexts[0].getPosition().x + dataMenu["x"].asFloat() * menuTexts[0].getLocalBounds().width, 
+                                                    menuTexts[0].getPosition().y - dataMenu["y"].asFloat() * menuTexts[0].getLocalBounds().height), buttonColor);
+        menuButtons.back().setText(40, sf::Vector2f(0, 0), dataMenu["text"].asString(), *menuFont, dataMenu["sizeMax"].asInt());
+    }
+
+    newGameButtons.push_back(menuButtons[BUTTON_USERNAME]);
+    newGameButtons.push_back(menuButtons[BUTTON_SERVER]);
+    newGameButtons.push_back(menuButtons[BUTTON_PORT]);
+
+    data = obj["newGameButtons"];
+
+    for (auto &dataMenu : data)
+    {
+        newGameButtons.emplace_back( sf::Vector2f(dataMenu["width"].asFloat() * menuTexts[0].getLocalBounds().width, dataMenu["height"].asFloat() * menuTexts[0].getLocalBounds().height), 
+                                    sf::Vector2f(   menuTexts[0].getPosition().x + dataMenu["x"].asFloat() * menuTexts[0].getLocalBounds().width, 
+                                                    menuTexts[0].getPosition().y - dataMenu["y"].asFloat() * menuTexts[0].getLocalBounds().height), buttonColor);
+        newGameButtons.back().setText(40, sf::Vector2f(0, 0), dataMenu["text"].asString(), *menuFont, dataMenu["sizeMax"].asInt());
     }
 }
 

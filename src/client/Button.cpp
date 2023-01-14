@@ -17,7 +17,7 @@ namespace client
  */
 Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, bool border)
 {
-    buttonRect = std::unique_ptr<sf::RectangleShape>(new sf::RectangleShape);
+    buttonRect = std::shared_ptr<sf::RectangleShape>(new sf::RectangleShape);
     buttonRect->setSize(buttonSize);
     buttonRect->setPosition(buttonPos);
     buttonRect->setFillColor(buttonColor);
@@ -42,7 +42,7 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
 void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf::Font &font, int size)
 {
     maxTextSize = size;
-    buttonText = std::unique_ptr<sf::Text>(new sf::Text);
+    buttonText = std::shared_ptr<sf::Text>(new sf::Text);
     buttonText->setFont(font);
     buttonText->setString(text);
     buttonText->setCharacterSize(textSize);
