@@ -19,10 +19,10 @@ namespace client
 {
     
 /*!
-    * @brief Constructor
-    *
-    * Constructor of ClientGameEngine class
-    */
+ * @brief Constructor
+ *
+ * Constructor of ClientGameEngine class
+ */
 ClientGameEngine::ClientGameEngine()
 {
     myself = std::make_shared<shared::Player>();
@@ -31,10 +31,10 @@ ClientGameEngine::ClientGameEngine()
 }
 
 /*!
-    * @brief Quentin
-    * @param serverAddress
-    * @param serverPort
-    */
+ * @brief Quentin
+ * @param serverAddress
+ * @param serverPort
+ */
 bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
 {
     boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(serverAddress), serverPort);
@@ -66,8 +66,8 @@ bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
 }
 
 /*!
-    * @brief Quentin
-    */
+ * @brief Quentin
+ */
 void ClientGameEngine::startReceiving()
 {
     std::cout << "Starting receiving" << std::endl;
@@ -108,9 +108,9 @@ void ClientGameEngine::startReceiving()
 }
 
 /*!
-    * @brief Quentin
-    * @param
-    */
+ * @brief Quentin
+ * @param
+ */
 void ClientGameEngine::registerServerAnswer(const std::string &response)
 {
     std::lock_guard<std::mutex> lock(myself->qAndA.sharedDataMutex);
@@ -120,17 +120,17 @@ void ClientGameEngine::registerServerAnswer(const std::string &response)
 }
 
 /*!
-    * @brief Quentin
-    * @param request
-    */
+ * @brief Quentin
+ * @param request
+ */
 void ClientGameEngine::processServerRequest(const std::string &request)
 {
     std::cout << "Received request: " << request << std::endl;
 }
 
 /*!
-    * @brief Quentin
-    */
+ * @brief Quentin
+ */
 void ClientGameEngine::askServer()
 {
     myself->qAndA.answerReady = false;
@@ -149,10 +149,10 @@ void ClientGameEngine::askServer()
 }
 
 /*!
-    * @brief Print where the user click on the GameWindow
-    * @param x position on x axis 
-    * @param y position on y axis 
-    */
+ * @brief Print where the user click on the GameWindow
+ * @param x position on x axis 
+ * @param y position on y axis 
+ */
 void ClientGameEngine::handleInformation(int x, int y)
 {
     if (x == -1) 
@@ -166,9 +166,9 @@ void ClientGameEngine::handleInformation(int x, int y)
 }   
 
 /*!
-    * @brief Change the Window for nothing, Menu or Game
-    * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
-    */
+ * @brief Change the Window for nothing, Menu or Game
+ * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
+ */
 void ClientGameEngine::handleQuitMenu(bool quitDef)
 {
     std::lock_guard<std::mutex> lock(mutexRunningEngine);
@@ -183,12 +183,12 @@ void ClientGameEngine::handleQuitMenu(bool quitDef)
 }
 
 /*!
-    * \brief A player is connecting to a Game
-    * @param id game ID, = new for a new Game
-    * @param username player username
-    * @param server serveur adresse
-    * @param port port number
-    */
+ * \brief A player is connecting to a Game
+ * @param id game ID, = new for a new Game
+ * @param username player username
+ * @param server serveur adresse
+ * @param port port number
+ */
 bool ClientGameEngine::tryConnection(std::string id, std::string username, std::string server, std::string port)
 {
     myself->setUsername(username);
@@ -206,19 +206,19 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
 }
 
 /*!
-    * \brief A player is creating a new Game
-    * @param username player username
-    * @param seed seed of the map for the new game
-    * @param numberOfPlayer number of player in the new game
-    */
+ * \brief A player is creating a new Game
+ * @param username player username
+ * @param seed seed of the map for the new game
+ * @param numberOfPlayer number of player in the new game
+ */
 void ClientGameEngine::handleCreatNewGame(std::string username, std::string seed, int numberOfPlayer)
 {
     std::cout << username << " is creating a new game for " << numberOfPlayer << " players with the seed " << seed << std::endl;
 }
 
 /*!
-    * \brief Start the loop that manage the GameWindow
-    */
+ * \brief Start the loop that manage the GameWindow
+ */
 void ClientGameEngine::startGameWindow()
 {
     clientGame.startGame(   clientWindow, 
@@ -227,16 +227,16 @@ void ClientGameEngine::startGameWindow()
 }
 
 /*!
-    * @brief Start the loop that manage the MenuWindow
-    */
+ * @brief Start the loop that manage the MenuWindow
+ */
 void ClientGameEngine::startMenuWindow()
 {
     clientMenu.startMenu();
 }
 
 /*!
-    * @brief Loop that manage the entire Engine
-    */
+ * @brief Loop that manage the entire Engine
+ */
 void ClientGameEngine::renderGame()
 {
     clientWindow = std::make_shared<sf::RenderWindow>();
@@ -261,8 +261,8 @@ void ClientGameEngine::renderGame()
 }
 
 /*!
-    * @brief Loop that is used when the client is in GameMode
-    */
+ * @brief Loop that is used when the client is in GameMode
+ */
 void ClientGameEngine::playGame()
 {
     std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
@@ -320,8 +320,8 @@ void ClientGameEngine::playGame()
 }
 
 /*!
-    * @brief Loop that is used when the client is in MenuMode
-    */
+ * @brief Loop that is used when the client is in MenuMode
+ */
 void ClientGameEngine::playMenu()
 {
     std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
@@ -351,10 +351,10 @@ void ClientGameEngine::playMenu()
 }
 
 /*!
-    * \brief Detect an intersection between a point and a rect
-    * @param point the point
-    * @param rectangle the rectangle
-    */
+ * \brief Detect an intersection between a point and a rect
+ * @param point the point
+ * @param rectangle the rectangle
+ */
 bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rectangle)
 {
     return (   point.x >= rectangle.left 

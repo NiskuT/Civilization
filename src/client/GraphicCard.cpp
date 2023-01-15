@@ -38,8 +38,8 @@ GraphicCard::GraphicCard(const std::string& path, float actionProportion, const 
 }
 
 /*!
-    * @brief Move up priority cards when we click on it
-    */
+ * @brief Move up priority cards when we click on it
+ */
 
 void GraphicCard::moveUpPriorityCard()
 {
