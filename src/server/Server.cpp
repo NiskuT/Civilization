@@ -116,7 +116,7 @@ namespace server
                 else if (messageReceived.find("binary") == 0) // binary reception
                 {
                     size_t size = std::stoi(messageReceived.substr(8));
-                    std::string data = receiveBinary(player, size);
+                    std::string data = binary.receive(player, size);
                     registerClientAnswer(data, player);
                 }
                 else
@@ -163,46 +163,6 @@ namespace server
         else {
             std::cout << "Player " << player->getName() << " connected to game " << game->getId() << std::endl;
         }
-    }
-
-    void Server::sendBinary(std::shared_ptr<shared::Player> player, std::string serializedData)
-    {
-        std::string header = "binary:" + std::to_string(serializedData.size()) + "\n";
-
-        std::lock_guard<std::mutex> lock(player->socketWriteMutex);
-        boost::asio::write(player->getSocket(), boost::asio::buffer(header));
-        boost::asio::write(player->getSocket(), boost::asio::buffer(serializedData));
-    }
-
-    std::string Server::receiveBinary(std::shared_ptr<shared::Player> player, size_t size)
-    {
-        boost::system::error_code error;
-        boost::asio::streambuf receiveBuffer;
-        try
-        {
-            std::lock_guard<std::mutex> lock(player->socketReadMutex);
-            boost::asio::read(player->getSocket(), receiveBuffer, boost::asio::transfer_exactly(size), error);
-        }
-        catch (const boost::system::system_error &e)
-        {
-            std::cerr << "Error: " << e.what() << std::endl;
-        }
-
-        if (error == boost::asio::error::operation_aborted || error == boost::asio::error::eof)
-        {
-            player->disconnectPlayer();
-        }
-        else if (error)
-        {
-            std::cerr << "Error: " << error.message() << std::endl;
-            player->disconnectPlayer();
-        }
-
-        std::string messageReceived(
-            boost::asio::buffers_begin(receiveBuffer.data()),
-            boost::asio::buffers_end(receiveBuffer.data()));
-
-        return messageReceived;
     }
 
     std::shared_ptr<GameEngine> Server::createNewGame(std::shared_ptr<shared::Player> player)

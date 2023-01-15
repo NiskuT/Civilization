@@ -2,9 +2,7 @@
 #include <algorithm>
 #include <random>
 
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include "../shared/Serialization.cpp"
+#include "../shared/Binary.cpp"
 
 #define MAX_PLAYERS 4
 
@@ -85,8 +83,8 @@ namespace server
             }
             else
             {
-                castToBinary(*gameMap, response);
-                Server::sendBinary(player, response);
+                binary.castToBinary(*gameMap, response);
+                binary.send(player, response);
                 return;
             }
         }
@@ -131,23 +129,6 @@ namespace server
             return false;
         }
         return true;
-    }
-
-    template <typename T>
-    void GameEngine::castToObject(std::string receivedData, T &data)
-    {
-        std::stringstream receivedStream(receivedData);
-        boost::archive::binary_iarchive ia(receivedStream);
-        ia >> data;
-    }
-
-    template <typename T>
-    void GameEngine::castToBinary(T &data, std::string &serializedData)
-    {
-        std::stringstream stream;
-        boost::archive::binary_oarchive oa(stream);
-        oa << data;
-        serializedData = stream.str();
     }
 
     std::vector<std::string> GameEngine::splitString(std::string str, char delimiter)

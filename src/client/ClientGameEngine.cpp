@@ -82,6 +82,12 @@ namespace client
                 {
                     registerServerAnswer(messageReceived);
                 }
+                else if (messageReceived.find("binary") == 0) // binary reception
+                {
+                    size_t size = std::stoi(messageReceived.substr(8));
+                    std::string data = binary.receive(myself, size);
+                    registerServerAnswer(data);
+                }
                 else
                 {
                     processServerRequest(messageReceived);
@@ -114,7 +120,7 @@ namespace client
         std::unique_lock<std::mutex> responseLock(myself->qAndA.sharedDataMutex);
         myself->qAndA.condition.wait(responseLock, [&]
                                      { return myself->qAndA.answerReady; });
-        
+
         myself->qAndA.answerReady = false;
     }
 
