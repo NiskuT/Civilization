@@ -28,6 +28,7 @@ ClientGameEngine::ClientGameEngine()
     myself = std::make_shared<shared::Player>();
     myself->setUsername("PlayerTest");
     clientMenu.gameEnginePtr = this;
+    clientGame.gameEnginePtr = this;
 }
 
 /*!
@@ -206,24 +207,11 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
 }
 
 /*!
- * \brief A player is creating a new Game
- * @param username player username
- * @param seed seed of the map for the new game
- * @param numberOfPlayer number of player in the new game
- */
-void ClientGameEngine::handleCreatNewGame(std::string username, std::string seed, int numberOfPlayer)
-{
-    std::cout << username << " is creating a new game for " << numberOfPlayer << " players with the seed " << seed << std::endl;
-}
-
-/*!
  * \brief Start the loop that manage the GameWindow
  */
 void ClientGameEngine::startGameWindow()
 {
-    clientGame.startGame(   clientWindow, 
-                            [this](bool quitDef) { handleQuitMenu(quitDef); },
-                            [this](int x, int y) { handleInformation(x, y); });
+    clientGame.startGame();
 }
 
 /*!
@@ -240,7 +228,10 @@ void ClientGameEngine::startMenuWindow()
 void ClientGameEngine::renderGame()
 {
     clientWindow = std::make_shared<sf::RenderWindow>();
-    clientWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
+    clientWindow->create(   sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), 
+                            "Civilization VII", 
+                            sf::Style::Close);
+
     clientWindow->setPosition(sf::Vector2i(0, 0));
 
     while (true)
@@ -275,10 +266,12 @@ void ClientGameEngine::playGame()
         long lastUpdateTimer = clientGame.getCurrentTime();
         struct stat file_stat;
         std::string file_path = RESOURCES_PATH "/img/map/files.json";
+
         if (stat(file_path.c_str(), &file_stat) == -1)
         {
             std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
         }
+        
         time_t last_modified = file_stat.st_mtime;
 
         while (true)
