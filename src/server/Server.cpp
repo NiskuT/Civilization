@@ -13,9 +13,9 @@ namespace server
         boost::asio::io_context io_context;
         boost::asio::ip::tcp::acceptor acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT));
 
-        while (true)
+        running.store(true); 
+        while (running.load())
         {
-
             boost::asio::ip::tcp::socket socket(io_context);
             acceptor.accept(socket);
 
@@ -31,9 +31,12 @@ namespace server
         player->setSocket(socket);
 
         boost::asio::streambuf request;
-        try {
+        try
+        {
             boost::asio::read_until(player->getSocket(), request, '\n');
-        } catch (const boost::system::system_error &e) {
+        }
+        catch (const boost::system::system_error &e)
+        {
             std::cerr << "Error: " << e.what() << std::endl;
             player->disconnectPlayer();
             return;
@@ -76,7 +79,7 @@ namespace server
         {
             boost::asio::streambuf receiveBuffer;
             boost::system::error_code error;
-            std::size_t bytesTransferred {0};
+            std::size_t bytesTransferred{0};
 
             try
             {
@@ -110,16 +113,19 @@ namespace server
                 {
                     registerClientAnswer(messageReceived, player);
                 }
-                /*else if (messageReceived.find("binary") == 0) // server receive something like binary 1024 where 1024 is the size of the binary data
+                else if (messageReceived.find("binary") == 0) // binary reception
                 {
-                }*/
+                    size_t size = std::stoi(messageReceived.substr(8));
+                    std::string data = receiveBinary(player, size);
+                    registerClientAnswer(data, player);
+                }
                 else
                 {
                     game->processClientRequest(messageReceived, player);
                 }
             }
         }
-        std::cout << "Client disconnected" << std::endl;
+        std::cout << "Player " << player->getName() << " disconnected" << std::endl;
     }
 
     std::shared_ptr<GameEngine> Server::getGameById(std::string gameId)
@@ -144,23 +150,66 @@ namespace server
             {
                 p->setSocket(player->getSocket());
                 player.swap(p);
+                std::cout << "Player " << player->getName() << " reconnected to game " << game->getId() << std::endl;
                 return;
             }
         }
         bool res = game->addPlayer(player);
         if (!res)
         {
-            // a changer (appeler disconnect ?)
+            // TODO a changer (appeler disconnect ?)
             player->state = shared::PlayerState::Disconnected;
         }
+        else {
+            std::cout << "Player " << player->getName() << " connected to game " << game->getId() << std::endl;
+        }
+    }
+
+    void Server::sendBinary(std::shared_ptr<shared::Player> player, std::string serializedData)
+    {
+        std::string header = "binary:" + std::to_string(serializedData.size()) + "\n";
+
+        std::lock_guard<std::mutex> lock(player->socketWriteMutex);
+        boost::asio::write(player->getSocket(), boost::asio::buffer(header));
+        boost::asio::write(player->getSocket(), boost::asio::buffer(serializedData));
+    }
+
+    std::string Server::receiveBinary(std::shared_ptr<shared::Player> player, size_t size)
+    {
+        boost::system::error_code error;
+        boost::asio::streambuf receiveBuffer;
+        try
+        {
+            std::lock_guard<std::mutex> lock(player->socketReadMutex);
+            boost::asio::read(player->getSocket(), receiveBuffer, boost::asio::transfer_exactly(size), error);
+        }
+        catch (const boost::system::system_error &e)
+        {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+
+        if (error == boost::asio::error::operation_aborted || error == boost::asio::error::eof)
+        {
+            player->disconnectPlayer();
+        }
+        else if (error)
+        {
+            std::cerr << "Error: " << error.message() << std::endl;
+            player->disconnectPlayer();
+        }
+
+        std::string messageReceived(
+            boost::asio::buffers_begin(receiveBuffer.data()),
+            boost::asio::buffers_end(receiveBuffer.data()));
+
+        return messageReceived;
     }
 
     std::shared_ptr<GameEngine> Server::createNewGame(std::shared_ptr<shared::Player> player)
     {
         auto game = std::make_shared<GameEngine>(games, player);
 
-        game->addPlayer(player);
-        std::cout << "New game created with id: " << game->getId() << std::endl;
+        std::cout << "Player " << player->getName() << " created game " << game->getId() << std::endl;
 
         std::lock_guard<std::mutex> lock(gamesMutex);
         games.push_back(game);

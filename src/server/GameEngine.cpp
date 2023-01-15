@@ -1,7 +1,10 @@
 #include <server.hpp>
 #include <algorithm>
 #include <random>
+
 #include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include "../shared/Serialization.cpp"
 
 #define MAX_PLAYERS 4
 
@@ -11,6 +14,7 @@ namespace server
     {
         gameId = GameEngine::generateRandomId(games);
         players.push_back(player);
+        gameMap = std::make_unique<shared::Map>();
     }
 
     bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
@@ -68,39 +72,82 @@ namespace server
 
         std::string command = requestComponents[0];
 
-        std::string response;
+        std::string response = "response error: invalid command\n";
         if (command.find("getstate") == 0)
         {
             response = "response" + player->getName() + " is connected\n";
         }
-        if (command.find("getmap") == 0)
+        else if (command.find("getmap") == 0)
         {
-            //sendBinary(map);
+            if (gameMap == nullptr)
+            {
+                response = "error: map not initialized\n";
+            }
+            else
+            {
+                castToBinary(*gameMap, response);
+                Server::sendBinary(player, response);
+                return;
+            }
+        }
+        else if (command.find("setmapparam") == 0)
+        {
+            if (requestComponents.size() == 3)
+            {
+                std::string param = requestComponents[1];
+                std::string value = requestComponents[2];
+                response = setMapParam(param, value) ? "response ok\n" : "response error: invalid parameter\n";
+            }
+        }
+        std::lock_guard<std::mutex> lock(player->socketWriteMutex);
+        boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+    }
+
+    bool GameEngine::setMapParam(std::string &param, std::string &value)
+    {
+        int paramValue;
+        try
+        {
+            paramValue = std::stoi(value);
+        }
+        catch (std::exception& e)
+        {
+            return false;
+        }
+        if (param.find("width") == 0)
+        {
+            gameMap->setMapWidth(paramValue);
+        }
+        else if (param.find("height") == 0)
+        {
+            gameMap->setMapHeight(paramValue);
+        }
+        else if (param.find("generate") == 0)
+        {
+            gameMap->generateRandomMap(paramValue);
         }
         else
         {
-            response = "Error: invalid command\n";
+            return false;
         }
-
-        {
-            std::lock_guard<std::mutex> lock(player->socketWriteMutex);
-            boost::asio::write(player->getSocket(), boost::asio::buffer(response));
-        }
+        return true;
     }
 
     template <typename T>
-    void GameEngine::sendBinary(std::shared_ptr<shared::Player> player, T &data)
+    void GameEngine::castToObject(std::string receivedData, T &data)
+    {
+        std::stringstream receivedStream(receivedData);
+        boost::archive::binary_iarchive ia(receivedStream);
+        ia >> data;
+    }
+
+    template <typename T>
+    void GameEngine::castToBinary(T &data, std::string &serializedData)
     {
         std::stringstream stream;
         boost::archive::binary_oarchive oa(stream);
         oa << data;
-        std::vector<char> serializedData = stream.str();
-
-        std::string header = "binary:" + std::to_string(serializedData.size()) + "\n";
-
-        std::lock_guard<std::mutex> lock(player->socketWriteMutex);
-        boost::asio::write(player->getSocket(), boost::asio::buffer(header));
-        boost::asio::write(player->getSocket(), boost::asio::buffer(serializedData));
+        serializedData = stream.str();
     }
 
     std::vector<std::string> GameEngine::splitString(std::string str, char delimiter)

@@ -114,9 +114,7 @@ namespace client
         std::unique_lock<std::mutex> responseLock(myself->qAndA.sharedDataMutex);
         myself->qAndA.condition.wait(responseLock, [&]
                                      { return myself->qAndA.answerReady; });
-
-        std::string response = myself->qAndA.answer;
-        std::cout << "Received response: " << response << std::endl;
+        
         myself->qAndA.answerReady = false;
     }
 

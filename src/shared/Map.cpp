@@ -1,6 +1,7 @@
 #include <shared.hpp>
 #include <math.h>
 #include <ctime>
+#include "shared/Map.hpp"
 
 #define NUMBER_OF_FIELDS 5
 
@@ -15,21 +16,31 @@ namespace shared
     {
         this->height = height;
         this->width = width;
-        for (unsigned i = 0; i < height; i++)
+    }
+
+    void Map::init() 
+    {
+        if (isInizialize) {
+            return;
+        }
+        for (unsigned i = 0; i < this->height; i++)
         {
-            for (unsigned j = 0; j < width; j++)
+            for (unsigned j = 0; j < this->width; j++)
             {
                 mapOfTheGame.push_back(std::make_shared<Hexagon>());
             }
         }
+        isInizialize = true;
     }
 
-    template <class Archive>
-    void Map::serialize(Archive &ar, const unsigned int version)
+    void Map::setMapHeight(unsigned height)
     {
-        ar &mapOfTheGame;
-        ar &height;
-        ar &width;
+        this->height = height;
+    }
+
+    void Map::setMapWidth(unsigned width)
+    {
+        this->width = width;
     }
 
     unsigned Map::getMapHeight()
@@ -48,6 +59,11 @@ namespace shared
      */
     void Map::generateRandomMap(int seed)
     {
+
+        if (!isInizialize) {
+            init();
+        }
+
         PerlinNoise pn(seed);
         srand(time(NULL));
 
