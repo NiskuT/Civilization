@@ -2,15 +2,8 @@
 
 namespace shared
 {
-    void ControlPawn::kill()
+    bool ControlPawn::isReinforced()
     {
-        if (this->reinforced)
-        {
-            this->reinforced = false;
-        }
-        else
-        {
-            // TODO : delete pawn
-        }
+        return this->reinforced;
     }
 }
