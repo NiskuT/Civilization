@@ -26,7 +26,7 @@ namespace client
     {
         myself = std::make_shared<shared::Player>();
         myself->setUsername("PlayerTest");
-        clientMenu.setGameEnginePtr(this);
+        clientMenu.gameEnginePtr = this;
     }
 
     /*!
@@ -230,7 +230,7 @@ namespace client
      */
     void ClientGameEngine::startMenuWindow()
     {
-        clientMenu.startMenu(clientWindow);
+        clientMenu.startMenu();
     }
 
     /*!

@@ -374,7 +374,14 @@ void GameWindow::clickAction(sf::Vector2i clickPosition)
  * @param titleTextSizeProportion Proportion of the title 
  * @param bodyTextSizeProportion Proportion of the body 
  */
-void GameWindow::setUpText(GraphicCard &card, std::string title, std::string body, sf::Font &titleFont, sf::Font &bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
+void GameWindow::setUpText(
+    GraphicCard &card, 
+    std::string title, 
+    std::string body, 
+    sf::Font &titleFont, 
+    sf::Font &bodyFont, 
+    float titleTextSizeProportion, 
+    float bodyTextSizeProportion)
 {
     int titleTextSize = titleTextSizeProportion * WINDOW_LENGTH;
     int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;

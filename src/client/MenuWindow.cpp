@@ -5,9 +5,6 @@
 #include <string>
 #include <codecvt>
 
-#define WINDOW_LENGTH 1600
-#define WINDOW_WIDTH 900
-
 #define REFRESH_TIME 30
 
 #define BUTTON_CREAT 1
@@ -44,7 +41,6 @@ MenuWindow::MenuWindow()
 {
     currentMenu = &menuButtons;
     currentText = &menuTexts;
-    loadMenuTexture();
 }
 
 /*!
@@ -53,27 +49,22 @@ MenuWindow::MenuWindow()
 void MenuWindow::displayWindow()
 {
 
-    clientMenuWindow->clear(sf::Color::Blue);
+    gameEnginePtr->clientWindow->clear(sf::Color::Blue);
 
-    clientMenuWindow->draw(backgroundTexture->getSprite());
+    gameEnginePtr->clientWindow->draw(backgroundTexture->getSprite());
 
     for (unsigned i = 0; i < currentMenu->size(); i++)
     {
-        clientMenuWindow->draw(*currentMenu->at(i).buttonRect);
-        clientMenuWindow->draw(*currentMenu->at(i).buttonText);
+        gameEnginePtr->clientWindow->draw(*currentMenu->at(i).buttonRect);
+        gameEnginePtr->clientWindow->draw(*currentMenu->at(i).buttonText);
     }
 
     for (unsigned i = 0; i < currentText->size(); i++)
     {
-        clientMenuWindow->draw(currentText->at(i));
+        gameEnginePtr->clientWindow->draw(currentText->at(i));
     }
     
-    clientMenuWindow->display();
-}
-
-void MenuWindow::setGameEnginePtr(ClientGameEngine* gameEngine)
-{
-    gameEnginePtr = gameEngine;
+    gameEnginePtr->clientWindow->display();
 }
 
 /*!
@@ -81,17 +72,17 @@ void MenuWindow::setGameEnginePtr(ClientGameEngine* gameEngine)
  * @param clientWindow is window that comes from the engine
  * @param quitGame is the function used to quit the menu, it is load as an attribut
  */
-void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow)
+void MenuWindow::startMenu()
 {
+    loadMenuTexture();
     if (gameEnginePtr == nullptr)
     {
         return;
     }
-    clientMenuWindow = clientWindow;
 
     long lastUpdateTimer = getCurrentTime(false);
 
-    while (clientMenuWindow->isOpen())
+    while (gameEnginePtr->clientWindow->isOpen())
     {
 
         if (getCurrentTime(false) - lastUpdateTimer > (REFRESH_TIME))
@@ -102,7 +93,7 @@ void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow)
 
         // handle events
         sf::Event event;
-        while (clientMenuWindow->pollEvent(event))
+        while (gameEnginePtr->clientWindow->pollEvent(event))
         {
             if (menuEventHappened(event))
             {
@@ -127,7 +118,7 @@ bool MenuWindow::menuEventHappened(sf::Event& event){
     {
     case sf::Event::MouseButtonPressed:
 
-        clickPoint = sf::Mouse::getPosition(*clientMenuWindow);
+        clickPoint = sf::Mouse::getPosition(*gameEnginePtr->clientWindow);
 
         for (unsigned i = 0; i < currentMenu->size(); i++)
         {
@@ -152,6 +143,10 @@ bool MenuWindow::menuEventHappened(sf::Event& event){
         {
         case sf::Keyboard::Escape:
             gameEnginePtr->handleQuitMenu(true);
+            return true;
+
+        case sf::Keyboard::K:
+            gameEnginePtr->handleQuitMenu(false);
             return true;
 
         case sf::Keyboard::BackSpace:
@@ -278,8 +273,8 @@ void MenuWindow::loadMenuTexture()
 
     backgroundTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/menu/background.png");
     backgroundTexture->addSprite();
-    float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
-    backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, 0);
+    float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(gameEnginePtr->clientWindow->getSize().x ));
+    backgroundTexture->setHudSpritePosition(backgroundScale, gameEnginePtr->clientWindow->getSize().x , gameEnginePtr->clientWindow->getSize().y , 0, 0);
 
     if (!menuFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
     {
@@ -326,12 +321,14 @@ void MenuWindow::loadText(Json::Value &data)
             currentText->back().setStyle(sf::Text::Bold);
         }
         currentText->back().setFillColor(sf::Color::Black);
-        currentText->back().setPosition((int)(WINDOW_LENGTH - dataMenu["xOffset"].asFloat() 
-                                                            * currentText->back().getLocalBounds().height 
-                                                            - currentText->back().getLocalBounds().width), 
+        currentText->back().setPosition((int)(gameEnginePtr->clientWindow->getSize().x 
+                                                - dataMenu["xOffset"].asFloat() 
+                                                * currentText->back().getLocalBounds().height 
+                                                - currentText->back().getLocalBounds().width), 
 
-                                        (int)(WINDOW_WIDTH - dataMenu["yOffset"].asFloat() 
-                                                           * currentText->back().getLocalBounds().height));
+                                        (int)(gameEnginePtr->clientWindow->getSize().y
+                                                - dataMenu["yOffset"].asFloat() 
+                                                * currentText->back().getLocalBounds().height));
     }
 }
 
@@ -339,8 +336,11 @@ void MenuWindow::loadButton(Json::Value &data)
 {
     for (auto &dataMenu : data)
     {
-        currentMenu->emplace_back(  sf::Vector2f(dataMenu["width"].asFloat() * menuTexts[0].getLocalBounds().width, 
-                                            dataMenu["height"].asFloat() * menuTexts[0].getLocalBounds().height), 
+        currentMenu->emplace_back(  sf::Vector2f(dataMenu["width"].asFloat() 
+                                                    * menuTexts[0].getLocalBounds().width, 
+                                                 dataMenu["height"].asFloat() 
+                                                    * menuTexts[0].getLocalBounds().height), 
+                                                    
                                     sf::Vector2f(   menuTexts[0].getPosition().x 
                                                     + dataMenu["x"].asFloat() 
                                                     * menuTexts[0].getLocalBounds().width, 
