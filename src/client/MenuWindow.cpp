@@ -124,7 +124,7 @@ bool MenuWindow::menuEventHappened(sf::Event& event){
         {
             if (clickAction(clickPoint, i, isOnButton))
             {
-                return false;
+                return true;
             }
         }
 
@@ -221,6 +221,7 @@ bool MenuWindow::connectToGame(std::string gameID)
     
     if (isConnected)
     {
+        std::cout << "Change\n";
         gameEnginePtr->handleQuitMenu(false);
         currentMenu = &menuButtons;
         currentText = &menuTexts;

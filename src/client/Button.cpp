@@ -6,7 +6,7 @@ namespace client
 {
 
 /*!
- * \brief Constructor
+ * @brief Constructor
  *
  * Constructor of Button class
  *
