@@ -32,6 +32,16 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
 }
 
 /*!
+ * \brief operator()
+ *
+ * Return the button text
+ */
+std::string Button::operator()()
+{
+    return buttonText->getString();
+}
+
+/*!
  * \brief Set the text of the Button
  *
  * @param textSize size of the text

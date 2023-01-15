@@ -28,7 +28,7 @@
             "height": 0.4,
             "x": 0.5,
             "y": 2.5,
-            "text": "default.com",
+            "text": "127.0.0.1",
             "sizeMax": 20
         },
         {
@@ -45,7 +45,7 @@
             "x": 0.525,
             "y": 0.5,
             "text": "ID",
-            "sizeMax": 5
+            "sizeMax": 6
         },
         {
             "width": 0.2,

@@ -1,5 +1,6 @@
 #include <client.hpp>
 #include <iostream>
+#include <sstream>
 #include <sys/stat.h>
 
 #define REFRESH_ELEMENT 1
@@ -25,6 +26,7 @@ namespace client
     {
         myself = std::make_shared<shared::Player>();
         myself->setUsername("PlayerTest");
+        clientMenu.setGameEnginePtr(this);
     }
 
     /*!
@@ -32,7 +34,7 @@ namespace client
      * @param serverAddress
      * @param serverPort
      */
-    void ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
+    bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
     {
         boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(serverAddress), serverPort);
 
@@ -44,7 +46,7 @@ namespace client
         catch (const boost::system::system_error &e)
         {
             std::cout << "Error: " << e.what() << std::endl;
-            exit(1);
+            return false;
         }
         myself->setSocket(clientSocket);
         myself->state = shared::PlayerState::Connected;
@@ -58,6 +60,8 @@ namespace client
         }
 
         t.detach();
+
+        return true;
     }
 
     /*!
@@ -179,12 +183,25 @@ namespace client
 
     /*!
      * \brief A player is connecting to a Game
-     * @param id game ID
+     * @param id game ID, = new for a new Game
      * @param username player username
+     * @param server serveur adresse
+     * @param port port number
      */
-    void ClientGameEngine::handleConnect(std::string id, std::string username)
+    bool ClientGameEngine::tryConnection(std::string id, std::string username, std::string server, std::string port)
     {
-        std::cout << username << " try to connect to the game " << id << std::endl;
+        myself->setUsername(username);
+
+        int portNumber;
+        std::stringstream sStream(port);
+        if ((sStream >> portNumber).fail())
+        {
+            return false;
+        }
+
+        gameId = id;
+
+        return connect(server, portNumber);
     }
 
     /*!
@@ -213,10 +230,7 @@ namespace client
      */
     void ClientGameEngine::startMenuWindow()
     {
-        clientMenu.startMenu(   clientWindow, 
-                                [this](bool quitDef) { handleQuitMenu(quitDef); },
-                                [this](std::string id, std::string username) { handleConnect(id, username); },
-                                [this](std::string username, std::string seed, int numberOfPlayer) { handleCreatNewGame(username, seed, numberOfPlayer);});
+        clientMenu.startMenu(clientWindow);
     }
 
     /*!
@@ -333,6 +347,19 @@ namespace client
         {
             lockIf.unlock();
         }
+    }
+
+    /*!
+     * \brief Detect an intersection between a point and a rect
+     * @param point the point
+     * @param rectangle the rectangle
+     */
+    bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rectangle)
+    {
+        return (   point.x >= rectangle.left 
+                && point.x <= rectangle.left + rectangle.width 
+                && point.y >= rectangle.top 
+                && point.y <= rectangle.top + rectangle.height);
     }
 
 }
