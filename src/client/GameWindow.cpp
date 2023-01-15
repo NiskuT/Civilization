@@ -118,7 +118,7 @@ namespace client
      * @param quitGame is the function used to quit the menu, it is load as an attribut
      * @param callback is the function used to return where the user click on the screen
      */
-    void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(int, int)> callback, std::function<void(std::string)> playPriorityCard)
+    void GameWindow::startGame(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame, std::function<void(int, int)> callback, std::function<void(std::string, int)> playPriorityCard)
     {
         quitGameWindow = quitGame;
         clickEvent = callback;
@@ -327,33 +327,26 @@ namespace client
 
     void GameWindow::moveToRightPriorityCards(int difficulty)
     {
+        const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
 
-        for (unsigned i = 0; i< priorityCards.size(); i++) 
-        {
-            std::cout << priorityCards[i].type << " " << "difficulty: " << priorityCards[i].difficulty << std::endl ;
-        }
-
+        int xPos;
+        int yPos;
+  
         for (unsigned i = difficulty; i > 0; i--) 
         {
             priorityCards[i-1].difficulty = i;
             std::iter_swap(priorityCards.begin() + i, priorityCards.begin() + (i-1));
-
         }
         priorityCards[0].difficulty = 0;
 
-        std::cout << "\n";
-
-        for (unsigned i = 0; i< priorityCards.size(); i++) 
+        for (int i = 0; i <= difficulty; i++) 
         {
-            std::cout << priorityCards[i].type << " " << "difficulty: " << priorityCards[i].difficulty << std::endl ;
+            xPos = (float(249) / float(1600)) * WINDOW_LENGTH * i + (float(185) / float(1600)) * WINDOW_LENGTH;
+            yPos = priorityCards[i].texture->getSprite().getPosition().y;
+            priorityCards[i].texture->getSprite().setPosition(xPos, yPos);
+            priorityCards[i].movePriorityCardElements(dataNumber);
         }
-
-        /*
-        for (unsigned i = 0; i < priorityCards.size(); i++)        {
-            priorityCards[i].texture->getSprite().move(100, 0);
-            priorityCards[i].title->move(100, 0);
-            priorityCards[i].body->move(100, 0);
-        }*/
+       
     }
 
     bool GameWindow::priorityCardClickAction(sf::FloatRect cursorRect)
@@ -366,7 +359,7 @@ namespace client
 
             if (spriteValidateButtonCards.intersects(cursorRect) && priorityCards[i].isUp)
             {
-                clickPriorityCardEvent(priorityCards[i].type);
+                clickPriorityCardEvent(priorityCards[i].type, priorityCards[i].difficulty);
                 moveToRightPriorityCards(priorityCards[i].difficulty);
                 return true;
             }

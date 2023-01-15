@@ -153,9 +153,9 @@ namespace client
         std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
     } 
 
-    void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed)
+    void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty)
     {
-        std::cout << "User wants to play " << typePlayed << std::endl;
+        std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << std::endl;
     }
 
     /*!
@@ -185,8 +185,8 @@ namespace client
             { handleQuitMenu(quitDef); },
             [this](int x, int y)
             { handleInformation(x, y); },
-            [this](std::string typePlayed)
-            { handlePriorityCardPlay(typePlayed); });
+            [this](std::string typePlayed, int difficulty)
+            { handlePriorityCardPlay(typePlayed, difficulty); });
 
     }
 
