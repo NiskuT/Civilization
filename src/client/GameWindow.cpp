@@ -17,8 +17,6 @@
 
 #define ACTION_CARD_PROPORTION 0.125
 #define TITLE_PROPORTION 0.025
-#define BODY_PROPORTION_X 0.0075
-#define BODY_PROPORTION_Y 0.055
 #define MAX_CHARACTER_SIZE 19
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
@@ -445,10 +443,10 @@ namespace client
      * @param titleTextSizeProportion Proportion of the title
      * @param bodyTextSizeProportion Proportion of the body
      */
-    void GameWindow::setUpText(GraphicCard &card, std::string title, std::string body, sf::Font &titleFont, sf::Font &bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)
+    void GameWindow::setUpText(GraphicCard &card, std::string title, std::string body, sf::Font &titleFont, sf::Font &bodyFont, const Json::Value& dataNumber, float titleTextProportion, float bodyTextProportion)
     {
-        int titleTextSize = titleTextSizeProportion * WINDOW_LENGTH;
-        int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;
+        int titleTextSize = titleTextProportion * WINDOW_LENGTH;
+        int bodyTextSize = bodyTextProportion * WINDOW_LENGTH;
 
         // display the title on the card
         card.title = std::make_unique<sf::Text>(title, titleFont, titleTextSize);
@@ -481,9 +479,9 @@ namespace client
         }
 
         card.body->setFillColor(TEXT_COLOR);
-        card.body->setLineSpacing(0.9f);
-        int xBodyOffset = BODY_PROPORTION_X * WINDOW_LENGTH;
-        int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
+        card.body->setLineSpacing(dataNumber["body-line-space"].asFloat());
+        int xBodyOffset = dataNumber["body-x-proportion"].asFloat() * WINDOW_LENGTH;
+        int yBodyOffset = dataNumber["body-y-proportion"].asFloat() * WINDOW_WIDTH;
         int xBodyPosition = card.texture->getSprite().getPosition().x + xBodyOffset;
         int yBodyPosition = card.texture->getSprite().getPosition().y + yBodyOffset;
         card.body->setPosition(xBodyPosition, yBodyPosition);
@@ -647,9 +645,10 @@ namespace client
         }
 
         const Json::Value &priorityData = openJsonFile("/img/hud/priority-card.json");
+
         float priorityTitleTextProportion = dataNumber["priority-card-title-proportion"].asFloat();
         float priorityBodyTextProportion = dataNumber["priority-card-body-proportion"].asFloat();
-
+    
         for (unsigned index = 0; index < priorityData.size(); ++index)
         {
             priorityCards.emplace_back(
@@ -668,6 +667,7 @@ namespace client
                 priorityData[index]["body"][priorityCards.back().level].asString(),
                 titleFont,
                 bodyFont,
+                dataNumber,
                 priorityTitleTextProportion,
                 priorityBodyTextProportion);
 
@@ -721,6 +721,7 @@ namespace client
                 bodyCardAction,
                 titleFont,
                 bodyFont,
+                dataNumber,
                 actionTitleTextProportion,
                 actionBodyTextProportion);
         }
