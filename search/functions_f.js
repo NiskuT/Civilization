@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['_7emap_2807',['~Map',['../classshared_1_1Map.html#a203a3ceff0178c175a84da01914f9eb6',1,'shared::Map']]],
-  ['_7ethreadpool_2808',['~ThreadPool',['../classThreadPool.html#a44d3d2ab618970605e684efc216655eb',1,'ThreadPool']]]
+  ['updateelementtexture_2839',['updateElementTexture',['../classclient_1_1GameWindow.html#afa1bb198702cbda73ba5c96b4c177d93',1,'client::GameWindow']]]
 ];

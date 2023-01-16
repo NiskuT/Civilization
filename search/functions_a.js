@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['playgame_2787',['playGame',['../classclient_1_1ClientGameEngine.html#aefefbcdba7e3162cfbb79df46ea74ed4',1,'client::ClientGameEngine']]],
-  ['playmenu_2788',['playMenu',['../classclient_1_1ClientGameEngine.html#ace239326443bce92bec0e7ddaf5d9662',1,'client::ClientGameEngine']]],
-  ['playturn_2789',['playTurn',['../classserver_1_1GameEngine.html#a733b2a1a5e638a318610d19562d4a590',1,'server::GameEngine']]],
-  ['processserverrequest_2790',['processServerRequest',['../classclient_1_1ClientGameEngine.html#a6ff7766f99eadb1b831277a639c12179',1,'client::ClientGameEngine']]]
+  ['openjsonfile_2811',['openJsonFile',['../classclient_1_1GameWindow.html#a01f802444fe9777488a680f944faa8a4',1,'client::GameWindow']]],
+  ['operator_28_29_2812',['operator()',['../classclient_1_1Button.html#ad33de780e1d6dc1aa6d0c0b314a6e210',1,'client::Button::operator()()'],['../classshared_1_1Map.html#a32ceca02d8e4edbd4699603e0faf77c2',1,'shared::Map::operator()()']]]
 ];

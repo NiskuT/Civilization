@@ -83,8 +83,10 @@ Collaboration diagram for client::GameWindow:</div>
 <div class="dyncontent">
 <div class="center"><img src="classclient_1_1GameWindow__coll__graph.png" border="0" usemap="#aclient_1_1GameWindow_coll__map" alt="Collaboration graph"/></div>
 <map name="aclient_1_1GameWindow_coll__map" id="aclient_1_1GameWindow_coll__map">
-<area shape="rect" title="class GameWindow &#45;" alt="" coords="5,95,148,121"/>
-<area shape="rect" href="classshared_1_1Map.html" title="class Map &#45;" alt="" coords="29,5,124,32"/>
+<area shape="rect" title="class GameWindow &#45;" alt="" coords="19,95,162,121"/>
+<area shape="rect" href="classclient_1_1ClientGameEngine.html" title="class ClientGameEngine &#45;" alt="" coords="5,184,176,211"/>
+<area shape="rect" href="classclient_1_1MenuWindow.html" title="class MenuWindow &#45;" alt="" coords="21,273,161,300"/>
+<area shape="rect" href="classshared_1_1Map.html" title="class Map &#45;" alt="" coords="43,5,138,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -96,9 +98,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a912a354636f1456ea83b688edd3b6d73"><td class="memItemLeft" align="right" valign="top"><a id="a912a354636f1456ea83b688edd3b6d73"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>menuWindow</b> ()</td></tr>
 <tr class="separator:a912a354636f1456ea83b688edd3b6d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e5685133c56ddd449b9058d8c4c530f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a2e5685133c56ddd449b9058d8c4c530f">startGame</a> (std::shared_ptr&lt; sf::RenderWindow &gt; clientWindow, std::function&lt; void(bool)&gt; quitGame, std::function&lt; void(int, int)&gt; callback)</td></tr>
-<tr class="memdesc:a2e5685133c56ddd449b9058d8c4c530f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loop that look for events to happend and call <a class="el" href="classclient_1_1GameWindow.html#a07f644281b6df7aba39ce08526d12ca5" title="Display all the different variable in the screen.">displayWindow()</a>  <a href="classclient_1_1GameWindow.html#a2e5685133c56ddd449b9058d8c4c530f">More...</a><br /></td></tr>
-<tr class="separator:a2e5685133c56ddd449b9058d8c4c530f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f6b088aa2cba5ed7e4d6023c9b603c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a8f6b088aa2cba5ed7e4d6023c9b603c7">startGame</a> ()</td></tr>
+<tr class="memdesc:a8f6b088aa2cba5ed7e4d6023c9b603c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loop that look for events to happend and call <a class="el" href="classclient_1_1GameWindow.html#a07f644281b6df7aba39ce08526d12ca5" title="Display all the different variable in the screen.">displayWindow()</a>  <a href="classclient_1_1GameWindow.html#a8f6b088aa2cba5ed7e4d6023c9b603c7">More...</a><br /></td></tr>
+<tr class="separator:a8f6b088aa2cba5ed7e4d6023c9b603c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07f644281b6df7aba39ce08526d12ca5"><td class="memItemLeft" align="right" valign="top"><a id="a07f644281b6df7aba39ce08526d12ca5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a07f644281b6df7aba39ce08526d12ca5">displayWindow</a> ()</td></tr>
 <tr class="memdesc:a07f644281b6df7aba39ce08526d12ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display all the different variable in the screen. <br /></td></tr>
@@ -149,9 +151,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aee97c48a22869cd9109dbdce674e32e5"><td class="memItemLeft" align="right" valign="top"><a id="aee97c48a22869cd9109dbdce674e32e5"></a>
-std::shared_ptr&lt; sf::RenderWindow &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>clientGameWindow</b></td></tr>
-<tr class="separator:aee97c48a22869cd9109dbdce674e32e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1709f188a859128303b582ec1ff7b7ed"><td class="memItemLeft" align="right" valign="top"><a id="a1709f188a859128303b582ec1ff7b7ed"></a>
+<a class="el" href="classclient_1_1ClientGameEngine.html">ClientGameEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>gameEnginePtr</b> = nullptr</td></tr>
+<tr class="separator:a1709f188a859128303b582ec1ff7b7ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a3375f70a4b1162c5b4f04e47a76dd2"><td class="memItemLeft" align="right" valign="top"><a id="a8a3375f70a4b1162c5b4f04e47a76dd2"></a>
 std::unique_ptr&lt; <a class="el" href="classclient_1_1TextureDisplayer.html">TextureDisplayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>backgroundTexture</b></td></tr>
 <tr class="separator:a8a3375f70a4b1162c5b4f04e47a76dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,12 +193,6 @@ std::vector&lt; <a class="el" href="classclient_1_1Button.html">Button</a> &gt;&
 <tr class="memitem:a161f77cbe57717109a35d9d967e819fc"><td class="memItemLeft" align="right" valign="top"><a id="a161f77cbe57717109a35d9d967e819fc"></a>
 sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td></tr>
 <tr class="separator:a161f77cbe57717109a35d9d967e819fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad645dea4c0a3fd939609dc96063783c5"><td class="memItemLeft" align="right" valign="top"><a id="ad645dea4c0a3fd939609dc96063783c5"></a>
-std::function&lt; void(bool)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>quitGameWindow</b></td></tr>
-<tr class="separator:ad645dea4c0a3fd939609dc96063783c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affe2b8c6b530f5494abd77d520d961d5"><td class="memItemLeft" align="right" valign="top"><a id="affe2b8c6b530f5494abd77d520d961d5"></a>
-std::function&lt; void(int, int)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>clickEvent</b></td></tr>
-<tr class="separator:affe2b8c6b530f5494abd77d520d961d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1GameWindow.html" title="class GameWindow -">GameWindow</a> - </p>
@@ -582,8 +578,8 @@ std::function&lt; void(int, int)&gt;&#160;</td><td class="memItemRight" valign="
 
 </div>
 </div>
-<a id="a2e5685133c56ddd449b9058d8c4c530f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e5685133c56ddd449b9058d8c4c530f">&#9670;&nbsp;</a></span>startGame()</h2>
+<a id="a8f6b088aa2cba5ed7e4d6023c9b603c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f6b088aa2cba5ed7e4d6023c9b603c7">&#9670;&nbsp;</a></span>startGame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -591,25 +587,8 @@ std::function&lt; void(int, int)&gt;&#160;</td><td class="memItemRight" valign="
         <tr>
           <td class="memname">void client::GameWindow::startGame </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; sf::RenderWindow &gt;&#160;</td>
-          <td class="paramname"><em>clientWindow</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::function&lt; void(bool)&gt;&#160;</td>
-          <td class="paramname"><em>quitGame</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::function&lt; void(int, int)&gt;&#160;</td>
-          <td class="paramname"><em>callback</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
