@@ -12,6 +12,8 @@
 
 #define NUMBER_OF_FIELD 12
 
+#define TCHAT_MAX_SIZE 200
+
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
 
@@ -448,35 +450,57 @@ namespace client
             sfmlTchat[i].setString("");
             sfmlTchat[i].setFont(bodyFont);
             sfmlTchat[i].setCharacterSize(20);
-            sfmlTchat[i].setStyle(sf::Text::Bold);
             sfmlTchat[i].setFillColor(sf::Color::Black);
-            sfmlTchat[i].setPosition(10, 300 + 20 * i);
+            sfmlTchat[i].setPosition(50, 300 + 20 * i);
         }
-        updateTchat("Message0");
-        updateTchat("Game is starting");
-        updateTchat("Message1");
-        updateTchat("Message2");
-        updateTchat("Message3");
-        updateTchat("Message4");
-        updateTchat("Message5");
-        updateTchat("Message6");
-        updateTchat("Message7");
-        updateTchat("Message8");
-        updateTchat("Message9");
+
+        //sfmlTchat[i].setStyle(sf::Text::Bold);
+        updateTchat("19:45", "Lasso", "Game is starting");
+    }
+
+    /*!
+     * @brief Move the index of text to i --
+     */
+    void GameWindow::incrementText()
+    {
+        for(unsigned i = 1; i < sfmlTchat.size(); i++ )
+        {
+            sfmlTchat[i-1].setString(sfmlTchat[i].getString());
+            sfmlTchat[i-1].setStyle(sfmlTchat[i].getStyle());
+        }
     }
 
     /*!
      * @brief update the Tchat with a string
      * @param message message to be add to the tchat
      */
-    void GameWindow::updateTchat(std::string message)
+    void GameWindow::updateTchat(std::string time, std::string username, std::string message)
     {
-        gameTchat.push_back(message);
-        for(unsigned i = 1; i < sfmlTchat.size(); i++ )
+        if (!time.empty())
         {
-            sfmlTchat[i-1].setString(sfmlTchat[i].getString());
+            incrementText();
+            sfmlTchat[9].setString(time + " " + username);
+            sfmlTchat[9].setStyle(sf::Text::Bold);
         }
+
+        incrementText();
+        std::string secondLine = "";
+
         sfmlTchat[9].setString(message);
+        sfmlTchat[9].setStyle(sf::Text::Regular);
+
+        while (sfmlTchat[9].getGlobalBounds().width > TCHAT_MAX_SIZE)
+        {
+            std::string nextChar = sfmlTchat[9].getString();
+            nextChar = nextChar.back();
+            secondLine.insert(0, nextChar);
+            message.pop_back();
+            sfmlTchat[9].setString(message);
+        }
+        if (!secondLine.empty())
+        {
+            updateTchat("", "", secondLine);
+        }
     }
 
     /*!
