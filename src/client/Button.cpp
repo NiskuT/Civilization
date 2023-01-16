@@ -1,6 +1,4 @@
 #include <client.hpp>
-#include <iostream>
-
 
 namespace client
 {
@@ -52,7 +50,7 @@ std::string Button::operator()()
 void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf::Font &font, int size)
 {
     maxTextSize = size;
-    buttonText = std::shared_ptr<sf::Text>(new sf::Text);
+    buttonText = std::make_shared<sf::Text>();    
     buttonText->setFont(font);
     buttonText->setString(text);
     buttonText->setCharacterSize(textSize);
