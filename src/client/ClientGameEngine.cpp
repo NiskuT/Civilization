@@ -96,6 +96,63 @@ namespace client
         }
     }
 
+    void checkOk(std::string &response)
+    {
+        if (response.find("ok") == std::string::npos)
+        {
+            std::cout << "Error in server response: " << response << std::endl;
+            exit(1);
+        }
+    }
+
+    void ClientGameEngine::generateMap(const unsigned height, const unsigned width)
+    {
+        std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
+        lock.unlock();
+        if (myself->state != shared::PlayerState::Connected)
+        {
+            std::cout << "You are not connected to the server" << std::endl;
+            return;
+        }
+        if (height > 0) {
+            lock.lock();
+            myself->qAndA.question = "setmapparam height" + std::to_string(height) + "\n";
+            lock.unlock();
+            askServer();
+            checkOk(myself->qAndA.answer);
+
+        }
+        if (width > 0) {
+            lock.lock();
+            myself->qAndA.question = "setmapparam width" + std::to_string(width) + "\n";
+            lock.unlock();
+            askServer();
+            checkOk(myself->qAndA.answer);
+        }
+        lock.lock();
+        myself->qAndA.question = "setmapparam generate\n";
+        lock.unlock();
+        askServer();
+        checkOk(myself->qAndA.answer);
+    }
+
+    /*void ClientGameEngine::loadMap(const std::string &mapName)
+    {
+        std::unique_lock<std::mutex> lock(myself->qAndA.mutex);
+        lock.unlock();
+        if (myself->state != shared::PlayerState::Connected)
+        {
+            std::cout << "You are not connected to the server" << std::endl;
+            return;
+        }
+        lock.lock();
+        myself->qAndA.question = "setmapparam load " + mapName + "\n";
+        lock.unlock();
+        askServer();
+        checkOk(myself->qAndA.answer);
+    }*/
+
+
     void ClientGameEngine::registerServerAnswer(const std::string &response)
     {
         std::lock_guard<std::mutex> lock(myself->qAndA.sharedDataMutex);
