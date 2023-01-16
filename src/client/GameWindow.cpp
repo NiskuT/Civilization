@@ -4,6 +4,8 @@
 #include <fstream>
 #include <json/json.h>
 #include <cmath>
+#include <string>
+#include <codecvt>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -24,6 +26,9 @@
 #define MAX_CHARACTER_SIZE 19
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
+
+#define ASCI_BEGIN 19
+#define ASCI_END 127
 
 #define CARD_BORDER 18
 
@@ -51,7 +56,8 @@ GameWindow::GameWindow()
     loadElementTexture();
     updateElementTexture();
     loadHudTexture();
-    loadTchat();
+    tchatBox = std::make_unique<Tchat>(bodyFont);
+
 }
 
 /*!
@@ -102,10 +108,7 @@ void GameWindow::displayWindow()
 
     gameEnginePtr->clientWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
-    for (auto &tchat : gameTchat)
-    {
-        gameEnginePtr->clientWindow->draw(tchat);
-    }
+    tchatBox->drawTchat(gameEnginePtr->clientWindow);
 
     for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
     {
@@ -165,6 +168,7 @@ void GameWindow::startGame()
  */
 bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPoint, std::shared_ptr<bool> moveMode, std::shared_ptr<bool> clickMode)
 {
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
     switch (event.type)
     {
     case sf::Event::MouseButtonPressed:
@@ -186,6 +190,13 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
         if (*moveMode && *clickMode)
         {
             moveMap(clickStartingPoint, sf::Mouse::getPosition(*gameEnginePtr->clientWindow));
+        }
+        break;
+
+    case sf::Event::TextEntered:
+        if (event.text.unicode > ASCI_BEGIN && event.text.unicode < ASCI_END)
+        {
+            tchatBox->addTchatChar(converter.to_bytes(event.text.unicode));
         }
         break;
 
@@ -229,6 +240,14 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent, std::shared_p
     case sf::Keyboard::Escape:
         gameEnginePtr->handleQuitMenu(true);
         return true;
+
+    case sf::Keyboard::Enter:
+        tchatBox->updateTchat("00:00", "Username", tchatBox->message);
+        break;
+
+    case sf::Keyboard::BackSpace:
+        tchatBox->deleteTchatChar();
+        break;
 
     case sf::Keyboard::L:
         moveMap(clickStartingPoint, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
@@ -445,71 +464,6 @@ void GameWindow::setUpText(
     int xBodyPosition = card.texture->getSprite().getPosition().x + xBodyOffset;
     int yBodyPosition = card.texture->getSprite().getPosition().y + yBodyOffset;
     card.body->setPosition(xBodyPosition, yBodyPosition);
-}
-
-/*!
- * @brief Load all the tchat
- */
-void GameWindow::loadTchat()
-{
-    for(unsigned i = 0; i < gameTchat.size(); i++ )
-    {
-        gameTchat[i].setString("");
-        gameTchat[i].setFont(bodyFont);
-        gameTchat[i].setCharacterSize(20);
-        gameTchat[i].setFillColor(sf::Color::Black);
-        gameTchat[i].setPosition(50, 300 + 20 * i);
-    }
-    updateTchat("19:45", "Lasso", "Game is starting");
-    updateTchat("19:50", "Niskut", "Message 1");
-    updateTchat("19:51", "Lasso", "Message 2");
-    updateTchat("19:52", "Lasso", "Message 3");
-    updateTchat("19:53", "Niskut", "Loooooooong Meeeeeeeeeeeeesage");
-}
-
-/*!
- * @brief Move the index of text to i --
- */
-void GameWindow::incrementTchat()
-{
-    for(unsigned i = 1; i < gameTchat.size(); i++ )
-    {
-        gameTchat[i-1].setString(gameTchat[i].getString());
-        gameTchat[i-1].setStyle(gameTchat[i].getStyle());
-    }
-}
-
-/*!
- * @brief update the Tchat with a string
- * @param message message to be add to the tchat
- */
-void GameWindow::updateTchat(std::string time, std::string username, std::string message)
-{
-    if (!time.empty())
-    {
-        incrementTchat();
-        gameTchat[9].setString(time + " " + username);
-        gameTchat[9].setStyle(sf::Text::Bold);
-    }
-
-    incrementTchat();
-    std::string secondLine = "";
-
-    gameTchat[9].setString(message);
-    gameTchat[9].setStyle(sf::Text::Regular);
-
-    while (gameTchat[9].getGlobalBounds().width > TCHAT_MAX_SIZE)
-    {
-        std::string nextChar = gameTchat[9].getString();
-        nextChar = nextChar.back();
-        secondLine.insert(0, nextChar);
-        message.pop_back();
-        gameTchat[9].setString(message);
-    }
-    if (!secondLine.empty())
-    {
-        updateTchat("", "", secondLine);
-    }
 }
 
 /*!

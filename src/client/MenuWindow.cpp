@@ -151,6 +151,7 @@ bool MenuWindow::menuEventHappened(sf::Event &event)
 
         case sf::Keyboard::BackSpace:
             deleteChar();
+            break;
 
         default:
             break;
