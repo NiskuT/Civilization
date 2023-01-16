@@ -46,7 +46,9 @@ void Chat::incrementChat()
  */
 void Chat::updateChat(std::string time, std::string username, std::string sendMessage)
 {
+    std::unique_lock<std::mutex> lock(mutexChat);
     message.clear();
+    lock.unlock();
     chatButton[1].buttonText->setString("");
 
     if (!username.empty())
@@ -79,7 +81,9 @@ void Chat::updateChat(std::string time, std::string username, std::string sendMe
  */
 void Chat::addChatChar(std::string ch)
 {
+    std::unique_lock<std::mutex> lock(mutexChat);
     message += ch;
+    lock.unlock();
     chatButton[1].buttonText->setString(chatButton[1].buttonText->getString() + ch);
 
     while(chatButton[1].buttonText->getGlobalBounds().width > TCHAT_MAX_SIZE)
@@ -100,6 +104,7 @@ void Chat::deleteChatChar()
     if (!newString.empty())
     {
         newString.pop_back();
+        std::lock_guard<std::mutex> lock(mutexChat);
         message.pop_back();
     }
     chatButton[1].buttonText->setString(newString);

@@ -242,6 +242,8 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent, std::shared_p
         return true;
 
     case sf::Keyboard::Enter:
+        //sendMessage(chatBox->message)
+        //line to be delete
         chatBox->updateChat("00:00", "Username", chatBox->message);
         break;
 

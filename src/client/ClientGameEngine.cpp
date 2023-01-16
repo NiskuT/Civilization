@@ -285,6 +285,10 @@ void ClientGameEngine::playGame()
             }
             lockWhile.unlock();
 
+            //receiveMessage();
+            //gameEngine->chatBox->updateChat("00:00", "Username", chatBox->message);
+
+
             if (clientGame.getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
             {
 
