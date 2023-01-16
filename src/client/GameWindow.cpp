@@ -33,7 +33,6 @@
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
-std::array<std::string, 5> priorityCardOrder = {"economy", "army", "science", "culture", "industry"};
 
 
 namespace client
@@ -325,6 +324,10 @@ namespace client
         return data;
     }
 
+    /*!
+     * @brief Move to right priority cards when a player play one
+     * @param difficulty level of difficulty when the card is played (0 to 4 for the 5 different field)
+     */
     void GameWindow::moveToRightPriorityCards(int difficulty)
     {
         const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
@@ -341,7 +344,7 @@ namespace client
 
         for (int i = 0; i <= difficulty; i++) 
         {
-            xPos = (float(249) / float(1600)) * WINDOW_LENGTH * i + (float(185) / float(1600)) * WINDOW_LENGTH;
+            xPos = dataNumber["priority-card-offset"].asFloat() * WINDOW_LENGTH * i + dataNumber["priority-card-first-offset"].asFloat() * WINDOW_LENGTH;
             yPos = priorityCards[i].texture->getSprite().getPosition().y;
             priorityCards[i].texture->getSprite().setPosition(xPos, yPos);
             priorityCards[i].movePriorityCardElements(dataNumber);
@@ -349,24 +352,28 @@ namespace client
        
     }
 
+    /*!
+     * @brief Detect when we click on a priority card or on the play button on priorityCard and make the action associated
+     * @param cursorRect emplacement of the mouse
+     */
     bool GameWindow::priorityCardClickAction(sf::FloatRect cursorRect)
     {
 
-        for (unsigned i = 0; i < priorityCards.size(); i++)
+        for (auto &priorityCard : priorityCards)
         {
-            sf::FloatRect spriteCards = priorityCards[i].texture->getSprite().getGlobalBounds();
-            sf::FloatRect spriteValidateButtonCards = priorityCards[i].validateButton->buttonRect->getGlobalBounds();
+            sf::FloatRect spriteCards = priorityCard.texture->getSprite().getGlobalBounds();
+            sf::FloatRect spriteValidateButtonCards = priorityCard.validateButton->buttonRect->getGlobalBounds();
 
-            if (spriteValidateButtonCards.intersects(cursorRect) && priorityCards[i].isUp)
+            if (spriteValidateButtonCards.intersects(cursorRect) && priorityCard.isUp)
             {
-                clickPriorityCardEvent(priorityCards[i].type, priorityCards[i].difficulty);
-                moveToRightPriorityCards(priorityCards[i].difficulty);
+                clickPriorityCardEvent(priorityCard.type, priorityCard.difficulty);
+                moveToRightPriorityCards(priorityCard.difficulty);
                 return true;
             }
 
             if (spriteCards.intersects(cursorRect))
             {
-                priorityCards[i].moveUpPriorityCard();
+                priorityCard.moveUpPriorityCard();
                 return true;
             }
         }
@@ -392,8 +399,9 @@ namespace client
 
         bool isClickable = false;
 
-        if (priorityCardClickAction(cursorRect))
+        if (priorityCardClickAction(cursorRect)) {
             return;
+        }
 
         for (auto &mapTexture : mapTextureToDisplay)
         {

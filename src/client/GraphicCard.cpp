@@ -58,9 +58,8 @@ namespace client
     }
 
     /*!
-     * @brief Move up priority cards when we click on it
+     * @brief Move up a priority card when we click on it
      */
-
     void GraphicCard::moveUpPriorityCard()
     {
         int yPos;
@@ -87,6 +86,11 @@ namespace client
         body->setPosition(xBodyPosition, yPos + yBodyOffset);
     }
 
+
+    /*!
+     * @brief Move all the elements of a priority card if we move one (title, body, play button, ...)
+     * @param dataNumber json file that contains all the data necessary to move the elements
+     */
     void GraphicCard::movePriorityCardElements(const Json::Value &dataNumber)
     {
         int cardPosX = texture->getSprite().getPosition().x;
