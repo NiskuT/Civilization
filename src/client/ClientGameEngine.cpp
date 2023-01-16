@@ -1,5 +1,6 @@
 #include <client.hpp>
 #include <iostream>
+#include <sstream>
 #include <sys/stat.h>
 
 #define REFRESH_ELEMENT 1
@@ -16,23 +17,26 @@
 
 namespace client
 {
+        
     /*!
-     * @brief Constructor
-     *
-     * Constructor of ClientGameEngine class
-     */
+    * @brief Constructor
+    *
+    * Constructor of ClientGameEngine class
+    */
     ClientGameEngine::ClientGameEngine()
     {
         myself = std::make_shared<shared::Player>();
         myself->setUsername("PlayerTest");
+        clientMenu.gameEnginePtr = this;
+        clientGame.gameEnginePtr = this;
     }
 
     /*!
-     * @brief Quentin
-     * @param serverAddress
-     * @param serverPort
-     */
-    void ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
+    * @brief Quentin
+    * @param serverAddress
+    * @param serverPort
+    */
+    bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
     {
         boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(serverAddress), serverPort);
 
@@ -44,7 +48,7 @@ namespace client
         catch (const boost::system::system_error &e)
         {
             std::cout << "Error: " << e.what() << std::endl;
-            exit(1);
+            return false;
         }
         myself->setSocket(clientSocket);
         myself->state = shared::PlayerState::Connected;
@@ -58,11 +62,13 @@ namespace client
         }
 
         t.detach();
+
+        return true;
     }
 
     /*!
-     * @brief Quentin
-     */
+    * @brief Quentin
+    */
     void ClientGameEngine::startReceiving()
     {
         std::cout << "Starting receiving" << std::endl;
@@ -103,9 +109,9 @@ namespace client
     }
 
     /*!
-     * @brief Quentin
-     * @param
-     */
+    * @brief Quentin
+    * @param
+    */
     void ClientGameEngine::registerServerAnswer(const std::string &response)
     {
         std::lock_guard<std::mutex> lock(myself->qAndA.sharedDataMutex);
@@ -115,17 +121,17 @@ namespace client
     }
 
     /*!
-     * @brief Quentin
-     * @param request
-     */
+    * @brief Quentin
+    * @param request
+    */
     void ClientGameEngine::processServerRequest(const std::string &request)
     {
         std::cout << "Received request: " << request << std::endl;
     }
 
     /*!
-     * @brief Quentin
-     */
+    * @brief Quentin
+    */
     void ClientGameEngine::askServer()
     {
         myself->qAndA.answerReady = false;
@@ -136,7 +142,7 @@ namespace client
 
         std::unique_lock<std::mutex> responseLock(myself->qAndA.sharedDataMutex);
         myself->qAndA.condition.wait(responseLock, [&]
-                                     { return myself->qAndA.answerReady; });
+                                        { return myself->qAndA.answerReady; });
 
         std::string response = myself->qAndA.answer;
         std::cout << "Received response: " << response << std::endl;
@@ -144,10 +150,10 @@ namespace client
     }
 
     /*!
-     * @brief Print where the user click on the GameWindow
-     * @param x position on x axis 
-     * @param y position on y axis 
-     */
+    * @brief Print where the user click on the GameWindow
+    * @param x position on x axis 
+    * @param y position on y axis 
+    */
     void ClientGameEngine::handleInformation(int x, int y)
     {
         std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
@@ -164,9 +170,9 @@ namespace client
     }
 
     /*!
-     * @brief Change the Window for nothing, Menu or Game
-     * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
-     */
+    * @brief Change the Window for nothing, Menu or Game
+    * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
+    */
     void ClientGameEngine::handleQuitMenu(bool quitDef)
     {
         std::lock_guard<std::mutex> lock(mutexRunningEngine);
@@ -181,36 +187,54 @@ namespace client
     }
 
     /*!
-     * @brief Start the loop that manage the GameWindow
-     */
+    * @brief A player is connecting to a Game
+    * @param id game ID, = new for a new Game
+    * @param username player username
+    * @param server serveur adresse
+    * @param port port number
+    */
+    bool ClientGameEngine::tryConnection(std::string id, std::string username, std::string server, std::string port)
+    {
+        myself->setUsername(username);
+
+        int portNumber;
+        std::stringstream sStream(port);
+        if ((sStream >> portNumber).fail())
+        {
+            return false;
+        }
+
+        gameId = id;
+
+        return connect(server, portNumber);
+    }
+
+    /*!
+    * @brief Start the loop that manage the GameWindow
+    */
     void ClientGameEngine::startGameWindow()
     {
-        clientGame.startGame(
-            clientWindow, [this](bool quitDef)
-            { handleQuitMenu(quitDef); },
-            [this](int x, int y)
-            { handleInformation(x, y); },
-            [this](std::string typePlayed, int difficulty)
-            { handlePriorityCardPlay(typePlayed, difficulty); });
-
+        clientGame.startGame();
     }
 
     /*!
-     * @brief Start the loop that manage the MenuWindow
-     */
+    * @brief Start the loop that manage the MenuWindow
+    */
     void ClientGameEngine::startMenuWindow()
     {
-        clientMenu.startMenu(clientWindow, [this](bool quitDef)
-                             { handleQuitMenu(quitDef); });
+        clientMenu.startMenu();
     }
 
     /*!
-     * @brief Loop that manage the entire Engine
-     */
+    * @brief Loop that manage the entire Engine
+    */
     void ClientGameEngine::renderGame()
     {
         clientWindow = std::make_shared<sf::RenderWindow>();
-        clientWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
+        clientWindow->create(   sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), 
+                                "Civilization VII", 
+                                sf::Style::Close);
+
         clientWindow->setPosition(sf::Vector2i(0, 0));
 
         while (true)
@@ -231,8 +255,8 @@ namespace client
     }
 
     /*!
-     * @brief Loop that is used when the client is in GameMode
-     */
+    * @brief Loop that is used when the client is in GameMode
+    */
     void ClientGameEngine::playGame()
     {
         std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
@@ -245,10 +269,12 @@ namespace client
             long lastUpdateTimer = clientGame.getCurrentTime();
             struct stat file_stat;
             std::string file_path = RESOURCES_PATH "/img/map/files.json";
+
             if (stat(file_path.c_str(), &file_stat) == -1)
             {
                 std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
             }
+            
             time_t last_modified = file_stat.st_mtime;
 
             while (true)
@@ -290,8 +316,8 @@ namespace client
     }
 
     /*!
-     * @brief Loop that is used when the client is in MenuMode
-     */
+    * @brief Loop that is used when the client is in MenuMode
+    */
     void ClientGameEngine::playMenu()
     {
         std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
@@ -318,6 +344,19 @@ namespace client
         {
             lockIf.unlock();
         }
+    }
+
+    /*!
+    * @brief Detect an intersection between a point and a rect
+    * @param point the point
+    * @param rectangle the rectangle
+    */
+    bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rectangle)
+    {
+        return (   point.x >= rectangle.left 
+                && point.x <= rectangle.left + rectangle.width 
+                && point.y >= rectangle.top 
+                && point.y <= rectangle.top + rectangle.height);
     }
 
 }

@@ -2,186 +2,406 @@
 #include <iostream>
 #include <json/json.h>
 #include <fstream>
+#include <string>
+#include <codecvt>
 
-#define WINDOW_LENGTH 1600
-#define WINDOW_WIDTH 900
+#define REFRESH_TIME 30
 
-#define TITLE_SIZE 200
+#define BUTTON_CREAT 1
+#define BUTTON_USERNAME 2
+#define BUTTON_SERVER 3
+#define BUTTON_PORT 4
+#define BUTTON_LOAD 4
+#define BUTTON_ID 5
+#define BUTTON_PLAYER 5
+#define BUTTON_SEED 6
+#define BUTTON_CONNECT 6
+#define BUTTON_START 7
+
+#define CREATE_GAME "new"
+
+#define ASCI_BEGIN 41
+#define ASCI_END 123
 
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
 #endif
 
+const sf::Color buttonColor = sf::Color(247, 200, 195, 255);
+
 namespace client
 {
 
-    /*!
-     * @brief Constructor
-     *
-     * Constructor of MenuWindow class
-     */
-    MenuWindow::MenuWindow()
+/*!
+ * @brief Constructor
+ *
+ * Constructor of MenuWindow class
+ */
+MenuWindow::MenuWindow()
+{
+    currentMenu = &menuButtons;
+    currentText = &menuTexts;
+}
+
+/*!
+ * @brief Display all the menu on the screen
+ */
+void MenuWindow::displayWindow()
+{
+
+    gameEnginePtr->clientWindow->clear(sf::Color::Blue);
+
+    gameEnginePtr->clientWindow->draw(backgroundTexture->getSprite());
+
+    for (unsigned i = 0; i < currentMenu->size(); i++)
     {
-        loadMenuTexture();
+        gameEnginePtr->clientWindow->draw(*currentMenu->at(i).buttonRect);
+        gameEnginePtr->clientWindow->draw(*currentMenu->at(i).buttonText);
     }
 
-    /*!
-     * @brief Display all the menu on the screen
-     */
-    void MenuWindow::displayWindow()
+    for (unsigned i = 0; i < currentText->size(); i++)
+    {
+        gameEnginePtr->clientWindow->draw(currentText->at(i));
+    }
+    
+    gameEnginePtr->clientWindow->display();
+}
+
+/*!
+ * @brief Loop that look for events to happend and call displayWindow()
+ * @param clientWindow is window that comes from the engine
+ * @param quitGame is the function used to quit the menu, it is load as an attribut
+ */
+void MenuWindow::startMenu()
+{
+    loadMenuTexture();
+    if (gameEnginePtr == nullptr)
+    {
+        return;
+    }
+
+    long lastUpdateTimer = getCurrentTime(false);
+
+    while (gameEnginePtr->clientWindow->isOpen())
     {
 
-        clientMenuWindow->clear(sf::Color::Blue);
-
-        clientMenuWindow->draw(backgroundTexture->getSprite());
-        clientMenuWindow->draw(*gameTitle);
-
-        for (unsigned i = 0; i < menuButtons.size(); i++)
+        if (getCurrentTime(false) - lastUpdateTimer > (REFRESH_TIME))
         {
-            clientMenuWindow->draw(*menuButtons[i].buttonRect);
-            clientMenuWindow->draw(*menuButtons[i].buttonText);
+            displayWindow();
+            lastUpdateTimer = getCurrentTime(false);
         }
 
-        clientMenuWindow->display();
-    }
-
-    /*!
-     * @brief Loop that look for events to happend and call displayWindow()
-     * @param clientWindow is window that comes from the engine
-     * @param quitGame is the function used to quit the menu, it is load as an attribut
-     */
-    void MenuWindow::startMenu(std::shared_ptr<sf::RenderWindow> clientWindow, std::function<void(bool)> quitGame)
-    {
-        quitMenuWindow = quitGame;
-        clientMenuWindow = clientWindow;
-
-        long lastUpdateTimer = getCurrentTime(false);
-
-        while (clientMenuWindow->isOpen())
+        // handle events
+        sf::Event event;
+        while (gameEnginePtr->clientWindow->pollEvent(event))
         {
-
-            if (getCurrentTime(false) - lastUpdateTimer > (100 / 3))
+            if (menuEventHappened(event))
             {
-                displayWindow();
-                lastUpdateTimer = getCurrentTime(false);
-            }
-
-            // handle events
-            sf::Event event;
-            while (clientMenuWindow->pollEvent(event))
-            {
-                if (menuEventHappened(event))
-                {
-                    return;
-                }
+                return;
             }
         }
     }
+}
 
-    /*!
-     * @brief Test events and do actions corresponding to the event
-     * @param event pointer to the event
-     */
-    bool MenuWindow::menuEventHappened(sf::Event& event){
+/*!
+ * @brief Test events and do actions corresponding to the event
+ * @param event pointer to the event
+ */
+bool MenuWindow::menuEventHappened(sf::Event& event){
 
-        switch (event.type)
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
+    std::string utf8;
+    sf::Vector2i clickPoint;
+    bool isOnButton = false;
+
+    switch (event.type)
+    {
+    case sf::Event::MouseButtonPressed:
+
+        clickPoint = sf::Mouse::getPosition(*gameEnginePtr->clientWindow);
+
+        for (unsigned i = 0; i < currentMenu->size(); i++)
         {
-        case sf::Event::MouseButtonPressed:
-
-            std::cout << "Click \n";
-
-            break;
-
-        case sf::Event::KeyPressed:
-
-            switch (event.key.code)
+            if (clickAction(clickPoint, i, isOnButton))
             {
-            case sf::Keyboard::K:
-                quitMenuWindow(false);
                 return true;
-
-            case sf::Keyboard::Escape:
-                quitMenuWindow(true);
-                return true;
-
-            default:
-                break;
             }
+        }
 
-            break;
+        break;
 
-        case sf::Event::Closed:
-            quitMenuWindow(true);
+    case sf::Event::TextEntered:
+        if (event.text.unicode > ASCI_BEGIN && event.text.unicode < ASCI_END)
+        {
+            writeChar(converter.to_bytes(event.text.unicode));
+        }
+        break;
+
+    case sf::Event::KeyPressed:
+
+        switch (event.key.code)
+        {
+        case sf::Keyboard::Escape:
+            gameEnginePtr->handleQuitMenu(true);
             return true;
+
+        case sf::Keyboard::K:
+            gameEnginePtr->handleQuitMenu(false);
+            return true;
+
+        case sf::Keyboard::BackSpace:
+            deleteChar();
 
         default:
             break;
         }
 
-        return false;
+        break;
+
+    case sf::Event::Closed:
+        gameEnginePtr->handleQuitMenu(true);
+        return true;
+
+    default:
+        break;
     }
 
-    /*!
-     * @brief Load all the textures that will be display on the menu
-     */
-    void MenuWindow::loadMenuTexture()
+    return false;
+}
+
+/*!
+ * @brief Do the action corresponding to a click on a particular button
+ * @param clickPoint cursor coordonate
+ * @param index index of the testing button
+ */
+bool MenuWindow::clickAction(sf::Vector2i clickPoint, int index, bool isOnButton)
+{
+    currentMenu->at(index).setInactive();
+
+    if (gameEnginePtr->intersectPointRect(  
+        clickPoint, 
+        currentMenu->at(index).buttonRect->getGlobalBounds()))
     {
-
-        backgroundTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/menu/background.png");
-        backgroundTexture->addSprite();
-        float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
-        backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, 0);
-
-        menuFont = (std::unique_ptr<sf::Font>)new sf::Font();
-        if (!menuFont->loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
-        {
-            std::cerr << "Font not loaded" << std::endl;
-        }
-
-        gameTitle = (std::unique_ptr<sf::Text>)new sf::Text("Civilization 7", *menuFont, TITLE_SIZE);
-        gameTitle->setStyle(sf::Text::Bold);
-        gameTitle->setFillColor(sf::Color::Black);
-        gameTitle->setPosition(WINDOW_LENGTH - gameTitle->getLocalBounds().height - gameTitle->getLocalBounds().width, WINDOW_WIDTH - 2.5 * gameTitle->getLocalBounds().height);
-
-        sf::Color buttonColor = sf::Color(247, 200, 195, 255);
-
-        std::ifstream file(RESOURCES_PATH "/img/menu/menu.json");
-        if (!file.is_open())
-        {
-            std::cerr << "Error while opening json ressources file /img/menu/menu.json" << std::endl;
-            exit(1);
-        }
-        std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-        std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-        Json::Value obj;
-        std::string errors;
-        reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
-
-        const Json::Value &data = obj["data"];
-
-        for (unsigned index = 0; index < data.size(); ++index)
-        {
-            menuButtons.emplace_back(   sf::Vector2f(data[index]["width"].asFloat() * gameTitle->getLocalBounds().width, data[index]["height"].asFloat() * gameTitle->getLocalBounds().height), 
-                                        sf::Vector2f(   gameTitle->getPosition().x + data[index]["x"].asFloat() * gameTitle->getLocalBounds().width, 
-                                                        gameTitle->getPosition().y - data[index]["y"].asFloat() * gameTitle->getLocalBounds().height), buttonColor);
-            menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), *menuFont);
-        }
+        isOnButton = currentMenu->at(index).clickButton();
     }
-
-    /*!
-     * @brief Function that deteck where the user click and what to send to the engine
-     * @param timeSecond is a boolean used to 
-     */
-    long MenuWindow::getCurrentTime(bool timeSecond)
+    if (isOnButton && index==BUTTON_CREAT && currentMenu == &menuButtons)
     {
-        if (timeSecond)
+        currentMenu = &newGameButtons;
+        currentText = &newGameTexts;
+    }
+    else if (isOnButton && index==BUTTON_CONNECT 
+                        && currentMenu == &menuButtons)
+    {
+        return connectToGame(menuButtons[BUTTON_ID]());
+    }
+    else if (isOnButton && index==BUTTON_LOAD 
+                        && currentMenu == &newGameButtons)
+    {
+        std::cout << "Load a Game: Not implemented today\n";
+    }
+    else if (isOnButton && index==BUTTON_START 
+                        && currentMenu == &newGameButtons)
+    {
+        return connectToGame(CREATE_GAME);
+    }
+    return false;
+}
+
+/*!
+ * @brief connect to the server
+ * @param gameID id of the new Game
+ */
+bool MenuWindow::connectToGame(std::string gameID)
+{
+    bool isConnected = gameEnginePtr->tryConnection(
+        gameID,
+        menuButtons[BUTTON_USERNAME](), 
+        menuButtons[BUTTON_SERVER](), 
+        menuButtons[BUTTON_PORT]());
+    
+    if (isConnected)
+    {
+        std::cout << "Change\n";
+        gameEnginePtr->handleQuitMenu(false);
+        currentMenu = &menuButtons;
+        currentText = &menuTexts;
+        return true;
+    }
+    return false;
+}
+
+/*!
+ * @brief Add a letter to the selected button
+ * @param ch letter to add
+ */
+void MenuWindow::writeChar(std::string ch){
+    for (unsigned i = 0; i < currentMenu->size(); i++)
+    {
+        std::string newString = currentMenu->at(i)();
+        if (currentMenu->at(i).redBorder 
+            && (int)((std::string)currentMenu->at(i)()).size() < currentMenu->at(i).maxTextSize)
         {
-            return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-        } 
-        else 
+            currentMenu->at(i).addChar(ch);
+        }
+        if (currentMenu->at(i).redBorder && i==BUTTON_PLAYER && currentMenu == &newGameButtons)
         {
-            return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+            currentMenu->at(i).buttonText->setString(ch);
+            currentMenu->at(i).centerText(true);
         }
     }
+}
+
+/*!
+ * @brief Delete a letter to the selected button
+ */
+void MenuWindow::deleteChar(){
+
+    for (auto &button : *currentMenu)
+    {
+        std::string newString = button();
+        if (button.redBorder && newString.size() != 0 && button.maxTextSize != 0)
+        {
+            button.delChar();
+        }
+    }
+}
+
+/*!
+ * @brief Load all the textures that will be display on the menu
+ */
+void MenuWindow::loadMenuTexture()
+{
+
+    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/menu/background.png");
+    backgroundTexture->addSprite();
+    float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(gameEnginePtr->clientWindow->getSize().x ));
+    backgroundTexture->setHudSpritePosition(backgroundScale, gameEnginePtr->clientWindow->getSize().x , gameEnginePtr->clientWindow->getSize().y , 0, 0);
+
+    if (!menuFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+    {
+        std::cerr << "Font not loaded" << std::endl;
+    }
+
+    std::ifstream file(RESOURCES_PATH "/img/menu/menu.json");
+    if (!file.is_open())
+    {
+        std::cerr << "Error while opening json ressources file /img/menu/menu.json" << std::endl;
+        exit(1);
+    }
+    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
+    Json::Value obj;
+    std::string errors;
+    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
+
+    loadText(obj["welcomeTexts"]);
+    loadButton(obj["welcomeButtons"]);
+
+    currentMenu = &newGameButtons;
+    currentText = &newGameTexts;
+    
+    newGameButtons.push_back(menuButtons[BUTTON_USERNAME]);
+    newGameButtons.push_back(menuButtons[BUTTON_SERVER]);
+    newGameButtons.push_back(menuButtons[BUTTON_PORT]);
+    
+    loadText(obj["newGameTexts"]);
+    loadButton(obj["newGameButtons"]);
+
+    currentMenu = &menuButtons;
+    currentText = &menuTexts;
+}
+
+/*!
+ * @brief Load all the text of a Button from a JSon
+ * @param data where the data is stored
+ */
+void MenuWindow::loadText(Json::Value &data)
+{
+    for (auto &dataMenu : data)
+    {
+        currentText->emplace_back(dataMenu["text"].asString(), menuFont, dataMenu["size"].asInt());
+        if (dataMenu["bold"].asBool())
+        {
+            currentText->back().setStyle(sf::Text::Bold);
+        }
+        currentText->back().setFillColor(sf::Color::Black);
+        currentText->back().setPosition(setXAxisButtonTextPosition(dataMenu["xOffset"].asFloat()),
+                                        setYAxisButtonTextPosition(dataMenu["yOffset"].asFloat()));
+    }
+}
+
+/*!
+ * @brief Load all the button from a JSon
+ * @param data where the data is stored
+ */
+void MenuWindow::loadButton(Json::Value &data)
+{
+    for (auto &dataMenu : data)
+    {
+        currentMenu->emplace_back( setButtonSize(dataMenu["width"].asFloat(), dataMenu["height"].asFloat()), 
+                                   setButtonPosition(dataMenu["x"].asFloat(), dataMenu["y"].asFloat()),
+                                   buttonColor);
+
+        currentMenu->back().setText(40, sf::Vector2f(0, 0), dataMenu["text"].asString(), menuFont, dataMenu["sizeMax"].asInt());
+    }
+}
+
+/*!
+ * @brief Calcul the x offset of the text of a button
+ * @param offset x offset of the text
+ */
+int MenuWindow::setXAxisButtonTextPosition(float offset){
+    return (int)(   gameEnginePtr->clientWindow->getSize().x 
+                    - offset 
+                    * currentText->back().getLocalBounds().height 
+                    - currentText->back().getLocalBounds().width);
+}
+
+/*!
+ * @brief Calcul the y offset of the text of a button
+ * @param offset y offset of the text
+ */
+int MenuWindow::setYAxisButtonTextPosition(float offset){
+    return (int)(   gameEnginePtr->clientWindow->getSize().y
+                    - offset
+                    * currentText->back().getLocalBounds().height);
+}
+
+/*!
+ * @brief Calcul the size of a button
+ * @param width value comming from the JSon file
+ * @param height value comming from the JSon file
+ */
+sf::Vector2f MenuWindow::setButtonSize(float width, float height){
+    return sf::Vector2f( width  * menuTexts[0].getLocalBounds().width, 
+                         height * menuTexts[0].getLocalBounds().height);
+}
+
+/*!
+ * @brief Calcul the position of a button
+ * @param x value comming from the JSon file
+ * @param y value comming from the JSon file
+ */
+sf::Vector2f MenuWindow::setButtonPosition(float x, float y){
+    return sf::Vector2f( menuTexts[0].getPosition().x + x * menuTexts[0].getLocalBounds().width, 
+                         menuTexts[0].getPosition().y - y * menuTexts[0].getLocalBounds().height);
+}
+
+/*!
+ * @brief Function that deteck where the user click and what to send to the engine
+ * @param timeSecond is a boolean used to 
+ */
+long MenuWindow::getCurrentTime(bool timeSecond)
+{
+    if (timeSecond)
+    {
+        return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    } 
+    else 
+    {
+        return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    }
+}
+
 }
