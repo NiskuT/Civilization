@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['registerserveranswer_2817',['registerServerAnswer',['../classclient_1_1ClientGameEngine.html#a620494b82971fa2be03b44b1b12daeaf',1,'client::ClientGameEngine']]],
-  ['rendergame_2818',['renderGame',['../classclient_1_1ClientGameEngine.html#acc3a4858e07d7538665c75847e910f20',1,'client::ClientGameEngine']]]
+  ['registerserveranswer_2817',['registerServerAnswer',['../classclient_1_1ClientGameEngine.html#ad56651c028b22e70c09315beabe4db0f',1,'client::ClientGameEngine']]],
+  ['rendergame_2818',['renderGame',['../classclient_1_1ClientGameEngine.html#adc01a37a2d275c34d6fbaebc3c89ea9a',1,'client::ClientGameEngine']]]
 ];
