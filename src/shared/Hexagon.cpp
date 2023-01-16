@@ -1,28 +1,26 @@
 #include <shared.hpp>
 
-namespace shared
+using namespace shared;
+
+FieldLevel Hexagon::getFieldLevel()
 {
-    FieldLevel Hexagon::getFieldLevel()
-    {
-        return this->level;
-    }
+    return this->level;
+}
 
-    void Hexagon::setFieldType(FieldLevel field)
-    {
-        this->level = field;
-    }
+void Hexagon::setFieldType(FieldLevel field)
+{
+    this->level = field;
+}
 
-    bool Hexagon::getElements(std::vector<Element*>* fieldElement)
+bool Hexagon::getElements(std::vector<Element *> *fieldElement)
+{
+    if (fieldElement == NULL)
     {
-        if (fieldElement == NULL)
-        {
-            return false;
-        }
-        else
-        {
-            *fieldElement = this->listElements;
-            return true;
-        }
+        return false;
     }
-    
+    else
+    {
+        *fieldElement = this->listElements;
+        return true;
+    }
 }
