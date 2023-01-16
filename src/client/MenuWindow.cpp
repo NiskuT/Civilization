@@ -236,7 +236,8 @@ void MenuWindow::writeChar(std::string ch)
     for (unsigned i = 0; i < currentMenu->size(); i++)
     {
         std::string newString = currentMenu->at(i)();
-        if (currentMenu->at(i).redBorder && (int)((std::string)currentMenu->at(i)()).size() < currentMenu->at(i).maxTextSize)
+        if (currentMenu->at(i).redBorder &&
+            (int)((std::string)currentMenu->at(i)()).size() < currentMenu->at(i).maxTextSize)
         {
             currentMenu->at(i).addChar(ch);
         }
@@ -351,7 +352,10 @@ void MenuWindow::loadButton(Json::Value &data)
  */
 int MenuWindow::setXAxisButtonTextPosition(float offset)
 {
-    return (int)(gameEnginePtr->clientWindow->getSize().x - offset * currentText->back().getLocalBounds().height - currentText->back().getLocalBounds().width);
+    return (int)(gameEnginePtr->clientWindow->getSize().x 
+        - offset 
+        * currentText->back().getLocalBounds().height 
+        - currentText->back().getLocalBounds().width);
 }
 
 /*!
@@ -360,7 +364,9 @@ int MenuWindow::setXAxisButtonTextPosition(float offset)
  */
 int MenuWindow::setYAxisButtonTextPosition(float offset)
 {
-    return (int)(gameEnginePtr->clientWindow->getSize().y - offset * currentText->back().getLocalBounds().height);
+    return (int)(gameEnginePtr->clientWindow->getSize().y 
+        - offset 
+        * currentText->back().getLocalBounds().height);
 }
 
 /*!

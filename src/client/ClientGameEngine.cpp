@@ -349,5 +349,8 @@ void ClientGameEngine::playMenu()
  */
 bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rectangle)
 {
-    return (point.x >= rectangle.left && point.x <= rectangle.left + rectangle.width && point.y >= rectangle.top && point.y <= rectangle.top + rectangle.height);
+    return (point.x >= rectangle.left &&
+            point.x <= rectangle.left + rectangle.width &&
+            point.y >= rectangle.top &&
+            point.y <= rectangle.top + rectangle.height);
 }

@@ -358,7 +358,8 @@ void GameWindow::clickAction(sf::Vector2i clickPosition)
                 int width = mapTexture.getSprite(j).getGlobalBounds().width;
                 int height = mapTexture.getSprite(j).getGlobalBounds().height;
 
-                int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) + pow(y + height / 2 - clickPosition.y, 2));
+                int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
+                                    pow(y + height / 2 - clickPosition.y, 2));
 
                 if (distance < minimumDistance)
                 {
