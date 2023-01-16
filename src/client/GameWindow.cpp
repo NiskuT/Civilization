@@ -49,6 +49,7 @@ namespace client
         loadElementTexture();
         updateElementTexture();
         loadHudTexture();
+        loadTchat();
     }
 
     /*!
@@ -102,6 +103,11 @@ namespace client
         for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
         {
             hudTextureToDisplay[i].drawTextureDisplayerSprite(clientGameWindow);
+        }
+
+        for (auto &tchat : sfmlTchat)
+        {
+            clientGameWindow->draw(tchat);
         }
 
         clientGameWindow->display();
@@ -430,6 +436,47 @@ namespace client
         int xBodyPosition = card.texture->getSprite().getPosition().x + xBodyOffset;
         int yBodyPosition = card.texture->getSprite().getPosition().y + yBodyOffset;
         card.body->setPosition(xBodyPosition, yBodyPosition);
+    }
+
+    /*!
+     * @brief Load all the tchat
+     */
+    void GameWindow::loadTchat()
+    {
+        for(unsigned i = 0; i < sfmlTchat.size(); i++ )
+        {
+            sfmlTchat[i].setString("");
+            sfmlTchat[i].setFont(bodyFont);
+            sfmlTchat[i].setCharacterSize(20);
+            sfmlTchat[i].setStyle(sf::Text::Bold);
+            sfmlTchat[i].setFillColor(sf::Color::Black);
+            sfmlTchat[i].setPosition(10, 300 + 20 * i);
+        }
+        updateTchat("Message0");
+        updateTchat("Game is starting");
+        updateTchat("Message1");
+        updateTchat("Message2");
+        updateTchat("Message3");
+        updateTchat("Message4");
+        updateTchat("Message5");
+        updateTchat("Message6");
+        updateTchat("Message7");
+        updateTchat("Message8");
+        updateTchat("Message9");
+    }
+
+    /*!
+     * @brief update the Tchat with a string
+     * @param message message to be add to the tchat
+     */
+    void GameWindow::updateTchat(std::string message)
+    {
+        gameTchat.push_back(message);
+        for(unsigned i = 1; i < sfmlTchat.size(); i++ )
+        {
+            sfmlTchat[i-1].setString(sfmlTchat[i].getString());
+        }
+        sfmlTchat[9].setString(message);
     }
 
     /*!
