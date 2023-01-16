@@ -85,6 +85,21 @@ void GraphicCard::moveUpPriorityCard()
     body->setPosition(xBodyPosition, yPos + yBodyOffset);
 }
 
+/*!
+ * @brief Set position of all the different texts on a priority card
+ * @param text text to set position
+ * @param refXOffset x position from where the x offset begin
+ * @param refYOffset y position from where the y offset begin
+ * @param xOffset x offset
+ * @param yOffset y offset
+ */
+void GraphicCard::setPositionPriorityCardTexts(sf::Text& text, int refXOffset, int refYOffset, int xOffset, int yOffset) 
+{
+    int xPos = refXOffset + xOffset;
+    int yPos = refYOffset + yOffset;
+
+    text.setPosition(xPos, yPos);
+}
 
 
 /*!
@@ -97,32 +112,28 @@ void GraphicCard::movePriorityCardElements(const Json::Value &dataNumber)
     int cardPosY = texture->getSprite().getPosition().y;
 
     // title
-    int xTitleOffset = (texture->getWidth() - title->getLocalBounds().width) / 2;
-    int xTitlePos = cardPosX + xTitleOffset;
-    int yTitlePos = cardPosY;
-    title->setPosition(xTitlePos, yTitlePos);
+    setPositionPriorityCardTexts(*title, cardPosX, cardPosY, (texture->getWidth() - title->getLocalBounds().width) / 2, 0);
 
     // body
     int xBodyOffset = dataNumber["body-x-proportion"].asFloat() * windowLength;
     int yBodyOffset = dataNumber["body-y-proportion"].asFloat() * windowWidth;
-    int xBodyPos = cardPosX + xBodyOffset;
-    int yBodyPos = cardPosY + yBodyOffset;
-    body->setPosition(xBodyPos, yBodyPos);
+    setPositionPriorityCardTexts(*body, cardPosX, cardPosY, xBodyOffset, yBodyOffset);
+
+    // Text box
+    int xBoxOffset = dataNumber["box-x-number-offset-proportion"].asFloat() * windowLength;
+    setPositionPriorityCardTexts(*nbOfBoxesText, cardPosX, nbOfBoxesText->getPosition().y, xBoxOffset, 0);
 
     // validate button rect
     int validateButtonPosX = cardPosX + dataNumber["validate-button-offset-x"].asInt();
     int validateButtonPosY = validateButton->buttonRect->getPosition().y;
     validateButton->buttonRect->setPosition(validateButtonPosX, validateButtonPosY);
 
+
     // validate button text
     auto textSize = validateButton->buttonText->getGlobalBounds();
-    int validateButtonTextPosX = validateButtonPosX + (dataNumber["validate-button-size-x"].asInt() - textSize.width) / 2;
-    int validateButtonTextPosY = validateButtonPosY + (dataNumber["validate-button-size-y"].asInt() - textSize.height) / 2 - textSize.height / 2 + dataNumber["validate-button-offset-text-y"].asInt();
-    validateButton->buttonText->setPosition(validateButtonTextPosX, validateButtonTextPosY);
+    int xButtonTextOffset = (dataNumber["validate-button-size-x"].asInt() - textSize.width) / 2;
+    int yButtonTextOffset = (dataNumber["validate-button-size-y"].asInt() - textSize.height) / 2 - textSize.height / 2 + dataNumber["validate-button-offset-text-y"].asInt();
+    setPositionPriorityCardTexts(*validateButton->buttonText, validateButtonPosX, validateButtonPosY, xButtonTextOffset, yButtonTextOffset);
 
-    // Text box
-    int boxTextPosX = cardPosX + dataNumber["box-x-number-offset-proportion"].asFloat() * windowLength;
-    int boxTextPosY = nbOfBoxesText->getPosition().y;
-    nbOfBoxesText->setPosition(boxTextPosX, boxTextPosY);
 }
 
