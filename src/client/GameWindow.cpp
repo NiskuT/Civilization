@@ -121,8 +121,8 @@ namespace client
             return;
         }
 
-        std::shared_ptr<bool> moveMode = std::make_unique<bool>(false);
-        std::shared_ptr<bool> clickMode = std::make_unique<bool>(false);
+        std::shared_ptr<bool> moveMode = std::make_shared<bool>(false);
+        std::shared_ptr<bool> clickMode = std::make_shared<bool>(false);
 
         sf::Vector2i clickStartingPoint;
 

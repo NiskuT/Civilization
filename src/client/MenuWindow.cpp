@@ -33,7 +33,7 @@ namespace client
 {
 
 /*!
- * \brief Constructor
+ * @brief Constructor
  *
  * Constructor of MenuWindow class
  */
@@ -44,7 +44,7 @@ MenuWindow::MenuWindow()
 }
 
 /*!
- * \brief Display all the menu on the screen
+ * @brief Display all the menu on the screen
  */
 void MenuWindow::displayWindow()
 {
@@ -68,7 +68,7 @@ void MenuWindow::displayWindow()
 }
 
 /*!
- * \brief Loop that look for events to happend and call displayWindow()
+ * @brief Loop that look for events to happend and call displayWindow()
  * @param clientWindow is window that comes from the engine
  * @param quitGame is the function used to quit the menu, it is load as an attribut
  */
@@ -104,7 +104,7 @@ void MenuWindow::startMenu()
 }
 
 /*!
- * \brief Test events and do actions corresponding to the event
+ * @brief Test events and do actions corresponding to the event
  * @param event pointer to the event
  */
 bool MenuWindow::menuEventHappened(sf::Event& event){
@@ -170,7 +170,7 @@ bool MenuWindow::menuEventHappened(sf::Event& event){
 }
 
 /*!
- * \brief Do the action corresponding to a click on a particular button
+ * @brief Do the action corresponding to a click on a particular button
  * @param clickPoint cursor coordonate
  * @param index index of the testing button
  */
@@ -208,7 +208,7 @@ bool MenuWindow::clickAction(sf::Vector2i clickPoint, int index, bool isOnButton
 }
 
 /*!
- * \brief connect to the server
+ * @brief connect to the server
  * @param gameID id of the new Game
  */
 bool MenuWindow::connectToGame(std::string gameID)
@@ -231,7 +231,7 @@ bool MenuWindow::connectToGame(std::string gameID)
 }
 
 /*!
- * \brief Add a letter to the selected button
+ * @brief Add a letter to the selected button
  * @param ch letter to add
  */
 void MenuWindow::writeChar(std::string ch){
@@ -252,7 +252,7 @@ void MenuWindow::writeChar(std::string ch){
 }
 
 /*!
- * \brief Delete a letter to the selected button
+ * @brief Delete a letter to the selected button
  */
 void MenuWindow::deleteChar(){
 
@@ -267,12 +267,12 @@ void MenuWindow::deleteChar(){
 }
 
 /*!
- * \brief Load all the textures that will be display on the menu
+ * @brief Load all the textures that will be display on the menu
  */
 void MenuWindow::loadMenuTexture()
 {
 
-    backgroundTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/menu/background.png");
+    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/menu/background.png");
     backgroundTexture->addSprite();
     float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(gameEnginePtr->clientWindow->getSize().x ));
     backgroundTexture->setHudSpritePosition(backgroundScale, gameEnginePtr->clientWindow->getSize().x , gameEnginePtr->clientWindow->getSize().y , 0, 0);
@@ -312,6 +312,10 @@ void MenuWindow::loadMenuTexture()
     currentText = &menuTexts;
 }
 
+/*!
+ * @brief Load all the text of a Button from a JSon
+ * @param data where the data is stored
+ */
 void MenuWindow::loadText(Json::Value &data)
 {
     for (auto &dataMenu : data)
@@ -322,40 +326,70 @@ void MenuWindow::loadText(Json::Value &data)
             currentText->back().setStyle(sf::Text::Bold);
         }
         currentText->back().setFillColor(sf::Color::Black);
-        currentText->back().setPosition((int)(gameEnginePtr->clientWindow->getSize().x 
-                                                - dataMenu["xOffset"].asFloat() 
-                                                * currentText->back().getLocalBounds().height 
-                                                - currentText->back().getLocalBounds().width), 
-
-                                        (int)(gameEnginePtr->clientWindow->getSize().y
-                                                - dataMenu["yOffset"].asFloat() 
-                                                * currentText->back().getLocalBounds().height));
+        currentText->back().setPosition(setXAxisButtonTextPosition(dataMenu["xOffset"].asFloat()),
+                                        setYAxisButtonTextPosition(dataMenu["yOffset"].asFloat()));
     }
 }
 
+/*!
+ * @brief Load all the button from a JSon
+ * @param data where the data is stored
+ */
 void MenuWindow::loadButton(Json::Value &data)
 {
     for (auto &dataMenu : data)
     {
-        currentMenu->emplace_back(  sf::Vector2f(dataMenu["width"].asFloat() 
-                                                    * menuTexts[0].getLocalBounds().width, 
-                                                 dataMenu["height"].asFloat() 
-                                                    * menuTexts[0].getLocalBounds().height), 
-                                                    
-                                    sf::Vector2f(   menuTexts[0].getPosition().x 
-                                                    + dataMenu["x"].asFloat() 
-                                                    * menuTexts[0].getLocalBounds().width, 
-                                                    menuTexts[0].getPosition().y 
-                                                    - dataMenu["y"].asFloat() 
-                                                    * menuTexts[0].getLocalBounds().height), 
-                                                    buttonColor);
+        currentMenu->emplace_back( setButtonSize(dataMenu["width"].asFloat(), dataMenu["height"].asFloat()), 
+                                   setButtonPosition(dataMenu["x"].asFloat(), dataMenu["y"].asFloat()),
+                                   buttonColor);
 
         currentMenu->back().setText(40, sf::Vector2f(0, 0), dataMenu["text"].asString(), menuFont, dataMenu["sizeMax"].asInt());
     }
 }
 
 /*!
- * \brief Function that deteck where the user click and what to send to the engine
+ * @brief Calcul the x offset of the text of a button
+ * @param offset x offset of the text
+ */
+int MenuWindow::setXAxisButtonTextPosition(float offset){
+    return (int)(   gameEnginePtr->clientWindow->getSize().x 
+                    - offset 
+                    * currentText->back().getLocalBounds().height 
+                    - currentText->back().getLocalBounds().width);
+}
+
+/*!
+ * @brief Calcul the y offset of the text of a button
+ * @param offset y offset of the text
+ */
+int MenuWindow::setYAxisButtonTextPosition(float offset){
+    return (int)(   gameEnginePtr->clientWindow->getSize().y
+                    - offset
+                    * currentText->back().getLocalBounds().height);
+}
+
+/*!
+ * @brief Calcul the size of a button
+ * @param width value comming from the JSon file
+ * @param height value comming from the JSon file
+ */
+sf::Vector2f MenuWindow::setButtonSize(float width, float height){
+    return sf::Vector2f( width  * menuTexts[0].getLocalBounds().width, 
+                         height * menuTexts[0].getLocalBounds().height);
+}
+
+/*!
+ * @brief Calcul the position of a button
+ * @param x value comming from the JSon file
+ * @param y value comming from the JSon file
+ */
+sf::Vector2f MenuWindow::setButtonPosition(float x, float y){
+    return sf::Vector2f( menuTexts[0].getPosition().x + x * menuTexts[0].getLocalBounds().width, 
+                         menuTexts[0].getPosition().y - y * menuTexts[0].getLocalBounds().height);
+}
+
+/*!
+ * @brief Function that deteck where the user click and what to send to the engine
  * @param timeSecond is a boolean used to 
  */
 long MenuWindow::getCurrentTime(bool timeSecond)

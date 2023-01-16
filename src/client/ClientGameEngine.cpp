@@ -184,7 +184,7 @@ namespace client
     }
 
     /*!
-    * \brief A player is connecting to a Game
+    * @brief A player is connecting to a Game
     * @param id game ID, = new for a new Game
     * @param username player username
     * @param server serveur adresse
@@ -207,7 +207,7 @@ namespace client
     }
 
     /*!
-    * \brief Start the loop that manage the GameWindow
+    * @brief Start the loop that manage the GameWindow
     */
     void ClientGameEngine::startGameWindow()
     {
@@ -344,7 +344,7 @@ namespace client
     }
 
     /*!
-    * \brief Detect an intersection between a point and a rect
+    * @brief Detect an intersection between a point and a rect
     * @param point the point
     * @param rectangle the rectangle
     */

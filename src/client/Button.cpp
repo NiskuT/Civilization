@@ -15,7 +15,7 @@ namespace client
  */
 Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, bool border)
 {
-    buttonRect = std::shared_ptr<sf::RectangleShape>(new sf::RectangleShape);
+    buttonRect = std::make_shared<sf::RectangleShape>();
     buttonRect->setSize(buttonSize);
     buttonRect->setPosition(buttonPos);
     buttonRect->setFillColor(buttonColor);
@@ -30,7 +30,7 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
 }
 
 /*!
- * \brief operator()
+ * @brief operator()
  *
  * Return the button text
  */
@@ -40,7 +40,7 @@ std::string Button::operator()()
 }
 
 /*!
- * \brief Set the text of the Button
+ * @brief Set the text of the Button
  *
  * @param textSize size of the text
  * @param textOffset offset of the text
@@ -59,7 +59,7 @@ void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf
 }
 
 /*!
- * \brief Add a char to the text
+ * @brief Add a char to the text
  *
  * @param ch char to be add
  */
@@ -74,7 +74,7 @@ void Button::addChar(std::string ch)
 }
 
 /*!
- * \brief Delete a char to the text
+ * @brief Delete a char to the text
  */
 void Button::delChar()
 {
@@ -85,7 +85,7 @@ void Button::delChar()
 }
 
 /*!
- * \brief Center the text
+ * @brief Center the text
  *
  * @param centerAllAxis true if you also want to center on y Axis
  * @param textOffset offset on x
@@ -108,7 +108,7 @@ void Button::centerText(bool centerAllAxis, sf::Vector2f textOffset)
 }
 
 /*!
- * \brief Put the border into red border
+ * @brief Put the border into red border
  */
 void Button::setActive()
 {
@@ -118,7 +118,7 @@ void Button::setActive()
 }
 
 /*!
- * \brief Put the border into black border
+ * @brief Put the border into black border
  */
 void Button::setInactive()
 {
@@ -128,7 +128,7 @@ void Button::setInactive()
 }
 
 /*!
- * \brief Click on the button
+ * @brief Click on the button
  */
 bool Button::clickButton()
 {
