@@ -1,7 +1,6 @@
 #include <client.hpp>
 
-namespace client
-{
+using namespace client;
 
 /*!
  * @brief Constructor
@@ -19,11 +18,11 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
     buttonRect->setSize(buttonSize);
     buttonRect->setPosition(buttonPos);
     buttonRect->setFillColor(buttonColor);
-    if (border) 
+    if (border)
     {
         setActive();
     }
-    else 
+    else
     {
         setInactive();
     }
@@ -50,7 +49,7 @@ std::string Button::operator()()
 void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf::Font &font, int size)
 {
     maxTextSize = size;
-    buttonText = std::make_shared<sf::Text>();    
+    buttonText = std::make_shared<sf::Text>();
     buttonText->setFont(font);
     buttonText->setString(text);
     buttonText->setCharacterSize(textSize);
@@ -97,7 +96,7 @@ void Button::centerText(bool centerAllAxis, sf::Vector2f textOffset)
     int yPosText;
     if (centerAllAxis)
     {
-        yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2  - buttonText->getGlobalBounds().height/2 + textOffset.y ;
+        yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2 - buttonText->getGlobalBounds().height / 2 + textOffset.y;
     }
     else
     {
@@ -132,14 +131,13 @@ void Button::setInactive()
  */
 bool Button::clickButton()
 {
-    if(maxTextSize != 0)
+    if (maxTextSize != 0)
     {
         setActive();
         return false;
     }
-    else{
+    else
+    {
         return true;
     }
-}
-
 }
