@@ -2,14 +2,29 @@
 
 using namespace shared;
 
-Player::Player(std::string username)
+Player::Player()
 {
-    this->username = username;
+    this->state = PlayerState::WaitingForGame;
     for (int i = 1; i < 4; i++)
     {
-        this->resource[i] = 0;
+        this->ressources[i] = 0;
         this->wonderRessources[i] = 0;
     }
+}
+
+void Player::setUsername(std::string username)
+{
+    this->username = username;
+}
+
+void Player::setSocket(boost::asio::ip::tcp::socket &clientSocket)
+{
+    if (state == PlayerState::Connected)
+    {
+        disconnectPlayer();
+    }
+    state = shared::PlayerState::Connected;
+    this->playerSocket = std::make_shared<boost::asio::ip::tcp::socket>(std::move(clientSocket));
 }
 
 std::string Player::getName()
@@ -70,4 +85,21 @@ void Player::addBox(CardsEnum cardType, unsigned numberOfBoxToAdd)
             card->addBox(numberOfBoxToAdd);
         }
     }
-}
+    bool Player::operator==(Player &otherPlayer)
+    {
+        return (this->getName() == otherPlayer.getName() && this->state == PlayerState::WaitingForGame && otherPlayer.state == PlayerState::Disconnected) || (this->getName() == otherPlayer.getName() && this->state == PlayerState::Disconnected && otherPlayer.state == PlayerState::WaitingForGame);
+    }
+
+    boost::asio::ip::tcp::socket &Player::getSocket()
+    {
+        return *(this->playerSocket.get());
+    }
+
+    void Player::disconnectPlayer()
+    {
+        state = shared::PlayerState::Disconnected;
+        std::lock_guard<std::mutex> socketLock(socketReadMutex);
+        std::lock_guard<std::mutex> socketLock2(socketWriteMutex);
+        playerSocket->close();
+        playerSocket.reset();
+    }

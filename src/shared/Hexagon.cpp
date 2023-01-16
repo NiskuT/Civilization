@@ -1,16 +1,16 @@
 #include <shared.hpp>
 
-namespace shared
-{
-    FieldLevel Hexagon::getFieldLevel()
-    {
-        return this->level;
-    }
+using namespace shared;
 
-    void Hexagon::setFieldType(FieldLevel field)
-    {
-        this->level = field;
-    }
+FieldLevel Hexagon::getFieldLevel()
+{
+    return this->level;
+}
+
+void Hexagon::setFieldType(FieldLevel field)
+{
+    this->level = field;
+}
 
     std::vector<std::shared_ptr<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>> Hexagon::getElements()
     {

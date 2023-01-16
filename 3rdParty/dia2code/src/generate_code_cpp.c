@@ -730,11 +730,13 @@ struct stdlib_includes {
    int array;   
    int thread;
    int mutex;
+   int condition_variable;
    int random;
    int sfmlGraphics;
    int jsoncpp;
    int boostAsio;
    int variant;
+   int json;
 };
 
 void print_include_stdlib(struct stdlib_includes* si,char* name) {
@@ -795,6 +797,10 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            print ("#include <mutex>\n");
            si->mutex = 1;
        }
+       if (!si->condition_variable && strstr(name,"std::condition_variable")) {
+           print ("#include <condition_variable>\n");
+           si->condition_variable = 1;
+       }
        if (!si->thread && strstr(name,"std::thread")) {
            print ("#include <thread>\n");
            si->thread = 1;
@@ -845,6 +851,12 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            print ("#include <variant>\n");
            si->boostAsio = 1;
        }      
+       }
+       if (!si->json && strstr(name,"Json::Value")) {
+           print (" #include <json/json.h>\n");
+           si->json = 1;
+       }
+       
     }
 }
 
