@@ -199,7 +199,7 @@ void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
             caravan->setPos(pos2[0], pos2[1]);
             (*map)(pos1[0], pos1[1])->removeElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
             (*map)(pos2[0], pos2[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
-            return true;
+            return;
         }
     }
 
@@ -211,10 +211,9 @@ void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
         {
             caravan->setPos(pos2[0], pos2[1]);
             (*map)(pos2[0], pos2[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
-            return true;
+            return;
         }
     }
-    return false;
 }
 
 /**
