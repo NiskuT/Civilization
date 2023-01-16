@@ -56,7 +56,7 @@ GameWindow::GameWindow()
     loadElementTexture();
     updateElementTexture();
     loadHudTexture();
-    tchatBox = std::make_unique<Tchat>(bodyFont);
+    chatBox = std::make_unique<Chat>(bodyFont);
 
 }
 
@@ -108,7 +108,7 @@ void GameWindow::displayWindow()
 
     gameEnginePtr->clientWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
-    tchatBox->drawTchat(gameEnginePtr->clientWindow);
+    chatBox->drawChat(gameEnginePtr->clientWindow);
 
     for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
     {
@@ -196,7 +196,7 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
     case sf::Event::TextEntered:
         if (event.text.unicode > ASCI_BEGIN && event.text.unicode < ASCI_END)
         {
-            tchatBox->addTchatChar(converter.to_bytes(event.text.unicode));
+            chatBox->addChatChar(converter.to_bytes(event.text.unicode));
         }
         break;
 
@@ -242,11 +242,11 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent, std::shared_p
         return true;
 
     case sf::Keyboard::Enter:
-        tchatBox->updateTchat("00:00", "Username", tchatBox->message);
+        chatBox->updateChat("00:00", "Username", chatBox->message);
         break;
 
     case sf::Keyboard::BackSpace:
-        tchatBox->deleteTchatChar();
+        chatBox->deleteChatChar();
         break;
 
     case sf::Keyboard::L:

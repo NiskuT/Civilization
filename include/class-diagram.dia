@@ -5890,10 +5890,10 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#tchatBox#</dia:string>
+            <dia:string>#chatBox#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::unique_ptr&lt;Tchat&gt;#</dia:string>
+            <dia:string>#std::unique_ptr&lt;Chat&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -14369,19 +14369,19 @@
         <dia:point val="224.844,10.7229"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="224.794,10.6729;247.724,20.5729"/>
+        <dia:rectangle val="224.794,10.6729;247.339,20.5729"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="224.844,10.7229"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="22.830000000000002"/>
+        <dia:real val="22.445"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="9.8000000000000007"/>
       </dia:attribute>
       <dia:attribute name="name">
-        <dia:string>#Tchat#</dia:string>
+        <dia:string>#Chat#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
         <dia:string>##</dia:string>
@@ -14473,7 +14473,7 @@
       <dia:attribute name="attributes">
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#gameTchat#</dia:string>
+            <dia:string>#gameChat#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#std::array&lt;sf::Text, 10&gt;#</dia:string>
@@ -14496,7 +14496,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#tchatButton#</dia:string>
+            <dia:string>#chatButton#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#std::vector&lt;Button&gt;#</dia:string>
@@ -14544,7 +14544,7 @@
       <dia:attribute name="operations">
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#Tchat#</dia:string>
+            <dia:string>#Chat#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -14592,7 +14592,7 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#updateTchat#</dia:string>
+            <dia:string>#updateChat#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -14674,7 +14674,7 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#incrementTchat#</dia:string>
+            <dia:string>#incrementChat#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -14704,7 +14704,7 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#drawTchat#</dia:string>
+            <dia:string>#drawChat#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -14752,7 +14752,7 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#addTchatChar#</dia:string>
+            <dia:string>#addChatChar#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -14800,7 +14800,7 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#deleteTchatChar#</dia:string>
+            <dia:string>#deleteChatChar#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -14839,16 +14839,16 @@
         <dia:point val="252.808,28.8852"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="247.674,15.5729;253.558,30.4852"/>
+        <dia:rectangle val="247.289,15.5729;253.558,30.4852"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="252.808,28.8852"/>
-        <dia:point val="249.916,28.8852"/>
-        <dia:point val="249.916,15.6229"/>
-        <dia:point val="247.724,15.6229"/>
+        <dia:point val="249.723,28.8852"/>
+        <dia:point val="249.723,15.6229"/>
+        <dia:point val="247.339,15.6229"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="0"/>
