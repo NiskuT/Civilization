@@ -38,8 +38,8 @@ namespace client
     }
 
     /*!
-     * @brief Move up priority cards when we click on it
-     */
+    * @brief Move up priority cards when we click on it
+    */
 
     void GraphicCard::moveUpPriorityCard()
     {
@@ -66,4 +66,5 @@ namespace client
         title->setPosition(xTitlePos, yPos);
         body->setPosition(xBodyPosition, yPos + yBodyOffset);
     }
+
 }

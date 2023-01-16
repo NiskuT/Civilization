@@ -1,6 +1,5 @@
 #include <client.hpp>
 
-
 namespace client
 {
 
@@ -16,22 +15,28 @@ namespace client
  */
 Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, bool border)
 {
-    buttonRect = std::unique_ptr<sf::RectangleShape>(new sf::RectangleShape);
+    buttonRect = std::make_shared<sf::RectangleShape>();
     buttonRect->setSize(buttonSize);
     buttonRect->setPosition(buttonPos);
     buttonRect->setFillColor(buttonColor);
     if (border) 
     {
-        redBorder = true;
-        buttonRect->setOutlineColor(sf::Color::Red);
-        buttonRect->setOutlineThickness(2.0f);
+        setActive();
     }
     else 
     {
-        redBorder = false;
-        buttonRect->setOutlineColor(sf::Color::Black);
-        buttonRect->setOutlineThickness(1.0f);
+        setInactive();
     }
+}
+
+/*!
+ * @brief operator()
+ *
+ * Return the button text
+ */
+std::string Button::operator()()
+{
+    return buttonText->getString();
 }
 
 /*!
@@ -42,19 +47,99 @@ Button::Button(sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color button
  * @param text text of the Button
  * @param font font of the text
  */
-void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf::Font &font)
+void Button::setText(int textSize, sf::Vector2f textOffset, std::string text, sf::Font &font, int size)
 {
-    buttonText = std::unique_ptr<sf::Text>(new sf::Text);
+    maxTextSize = size;
+    buttonText = std::make_shared<sf::Text>();    
     buttonText->setFont(font);
     buttonText->setString(text);
     buttonText->setCharacterSize(textSize);
-    sf::Vector2f buttonPos = buttonRect->getPosition();
-    sf::Vector2f buttonSize = buttonRect->getSize();
-    int xPosText = buttonPos.x + (buttonSize.x - buttonText->getGlobalBounds().width) / 2 + textOffset.x;
-    int yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2  - buttonText->getGlobalBounds().height/2 + textOffset.y ;
-    buttonText->setPosition(sf::Vector2f(xPosText, yPosText));
+    centerText(true, textOffset);
     buttonText->setFillColor(sf::Color::Black);
 }
 
+/*!
+ * @brief Add a char to the text
+ *
+ * @param ch char to be add
+ */
+void Button::addChar(std::string ch)
+{
+    buttonText->setString(buttonText->getString() + ch);
+    if (buttonText->getLocalBounds().width >= buttonRect->getLocalBounds().width)
+    {
+        delChar();
+    }
+    centerText(false);
+}
+
+/*!
+ * @brief Delete a char to the text
+ */
+void Button::delChar()
+{
+    std::string newString = buttonText->getString();
+    newString.pop_back();
+    buttonText->setString(newString);
+    centerText(false);
+}
+
+/*!
+ * @brief Center the text
+ *
+ * @param centerAllAxis true if you also want to center on y Axis
+ * @param textOffset offset on x
+ */
+void Button::centerText(bool centerAllAxis, sf::Vector2f textOffset)
+{
+    sf::Vector2f buttonPos = buttonRect->getPosition();
+    sf::Vector2f buttonSize = buttonRect->getSize();
+    int yPosText;
+    if (centerAllAxis)
+    {
+        yPosText = buttonPos.y + (buttonSize.y - buttonText->getGlobalBounds().height) / 2  - buttonText->getGlobalBounds().height/2 + textOffset.y ;
+    }
+    else
+    {
+        yPosText = buttonText->getPosition().y;
+    }
+    int xPosText = buttonPos.x + (buttonSize.x - buttonText->getGlobalBounds().width) / 2 + textOffset.x;
+    buttonText->setPosition(sf::Vector2f(xPosText, yPosText));
+}
+
+/*!
+ * @brief Put the border into red border
+ */
+void Button::setActive()
+{
+    redBorder = true;
+    buttonRect->setOutlineColor(sf::Color::Red);
+    buttonRect->setOutlineThickness(2.0f);
+}
+
+/*!
+ * @brief Put the border into black border
+ */
+void Button::setInactive()
+{
+    redBorder = false;
+    buttonRect->setOutlineColor(sf::Color::Black);
+    buttonRect->setOutlineThickness(1.0f);
+}
+
+/*!
+ * @brief Click on the button
+ */
+bool Button::clickButton()
+{
+    if(maxTextSize != 0)
+    {
+        setActive();
+        return false;
+    }
+    else{
+        return true;
+    }
+}
 
 }
