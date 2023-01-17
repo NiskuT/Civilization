@@ -1,6 +1,19 @@
 #include <client.hpp>
 
-#define TCHAT_MAX_SIZE 300
+#define CHAT_MAX_SIZE 300
+
+#define NUMBER_LINE 9
+
+#define CHAT_START_POSITION 5
+#define CHAT_SIZE_X 300
+#define CHAT_SIZE_Y 265
+#define CHAT_OFFSET 20
+#define CHAT_TEXT_SIZE 30
+#define CHAT_FONT_SIZE 15
+
+#define BUTTON_TEXT_ENTER 1
+
+const sf::Color TEXT_COLOR = sf::Color(255, 255, 255, 180);
 
 using namespace client;
 
@@ -9,17 +22,28 @@ using namespace client;
  */
 Chat::Chat(sf::Font& font)
 {
-    for(unsigned i = 0; i < gameChat.size(); i++ )
+    unsigned i;
+    for(i = 0; i < gameChat.size(); i++ )
     {
         gameChat[i].setString("");
         gameChat[i].setFont(font);
-        gameChat[i].setCharacterSize(15);
+        gameChat[i].setCharacterSize(CHAT_FONT_SIZE);
         gameChat[i].setFillColor(sf::Color::Black);
-        gameChat[i].setPosition(20, 305 + 20 * i);
+        gameChat[i].setPosition(CHAT_OFFSET, CHAT_START_POSITION + CHAT_SIZE_X + CHAT_OFFSET * i);
     }
-    chatButton.emplace_back(sf::Vector2f(340, 265), sf::Vector2f(0, 300), sf::Color(255, 255, 255, 180), false);
-    chatButton.emplace_back(sf::Vector2f(300, 30), sf::Vector2f(20, 515), sf::Color(255, 255, 255, 180), false);
-    chatButton.back().setText(15, sf::Vector2f(0, 0), "", font, 100);
+    chatButton.emplace_back(
+        sf::Vector2f(CHAT_SIZE_X + 2 * CHAT_SIZE_X, CHAT_SIZE_Y), 
+        sf::Vector2f(0, CHAT_SIZE_X), 
+        TEXT_COLOR, 
+        false);
+
+    chatButton.emplace_back(
+        sf::Vector2f(CHAT_SIZE_X, CHAT_TEXT_SIZE), 
+        sf::Vector2f(CHAT_SIZE_X, CHAT_START_POSITION + CHAT_SIZE_X + CHAT_OFFSET * (i + 1)), 
+        TEXT_COLOR, 
+        false);
+
+    chatButton.back().setText(CHAT_FONT_SIZE, sf::Vector2f(0, 0), "", font, CHAT_SIZE_X);
 
     updateChat("19:45", "Lasso", "Game is starting");
     updateChat("19:50", "Lasso", "Game");
@@ -49,7 +73,7 @@ void Chat::updateChat(std::string time, std::string username, std::string sendMe
     std::unique_lock<std::mutex> lock(mutexChat);
     message.clear();
     lock.unlock();
-    chatButton[1].buttonText->setString("");
+    chatButton[BUTTON_TEXT_ENTER].buttonText->setString("");
 
     if (!username.empty())
     {
@@ -59,15 +83,15 @@ void Chat::updateChat(std::string time, std::string username, std::string sendMe
     incrementChat();
     std::string secondLine = "";
 
-    gameChat[9].setString(sendMessage);
+    gameChat[NUMBER_LINE].setString(sendMessage);
 
-    while (gameChat[9].getGlobalBounds().width > TCHAT_MAX_SIZE)
+    while (gameChat[NUMBER_LINE].getGlobalBounds().width > CHAT_MAX_SIZE)
     {
-        std::string nextChar = gameChat[9].getString();
+        std::string nextChar = gameChat[NUMBER_LINE].getString();
         nextChar = nextChar.back();
         secondLine.insert(0, nextChar);
         sendMessage.pop_back();
-        gameChat[9].setString(sendMessage);
+        gameChat[NUMBER_LINE].setString(sendMessage);
     }
 
     if (!secondLine.empty())
@@ -84,15 +108,15 @@ void Chat::addChatChar(std::string ch)
     std::unique_lock<std::mutex> lock(mutexChat);
     message += ch;
     lock.unlock();
-    chatButton[1].buttonText->setString(chatButton[1].buttonText->getString() + ch);
+    chatButton[BUTTON_TEXT_ENTER].buttonText->setString(chatButton[BUTTON_TEXT_ENTER].buttonText->getString() + ch);
 
-    while(chatButton[1].buttonText->getGlobalBounds().width > TCHAT_MAX_SIZE)
+    while(chatButton[BUTTON_TEXT_ENTER].buttonText->getGlobalBounds().width > CHAT_MAX_SIZE)
     {
-        std::string newString = chatButton[1].buttonText->getString();
+        std::string newString = chatButton[BUTTON_TEXT_ENTER].buttonText->getString();
         newString.erase(0, 1);
-        chatButton[1].buttonText->setString(newString);
+        chatButton[BUTTON_TEXT_ENTER].buttonText->setString(newString);
     }
-    chatButton[1].centerText(true);
+    chatButton[BUTTON_TEXT_ENTER].centerText(true);
 }
 
 /*!
@@ -100,15 +124,15 @@ void Chat::addChatChar(std::string ch)
  */
 void Chat::deleteChatChar()
 {
-    std::string newString = chatButton[1].buttonText->getString();
+    std::string newString = chatButton[BUTTON_TEXT_ENTER].buttonText->getString();
     if (!newString.empty())
     {
         newString.pop_back();
         std::lock_guard<std::mutex> lock(mutexChat);
         message.pop_back();
     }
-    chatButton[1].buttonText->setString(newString);
-    chatButton[1].centerText(false);
+    chatButton[BUTTON_TEXT_ENTER].buttonText->setString(newString);
+    chatButton[BUTTON_TEXT_ENTER].centerText(false);
 }
 
 /*!
@@ -120,7 +144,7 @@ void Chat::drawChat(std::shared_ptr<sf::RenderWindow> window)
     {
         window->draw(*chatButton[i].buttonRect);
     }
-    window->draw(*chatButton[1].buttonText);
+    window->draw(*chatButton[BUTTON_TEXT_ENTER].buttonText);
     for (auto &chat : gameChat)
     {
         window->draw(chat);
