@@ -20,9 +20,8 @@ typedef std::vector<std::shared_ptr<std::variant<Caravan, Barbarian, BarbarianVi
  * @fn Rules::Rules(unsigned ruleId)
  * @brief constructor of Rules, define the ruleId of created rule.
  */
-Rules::Rules(CardsEnum ruleId)
+Rules::Rules()
 {
-    this->ruleId = ruleId;
 }
 
 /**
@@ -33,7 +32,7 @@ Rules::Rules(CardsEnum ruleId)
  */
 void Rules::runTheRule(RuleArgsStruct &args)
 {
-    switch (this->ruleId)
+    switch (args.ruleId)
     {
     case CardsEnum::economy:
         playEconomyCard(args);
@@ -130,7 +129,7 @@ void Rules::playEconomyCard(RuleArgsStruct &args)
         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 2);
         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
-        exchangeRessourceWithOtherPlayer(); //  TODO: allow to exchange ressource with other player
+        // exchangeRessourceWithOtherPlayer(); //  TODO: allow to exchange ressource with other player
         break;
     case 4:
         verifyIfPathSizeIsCorrect(caravanMovementPath->size(), CARAVAN_STEPS_AT_LEVEL_4 + numberOfBoxUsed);
@@ -138,7 +137,7 @@ void Rules::playEconomyCard(RuleArgsStruct &args)
         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
-        playAnotherCard(); // TODO: allow to play another card
+        // playAnotherCard(); // TODO: allow to play another card
         break;
     default:
         std::cout << "invalid card level" << std::endl;
@@ -283,10 +282,10 @@ void Rules::playScienceCard(RuleArgsStruct &args)
 
     std::shared_ptr<Player> currentPlayer = args.currentPlayer;
 
-    CardsEnum cardToGetABox = args.cardToGetABox;
-    ResourceEnum resourceToGet = args.resourceToGet;
-    std::array<unsigned, 2> positionToNuke = args.positionToNuke;
-    std::shared_ptr<Map> gameMap = args.gameMap;
+    CardsEnum cardToGetABox;
+    ResourceEnum resourceToGet;
+    std::array<unsigned, 2> positionToNuke;
+    std::shared_ptr<Map> gameMap;
     std::vector<CardsEnum> cardsToImprove = args.cardsToImprove;
 
     std::vector<std::array<unsigned, 2>> neighbors; // for the nuke
@@ -310,9 +309,11 @@ void Rules::playScienceCard(RuleArgsStruct &args)
         // do nothing special
         break;
     case 2:
+        cardToGetABox = args.cardToGetABox;
         args.currentPlayer->addBox(cardToGetABox, 1);
         break;
     case 3:
+        resourceToGet = args.resourceToGet;
         if (args.currentPlayer->haveResource(resourceToGet))
         {
             std::cout << "You already have this resource" << std::endl;
@@ -321,6 +322,8 @@ void Rules::playScienceCard(RuleArgsStruct &args)
         args.currentPlayer->addResource(resourceToGet);
         break;
     case 4:
+        positionToNuke = args.positionToNuke;
+        gameMap = args.gameMap;
         neighbors = getNeighbors(positionToNuke[0], positionToNuke[1], gameMap);
         neighbors.push_back(positionToNuke);
         nuke(neighbors, gameMap, args.currentPlayer);

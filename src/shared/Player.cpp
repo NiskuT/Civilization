@@ -104,3 +104,49 @@ void Player::disconnectPlayer()
     playerSocket->close();
     playerSocket.reset();
 }
+
+std::vector<std::shared_ptr<Caravan>> Player::getCaravans()
+{
+    return this->listOfCaravan;
+}
+
+unsigned Player::getNumberOfBox(CardsEnum cardType)
+{
+    for (auto card : this->listOfPriorityCard)
+    {
+        if (card->getType() == cardType)
+        {
+            return card->getNumberOfBox();
+        }
+    }
+}
+
+void Player::addCaravan(std::shared_ptr<Caravan> newCaravan)
+{
+    this->listOfCaravan.push_back(newCaravan);
+}
+
+bool Player::haveResource(ResourceEnum resourceType)
+{
+    return this->ressources[(int)resourceType] > 0;
+}
+void Player::addControlPawn(std::shared_ptr<ControlPawn> newControlPawn)
+{
+    this->listOfControlPawn.push_back(newControlPawn);
+}
+
+void Player::removeControlPawn(std::shared_ptr<ControlPawn> controlPawnToRemove)
+{
+    for (auto controlPawn : this->listOfControlPawn)
+    {
+        if (controlPawn == controlPawnToRemove)
+        {
+            this->listOfControlPawn.erase(std::remove(this->listOfControlPawn.begin(), this->listOfControlPawn.end(), controlPawnToRemove), this->listOfControlPawn.end());
+        }
+    }
+}
+
+void Player::addResource(ResourceEnum resourceType)
+{
+    this->ressources[(int)resourceType] += 1;
+}

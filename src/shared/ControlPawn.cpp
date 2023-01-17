@@ -1,9 +1,13 @@
 #include <shared.hpp>
 
-namespace shared
+using namespace shared;
+
+bool ControlPawn::isReinforced()
 {
-    bool ControlPawn::isReinforced()
-    {
-        return this->reinforced;
-    }
+    return this->reinforced;
+}
+
+void ControlPawn::setReinforced()
+{
+    this->reinforced = true;
 }

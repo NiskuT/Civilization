@@ -21,3 +21,8 @@ void Hexagon::addElement(std::shared_ptr<std::variant<Caravan, Barbarian, Barbar
 {
     elementsList.push_back(element);
 }
+
+void Hexagon::removeElement(std::shared_ptr<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>> element)
+{
+    elementsList.erase(std::remove(elementsList.begin(), elementsList.end(), element), elementsList.end());
+}
