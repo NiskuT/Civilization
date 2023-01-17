@@ -35,7 +35,7 @@ std::string Player::getName()
 std::array<int, 3> Player::incrementTechWheel(unsigned toIncrement)
 {
     std::array<int, 3> result;
-    for (int i = 0; i < toIncrement; i++)
+    for (unsigned i = 0; i < toIncrement; i++)
     {
         this->techLevel += 1;
         if (this->techLevel == 3 || this->techLevel == 6)
@@ -85,21 +85,22 @@ void Player::addBox(CardsEnum cardType, unsigned numberOfBoxToAdd)
             card->addBox(numberOfBoxToAdd);
         }
     }
-    bool Player::operator==(Player &otherPlayer)
-    {
-        return (this->getName() == otherPlayer.getName() && this->state == PlayerState::WaitingForGame && otherPlayer.state == PlayerState::Disconnected) || (this->getName() == otherPlayer.getName() && this->state == PlayerState::Disconnected && otherPlayer.state == PlayerState::WaitingForGame);
-    }
+}
+bool Player::operator==(Player &otherPlayer)
+{
+    return (this->getName() == otherPlayer.getName() && this->state == PlayerState::WaitingForGame && otherPlayer.state == PlayerState::Disconnected) || (this->getName() == otherPlayer.getName() && this->state == PlayerState::Disconnected && otherPlayer.state == PlayerState::WaitingForGame);
+}
 
-    boost::asio::ip::tcp::socket &Player::getSocket()
-    {
-        return *(this->playerSocket.get());
-    }
+boost::asio::ip::tcp::socket &Player::getSocket()
+{
+    return *(this->playerSocket.get());
+}
 
-    void Player::disconnectPlayer()
-    {
-        state = shared::PlayerState::Disconnected;
-        std::lock_guard<std::mutex> socketLock(socketReadMutex);
-        std::lock_guard<std::mutex> socketLock2(socketWriteMutex);
-        playerSocket->close();
-        playerSocket.reset();
-    }
+void Player::disconnectPlayer()
+{
+    state = shared::PlayerState::Disconnected;
+    std::lock_guard<std::mutex> socketLock(socketReadMutex);
+    std::lock_guard<std::mutex> socketLock2(socketWriteMutex);
+    playerSocket->close();
+    playerSocket.reset();
+}
