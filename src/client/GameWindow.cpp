@@ -108,12 +108,18 @@ void GameWindow::displayWindow()
 
     gameEnginePtr->clientWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
-    chatBox->drawChat(gameEnginePtr->clientWindow);
-
     for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
     {
         hudTextureToDisplay[i].drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
+
+    if (isChatOpen)
+    {
+        chatBox->drawChat(gameEnginePtr->clientWindow); 
+    }
+
+    chatPicture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+    movePicture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
 
     gameEnginePtr->clientWindow->display();
 }
@@ -175,11 +181,7 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
 
         *clickMode = true;
         clickStartingPoint = sf::Mouse::getPosition(*gameEnginePtr->clientWindow);
-
-        if (!*moveMode)
-        {
-            clickAction(clickStartingPoint);
-        }
+        clickAction(event, clickStartingPoint, moveMode);
         break;
 
     case sf::Event::MouseButtonReleased:
@@ -194,14 +196,14 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
         break;
 
     case sf::Event::TextEntered:
-        if (event.text.unicode > ASCI_BEGIN && event.text.unicode < ASCI_END)
+        if (event.text.unicode > ASCI_BEGIN && event.text.unicode < ASCI_END && isChatOpen)
         {
             chatBox->addChatChar(converter.to_bytes(event.text.unicode));
         }
         break;
 
     case sf::Event::KeyPressed:
-        if (handleKeyboardEvent(event.key, moveMode, clickStartingPoint))
+        if (handleKeyboardEvent(event.key))
             return true;
         break;
 
@@ -221,22 +223,10 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
  * @param moveMode pointer to know if the map is moving on the screen
  * @param clickStartingPoint reference used to know where the user start pressing mouse
  */
-bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent, std::shared_ptr<bool> moveMode, sf::Vector2i &clickStartingPoint)
+bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent)
 {
     switch (keyEvent.code)
     {
-    case sf::Keyboard::M:
-        changeMouseCursor(moveMode);
-        break;
-
-    case sf::Keyboard::K:
-        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-        {
-            gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
-        }
-        gameEnginePtr->handleQuitMenu(false);
-        return true;
-
     case sf::Keyboard::Escape:
         gameEnginePtr->handleQuitMenu(true);
         return true;
@@ -249,10 +239,6 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent, std::shared_p
 
     case sf::Keyboard::BackSpace:
         chatBox->deleteChatChar();
-        break;
-
-    case sf::Keyboard::L:
-        moveMap(clickStartingPoint, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
         break;
 
     default:
@@ -355,50 +341,74 @@ const auto GameWindow::openJsonFile(std::string path)
  * @param clickPosition is the position on the cursor when the user click
  * @brief Dectect click and actions to do after
  */
-void GameWindow::clickAction(sf::Vector2i clickPosition)
+void GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
 {
     int minimumDistance = WINDOW_LENGTH;
     std::array<int, 2> hexagonOnClick = {0, 0};
 
     bool isClickable = false;
 
-    for (unsigned i = 0; i < priorityCards.size(); i++)
+    if (!*moveMode)
     {
-        // Check if the click position is inside the sprite
-        if (gameEnginePtr->intersectPointRect(clickPosition, priorityCards[i].texture->getSprite().getGlobalBounds()))
+        for (unsigned i = 0; i < priorityCards.size(); i++)
         {
-            gameEnginePtr->handleInformation(-1, i + 1); // -1 to signify that the space clicked is a priority card
-            priorityCards[i].moveUpPriorityCard();
-            return;
-        }
-    }
-
-    for (auto &mapTexture : mapTextureToDisplay)
-    {
-        for (unsigned j = 0; j < mapTexture.getSize(); j++)
-        {
-
-            if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
+            // Check if the click position is inside the sprite
+            if (gameEnginePtr->intersectPointRect(clickPosition, priorityCards[i].texture->getSprite().getGlobalBounds()))
             {
-                isClickable = true;
+                gameEnginePtr->handleInformation(-1, i + 1); // -1 to signify that the space clicked is a priority card
+                priorityCards[i].moveUpPriorityCard();
+                return;
+            }
+        }
 
-                int x = mapTexture.getSprite(j).getGlobalBounds().left;
-                int y = mapTexture.getSprite(j).getGlobalBounds().top;
-                int width = mapTexture.getSprite(j).getGlobalBounds().width;
-                int height = mapTexture.getSprite(j).getGlobalBounds().height;
+        for (auto &mapTexture : mapTextureToDisplay)
+        {
+            for (unsigned j = 0; j < mapTexture.getSize(); j++)
+            {
 
-                int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
-                                    pow(y + height / 2 - clickPosition.y, 2));
-
-                if (distance < minimumDistance)
+                if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
                 {
+                    isClickable = true;
 
-                    minimumDistance = distance;
-                    hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
-                    hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
+                    int x = mapTexture.getSprite(j).getGlobalBounds().left;
+                    int y = mapTexture.getSprite(j).getGlobalBounds().top;
+                    int width = mapTexture.getSprite(j).getGlobalBounds().width;
+                    int height = mapTexture.getSprite(j).getGlobalBounds().height;
+
+                    int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
+                                        pow(y + height / 2 - clickPosition.y, 2));
+
+                    if (distance < minimumDistance)
+                    {
+
+                        minimumDistance = distance;
+                        hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
+                        hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
+                    }
                 }
             }
         }
+    }
+
+    // Check if the click position is inside the move map button
+    if (gameEnginePtr->intersectPointRect(clickPosition, movePicture->getSprite().getGlobalBounds()))
+    {
+        if(event.mouseButton.button == sf::Mouse::Left)
+        {
+            changeMouseCursor(moveMode);
+            return;
+        }
+        changeMouseCursor(moveMode);
+        sf::Vector2i nullPosition(0, 0);
+        moveMap(nullPosition, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
+        return;
+    }
+
+    // Check if the click position is inside the chat button
+    if (gameEnginePtr->intersectPointRect(clickPosition, chatPicture->getSprite().getGlobalBounds()))
+    {
+        isChatOpen = !isChatOpen;
+        return;
     }
 
     if (isClickable)
@@ -672,6 +682,14 @@ void GameWindow::loadHudTexture()
             dataNumber["box-y-offset-proportion"].asFloat(),
             priorityCards.back());
         boxTexture->getSprite(index).setPosition(boxPosition.x, boxPosition.y);
+
+        chatPicture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/chat-button.png");
+        chatPicture->addSprite();
+        chatPicture->getSprite(0).setPosition(sf::Vector2f(20, 585));
+
+        movePicture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/move-button.png");
+        movePicture->addSprite();
+        movePicture->getSprite(0).setPosition(sf::Vector2f(20, 653));
     }
 
     // actionCard

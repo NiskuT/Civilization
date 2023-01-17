@@ -13,6 +13,8 @@
 <p><a href="https://www.flaticon.com/free-icons/brick" title="brick icons">Brick icons created by Pixel perfect - Flaticon</a></p>
 <p><a href="https://www.flaticon.com/free-icons/sculpture" title="sculpture icons">Sculpture icons created by smalllikeart - Flaticon</a></p>
 <p><a href="https://www.flaticon.com/free-icons/oil-barrel" title="oil barrel icons">Oil barrel icons created by Mayor Icons - Flaticon</a></p>
+<p><a href="https://www.flaticon.com/free-icons/message" title="message icons">Message icons created by apien - Flaticon</a></p>
+<p><a href="https://www.flaticon.com/free-icons/move" title="move icons">Move icons created by Roundicons - Flaticon</a></p>
 
 <b><p>Freepik:   <a href="https://www.freepik.com/">.</a></p></b>
 <p><a href="https://fr.freepik.com/vecteurs-libre/prairie-herbe-verte-coniferes-collines_22970599.htm#query=grassland&position=12&from_view=search&track=sph">Image of upklyak</a> on Freepik</p>

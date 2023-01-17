@@ -24,10 +24,10 @@ using namespace client;
  */
 ClientGameEngine::ClientGameEngine()
 {
-    myself = std::make_shared<shared::Player>();
-    myself->setUsername("PlayerTest");
     clientMenu.gameEnginePtr = this;
     clientGame.gameEnginePtr = this;
+    myself = std::make_shared<shared::Player>();
+    myself->setUsername("PlayerTest");
 }
 
 /*!
