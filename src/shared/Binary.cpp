@@ -11,8 +11,7 @@ using namespace shared;
 
 void Binary::send(std::shared_ptr<shared::Player> player, std::string serializedData)
 {
-    std::string header = "binary:" + std::to_string(serializedData.size()) + "\n";
-
+    std::string header = "binary " + std::to_string(serializedData.size()) + "\n";
     std::lock_guard<std::mutex> lock(player->socketWriteMutex);
     boost::asio::write(player->getSocket(), boost::asio::buffer(header));
     boost::asio::write(player->getSocket(), boost::asio::buffer(serializedData));
@@ -45,7 +44,6 @@ std::string Binary::receive(std::shared_ptr<shared::Player> player, size_t size)
     std::string messageReceived(
         boost::asio::buffers_begin(receiveBuffer.data()),
         boost::asio::buffers_end(receiveBuffer.data()));
-
     return messageReceived;
 }
 
@@ -65,3 +63,6 @@ void Binary::castToBinary(T &data, std::string &serializedData)
     oa << data;
     serializedData = stream.str();
 }
+
+template void Binary::castToBinary<Map>(Map& data, std::string& serializedData);
+template void Binary::castToObject<Map>(std::string receivedData, Map& data);

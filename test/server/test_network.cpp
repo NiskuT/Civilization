@@ -12,6 +12,24 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
     BOOST_CHECK(1);
 }
 
+/*BOOST_AUTO_TEST_CASE(connectionTest)
+{
+    client::ClientGameEngine client, client2;
+    server::Server server;
+
+    std::thread serv(&server::Server::start, &server);
+    serv.detach();
+    usleep(10000);
+    client.gameId = "new";
+    client.connect("127.0.0.1", 8080);
+
+    client2.generateMap(50, 50,273884);
+    client2.loadMap();
+
+    server.running.store(false);
+}*/
+
+
 BOOST_AUTO_TEST_CASE(connectionTest)
 {
     client::ClientGameEngine client, client2;
@@ -54,6 +72,9 @@ BOOST_AUTO_TEST_CASE(connectionTest)
     client2.askServer();
     BOOST_CHECK(client2.myself->qAndA.answer.find("ok") != std::string::npos);
     BOOST_CHECK(server.games[0]->gameMap->getMapHeight() == 24);
+
+    client2.generateMap(15, 15,273884);
+    client.loadMap();
 
     server.running.store(false);
 }

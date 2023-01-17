@@ -2,8 +2,6 @@
 #include <algorithm>
 #include <random>
 
-#include "../shared/Binary.cpp"
-
 #define MAX_PLAYERS 4
 
 namespace server
@@ -69,7 +67,6 @@ namespace server
         }
 
         std::string command = requestComponents[0];
-
         std::string response = "response error: invalid command\n";
         if (command.find("getstate") == 0)
         {
