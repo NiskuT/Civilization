@@ -16,6 +16,10 @@ void Map::save(Archive &ar, const unsigned int version) const
     ar << height;
     ar << width;
     ar << mapOfTheGame;
+    /*for (auto &i : mapOfTheGame)
+    {
+        ar << *i;
+    }*/
 }
 
 template <class Archive>
@@ -23,8 +27,13 @@ void Map::load(Archive &ar, const unsigned int version)
 {
     ar >> height;
     ar >> width;
+    isInizialize = false;
     this->init();
     ar >> mapOfTheGame;
+    /*for (auto &i : mapOfTheGame)
+    {
+        ar >> *i;
+    }*/
 }
 
 template <class Archive>

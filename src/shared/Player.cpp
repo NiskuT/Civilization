@@ -20,7 +20,8 @@ namespace shared
 
     void Player::setSocket(boost::asio::ip::tcp::socket &clientSocket)
     {
-        if (state == PlayerState::Connected) {
+        if (state == PlayerState::Connected)
+        {
             disconnectPlayer();
         }
         state = shared::PlayerState::Connected;
@@ -47,7 +48,11 @@ namespace shared
         state = shared::PlayerState::Disconnected;
         std::lock_guard<std::mutex> socketLock(socketReadMutex);
         std::lock_guard<std::mutex> socketLock2(socketWriteMutex);
-        playerSocket->close();
+        if (playerSocket && playerSocket->is_open())
+        {
+            playerSocket->close();
+        }
         playerSocket.reset();
     }
+
 }

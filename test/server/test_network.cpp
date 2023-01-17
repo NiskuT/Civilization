@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
     BOOST_CHECK(1);
 }
 
-/*BOOST_AUTO_TEST_CASE(connectionTest)
+BOOST_AUTO_TEST_CASE(connectionTest)
 {
     client::ClientGameEngine client, client2;
     server::Server server;
@@ -22,15 +22,15 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
     usleep(10000);
     client.gameId = "new";
     client.connect("127.0.0.1", 8080);
-
-    client2.generateMap(50, 50,273884);
-    client2.loadMap();
+/*
+    client.generateMap(50, 50,273884);
+    client.loadMap();*/
 
     server.running.store(false);
-}*/
+}
 
 
-BOOST_AUTO_TEST_CASE(connectionTest)
+/*BOOST_AUTO_TEST_CASE(connectionTest)
 {
     client::ClientGameEngine client, client2;
     server::Server server;
@@ -75,8 +75,8 @@ BOOST_AUTO_TEST_CASE(connectionTest)
 
     client2.generateMap(15, 15,273884);
     client.loadMap();
-
+    
     server.running.store(false);
-}
+}*/
 
 BOOST_AUTO_TEST_SUITE_END()

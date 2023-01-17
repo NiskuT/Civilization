@@ -13,14 +13,26 @@ namespace server
         boost::asio::io_context io_context;
         boost::asio::ip::tcp::acceptor acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT));
 
-        running.store(true); 
+        running.store(true);
         while (running.load())
         {
             boost::asio::ip::tcp::socket socket(io_context);
-            acceptor.accept(socket);
+            acceptor.async_accept(socket, [this, &acceptor, &socket](const boost::system::error_code &ec)
+                                  { handleAccept(acceptor, socket); });
+            io_context.run_one();
+        }
+    }
 
+    void Server::handleAccept(boost::asio::ip::tcp::acceptor &acceptor, boost::asio::ip::tcp::socket &socket)
+    {
+        if (running.load())
+        {
             std::thread t(&Server::handleClient, this, std::move(socket));
             t.detach();
+        }
+        else
+        {
+            acceptor.cancel();
         }
     }
 
@@ -160,7 +172,8 @@ namespace server
             // TODO : a changer (appeler disconnect ?)
             player->state = shared::PlayerState::Disconnected;
         }
-        else {
+        else
+        {
             std::cout << "Player " << player->getName() << " connected to game " << game->getId() << std::endl;
         }
     }

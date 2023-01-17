@@ -442,7 +442,7 @@ namespace client
         for (const std::string &filename : png_files)
         {
             std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
-            elementTextureToDisplay[path] = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(path);
+            elementTextureToDisplay[path] = std::make_unique<TextureDisplayer>(path);
         }
     }
 

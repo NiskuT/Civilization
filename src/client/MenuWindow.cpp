@@ -113,11 +113,10 @@ namespace client
         float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
         backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, 0);
 
-        menuFont = (std::unique_ptr<sf::Font>)new sf::Font();
-        if (!menuFont->loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+        if (!menuFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
             std::cerr << "Font not loaded" << std::endl;
 
-        gameTitle = (std::unique_ptr<sf::Text>)new sf::Text("Civilization 7", *menuFont, TITLE_SIZE);
+        gameTitle = std::make_unique<sf::Text>("Civilization 7", menuFont, TITLE_SIZE);
         gameTitle->setStyle(sf::Text::Bold);
         gameTitle->setFillColor(sf::Color::Black);
         gameTitle->setPosition(WINDOW_LENGTH - gameTitle->getLocalBounds().height - gameTitle->getLocalBounds().width, WINDOW_WIDTH - 2.5 * gameTitle->getLocalBounds().height);
@@ -144,7 +143,8 @@ namespace client
             menuButtons.emplace_back(   sf::Vector2f(data[index]["width"].asFloat() * gameTitle->getLocalBounds().width, data[index]["height"].asFloat() * gameTitle->getLocalBounds().height), 
                                         sf::Vector2f(   gameTitle->getPosition().x + data[index]["x"].asFloat() * gameTitle->getLocalBounds().width, 
                                                         gameTitle->getPosition().y - data[index]["y"].asFloat() * gameTitle->getLocalBounds().height), buttonColor);
-            menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), &(*menuFont));
+
+            menuButtons.back().setText(40, sf::Vector2f(0, 0), data[index]["text"].asString(), &(menuFont));
         }
     }
 
