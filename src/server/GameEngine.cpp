@@ -15,16 +15,6 @@ GameEngine::GameEngine(std::vector<std::shared_ptr<GameEngine>> &games, std::sha
 
 bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
 {
-    /// TEST RULES
-    shared::Rules rules;
-    // shared::RuleArgsStruct args;
-    // args.ruleId = shared::CardsEnum::science;
-    // args.numberOfBoxUsed = 0;
-    // args.currentPlayer = player;
-
-    // rules.runTheRule(args);
-
-    /// END TEST RULES
     if (isPublic && (players.size() < MAX_PLAYERS))
     {
         players.push_back(player);

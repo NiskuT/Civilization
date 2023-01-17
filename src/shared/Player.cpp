@@ -10,6 +10,14 @@ Player::Player()
         this->ressources[i] = 0;
         this->wonderRessources[i] = 0;
     }
+    this->techLevel = 0;
+    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military);
+    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::economy);
+    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science);
+    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry);
+    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture);
+
+    
 }
 
 void Player::setUsername(std::string username)
@@ -49,6 +57,10 @@ std::array<int, 3> Player::incrementTechWheel(unsigned toIncrement)
         else if (this->techLevel == 19 || this->techLevel == 24)
         {
             result[2]++;
+        }
+        if(this->techLevel == 24)
+        {
+            this->techLevel = 17;
         }
     }
     return result;
@@ -149,4 +161,9 @@ void Player::removeControlPawn(std::shared_ptr<ControlPawn> controlPawnToRemove)
 void Player::addResource(ResourceEnum resourceType)
 {
     this->ressources[(int)resourceType] += 1;
+}
+
+unsigned Player::getTechLevel()
+{
+    return this->techLevel;
 }

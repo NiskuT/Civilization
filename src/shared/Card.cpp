@@ -2,6 +2,12 @@
 
 namespace shared
 {
+    Card::Card(CardsEnum type)
+    {
+        this->type = type;
+        this->level = 1;
+        this->numberOfBox = 15;
+    }
 
     CardsEnum Card::getType()
     {
