@@ -206,14 +206,13 @@ void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int diffic
  */
 void ClientGameEngine::handleQuitMenu(bool quitDef)
 {
-    std::lock_guard<std::mutex> lock(mutexRunningEngine);
     if (quitDef)
     {
-        runningWindow = 0;
+        runningWindow.store(0);
     }
     else
     {
-        runningWindow = runningWindow == MENU ? GAME : MENU;
+        runningWindow.store(runningWindow == MENU ? GAME : MENU);
     }
 }
 
@@ -268,21 +267,18 @@ void ClientGameEngine::renderGame()
 
     clientWindow->setPosition(sf::Vector2i(0, 0));
 
-    while (true)
+    while (runningWindow.load())
     {
-
-        std::unique_lock<std::mutex> lockGlobalWhile(mutexRunningEngine);
-        if (!runningWindow)
+        if (runningWindow.load() == GAME)
         {
-            lockGlobalWhile.unlock();
-            clientWindow->close();
-            return;
+            playGame();
         }
-        lockGlobalWhile.unlock();
-
-        playGame();
-        playMenu();
+        else if (runningWindow.load() == MENU)
+        {
+            playMenu();
+        }
     }
+    clientWindow->close();
 }
 
 /*!
@@ -290,60 +286,41 @@ void ClientGameEngine::renderGame()
  */
 void ClientGameEngine::playGame()
 {
-    std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
-    if (runningWindow == GAME)
+    std::thread t(&ClientGameEngine::startGameWindow, this);
+
+    long lastUpdateTimer = clientGame.getCurrentTime();
+    struct stat file_stat;
+    std::string file_path = RESOURCES_PATH "/img/map/files.json";
+
+    if (stat(file_path.c_str(), &file_stat) == -1)
     {
-        lockIf.unlock();
+        std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
+    }
 
-        std::thread t(&ClientGameEngine::startGameWindow, this);
+    time_t last_modified = file_stat.st_mtime;
 
-        long lastUpdateTimer = clientGame.getCurrentTime();
-        struct stat file_stat;
-        std::string file_path = RESOURCES_PATH "/img/map/files.json";
-
-        if (stat(file_path.c_str(), &file_stat) == -1)
-        {
-            std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
-        }
-
-        time_t last_modified = file_stat.st_mtime;
-
-        while (true)
+    while (runningWindow.load() == GAME)
+    {
+        if (clientGame.getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
         {
 
-            std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
-            if (runningWindow != GAME)
+            if (stat(file_path.c_str(), &file_stat) == -1)
             {
-                lockWhile.unlock();
-                t.join();
-                break;
+                std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
             }
-            lockWhile.unlock();
 
-            if (clientGame.getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
+            time_t modified = file_stat.st_mtime;
+            lastUpdateTimer = clientGame.getCurrentTime();
+
+            if (modified != last_modified)
             {
-
-                if (stat(file_path.c_str(), &file_stat) == -1)
-                {
-                    std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
-                }
-
-                time_t modified = file_stat.st_mtime;
-                lastUpdateTimer = clientGame.getCurrentTime();
-
-                if (modified != last_modified)
-                {
-                    last_modified = modified;
-                    clientGame.updateElementTexture();
-                    turn++;
-                }
+                last_modified = modified;
+                clientGame.updateElementTexture();
+                turn++;
             }
         }
     }
-    else
-    {
-        lockIf.unlock();
-    }
+    t.join();
 }
 
 /*!
@@ -351,30 +328,8 @@ void ClientGameEngine::playGame()
  */
 void ClientGameEngine::playMenu()
 {
-    std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
-    if (runningWindow == MENU)
-    {
-        lockIf.unlock();
-
-        std::thread t(&ClientGameEngine::startMenuWindow, this);
-
-        while (true)
-        {
-
-            std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
-            if (runningWindow != MENU)
-            {
-                lockWhile.unlock();
-                t.join();
-                break;
-            }
-            lockWhile.unlock();
-        }
-    }
-    else
-    {
-        lockIf.unlock();
-    }
+    std::thread t(&ClientGameEngine::startMenuWindow, this);
+    t.join();
 }
 
 /*!
