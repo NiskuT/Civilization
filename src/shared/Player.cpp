@@ -76,6 +76,7 @@ unsigned Player::getLevelOfCard(CardsEnum cardType)
             return card->getLevel();
         }
     }
+    return 0;
 }
 
 void Player::upgradeCard(CardsEnum cardType)

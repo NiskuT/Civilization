@@ -188,4 +188,54 @@ BOOST_AUTO_TEST_CASE(TestRulesMilitaryReinforceAllLevels)
     BOOST_CHECK(std::get<shared::ControlPawn>(*((*map)(5, 5)->getElements().at(0))).isReinforced() == false);
 }
 
+BOOST_AUTO_TEST_CASE(TestRulesIndustryCardForBuildingCity)
+{
+    std::shared_ptr<shared::Player> player = std::make_shared<shared::Player>();
+    player->addBox(shared::CardsEnum::industry, 50);
+    shared::Rules rules;
+    shared::RuleArgsStruct args;
+    std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
+    args.gameMap = map;
+    args.ruleId = shared::CardsEnum::industry;
+    args.industryCardBuildWonder = false;
+    args.numberOfBoxUsed = 0;
+    args.currentPlayer = player;
+    args.positionOfCity = {7, 8};
+
+    rules.runTheRule(args);
+
+    BOOST_CHECK((*map)(7, 8)->getElements().size() == 1);
+    BOOST_CHECK(std::holds_alternative<shared::City>(*((*map)(7, 8)->getElements().at(0))));
+    BOOST_CHECK(player->getCityList().at(0)->getPosition()[0] == 7 && player->getCityList().at(0)->getPosition()[1] == 8);
+}
+
+BOOST_AUTO_TEST_CASE(TestRulesCultureCardLevel1)
+{
+    std::shared_ptr<shared::Player> player = std::make_shared<shared::Player>();
+    player->addBox(shared::CardsEnum::culture, 50);
+    shared::Rules rules;
+    shared::RuleArgsStruct args;
+    std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
+
+    std::array<unsigned, 2> position = {4, 3};
+    std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
+    player->addCity(city);
+    std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *city;
+    (*map)(position[0], position[1])->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
+
+    args.ruleId = shared::CardsEnum::culture;
+    args.gameMap = map;
+    args.numberOfBoxUsed = 1;
+    args.currentPlayer = player;
+    args.pawnsPositions.push_back({3, 2});
+    args.pawnsPositions.push_back({5, 3});
+    rules.runTheRule(args);
+
+    BOOST_CHECK((*map)(3, 2)->getElements().size() == 1);
+    BOOST_CHECK((*map)(5, 3)->getElements().size() == 1);
+    BOOST_CHECK(std::holds_alternative<shared::ControlPawn>(*((*map)(3, 2)->getElements().at(0))));
+    BOOST_CHECK(std::holds_alternative<shared::ControlPawn>(*((*map)(5, 3)->getElements().at(0))));
+
+}
+
 BOOST_AUTO_TEST_SUITE_END()

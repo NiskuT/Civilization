@@ -43,12 +43,12 @@ void Rules::runTheRule(RuleArgsStruct &args)
     case CardsEnum::military:
         playMilitaryCard(args);
         break;
-    // case CardsEnum::culture:
-    //     playCultureCard(args);
-    //     break;
-    // case CardsEnum::industry:
-    //     playIndustryCard(args);
-    //     break;
+    case CardsEnum::culture:
+        playCultureCard(args);
+        break;
+    case CardsEnum::industry:
+        playIndustryCard(args);
+        break;
     default:
         std::cout << "This rule doesn't have utility" << std::endl;
     }
@@ -204,28 +204,7 @@ void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
         }
     }
 
-    // there is no caravan at the starting point of the path.
-    // TODO : check if there is a city or a controlpawn next to this position
-    std::vector<std::array<unsigned, 2>> neighbors;
-    neighbors = getNeighbors((unsigned)pos1[0], (unsigned)pos1[1], map);
-    bool isThereACityOrAControlPawn = false;
-    for (auto city : currentPlayer->getCityList())
-    {
-        if (std::find(neighbors.begin(), neighbors.end(), city->getPosition()) != neighbors.end())
-        {
-            isThereACityOrAControlPawn = true;
-            break;
-        }
-    }
-    for (auto controlPawn : currentPlayer->getControlPawns())
-    {
-        if (std::find(neighbors.begin(), neighbors.end(), controlPawn->getPosition()) != neighbors.end() || isThereACityOrAControlPawn)
-        {
-            isThereACityOrAControlPawn = true;
-            break;
-        }
-    }
-    if (!isThereACityOrAControlPawn)
+    if (!(isThereACityAround(pos1, map) || isThereAControlPawnAround(pos1, map)))
     {
         std::cout << "You can't move your caravan if there is no city or control pawn next to the starting point of the path" << std::endl;
         exit(EXIT_FAILURE);
@@ -404,17 +383,18 @@ std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned
     unsigned mapSizeY = gameMap->getMapHeight();
     if (posY % 2)
     {
+        std::cout << "odd" << std::endl;
         if (posY > 0)
         {
             neighbors.push_back({posX, posY - 1});
         }
         if (posY > 0 && posX > 0)
         {
-            neighbors.push_back({posX - 1, posY - 1});
+            neighbors.push_back({posX - 1, posY - 1}); // faux
         }
-        if (posX > 0)
+        if (posX < mapSizeX - 1)
         {
-            neighbors.push_back({posX - 1, posY});
+            neighbors.push_back({posX + 1, posY});
         }
         if (posY < mapSizeY - 1)
         {
@@ -424,13 +404,14 @@ std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned
         {
             neighbors.push_back({posX - 1, posY + 1});
         }
-        if (posX < mapSizeX - 1)
+        if (posX > 0)
         {
-            neighbors.push_back({posX + 1, posY});
+            neighbors.push_back({posX - 1, posY});
         }
     }
     else
     {
+        std::cout << "even" << std::endl;
         if (posY > 0)
         {
             neighbors.push_back({posX, posY - 1});
@@ -439,128 +420,151 @@ std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned
         {
             neighbors.push_back({posX + 1, posY - 1});
         }
-        if (posX < mapSizeX - 1)
+        if (posX > 0)
         {
-            neighbors.push_back({posX + 1, posY});
+            neighbors.push_back({posX - 1, posY});
         }
         if (posY < mapSizeY - 1)
         {
             neighbors.push_back({posX, posY + 1});
         }
-        if (posY < mapSizeY - 1 && posX > 0)
+        if (posY < mapSizeY - 1 && posX < mapSizeX - 1)
         {
-            neighbors.push_back({posX - 1, posY + 1});
+            neighbors.push_back({posX + 1, posY + 1});
         }
-        if (posX > 0)
+        if (posX < mapSizeX - 1)
         {
-            neighbors.push_back({posX - 1, posY});
+            neighbors.push_back({posX + 1, posY});
         }
     }
     return neighbors;
 }
 
-// /// CULTURE CARD ///
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::playCultureCard(RuleArgsStruct &args)
-//  * @brief This function aim to play the culture card
-//  * @param args : struct containing all the arguments needed to run the rule
-//  */
-// void Rules::playCultureCard(RuleArgsStruct &args)
-// {
-//     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
-//     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::culture))
-//     {
-//         std::cout << "You don't have enough box to play this card" << std::endl;
-//         exit(EXIT_FAILURE);
-//     }
+/// CULTURE CARD ///
+/**
+ * @file Rules.cpp
+ * @fn void Rules::playCultureCard(RuleArgsStruct &args)
+ * @brief This function aim to play the culture card
+ * @param args : struct containing all the arguments needed to run the rule
+ */
+void Rules::playCultureCard(RuleArgsStruct &args)
+{
+    unsigned numberOfBoxUsed = args.numberOfBoxUsed;
+    if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::culture))
+    {
+        std::cout << "You don't have enough box to play this card" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
-//     std::vector<std::array<unsigned, 2>> pawnsPositions = args.pawnsPositions;
-//     std::shared_ptr<Map> gameMap = args.gameMap;
+    std::vector<std::array<unsigned, 2>> pawnsPositions = args.pawnsPositions;
+    std::shared_ptr<Map> gameMap = args.gameMap;
 
-//     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::culture);
-//     switch (cardLevel)
-//     {
-//     case 1:
-//         if (pawnsPositions.size() == 2 + numberOfBoxUsed)
-//         {
-//             placeControlPawns(pawnsPositions, gameMap, args.currentPlayer);
-//         }
-//         else
-//         {
-//             std::cout << "invalid number of pawn positions" << std::endl;
-//             exit(1);
-//         }
-//         break;
-//     case 2:
-//         // TODO : move one pawn on an empty field
-//         break;
-//     case 3:
-//         // TODO : Place one pawn on next to an ally hexagon
-//         break;
-//     case 4:
-//         // TODO: replace enemy pawn (reinforced or not) by one of your pawn (non reinforced)
-//         break;
-//     default:
-//         std::cout << "invalid card level" << std::endl;
-//         exit(1);
-//     }
-// }
+    unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::culture);
+    switch (cardLevel)
+    {
+    case 1:
+        if (pawnsPositions.size() <= 2 + numberOfBoxUsed)
+        {
+            placeControlPawns(pawnsPositions, gameMap, args.currentPlayer);
+        }
+        else
+        {
+            std::cout << "invalid number of pawn positions" << std::endl;
+            exit(1);
+        }
+        break;
+    case 2:
+        // TODO : move one pawn on an empty field
+        break;
+    case 3:
+        // TODO : Place one pawn on next to an ally hexagon
+        break;
+    case 4:
+        // TODO: replace enemy pawn (reinforced or not) by one of your pawn (non reinforced)
+        break;
+    default:
+        std::cout << "invalid card level" << std::endl;
+        exit(1);
+    }
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer)
-//  * @brief This function aim to place the control pawns on the map
-//  * @param positions the positions where the control pawns will be placed
-//  * @param gameMap the map of the game
-//  * @param currentPlayer the current player that owns the control pawns
-//  */
-// void Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer) // TODO : split this function
-// {
-//     for (auto position : positions)
-//     {
-//         for (auto element : (*gameMap)(position[0], position[1])->getElements())
-//         {
-//             if (std::holds_alternative<ControlPawn>(*element))
-//             {
-//                 std::cout << "There is already a control pawn on this position" << std::endl;
-//                 exit(EXIT_FAILURE);
-//             }
-//             if (isThereACityAround(position, gameMap))
-//             {
-//                 ControlPawn controlPawn;
+/**
+ * @file Rules.cpp
+ * @fn void Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer)
+ * @brief This function aim to place the control pawns on the map
+ * @param positions the positions where the control pawns will be placed
+ * @param gameMap the map of the game
+ * @param currentPlayer the current player that owns the control pawns
+ */
+void Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer) // TODO : split this function
+{
+    for (auto position : positions)
+    {
+        for (auto element : (*gameMap)(position[0], position[1])->getElements())
+        {
+            if (!std::holds_alternative<Caravan>(*element))
+            {
+                std::cout << "There is already an element on this position" << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+        if (isThereACityAround(position, gameMap))
+        {
+            std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position);
+            currentPlayer->addControlPawn(controlPawn);
+            std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *controlPawn;
+            (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
+        }
+    }
+}
 
-//                 (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(controlPawn));
-//                 currentPlayer->addControlPawn(std::make_shared<ControlPawn>(controlPawn));
-//             }
-//         }
-//     }
-// }
+/**
+ * @file Rules.cpp
+ * @fn bool Rules::isThereACityAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
+ * @brief This function aim to check if there is a city around a position
+ * @param position the position to check
+ * @param gameMap the map of the game
+ * @return true if there is a city around, false otherwise
+ */
+bool Rules::isThereACityAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
+{
+    std::vector<std::array<unsigned, 2>> neighbors = getNeighbors(position[0], position[1], gameMap);
+    for (auto neighbor : neighbors)
+    {
+        for (auto element : (*gameMap)(neighbor[0], neighbor[1])->getElements())
+        {
+            if (std::holds_alternative<City>(*element))
+            {
+                return true; // TODO : check if the city is owned by the player
+            }
+        }
+    }
+    return false;
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn bool Rules::isThereACityAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
-//  * @brief This function aim to check if there is a city around a position
-//  * @param position the position to check
-//  * @param gameMap the map of the game
-//  * @return true if there is a city around, false otherwise
-//  */
-// bool Rules::isThereACityAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
-// {
-
-//     std::vector<std::array<unsigned, 2>> neighbors = getNeighbors(position[0], position[1], gameMap);
-//     for (auto neighbor : neighbors)
-//     {
-//         for (auto element2 : (*gameMap)(neighbor[0], neighbor[1])->getElements())
-//         {
-//             if (std::holds_alternative<City>(*element2))
-//             {
-//                 return true; // TODO : remove this return
-//             }
-//         }
-//     }
-//     return false;
-// }
+/**
+ * @file Rules.cpp
+ * @fn bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
+ * @brief This function aim to check if there is a control pawn around a position
+ * @param position the position to check
+ * @param gameMap the map of the game
+ * @return true if there is a control pawn around, false otherwise
+ */
+bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
+{
+    std::vector<std::array<unsigned, 2>> neighbors = getNeighbors(position[0], position[1], gameMap);
+    for (auto neighbor : neighbors)
+    {
+        for (auto element2 : (*gameMap)(neighbor[0], neighbor[1])->getElements())
+        {
+            if (std::holds_alternative<ControlPawn>(*element2))
+            {
+                return true; // TODO : check if the city is owned by the player
+            }
+        }
+    }
+    return false;
+}
 
 /// MILITARY CARD ///
 /**
@@ -636,62 +640,70 @@ void Rules::reinforce(RuleArgsStruct &args)
     }
 }
 
-// /// INDUSTRY CARD ///
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::playIndustryCard(RuleArgsStruct &args)
-//  * @brief This function aim to play the industry card
-//  * @param args : struct containing all the arguments needed to run the rule
-//  */
-// void Rules::playIndustryCard(RuleArgsStruct &args)
-// {
-//     if (args.industryCardBuildWonder == true)
-//     {
-//         buildWonder(args);
-//     }
-//     else
-//     {
-//         buildCity(args);
-//     }
-// }
+/// INDUSTRY CARD ///
+/**
+ * @file Rules.cpp
+ * @fn void Rules::playIndustryCard(RuleArgsStruct &args)
+ * @brief This function aim to play the industry card
+ * @param args : struct containing all the arguments needed to run the rule
+ */
+void Rules::playIndustryCard(RuleArgsStruct &args)
+{
+    if (args.industryCardBuildWonder == true)
+    {
+        buildWonder(args);
+    }
+    else
+    {
+        buildCity(args);
+    }
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::buildWonder(RuleArgsStruct &args)
-//  * @brief This function aim to build a wonder
-//  * @param args : struct containing all the arguments needed to run the rule
-//  */
-// void Rules::buildWonder(RuleArgsStruct &args) // TODO : remake this function
-// {
-//     // TODO : build a wonder
-// }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::buildWonder(RuleArgsStruct &args)
+ * @brief This function aim to build a wonder
+ * @param args : struct containing all the arguments needed to run the rule
+ */
+void Rules::buildWonder(RuleArgsStruct &args) // TODO : remake this function
+{
+    // TODO : build a wonder
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::buildCity(RuleArgsStruct &args)
-//  * @brief This function aim to build a city
-//  * @param args : struct containing all the arguments needed to run the rule
-//  */
-// void Rules::buildCity(RuleArgsStruct &args) // TODO : remake this function
-// {
-//     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
-//     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::industry))
-//     {
-//         std::cout << "You don't have enough box to play this card" << std::endl;
-//         exit(EXIT_FAILURE);
-//     }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::buildCity(RuleArgsStruct &args)
+ * @brief This function aim to build a city
+ * @param args : struct containing all the arguments needed to run the rule
+ */
+void Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to controlled hexagon
+{
+    unsigned numberOfBoxUsed = args.numberOfBoxUsed;
+    if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::industry))
+    {
+        std::cout << "You don't have enough box to play this card" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
-//     std::shared_ptr<Map> gameMap = args.gameMap;
-//     std::array<unsigned, 2> position = args.positionOfCity;
+    std::shared_ptr<Map> gameMap = args.gameMap;
+    std::array<unsigned, 2> position = args.positionOfCity;
 
-//     for (auto element : (*gameMap)(position[0], position[1])->getElements())
-//     {
-//         if (!(std::holds_alternative<Caravan>(*element)))
-//         {
-//             std::cout << "There is already an Element on this position" << std::endl;
-//             exit(EXIT_FAILURE);
-//         }
-//     }
-//     // TODO : create a city
-//     // I have problems mesuring the distance
-// }
+    unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::industry);
+    if (cardLevel + numberOfBoxUsed < (unsigned)(*gameMap)(position[0], position[1])->getFieldLevel())
+    {
+        std::cout << "invalid position, the hexagon is to high" << std::endl;
+        exit(1);
+    }
+
+    for (auto element : (*gameMap)(position[0], position[1])->getElements())
+    {
+        if (!(std::holds_alternative<Caravan>(*element)))
+        {
+            std::cout << "There is already an Element on this position" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+    std::shared_ptr<City> city = std::make_shared<City>(position);
+    args.currentPlayer->addCity(city);
+    (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*city));
+}

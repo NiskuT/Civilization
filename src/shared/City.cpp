@@ -14,3 +14,8 @@ std::array<unsigned, 2> City::getPosition()
 {
     return this->position;
 }
+
+ElementEnum City::getType()
+{
+    return ElementEnum::city;
+}
