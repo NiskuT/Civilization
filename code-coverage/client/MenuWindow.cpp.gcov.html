@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-18 18:05:03</td>
+            <td class="headerValue">2023-01-18 20:19:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -81,7 +81,7 @@
 <a name="19"><span class="lineNum">      19 </span>            : #define BUTTON_START 7</a>
 <a name="20"><span class="lineNum">      20 </span>            : </a>
 <a name="21"><span class="lineNum">      21 </span>            : #define QUIT_OFFSET 10</a>
-<a name="22"><span class="lineNum">      22 </span>            : #define QUIT_SCALE 0.75</a>
+<a name="22"><span class="lineNum">      22 </span>            : #define QUIT_SCALE 0.09375</a>
 <a name="23"><span class="lineNum">      23 </span>            : </a>
 <a name="24"><span class="lineNum">      24 </span>            : #define CREATE_GAME &quot;new&quot;</a>
 <a name="25"><span class="lineNum">      25 </span>            : </a>
@@ -345,26 +345,26 @@
 <a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 : void MenuWindow::loadMenuTexture()</span></a>
 <a name="284"><span class="lineNum">     284 </span>            : {</a>
 <a name="285"><span class="lineNum">     285 </span>            : </a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :     backgroundTexture = std::make_unique&lt;TextureDisplayer&gt;(RESOURCES_PATH &quot;/img/menu/background.png&quot;);</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :     backgroundTexture = std::make_unique&lt;TextureDisplayer&gt;(RESOURCES_PATH &quot;/menu/background.png&quot;);</span></a>
 <a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :     backgroundTexture-&gt;addSprite();</span></a>
 <a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :     float backgroundScale = 1 / (float(backgroundTexture-&gt;getWidth()) / float(gameEnginePtr-&gt;clientWindow-&gt;getSize().x));</span></a>
 <a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :     backgroundTexture-&gt;setHudSpritePosition(backgroundScale, gameEnginePtr-&gt;clientWindow-&gt;getSize().x, gameEnginePtr-&gt;clientWindow-&gt;getSize().y, 0, 0);</span></a>
 <a name="290"><span class="lineNum">     290 </span>            : </a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :     quitTexture = std::make_unique&lt;TextureDisplayer&gt;(RESOURCES_PATH &quot;/img/hud/leave.png&quot;);</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :     quitTexture = std::make_unique&lt;TextureDisplayer&gt;(RESOURCES_PATH &quot;/hud/leave.png&quot;);</span></a>
 <a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :     quitTexture-&gt;addSprite();</span></a>
 <a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :     quitTexture-&gt;moveSpritePosition(QUIT_OFFSET, QUIT_OFFSET);</span></a>
 <a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 :     quitTexture-&gt;getSprite().setScale(QUIT_SCALE, QUIT_SCALE);</span></a>
 <a name="295"><span class="lineNum">     295 </span>            : </a>
 <a name="296"><span class="lineNum">     296 </span>            : </a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :     if (!menuFont.loadFromFile(RESOURCES_PATH &quot;/img/hud/font.otf&quot;))</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :     if (!menuFont.loadFromFile(RESOURCES_PATH &quot;/hud/font.otf&quot;))</span></a>
 <a name="298"><span class="lineNum">     298 </span>            :     {</a>
 <a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Font not loaded&quot; &lt;&lt; std::endl;</span></a>
 <a name="300"><span class="lineNum">     300 </span>            :     }</a>
 <a name="301"><span class="lineNum">     301 </span>            : </a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :     std::ifstream file(RESOURCES_PATH &quot;/img/menu/menu.json&quot;);</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :     std::ifstream file(RESOURCES_PATH &quot;/menu/menu.json&quot;);</span></a>
 <a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 :     if (!file.is_open())</span></a>
 <a name="304"><span class="lineNum">     304 </span>            :     {</a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Error while opening json ressources file /img/menu/menu.json&quot; &lt;&lt; std::endl;</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Error while opening json ressources file /menu/menu.json&quot; &lt;&lt; std::endl;</span></a>
 <a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 :         exit(1);</span></a>
 <a name="307"><span class="lineNum">     307 </span>            :     }</a>
 <a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :     std::string str((std::istreambuf_iterator&lt;char&gt;(file)), std::istreambuf_iterator&lt;char&gt;());</span></a>
