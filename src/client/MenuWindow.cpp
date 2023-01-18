@@ -283,26 +283,26 @@ void MenuWindow::deleteChar()
 void MenuWindow::loadMenuTexture()
 {
 
-    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/menu/background.png");
+    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/menu/background.png");
     backgroundTexture->addSprite();
     float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(gameEnginePtr->clientWindow->getSize().x));
     backgroundTexture->setHudSpritePosition(backgroundScale, gameEnginePtr->clientWindow->getSize().x, gameEnginePtr->clientWindow->getSize().y, 0, 0);
 
-    quitTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/leave.png");
+    quitTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/hud/leave.png");
     quitTexture->addSprite();
     quitTexture->moveSpritePosition(QUIT_OFFSET, QUIT_OFFSET);
     quitTexture->getSprite().setScale(QUIT_SCALE, QUIT_SCALE);
 
 
-    if (!menuFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+    if (!menuFont.loadFromFile(RESOURCES_PATH "/hud/font.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    std::ifstream file(RESOURCES_PATH "/img/menu/menu.json");
+    std::ifstream file(RESOURCES_PATH "/menu/menu.json");
     if (!file.is_open())
     {
-        std::cerr << "Error while opening json ressources file /img/menu/menu.json" << std::endl;
+        std::cerr << "Error while opening json ressources file /menu/menu.json" << std::endl;
         exit(1);
     }
     std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());

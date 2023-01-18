@@ -290,7 +290,7 @@ void ClientGameEngine::playGame()
 
     long lastUpdateTimer = clientGame.getCurrentTime();
     struct stat file_stat;
-    std::string file_path = RESOURCES_PATH "/img/map/files.json";
+    std::string file_path = RESOURCES_PATH "/map/files.json";
 
     if (stat(file_path.c_str(), &file_stat) == -1)
     {
