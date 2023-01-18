@@ -89,22 +89,33 @@ void ClientGameEngine::startReceiving()
         }
         if (receiveBuffer.size() > 0)
         {
-            std::string messageReceived(
-                boost::asio::buffers_begin(receiveBuffer.data()),
-                boost::asio::buffers_end(receiveBuffer.data()));
-
+            processMessage(receiveBuffer);
             receiveBuffer.consume(receiveBuffer.size());
 
-            if (messageReceived.find("response") == 0)
-            {
-                registerServerAnswer(messageReceived);
-            }
-            else
-            {
-                processServerRequest(messageReceived);
-            }
         }
     }
+}
+
+void ClientGameEngine::processMessage(boost::asio::streambuf& receiveBuffer)
+{
+    std::istream receiveStream(&receiveBuffer);
+    std::string messageReceived;
+    while(std::getline(receiveStream, messageReceived))
+    {
+        if (messageReceived.size() == 0)
+        {
+            continue;
+        }
+        else if (messageReceived.find("response") == 0)
+        {
+            registerServerAnswer(messageReceived);
+        }
+        else
+        {
+            processServerRequest(messageReceived);
+        }
+    }
+
 }
 
 /*!
@@ -123,9 +134,32 @@ void ClientGameEngine::registerServerAnswer(const std::string &response)
  * @brief Quentin
  * @param request
  */
-void ClientGameEngine::processServerRequest(const std::string &request)
+void ClientGameEngine::processServerRequest(std::string request)
 {
-    std::cout << "Received request: " << request << std::endl;
+    if (request.find("chat") == 0)
+    {
+        request = request.substr(5);
+        printChat(request);
+    }
+    else 
+    {
+        std::cout << "Received request: " << request << std::endl;
+    }
+}
+
+void ClientGameEngine::printChat(const std::string &message)
+{
+
+    if (clientGame.chatBox != nullptr)
+    {
+        size_t firstSpace = message.find(" ");
+        std::string chatTime = message.substr(0, firstSpace);
+        size_t secondSpace = message.find(" ", firstSpace + 1);
+        std::string chatUsername = message.substr(firstSpace + 1, secondSpace - firstSpace - 1);
+        std::string chatMessage = message.substr(secondSpace + 1);
+
+        clientGame.chatBox->updateChat(chatTime, chatUsername, chatMessage);
+    }
 }
 
 /*!
@@ -133,18 +167,17 @@ void ClientGameEngine::processServerRequest(const std::string &request)
  */
 void ClientGameEngine::askServer()
 {
+    std::unique_lock<std::mutex> responseLock(myself->qAndA.sharedDataMutex);
     myself->qAndA.answerReady = false;
     {
         std::lock_guard<std::mutex> lock(myself->socketWriteMutex);
         boost::asio::write(myself->getSocket(), boost::asio::buffer(myself->qAndA.question));
     }
 
-    std::unique_lock<std::mutex> responseLock(myself->qAndA.sharedDataMutex);
     myself->qAndA.condition.wait(responseLock, [&]
                                  { return myself->qAndA.answerReady; });
-
+                                 
     std::string response = myself->qAndA.answer;
-    std::cout << "Received response: " << response << std::endl;
     myself->qAndA.answerReady = false;
 }
 

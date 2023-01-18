@@ -33,6 +33,7 @@
 #define CARD_BORDER 18
 
 #define ELEMENT_PATH "/img/map/element/"
+#define CHAT_MIN_SIZE 7
 
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
@@ -232,10 +233,10 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent)
         return true;
 
     case sf::Keyboard::Enter:
-        //sendMessage(chatBox->message)
+        sendMessage();
 
         //this line should be used when the client receive a message
-        chatBox->updateChat("00:00", "Username", chatBox->message);  //line to be delete
+        //chatBox->updateChat("00:00", "Username", chatBox->message);  //line to be delete
         break;
 
     case sf::Keyboard::BackSpace:
@@ -246,6 +247,23 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent)
         break;
     }
     return false;
+}
+
+/*!
+ * @brief This function send a message to the server
+ */
+void GameWindow::sendMessage() {
+    std::unique_lock<std::mutex> lock(chatBox->mutexChat);
+    std::string message = "chat " + chatBox->message + "\n";
+    lock.unlock();
+
+    if (message.size() < CHAT_MIN_SIZE)  return;
+
+    std::unique_lock<std::mutex> lock2(gameEnginePtr->myself->qAndA.sharedDataMutex);
+    gameEnginePtr->myself->qAndA.question = message;
+    lock2.unlock();
+    gameEnginePtr->askServer();
+
 }
 
 /*!
