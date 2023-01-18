@@ -115,6 +115,8 @@ void GameWindow::displayWindow()
         hudTextureToDisplay[i].drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
+    gameEnginePtr->clientWindow->draw(*validateBoxesWindow.blackBackground->buttonRect);
+
     gameEnginePtr->clientWindow->display();
 }
 
