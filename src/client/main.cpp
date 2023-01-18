@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
                 maGame.myself->qAndA.question = "getstate\n";
                 lock.unlock();
                 maGame.askServer();
+                std::cout << maGame.myself->qAndA.answer << std::endl;
 
             }
         }

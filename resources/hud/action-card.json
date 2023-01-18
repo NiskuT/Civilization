@@ -3,56 +3,56 @@
     [
         {
             "type": "Carthage",
-            "path": "/img/hud/action-card-army.png",
+            "path": "/hud/action-card-army.png",
             "body":"+1 FS agnst other SC for each pawn at 2 steps from the attacker"     
         },
 
         {
             "type": "Kaboul",
-            "path": "/img/hud/action-card-army.png",
+            "path": "/hud/action-card-army.png",
             "body": "+3 FS agnst other SC"     
         },
 
         {
             "type": "Mohenjo Daro",
-            "path": "/img/hud/action-card-culture.png",
+            "path": "/hud/action-card-culture.png",
             "body": "Priority level to place pawns = priority-1"      
         },
 
         {
             "type": "Kumasi",
-            "path": "/img/hud/action-card-culture.png",
+            "path": "/hud/action-card-culture.png",
             "body": "Industry or Culture cards => Forest priority lvl = 1"    
         },
 
         {
             "type": "Seoul",
-            "path": "/img/hud/action-card-science.png",
+            "path": "/hud/action-card-science.png",
             "body": "Round beginning : move a barbarian to a close empty field"
 
         },
 
         {
             "type": "Geneva",
-            "path": "/img/hud/action-card-science.png",
+            "path": "/hud/action-card-science.png",
             "body": " Round beginning: exchange a player diplomacy card"      
         },
 
         {
             "type": "Buenos Aires",
-            "path": "/img/hud/action-card-industry.png",
+            "path": "/hud/action-card-industry.png",
             "body": "Wonders cost 2 less resources if you haven't it"     
         },
 
         {
             "type": "Bruxelles",
-            "path": "/img/hud/action-card-industry.png",
+            "path": "/hud/action-card-industry.png",
             "body": "Wonders cost 1 less resources for each mature city"      
         },
 
         { 
             "type": "Player 1",
-            "path": "/img/hud/action-card-player-1.png",
+            "path": "/hud/action-card-player-1.png",
             "body": [
                 "Player pawns are considered yours for mature cities",
                 "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
@@ -63,7 +63,7 @@
 
         { 
             "type": "Player 2",
-            "path": "/img/hud/action-card-player-2.png",
+            "path": "/hud/action-card-player-2.png",
             "body": [
                 "Player pawns are considered yours for mature cities",
                 "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
@@ -74,7 +74,7 @@
 
         { 
             "type": "Player 3",
-            "path": "/img/hud/action-card-player-3.png",
+            "path": "/hud/action-card-player-3.png",
             "body": [
                 "Player pawns are considered yours for mature cities",
                 "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
@@ -85,7 +85,7 @@
 
         { 
             "type": "Player 4",
-            "path": "/img/hud/action-card-player-4.png",
+            "path": "/hud/action-card-player-4.png",
             "body": [
                 "Player pawns are considered yours for mature cities",
                 "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",

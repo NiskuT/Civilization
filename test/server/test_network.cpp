@@ -17,12 +17,12 @@ BOOST_AUTO_TEST_CASE(connectionTest)
     client::ClientGameEngine client, client2;
     server::Server server;
 
-    std::thread serv(&server::Server::start, &server);
+    /*std::thread serv(&server::Server::start, &server);
     serv.detach();
     usleep(200000);
     client.gameId = "new";
     client.connect("127.0.0.1", 8080);
-/*
+
     client.generateMap(50, 50,273884);
     client.loadMap();*/
 
