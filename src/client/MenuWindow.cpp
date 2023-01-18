@@ -50,7 +50,7 @@ void MenuWindow::displayWindow()
 
     gameEnginePtr->clientWindow->clear(sf::Color::Blue);
 
-    gameEnginePtr->clientWindow->draw(backgroundTexture->getSprite());
+    backgroundTexture->draw(gameEnginePtr->clientWindow);
 
     for (unsigned i = 0; i < currentMenu->size(); i++)
     {

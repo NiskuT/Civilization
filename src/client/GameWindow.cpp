@@ -59,21 +59,21 @@ void GameWindow::displayWindow()
 
     gameEnginePtr->clientWindow->clear(sf::Color::Blue);
 
-    backgroundTexture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+    backgroundTexture->draw(gameEnginePtr->clientWindow);
 
     for (auto &mapTexture : mapTextureToDisplay)
     {
-        mapTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+        mapTexture.draw(gameEnginePtr->clientWindow);
     }
 
     for (auto &elementTexture : elementTextureToDisplay)
     {
-        elementTexture.second->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+        elementTexture.second->draw(gameEnginePtr->clientWindow);
     }
 
     for (auto &priorityCardTexture : priorityCards)
     {
-        priorityCardTexture.texture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+        priorityCardTexture.texture->draw(gameEnginePtr->clientWindow);
         gameEnginePtr->clientWindow->draw(*priorityCardTexture.title);
         gameEnginePtr->clientWindow->draw(*priorityCardTexture.nbOfBoxesText);
         if (priorityCardTexture.isUp)
@@ -82,11 +82,11 @@ void GameWindow::displayWindow()
         }
     }
 
-    boxTexture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+    boxTexture->draw(gameEnginePtr->clientWindow);
 
     for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
     {
-        gameEnginePtr->clientWindow->draw(actionCardsToDisplay[i].texture->getSprite(0));
+        actionCardsToDisplay[i].texture->draw(gameEnginePtr->clientWindow);
         gameEnginePtr->clientWindow->draw(*actionCardsToDisplay[i].title);
         gameEnginePtr->clientWindow->draw(*actionCardsToDisplay[i].body);
     }
@@ -97,11 +97,11 @@ void GameWindow::displayWindow()
         gameEnginePtr->clientWindow->draw(*whoIsPlayingButtons[i].buttonText);
     }
 
-    gameEnginePtr->clientWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
+    hudTextureToDisplay[TURN_NUMBER % 5].draw(gameEnginePtr->clientWindow);
 
     for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
     {
-        hudTextureToDisplay[i].drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+        hudTextureToDisplay[i].draw(gameEnginePtr->clientWindow);
     }
 
     gameEnginePtr->clientWindow->display();

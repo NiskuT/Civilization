@@ -5330,7 +5330,7 @@
         <dia:point val="270.818,45.8354"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="242.643,45.0854;271.568,63.8748"/>
+        <dia:rectangle val="239.371,45.0854;271.568,63.8748"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -5338,8 +5338,8 @@
       <dia:attribute name="orth_points">
         <dia:point val="270.818,45.8354"/>
         <dia:point val="270.818,48.3105"/>
-        <dia:point val="242.693,48.3105"/>
-        <dia:point val="242.693,63.0748"/>
+        <dia:point val="239.421,48.3105"/>
+        <dia:point val="239.421,63.0748"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -6829,13 +6829,13 @@
         <dia:point val="228.006,63.1243"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="227.956,63.0743;257.431,81.7743"/>
+        <dia:rectangle val="227.956,63.0743;250.886,81.7743"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="228.006,63.1243"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="29.375"/>
+        <dia:real val="22.830000000000002"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="18.600000000000005"/>
@@ -7635,7 +7635,7 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#drawTextureDisplayerSprite#</dia:string>
+            <dia:string>#draw#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -7776,16 +7776,16 @@
         <dia:point val="260.717,72.3587"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="257.381,71.6087;261.467,73.2793"/>
+        <dia:rectangle val="250.836,71.6087;261.467,73.2793"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="260.717,72.3587"/>
-        <dia:point val="258.724,72.3587"/>
-        <dia:point val="258.724,72.4243"/>
-        <dia:point val="257.431,72.4243"/>
+        <dia:point val="255.451,72.3587"/>
+        <dia:point val="255.451,72.4243"/>
+        <dia:point val="250.886,72.4243"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="0"/>

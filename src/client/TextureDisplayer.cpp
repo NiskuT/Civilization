@@ -225,7 +225,7 @@ int TextureDisplayer::getHeight()
  * @brief draw all the sprites of a TextureDisplayer
  * @param window window where the sprites are displayed
  */
-void TextureDisplayer::drawTextureDisplayerSprite(std::shared_ptr<sf::RenderWindow> window)
+void TextureDisplayer::draw(std::shared_ptr<sf::RenderWindow> window)
 {
     for (unsigned j = 0; j < getSize(); j++)
     {
