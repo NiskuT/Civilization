@@ -233,10 +233,10 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent)
         return true;
 
     case sf::Keyboard::Enter:
-        sendMessage();
-
-        //this line should be used when the client receive a message
-        //chatBox->updateChat("00:00", "Username", chatBox->message);  //line to be delete
+        if (isChatOpen)
+        {
+            sendMessage();
+        }
         break;
 
     case sf::Keyboard::BackSpace:
