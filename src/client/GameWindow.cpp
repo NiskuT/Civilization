@@ -286,24 +286,27 @@ void GameWindow::sendMessage() {
  * @brief Change the cursor type to a hand or an arrow
  * @param moveMode pointer to know if the map is moving on the screen
  */
-void GameWindow::changeMouseCursor(std::shared_ptr<bool> moveMode)
+void GameWindow::changeMouseCursor(sf::Event& event, std::shared_ptr<bool> moveMode)
 {
+    if(event.mouseButton.button == sf::Mouse::Right)
+    {
+        sf::Vector2i nullPosition(0, 0);
+        moveMap(nullPosition, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
+        gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
+        return;
+    }
+
     if (*moveMode)
     {
         *moveMode = false;
-        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-        {
-            gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
-        }
+        clientCursor.loadFromSystem(sf::Cursor::Arrow);
     }
     else
     {
         *moveMode = true;
-        if (clientCursor.loadFromSystem(sf::Cursor::Hand))
-        {
-            gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
-        }
+        clientCursor.loadFromSystem(sf::Cursor::Hand);
     }
+    gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
 }
 
 /*!
@@ -481,14 +484,7 @@ bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::
     // Check if the click position is inside the move map button
     if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_MAP_BUTTON].getSprite().getGlobalBounds()))
     {
-        if(event.mouseButton.button == sf::Mouse::Left)
-        {
-            changeMouseCursor(moveMode);
-            return false;
-        }
-        changeMouseCursor(moveMode);
-        sf::Vector2i nullPosition(0, 0);
-        moveMap(nullPosition, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
+        changeMouseCursor(event, moveMode);
         return false;
     }
 
