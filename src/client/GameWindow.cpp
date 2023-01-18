@@ -4,6 +4,8 @@
 #include <fstream>
 #include <json/json.h>
 #include <cmath>
+#include <string>
+#include <codecvt>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -11,6 +13,8 @@
 #define MAP_HEIGHT 11
 
 #define NUMBER_OF_FIELD 12
+
+#define TCHAT_MAX_SIZE 200
 
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
@@ -21,11 +25,19 @@
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
 
+#define ASCI_BEGIN 19
+#define ASCI_END 127
+
 #define CARD_BORDER 18
+
+#define INDEX_CHAT_BUTTON 8
+#define INDEX_MAP_BUTTON 9
+#define INDEX_QUIT_BUTTON 10
 
 #define ARROW_INDEX 5
 
 #define ELEMENT_PATH "/img/map/element/"
+#define CHAT_MIN_SIZE 7
 
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
@@ -50,6 +62,8 @@ GameWindow::GameWindow()
     loadElementTexture();
     updateElementTexture();
     loadHudTexture();
+    chatBox = std::make_unique<Chat>(bodyFont);
+
 }
 
 /*!
@@ -118,6 +132,11 @@ void GameWindow::displayWindow()
         hudTextureToDisplay[i].drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
+    if (isChatOpen)
+    {
+        chatBox->drawChat(gameEnginePtr->clientWindow); 
+    }
+
     gameEnginePtr->clientWindow->display();
 }
 
@@ -171,16 +190,18 @@ void GameWindow::startGame()
  */
 bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPoint, std::shared_ptr<bool> moveMode, std::shared_ptr<bool> clickMode)
 {
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
     switch (event.type)
     {
     case sf::Event::MouseButtonPressed:
 
         *clickMode = true;
         clickStartingPoint = sf::Mouse::getPosition(*gameEnginePtr->clientWindow);
-
-        if (!*moveMode)
+        if (clickAction(event, clickStartingPoint, moveMode))
         {
-            clickAction(clickStartingPoint);
+            std::cout << "You have quit the game\n";
+            gameEnginePtr->handleQuitMenu(true);
+            return true;
         }
         break;
 
@@ -195,8 +216,15 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
         }
         break;
 
+    case sf::Event::TextEntered:
+        if (event.text.unicode > ASCI_BEGIN && event.text.unicode < ASCI_END && isChatOpen)
+        {
+            chatBox->addChatChar(converter.to_bytes(event.text.unicode));
+        }
+        break;
+
     case sf::Event::KeyPressed:
-        if (handleKeyboardEvent(event.key, moveMode, clickStartingPoint))
+        if (handleKeyboardEvent(event.key))
             return true;
         break;
 
@@ -216,28 +244,19 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
  * @param moveMode pointer to know if the map is moving on the screen
  * @param clickStartingPoint reference used to know where the user start pressing mouse
  */
-bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent, std::shared_ptr<bool> moveMode, sf::Vector2i &clickStartingPoint)
+bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent)
 {
     switch (keyEvent.code)
     {
-    case sf::Keyboard::M:
-        changeMouseCursor(moveMode);
+    case sf::Keyboard::Enter:
+        if (isChatOpen)
+        {
+            sendMessage();
+        }
         break;
 
-    case sf::Keyboard::K:
-        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-        {
-            gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
-        }
-        gameEnginePtr->handleQuitMenu(false);
-        return true;
-
-    case sf::Keyboard::Escape:
-        gameEnginePtr->handleQuitMenu(true);
-        return true;
-
-    case sf::Keyboard::L:
-        moveMap(clickStartingPoint, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
+    case sf::Keyboard::BackSpace:
+        chatBox->deleteChatChar();
         break;
 
     default:
@@ -247,27 +266,47 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent, std::shared_p
 }
 
 /*!
+ * @brief This function send a message to the server
+ */
+void GameWindow::sendMessage() {
+    std::unique_lock<std::mutex> lock(chatBox->mutexChat);
+    std::string message = "chat " + chatBox->message + "\n";
+    lock.unlock();
+
+    if (message.size() < CHAT_MIN_SIZE)  return;
+
+    std::unique_lock<std::mutex> lock2(gameEnginePtr->myself->qAndA.sharedDataMutex);
+    gameEnginePtr->myself->qAndA.question = message;
+    lock2.unlock();
+    gameEnginePtr->askServer();
+
+}
+
+/*!
  * @brief Change the cursor type to a hand or an arrow
  * @param moveMode pointer to know if the map is moving on the screen
  */
-void GameWindow::changeMouseCursor(std::shared_ptr<bool> moveMode)
+void GameWindow::changeMouseCursor(sf::Event& event, std::shared_ptr<bool> moveMode)
 {
+    if(event.mouseButton.button == sf::Mouse::Right)
+    {
+        sf::Vector2i nullPosition(0, 0);
+        moveMap(nullPosition, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
+        gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
+        return;
+    }
+
     if (*moveMode)
     {
         *moveMode = false;
-        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-        {
-            gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
-        }
+        clientCursor.loadFromSystem(sf::Cursor::Arrow);
     }
     else
     {
         *moveMode = true;
-        if (clientCursor.loadFromSystem(sf::Cursor::Hand))
-        {
-            gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
-        }
+        clientCursor.loadFromSystem(sf::Cursor::Hand);
     }
+    gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
 }
 
 /*!
@@ -400,47 +439,73 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
  * @param clickPosition is the position on the cursor when the user click
  * @brief Dectect click and actions to do after
  */
-void GameWindow::clickAction(sf::Vector2i clickPosition)
+bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
 {
     int minimumDistance = WINDOW_LENGTH;
     std::array<int, 2> hexagonOnClick = {0, 0};
 
     bool isClickable = false;
 
-    if (priorityCardClickAction(clickPosition)) {
-            return;
-    }
-
-    for (auto &mapTexture : mapTextureToDisplay)
+    if (!*moveMode)
     {
-        for (unsigned j = 0; j < mapTexture.getSize(); j++)
-        { 
-            if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
+        if (priorityCardClickAction(clickPosition)) {
+            return false;
+        }
+
+        for (auto &mapTexture : mapTextureToDisplay)
+        {
+            for (unsigned j = 0; j < mapTexture.getSize(); j++)
             {
-                isClickable = true;
 
-                int x = mapTexture.getSprite(j).getGlobalBounds().left;
-                int y = mapTexture.getSprite(j).getGlobalBounds().top;
-                int width = mapTexture.getSprite(j).getGlobalBounds().width;
-                int height = mapTexture.getSprite(j).getGlobalBounds().height;
-
-                int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
-                                    pow(y + height / 2 - clickPosition.y, 2));
-
-                if (distance < minimumDistance)
+                if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
                 {
+                    isClickable = true;
 
-                    minimumDistance = distance;
-                    hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
-                    hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
+                    int x = mapTexture.getSprite(j).getGlobalBounds().left;
+                    int y = mapTexture.getSprite(j).getGlobalBounds().top;
+                    int width = mapTexture.getSprite(j).getGlobalBounds().width;
+                    int height = mapTexture.getSprite(j).getGlobalBounds().height;
+
+                    int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
+                                        pow(y + height / 2 - clickPosition.y, 2));
+
+                    if (distance < minimumDistance)
+                    {
+
+                        minimumDistance = distance;
+                        hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
+                        hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
+                    }
                 }
             }
         }
     }
+
+    // Check if the click position is inside the move map button
+    if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_MAP_BUTTON].getSprite().getGlobalBounds()))
+    {
+        changeMouseCursor(event, moveMode);
+        return false;
+    }
+
+    // Check if the click position is inside the chat button
+    if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_CHAT_BUTTON].getSprite().getGlobalBounds()))
+    {
+        isChatOpen = !isChatOpen;
+        return false;
+    }
+
+    // Check if the click position is inside the chat button
+    if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_QUIT_BUTTON].getSprite().getGlobalBounds()))
+    {
+        return true;
+    }
+
     if (isClickable)
     {
         gameEnginePtr->handleInformation(hexagonOnClick[0], hexagonOnClick[1]);
-    } 
+    }
+    return false;
 }
 
 void GameWindow::rotateTechWheel(int newLevel) 
@@ -502,7 +567,7 @@ void GameWindow::setUpText(
         }
         card.body->setString(body);
     }
-
+    
     card.body->setFillColor(TEXT_COLOR);
     card.body->setLineSpacing(dataNumber["body-line-space"].asFloat());
     int xBodyOffset = dataNumber["body-x-proportion"].asFloat() * WINDOW_LENGTH;

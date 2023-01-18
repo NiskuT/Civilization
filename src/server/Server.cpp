@@ -3,6 +3,7 @@
 #include <boost/asio/ip/tcp.hpp>
 #include <iostream>
 
+
 #define PORT 8080
 
 using namespace server;
@@ -70,7 +71,7 @@ void Server::handleClient(boost::asio::ip::tcp::socket socket)
         }
     }
 
-    std::string response = "OK\n";
+    std::string response = "OK " + game->getId() + "\n";
     boost::asio::write(player->getSocket(), boost::asio::buffer(response));
     player->state = shared::PlayerState::Connected;
 
@@ -104,22 +105,32 @@ void Server::handleClient(boost::asio::ip::tcp::socket socket)
 
         if (bytesTransferred)
         {
-            std::string messageReceived(
-                boost::asio::buffers_begin(receiveBuffer.data()),
-                boost::asio::buffers_end(receiveBuffer.data()));
+            processMessage(receiveBuffer, player, game);
             receiveBuffer.consume(receiveBuffer.size());
-
-            if (messageReceived.find("response") == 0)
-            {
-                registerClientAnswer(messageReceived, player);
-            }
-            else
-            {
-                game->processClientRequest(messageReceived, player);
-            }
         }
     }
     std::cout << "Client disconnected" << std::endl;
+}
+
+void Server::processMessage(boost::asio::streambuf& receiveBuffer, std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
+{
+    std::istream receiveStream(&receiveBuffer);
+    std::string messageReceived;
+    while(std::getline(receiveStream, messageReceived))
+    {
+        if (messageReceived.size() == 0)
+        {
+            continue;
+        }
+        else if (messageReceived.find("response") == 0)
+        {
+            registerClientAnswer(messageReceived, player);
+        }
+        else
+        {
+            game->processClientRequest(messageReceived, player);
+        }
+    }
 }
 
 std::shared_ptr<GameEngine> Server::getGameById(std::string gameId)
@@ -159,7 +170,6 @@ std::shared_ptr<GameEngine> Server::createNewGame(std::shared_ptr<shared::Player
 {
     auto game = std::make_shared<GameEngine>(games, player);
 
-    game->addPlayer(player);
     std::cout << "New game created with id: " << game->getId() << std::endl;
 
     std::lock_guard<std::mutex> lock(gamesMutex);

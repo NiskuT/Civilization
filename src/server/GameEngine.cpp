@@ -1,6 +1,8 @@
 #include <server.hpp>
 #include <algorithm>
 #include <random>
+#include <iomanip>
+#include <iostream>
 
 #define MAX_PLAYERS 4
 
@@ -72,6 +74,15 @@ void GameEngine::processClientRequest(std::string requestString, std::shared_ptr
     {
         response = "response" + player->getName() + " is connected\n";
     }
+    else if (command.find("chat") == 0)
+    {
+        requestString = requestString.substr(5);
+        std::string message = "chat ";
+        message += getTime() + " ";
+        message += player->getName() + " " + requestString + "\n";
+        sendToEveryone(message);
+        response = "response ok\n";
+    }
     else
     {
         response = "Error: invalid command\n";
@@ -95,18 +106,45 @@ std::vector<std::string> GameEngine::splitString(std::string str, char delimiter
     return components;
 }
 
-void askClient(std::shared_ptr<shared::Player> player)
+void GameEngine::askClient(std::shared_ptr<shared::Player> player)
 {
+    std::unique_lock<std::mutex> responseLock(player->qAndA.sharedDataMutex);
     player->qAndA.answerReady = false;
     {
         std::lock_guard<std::mutex> lock(player->socketWriteMutex);
         boost::asio::write(player->getSocket(), boost::asio::buffer(player->qAndA.question));
     }
 
-    std::unique_lock<std::mutex> responseLock(player->qAndA.sharedDataMutex);
     player->qAndA.condition.wait(responseLock, [&]
                                  { return player->qAndA.answerReady; });
 
     std::string response = player->qAndA.answer;
     player->qAndA.answerReady = false;
+}
+
+void GameEngine::sendToEveryone(std::string message)
+{
+    std::cout << message;
+    for (auto &player : players)
+    {
+        if (player->state == shared::PlayerState::Connected)
+        {
+            std::lock_guard<std::mutex> lock(player->socketWriteMutex);
+            boost::asio::write(player->getSocket(), boost::asio::buffer(message));
+        }
+    }
+}
+
+/*! 
+ * @brief This function return the time under a string format
+ * For example, if the time is 1:34pm, the function will return "13:34"
+ * @return std::string
+ */
+std::string GameEngine::getTime()
+{
+    std::time_t t = std::time(nullptr);
+    std::tm tm = *std::localtime(&t);
+    std::stringstream ss;
+    ss << std::put_time(&tm, "%H:%M");
+    return ss.str();
 }

@@ -1,8 +1,8 @@
 #include <client.hpp>
 #include <iostream>
 
-#define ACTION_INDEX 12
-#define PRIORITY_INDEX 8
+#define ACTION_INDEX 15
+#define PRIORITY_INDEX 11
 
 const sf::Color VALIDATE_BUTTON_COLOR = sf::Color(255, 255, 255, 100);
 const std::vector<std::string> typeOfPriorityCards = {"economy", "army", "science", "culture", "industry"};
