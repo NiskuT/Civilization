@@ -29,11 +29,16 @@
         {
             "path": "/img/hud/tech-wheel.png",
             "scale": 0.187,
-            "rotation": 45
+            "rotation": 178
         },
         {
             "path": "/img/hud/ladder.png",
             "scale": 0.78,
+            "rotation": 0
+        },
+        {
+            "path": "/img/hud/arrow.png",
+            "scale": 0.05,
             "rotation": 0
         }
     ]

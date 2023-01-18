@@ -23,6 +23,8 @@
 
 #define CARD_BORDER 18
 
+#define ARROW_INDEX 5
+
 #define ELEMENT_PATH "/img/map/element/"
 
 #ifndef RESOURCES_PATH
@@ -31,6 +33,7 @@
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
+const std::array<int,25> techWheelRotation = {178, 168, 155, 142, 126, 98, 85, 75, 64, 53, 40, 30, 16, 4, 354, 344, 336, 326, 316, 306, 294, 283, 272, 261, 250};
 
 using namespace client;
 
@@ -376,6 +379,7 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
         {
             gameEnginePtr->handlePriorityCardPlay(priorityCard.type, priorityCard.difficulty);
             moveToRightPriorityCards(priorityCard.difficulty);
+            rotateTechWheel(3);
             return true;
         }
 
@@ -437,6 +441,12 @@ void GameWindow::clickAction(sf::Vector2i clickPosition)
     {
         gameEnginePtr->handleInformation(hexagonOnClick[0], hexagonOnClick[1]);
     } 
+}
+
+void GameWindow::rotateTechWheel(int newLevel) 
+{
+    int newRotation = techWheelRotation[newLevel];
+    hudTextureToDisplay[ARROW_INDEX].getSprite(0).setRotation(newRotation);
 }
 
 
