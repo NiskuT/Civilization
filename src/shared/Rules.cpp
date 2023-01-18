@@ -32,7 +32,6 @@ Rules::Rules()
  */
 void Rules::runTheRule(RuleArgsStruct &args)
 {
-    std::cout << "Running the rule" << std::endl;
     switch (args.ruleId)
     {
     // case CardsEnum::economy:
@@ -73,7 +72,7 @@ void Rules::runTheRule(RuleArgsStruct &args)
 //     {
 //         std::cout << "You don't have enough box to play this card" << std::endl;
 //         exit(EXIT_FAILURE);
-    // }
+// }
 
 //     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::economy);
 
@@ -275,7 +274,6 @@ void Rules::runTheRule(RuleArgsStruct &args)
 //  */
 void Rules::playScienceCard(RuleArgsStruct &args)
 {
-    std::cout << "inside Science card" << std::endl;
     std::shared_ptr<Player> currentPlayer = args.currentPlayer;
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::science))
@@ -283,6 +281,7 @@ void Rules::playScienceCard(RuleArgsStruct &args)
         std::cout << "You don't have enough box to play this card" << std::endl;
         exit(EXIT_FAILURE);
     }
+    args.currentPlayer->deleteBox(CardsEnum::science, numberOfBoxUsed);
 
     CardsEnum cardToGetABox;
     ResourceEnum resourceToGet;
@@ -294,120 +293,150 @@ void Rules::playScienceCard(RuleArgsStruct &args)
 
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::science);
     std::array<int, 3> cardsLevelToImprove = currentPlayer->incrementTechWheel(cardLevel + numberOfBoxUsed);
-
     for (auto cardtoImprove : cardsToImprove)
     {
-        if (cardsLevelToImprove[currentPlayer->getLevelOfCard(cardtoImprove)] > 0)
+        if (cardsLevelToImprove[currentPlayer->getLevelOfCard(cardtoImprove) - 1] > 0)
         {
+            cardsLevelToImprove[currentPlayer->getLevelOfCard(cardtoImprove) - 1]--;
             args.currentPlayer->upgradeCard(cardtoImprove);
-            cardsLevelToImprove[currentPlayer->getLevelOfCard(cardtoImprove)]--;
-            break;
         }
     }
-
-//     switch (cardLevel)
-//     {
-//     case 1:
-//         // do nothing special
-//         break;
-//     case 2:
-//         cardToGetABox = args.cardToGetABox;
-//         args.currentPlayer->addBox(cardToGetABox, 1);
-//         break;
-//     case 3:
-//         resourceToGet = args.resourceToGet;
-//         if (args.currentPlayer->haveResource(resourceToGet))
-//         {
-//             std::cout << "You already have this resource" << std::endl;
-//             exit(EXIT_FAILURE);
-//         }
-//         args.currentPlayer->addResource(resourceToGet);
-//         break;
-//     case 4:
-//         positionToNuke = args.positionToNuke;
-//         gameMap = args.gameMap;
-//         neighbors = getNeighbors(positionToNuke[0], positionToNuke[1], gameMap);
-//         neighbors.push_back(positionToNuke);
-//         nuke(neighbors, gameMap, args.currentPlayer);
-//         break;
-//     default:
-//         std::cout << "invalid card level" << std::endl;
-//         exit(1);
-//     }
+    switch (cardLevel)
+    {
+    case 1:
+        // do nothing special
+        break;
+    case 2:
+        cardToGetABox = args.cardToGetABox;
+        args.currentPlayer->addBox(cardToGetABox, 1);
+        break;
+    case 3:
+        resourceToGet = args.resourceToGet;
+        if (args.currentPlayer->haveResource(resourceToGet))
+        {
+            std::cout << "You already have this resource" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        args.currentPlayer->addResource(resourceToGet);
+        break;
+    case 4:
+        std::cout << "case 4" << std::endl;
+        positionToNuke = args.positionToNuke;
+        gameMap = args.gameMap;
+        std::cout << "position to nuke : " << positionToNuke[0] << " " << positionToNuke[1] << std::endl;
+        neighbors = getNeighbors(positionToNuke[0], positionToNuke[1], gameMap);
+        std::cout << "neighbors size : " << neighbors.size() << std::endl;
+        neighbors.push_back(positionToNuke);
+        nuke(neighbors, gameMap, args.currentPlayer);
+        break;
+    default:
+        std::cout << "invalid card level" << std::endl;
+        exit(1);
+    }
 }
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer)
-//  * @brief This function aim to nuke the position given in parameter
-//  * @param neightbors the positions to nuke
-//  * @param gameMap the map of the game
-//  * @param currentPlayer the current player
-//  */
-// void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer)
-// {
-//     elementList elements;
-//     for (auto neightbor : neightbors)
-//     {
-//         elements = (*gameMap)(neightbor[0], neightbor[1])->getElements();
-//         for (auto element : elements)
-//         {
-//             if (std::holds_alternative<ControlPawn>(*element))
-//             {
-//                 if (std::get<ControlPawn>(*element).isReinforced())
-//                 {
-//                     std::get<ControlPawn>(*element).setReinforced();
-//                 }
-//                 else
-//                 {
-//                     (*gameMap)(neightbor[0], neightbor[1])->removeElement(element);
-//                     currentPlayer->removeControlPawn(std::make_shared<ControlPawn>(std::get<ControlPawn>(*element)));
-//                 }
-//             }
-//         }
-//     }
-// }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer)
+ * @brief This function aim to nuke the position given in parameter
+ * @param neightbors the positions to nuke
+ * @param gameMap the map of the game
+ * @param currentPlayer the current player
+ */
+void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer)
+{
+    elementList elements;
+    for (auto neightbor : neightbors)
+    {
+        elements = (*gameMap)(neightbor[0], neightbor[1])->getElements();
+        for (auto element : elements)
+        {
+            if (std::holds_alternative<ControlPawn>(*element))
+            {
+                if (std::get<ControlPawn>(*element).isReinforced())
+                {
+                    std::get<ControlPawn>(*element).setReinforced();
+                }
+                else
+                {
+                    (*gameMap)(neightbor[0], neightbor[1])->removeElement(element);
+                    currentPlayer->removeControlPawn(std::make_shared<ControlPawn>(std::get<ControlPawn>(*element)));
+                }
+            }
+        }
+    }
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned posY, std::shared_ptr<Map> gameMap)
-//  * @brief This function aim to get the neighbors of a position
-//  * @param posX the x position
-//  * @param posY the y position
-//  * @param gameMap the map of the game
-//  * @return the neighbors of the position
-//  */
-// std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned posY, std::shared_ptr<Map> gameMap)
-// {
-//     std::vector<std::array<unsigned, 2>> neighbors;
-//     unsigned mapSizeX = gameMap->getMapWidth();
-//     unsigned mapSizeY = gameMap->getMapHeight();
-//     if (posY > 0)
-//     {
-//         neighbors.push_back({posX, posY - 1});
-//     }
-//     if (posY > 0 && posX < mapSizeX - 1)
-//     {
-//         neighbors.push_back({posX + 1, posY - 1});
-//     }
-//     if (posX < mapSizeX - 1)
-//     {
-//         neighbors.push_back({posX + 1, posY});
-//     }
-//     if (posY < mapSizeY - 1)
-//     {
-//         neighbors.push_back({posX, posY + 1});
-//     }
-//     if (posY < mapSizeY - 1 && posX > 0)
-//     {
-//         neighbors.push_back({posX - 1, posY + 1});
-//     }
-//     if (posX > 0)
-//     {
-//         neighbors.push_back({posX - 1, posY});
-//     }
-//     return neighbors;
-// }
+/**
+ * @file Rules.cpp
+ * @fn std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned posY, std::shared_ptr<Map> gameMap)
+ * @brief This function aim to get the neighbors of a position
+ * @param posX the x position
+ * @param posY the y position
+ * @param gameMap the map of the game
+ * @return the neighbors of the position
+ */
+std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned posY, std::shared_ptr<Map> gameMap)
+{
+    std::vector<std::array<unsigned, 2>> neighbors = {};
+    unsigned mapSizeX = gameMap->getMapWidth();
+    unsigned mapSizeY = gameMap->getMapHeight();
+    if (posY % 2)
+    {
+        if (posY > 0)
+        {
+            neighbors.push_back({posX, posY - 1});
+        }
+        if (posY > 0 && posX > 0)
+        {
+            neighbors.push_back({posX - 1, posY - 1});
+        }
+        if (posX > 0)
+        {
+            neighbors.push_back({posX - 1, posY});
+        }
+        if (posY < mapSizeY - 1)
+        {
+            neighbors.push_back({posX, posY + 1});
+        }
+        if (posY < mapSizeY - 1 && posX > 0)
+        {
+            neighbors.push_back({posX - 1, posY + 1});
+        }
+        if (posX < mapSizeX - 1)
+        {
+            neighbors.push_back({posX + 1, posY});
+        }
+    }
+    else
+    {
+        if (posY > 0)
+        {
+            neighbors.push_back({posX, posY - 1});
+        }
+        if (posY > 0 && posX < mapSizeX - 1)
+        {
+            neighbors.push_back({posX + 1, posY - 1});
+        }
+        if (posX < mapSizeX - 1)
+        {
+            neighbors.push_back({posX + 1, posY});
+        }
+        if (posY < mapSizeY - 1)
+        {
+            neighbors.push_back({posX, posY + 1});
+        }
+        if (posY < mapSizeY - 1 && posX > 0)
+        {
+            neighbors.push_back({posX - 1, posY + 1});
+        }
+        if (posX > 0)
+        {
+            neighbors.push_back({posX - 1, posY});
+        }
+    }
+    return neighbors;
+}
 
 // /// CULTURE CARD ///
 // /**

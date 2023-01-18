@@ -6,7 +6,7 @@ namespace shared
     {
         this->type = type;
         this->level = 1;
-        this->numberOfBox = 15;
+        this->numberOfBox = 0;
     }
 
     CardsEnum Card::getType()
@@ -37,6 +37,11 @@ namespace shared
     void Card::removeBox(unsigned numberOfBoxToRemove)
     {
         this->numberOfBox -= numberOfBoxToRemove;
+    }
+
+    void Card::deleteBox(unsigned numberOfBoxToDelete)
+    {
+        this->numberOfBox -= numberOfBoxToDelete;
     }
 
 }

@@ -1,6 +1,13 @@
 #include <shared.hpp>
+#include <iostream>
 
 using namespace shared;
+
+Hexagon::Hexagon()
+{
+    this->level = FieldLevel::Water;
+    this->elementsList = {};
+}
 
 FieldLevel Hexagon::getFieldLevel()
 {

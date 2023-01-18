@@ -5,7 +5,7 @@ using namespace shared;
 Player::Player()
 {
     this->state = PlayerState::WaitingForGame;
-    for (int i = 1; i < 4; i++)
+    for (int i = 0; i < 4; i++)
     {
         this->ressources[i] = 0;
         this->wonderRessources[i] = 0;
@@ -42,7 +42,7 @@ std::string Player::getName()
 
 std::array<int, 3> Player::incrementTechWheel(unsigned toIncrement)
 {
-    std::array<int, 3> result;
+    std::array<int, 3> result = {0, 0, 0};
     for (unsigned i = 0; i < toIncrement; i++)
     {
         this->techLevel += 1;
@@ -166,4 +166,20 @@ void Player::addResource(ResourceEnum resourceType)
 unsigned Player::getTechLevel()
 {
     return this->techLevel;
+}
+
+unsigned Player::getNumberOfResource(ResourceEnum resourceType)
+{
+    return this->ressources[(int)resourceType];
+}
+
+void Player::deleteBox(CardsEnum cardType, unsigned numberOfBoxToDelete)
+{
+    for (auto card : this->listOfPriorityCard)
+    {
+        if (card->getType() == cardType)
+        {
+            card->deleteBox(numberOfBoxToDelete);
+        }
+    }
 }

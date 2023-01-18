@@ -2,6 +2,11 @@
 
 using namespace shared;
 
+ControlPawn::ControlPawn()
+{
+    this->reinforced = false;
+}
+
 bool ControlPawn::isReinforced()
 {
     return this->reinforced;
