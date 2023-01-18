@@ -162,7 +162,18 @@ void ClientGameEngine::handleInformation(int x, int y)
     else
     {
         std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
-    }
+    } 
+
+}
+
+/*!
+* @brief Print which priority card the user wants to play and its difficulty
+* @param typePlayed type of the priority card played (economy, science, culture, ...)
+* @param difficulty level of difficulty played (0 to 4 for the 5 fields) 
+*/
+void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty)
+{
+    std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << std::endl;
 }
 
 /*!
