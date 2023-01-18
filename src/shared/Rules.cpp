@@ -26,42 +26,38 @@ Rules::Rules()
 
 /**
  * @file Rules.cpp
- * @fn void Rules::runTheRule(unsigned numberOfBoxUsed)
+ * @fn void Rules::runTheRule(RuleArgsStruct &args)
  * @brief This function aim to run the rule of the card
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::runTheRule(RuleArgsStruct &args)
+bool Rules::runTheRule(RuleArgsStruct &args)
 {
     switch (args.ruleId)
     {
     case CardsEnum::economy:
-        playEconomyCard(args);
-        break;
+        return playEconomyCard(args);
     case CardsEnum::science:
-        playScienceCard(args);
-        break;
+        return playScienceCard(args);
     case CardsEnum::military:
-        playMilitaryCard(args);
-        break;
+        return playMilitaryCard(args);
     case CardsEnum::culture:
-        playCultureCard(args);
-        break;
+        return playCultureCard(args);
     case CardsEnum::industry:
-        playIndustryCard(args);
-        break;
+        return playIndustryCard(args);
     default:
         std::cout << "This rule doesn't have utility" << std::endl;
+        return false;
     }
 }
 
 /// ECONOMY CARD ///
 /**
  * @file Rules.cpp
- * @fn void Rules::playEconomyCard()
+ * @fn void Rules::playEconomyCard(RuleArgsStruct &args)
  * @brief This function aim to run the rule of the economy card
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::playEconomyCard(RuleArgsStruct &args)
+bool Rules::playEconomyCard(RuleArgsStruct &args)
 {
     std::vector<std::array<unsigned, 2>> caravanMovementPath = args.caravanMovementPath;
     std::shared_ptr<Map> map = args.gameMap;
@@ -105,7 +101,10 @@ void Rules::playEconomyCard(RuleArgsStruct &args)
     {
     case 1:
         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 1);
-        verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_1 + numberOfBoxUsed);
+        if (!verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_1 + numberOfBoxUsed))
+        {
+            return false;
+        }
         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 1);
 
         moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
@@ -142,29 +141,31 @@ void Rules::playEconomyCard(RuleArgsStruct &args)
         break;
     default:
         std::cout << "invalid card level" << std::endl;
-        exit(EXIT_FAILURE);
+        return false;
     }
+    return true;
 }
 
 /**
  * @file Rules.cpp
- * @fn void Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
+ * @fn bool Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
  * @brief This function aim to verify if the path size is correct
  * @param pathSize the size of the path
  * @param maxPathSize the max size of the path
  */
-void Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
+bool Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
 {
     if (pathSize > maxPathSize)
     {
         std::cout << "You can't move your caravan of " << maxPathSize << " steps" << std::endl;
-        exit(EXIT_FAILURE);
+        return false;
     }
+    return true;
 }
 
 /**
  * @file Rules.cpp
- * @fn void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>> caravans, std::shared_ptr<Player> currentPlayer, int numberOfCaravans)
+ * @fn void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>> &caravans, std::shared_ptr<Player> currentPlayer, int numberOfCaravans)
  * @brief This function aim to add caravan after the card amelioration
  * @param caravans the caravans of the player
  * @param currentPlayer the current player
@@ -172,7 +173,7 @@ void Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
  */
 void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>> &caravans, std::shared_ptr<Player> currentPlayer, int numberOfCaravans)
 {
-    while (caravans.size() < numberOfCaravans)
+    while (caravans.size() < (std::size_t)numberOfCaravans)
     {
         std::array<unsigned, 2> pos = {0, 0};
         std::shared_ptr<Caravan> caravan = std::make_shared<Caravan>(pos);
@@ -183,7 +184,7 @@ void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>
 
 /**
  * @file Rules.cpp
- * @fn void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::array<int, 2> pos1, std::array<int, 2> pos2, std::shared_ptr<Map> map)
+ * @fn bool Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::array<unsigned, 2> pos1, std::array<unsigned, 2> pos2, std::shared_ptr<Map> map, std::shared_ptr<Player> currentPlayer)
  * @brief This function aim to move the caravan
  * @param caravans the caravans of the player
  * @param pos1 the first position of the caravan
@@ -191,7 +192,7 @@ void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>
  * @param map the map
  *
  */
-void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::array<unsigned, 2> pos1, std::array<unsigned, 2> pos2, std::shared_ptr<Map> map, std::shared_ptr<Player> currentPlayer)
+bool Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::array<unsigned, 2> pos1, std::array<unsigned, 2> pos2, std::shared_ptr<Map> map, std::shared_ptr<Player> currentPlayer)
 {
     for (auto caravan : caravans)
     {
@@ -200,14 +201,14 @@ void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
             caravan->setPos(pos2);
             (*map)(pos1[0], pos1[1])->removeElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
             (*map)(pos2[0], pos2[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
-            return;
+            return true;
         }
     }
 
     if (!(isThereACityAround(pos1, map) || isThereAControlPawnAround(pos1, map)))
     {
         std::cout << "You can't move your caravan if there is no city or control pawn next to the starting point of the path" << std::endl;
-        exit(EXIT_FAILURE);
+        return false;
     }
     for (auto caravan : caravans)
     {
@@ -216,14 +217,15 @@ void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
             caravan->setPos(pos2);
             caravan->setUsed(true);
             (*map)(pos2[0], pos2[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
-            return;
+            return true;
         }
     }
+    return true;
 }
 
 /**
  * @file Rules.cpp
- * @fn void Rules::checkIfBarbarianIsOnThePath(std::vector<int[2]> *caravanMovementPath)
+ * @fn elementList Rules::checkIfBarbarianIsOnThePath(std::vector<std::array<unsigned, 2>> caravanMovementPath, std::shared_ptr<shared::Map> map)
  * @brief This function aim to check if a barbarian is on the path of the caravan
  * @param caravanMovementPath the path of the caravan
  * @param map the map of the game
@@ -250,7 +252,7 @@ elementList Rules::checkIfBarbarianIsOnThePath(std::vector<std::array<unsigned, 
 
 /**
  * @file Rules.cpp
- * @fn void Rules::checkIfWaterIsOnThePath(std::vector<int[2]> *caravanMovementPath)
+ * @fn bool Rules::checkIfWaterIsOnThePath(std::vector<std::array<unsigned, 2>> caravanMovementPath, std::shared_ptr<shared::Map> map)
  * @brief This function aim to check if water is on the path of the caravan
  * @param caravanMovementPath the path of the caravan
  * @param map the map of the game
@@ -271,18 +273,18 @@ bool Rules::checkIfWaterIsOnThePath(std::vector<std::array<unsigned, 2>> caravan
 /// SCIENCE CARD ///
 /**
  * @file Rules.cpp
- * @fn void Rules::playScienceCard()
+ * @fn bool Rules::playScienceCard(RuleArgsStruct &args)
  * @brief This function aim to run the rule of the science card
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::playScienceCard(RuleArgsStruct &args)
+bool Rules::playScienceCard(RuleArgsStruct &args)
 {
     std::shared_ptr<Player> currentPlayer = args.currentPlayer;
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::science))
     {
         std::cout << "You don't have enough box to play this card" << std::endl;
-        exit(EXIT_FAILURE);
+        return false;
     }
     args.currentPlayer->deleteBox(CardsEnum::science, numberOfBoxUsed);
 
@@ -318,7 +320,7 @@ void Rules::playScienceCard(RuleArgsStruct &args)
         if (args.currentPlayer->haveResource(resourceToGet))
         {
             std::cout << "You already have this resource" << std::endl;
-            exit(EXIT_FAILURE);
+            return false;
         }
         args.currentPlayer->addResource(resourceToGet);
         break;
@@ -331,8 +333,9 @@ void Rules::playScienceCard(RuleArgsStruct &args)
         break;
     default:
         std::cout << "invalid card level" << std::endl;
-        exit(1);
+        return false;
     }
+    return true;
 }
 
 /**
@@ -443,17 +446,17 @@ std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned
 /// CULTURE CARD ///
 /**
  * @file Rules.cpp
- * @fn void Rules::playCultureCard(RuleArgsStruct &args)
+ * @fn bool Rules::playCultureCard(RuleArgsStruct &args)
  * @brief This function aim to play the culture card
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::playCultureCard(RuleArgsStruct &args)
+bool Rules::playCultureCard(RuleArgsStruct &args)
 {
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::culture))
     {
         std::cout << "You don't have enough box to play this card" << std::endl;
-        exit(EXIT_FAILURE);
+        return false;
     }
 
     std::vector<std::array<unsigned, 2>> pawnsPositions = args.pawnsPositions;
@@ -465,12 +468,15 @@ void Rules::playCultureCard(RuleArgsStruct &args)
     case 1:
         if (pawnsPositions.size() <= 2 + numberOfBoxUsed)
         {
-            placeControlPawns(pawnsPositions, gameMap, args.currentPlayer);
+            if (!placeControlPawns(pawnsPositions, gameMap, args.currentPlayer))
+            {
+                return false;
+            }
         }
         else
         {
             std::cout << "invalid number of pawn positions" << std::endl;
-            exit(1);
+            return false;
         }
         break;
     case 2:
@@ -484,19 +490,20 @@ void Rules::playCultureCard(RuleArgsStruct &args)
         break;
     default:
         std::cout << "invalid card level" << std::endl;
-        exit(1);
+        return false;
     }
+    return true;
 }
 
 /**
  * @file Rules.cpp
- * @fn void Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer)
+ * @fn bool Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer)
  * @brief This function aim to place the control pawns on the map
  * @param positions the positions where the control pawns will be placed
  * @param gameMap the map of the game
  * @param currentPlayer the current player that owns the control pawns
  */
-void Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer) // TODO : split this function
+bool Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer) // TODO : split this function
 {
     for (auto position : positions)
     {
@@ -505,7 +512,7 @@ void Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, st
             if (!std::holds_alternative<Caravan>(*element))
             {
                 std::cout << "There is already an element on this position" << std::endl;
-                exit(EXIT_FAILURE);
+                return false;
             }
         }
         if (isThereACityAround(position, gameMap))
@@ -516,6 +523,7 @@ void Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, st
             (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
         }
     }
+    return true;
 }
 
 /**
@@ -569,120 +577,119 @@ bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::sha
 /// MILITARY CARD ///
 /**
  * @file Rules.cpp
- * @fn void Rules::playMilitaryCard(RuleArgsStruct &args)
+ * @fn bool Rules::playMilitaryCard(RuleArgsStruct &args)
  * @brief This function aim to play the military card
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::playMilitaryCard(RuleArgsStruct &args)
+bool Rules::playMilitaryCard(RuleArgsStruct &args)
 {
     std::cout << "playMilitaryCard" << std::endl;
     if (args.militaryCardAttack == true)
     {
-        attack(args);
+        return attack(args);
     }
     else
     {
-        reinforce(args);
+        return reinforce(args);
     }
 }
 
 /**
  * @file Rules.cpp
- * @fn void Rules::attack(RuleArgsStruct &args)
+ * @fn bool Rules::attack(RuleArgsStruct &args)
  * @brief This function aim to attack an enemy pawn or a city
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::attack(RuleArgsStruct &args)
+bool Rules::attack(RuleArgsStruct &args)
 {
     // TODO : attack
     // I have problems mesuring the distance of the enemy pawn from the current player hexagons
+    return false;
 }
 
 /**
  * @file Rules.cpp
- * @fn void Rules::reinforce(RuleArgsStruct &args)
+ * @fn bool Rules::reinforce(RuleArgsStruct &args)
  * @brief This function aim to reinforce a pawn
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::reinforce(RuleArgsStruct &args)
+bool Rules::reinforce(RuleArgsStruct &args)
 {
-    std::cout << "0" << std::endl;
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::military))
     {
         std::cout << "You don't have enough box to play this card" << std::endl;
-        exit(EXIT_FAILURE);
+        return false;
     }
 
-    std::cout << "1" << std::endl;
     std::shared_ptr<Map> gameMap = args.gameMap;
     std::vector<std::array<unsigned, 2>> pawnsPositions = args.pawnsPositions;
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::military);
     if (pawnsPositions.size() != cardLevel + numberOfBoxUsed)
     {
         std::cout << "invalid number of pawn positions" << std::endl;
-        exit(1);
+        return false;
     }
     std::shared_ptr<ControlPawn> controlPawn;
 
-    std::cout << "2" << std::endl;
     for (auto position : pawnsPositions)
     {
         for (auto element : (*gameMap)(position[0], position[1])->getElements())
         {
             if (std::holds_alternative<ControlPawn>(*element))
             {
-                std::cout << "test tes ttes ests ets etset" << std::endl;
                 std::get<ControlPawn>(*element).setReinforced();
                 break;
             }
         }
     }
+    return true;
 }
 
 /// INDUSTRY CARD ///
 /**
  * @file Rules.cpp
- * @fn void Rules::playIndustryCard(RuleArgsStruct &args)
+ * @fn bool Rules::playIndustryCard(RuleArgsStruct &args)
  * @brief This function aim to play the industry card
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::playIndustryCard(RuleArgsStruct &args)
+bool Rules::playIndustryCard(RuleArgsStruct &args)
 {
     if (args.industryCardBuildWonder == true)
     {
-        buildWonder(args);
+        return buildWonder(args);
     }
     else
     {
-        buildCity(args);
+        return buildCity(args);
     }
 }
 
 /**
  * @file Rules.cpp
- * @fn void Rules::buildWonder(RuleArgsStruct &args)
+ * @fn bool Rules::buildWonder(RuleArgsStruct &args)
  * @brief This function aim to build a wonder
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::buildWonder(RuleArgsStruct &args) // TODO : remake this function
+bool Rules::buildWonder(RuleArgsStruct &args) // TODO : remake this function
 {
     // TODO : build a wonder
+    return false;
 }
 
 /**
  * @file Rules.cpp
- * @fn void Rules::buildCity(RuleArgsStruct &args)
+ * @fn bool Rules::buildCity(RuleArgsStruct &args)
  * @brief This function aim to build a city
  * @param args : struct containing all the arguments needed to run the rule
  */
-void Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to controlled hexagon
+bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to controlled hexagon
 {
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::industry))
     {
         std::cout << "You don't have enough box to play this card" << std::endl;
-        exit(EXIT_FAILURE);
+        return false;
     }
 
     std::shared_ptr<Map> gameMap = args.gameMap;
@@ -692,7 +699,7 @@ void Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
     if (cardLevel + numberOfBoxUsed < (unsigned)(*gameMap)(position[0], position[1])->getFieldLevel())
     {
         std::cout << "invalid position, the hexagon is to high" << std::endl;
-        exit(1);
+        return false;
     }
 
     for (auto element : (*gameMap)(position[0], position[1])->getElements())
@@ -700,10 +707,11 @@ void Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
         if (!(std::holds_alternative<Caravan>(*element)))
         {
             std::cout << "There is already an Element on this position" << std::endl;
-            exit(EXIT_FAILURE);
+            return false;
         }
     }
     std::shared_ptr<City> city = std::make_shared<City>(position);
     args.currentPlayer->addCity(city);
     (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*city));
+    return true;
 }

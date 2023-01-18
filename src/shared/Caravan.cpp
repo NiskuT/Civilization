@@ -21,5 +21,4 @@ namespace shared {
     bool Caravan::isUsed() {
         return this->used;
     }
-
 }
