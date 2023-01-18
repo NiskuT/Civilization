@@ -115,7 +115,6 @@ void ClientGameEngine::processMessage(boost::asio::streambuf& receiveBuffer)
             processServerRequest(messageReceived);
         }
     }
-
 }
 
 /*!
