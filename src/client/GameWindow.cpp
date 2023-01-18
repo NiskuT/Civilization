@@ -34,6 +34,7 @@
 
 #define INDEX_CHAT_BUTTON 7
 #define INDEX_MAP_BUTTON 8
+#define INDEX_QUIT_BUTTON 9
 
 #define ELEMENT_PATH "/img/map/element/"
 #define CHAT_MIN_SIZE 7
@@ -182,7 +183,13 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
 
         *clickMode = true;
         clickStartingPoint = sf::Mouse::getPosition(*gameEnginePtr->clientWindow);
-        clickAction(event, clickStartingPoint, moveMode);
+        if (clickAction(event, clickStartingPoint, moveMode))
+        {
+            std::cout << "You have quit the game\n";
+            gameEnginePtr->handleQuitMenu(true);
+            gameEnginePtr->myself->;
+            return true;
+        }
         break;
 
     case sf::Event::MouseButtonReleased:
@@ -228,10 +235,6 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent)
 {
     switch (keyEvent.code)
     {
-    case sf::Keyboard::Escape:
-        gameEnginePtr->handleQuitMenu(true);
-        return true;
-
     case sf::Keyboard::Enter:
         if (isChatOpen)
         {
@@ -360,7 +363,7 @@ const auto GameWindow::openJsonFile(std::string path)
  * @param clickPosition is the position on the cursor when the user click
  * @brief Dectect click and actions to do after
  */
-void GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
+bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
 {
     int minimumDistance = WINDOW_LENGTH;
     std::array<int, 2> hexagonOnClick = {0, 0};
@@ -376,7 +379,7 @@ void GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::
             {
                 gameEnginePtr->handleInformation(-1, i + 1); // -1 to signify that the space clicked is a priority card
                 priorityCards[i].moveUpPriorityCard();
-                return;
+                return false;
             }
         }
 
@@ -415,25 +418,32 @@ void GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::
         if(event.mouseButton.button == sf::Mouse::Left)
         {
             changeMouseCursor(moveMode);
-            return;
+            return false;
         }
         changeMouseCursor(moveMode);
         sf::Vector2i nullPosition(0, 0);
         moveMap(nullPosition, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
-        return;
+        return false;
     }
 
     // Check if the click position is inside the chat button
     if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_CHAT_BUTTON].getSprite().getGlobalBounds()))
     {
         isChatOpen = !isChatOpen;
-        return;
+        return false;
+    }
+
+    // Check if the click position is inside the chat button
+    if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_QUIT_BUTTON].getSprite().getGlobalBounds()))
+    {
+        return true;
     }
 
     if (isClickable)
     {
         gameEnginePtr->handleInformation(hexagonOnClick[0], hexagonOnClick[1]);
     }
+    return false;
 }
 
 /*!

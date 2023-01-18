@@ -5426,7 +5426,7 @@
         <dia:point val="270.818,47.4355"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="242.643,46.6855;271.568,63.8748"/>
+        <dia:rectangle val="242.644,46.6855;271.568,63.8748"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -6478,7 +6478,7 @@
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#void#</dia:string>
+            <dia:string>#bool#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -8029,7 +8029,7 @@
         <dia:point val="227.956,72.4243"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="204.133,71.9885;228.006,73.5885"/>
+        <dia:rectangle val="204.133,71.9886;228.006,73.5885"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -8795,17 +8795,17 @@
     </dia:object>
     <dia:object type="UML - Association" version="2" id="O36">
       <dia:attribute name="obj_pos">
-        <dia:point val="206.191,58.9805"/>
+        <dia:point val="206.191,59.3805"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="199.828,45.7382;211.398,59.8355"/>
+        <dia:rectangle val="199.828,45.7382;211.397,60.2355"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="206.191,58.9805"/>
-        <dia:point val="200.328,58.9805"/>
+        <dia:point val="206.191,59.3805"/>
+        <dia:point val="200.328,59.3805"/>
         <dia:point val="200.328,46.4832"/>
         <dia:point val="211.347,46.4832"/>
       </dia:attribute>
@@ -8869,7 +8869,7 @@
         <dia:color val="#000000ff"/>
       </dia:attribute>
       <dia:connections>
-        <dia:connection handle="0" to="O56" connection="58"/>
+        <dia:connection handle="0" to="O56" connection="60"/>
         <dia:connection handle="1" to="O25" connection="6"/>
       </dia:connections>
     </dia:object>
@@ -9026,7 +9026,7 @@
         <dia:color val="#000000ff"/>
       </dia:attribute>
       <dia:connections>
-        <dia:connection handle="0" to="O56" connection="58"/>
+        <dia:connection handle="0" to="O56" connection="60"/>
         <dia:connection handle="1" to="O55" connection="34"/>
       </dia:connections>
       <dia:childnode parent="O22"/>
@@ -12965,7 +12965,7 @@
         <dia:point val="206.178,47.6805"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="206.128,47.6305;227.518,70.3305"/>
+        <dia:rectangle val="206.128,47.6305;227.518,71.1305"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="206.178,47.6805"/>
@@ -12974,7 +12974,7 @@
         <dia:real val="21.289999999999999"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="22.600000000000001"/>
+        <dia:real val="23.400000000000006"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#MenuWindow#</dia:string>
@@ -13093,6 +13093,29 @@
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
             <dia:string>#backgroundTexture#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>#std::unique_ptr&lt;TextureDisplayer&gt;#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="value">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="visibility">
+            <dia:enum val="0"/>
+          </dia:attribute>
+          <dia:attribute name="abstract">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="class_scope">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+        </dia:composite>
+        <dia:composite type="umlattribute">
+          <dia:attribute name="name">
+            <dia:string>#quitTexture#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#std::unique_ptr&lt;TextureDisplayer&gt;#</dia:string>
@@ -14609,7 +14632,7 @@
         <dia:point val="196.913,58.1253"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="196.863,58.0753;205.548,82.5753"/>
+        <dia:rectangle val="196.863,58.0753;205.548,83.3753"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="196.913,58.1253"/>
@@ -14618,7 +14641,7 @@
         <dia:real val="8.5849999999999991"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="24.400000000000009"/>
+        <dia:real val="25.20000000000001"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#HudTextureType#</dia:string>
@@ -14898,6 +14921,29 @@
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
             <dia:string>#moveMap#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="value">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="visibility">
+            <dia:enum val="0"/>
+          </dia:attribute>
+          <dia:attribute name="abstract">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="class_scope">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+        </dia:composite>
+        <dia:composite type="umlattribute">
+          <dia:attribute name="name">
+            <dia:string>#leave#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -15345,7 +15391,7 @@
         <dia:point val="227.956,72.4243"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="205.099,69.8753;228.006,72.9748"/>
+        <dia:rectangle val="205.098,70.2753;228.006,72.4743"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -15353,8 +15399,8 @@
       <dia:attribute name="orth_points">
         <dia:point val="227.956,72.4243"/>
         <dia:point val="216.952,72.4243"/>
-        <dia:point val="216.952,70.3253"/>
-        <dia:point val="205.549,70.3253"/>
+        <dia:point val="216.952,70.7253"/>
+        <dia:point val="205.548,70.7253"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="0"/>
@@ -15390,7 +15436,7 @@
       </dia:attribute>
       <dia:connections>
         <dia:connection handle="0" to="O31" connection="40"/>
-        <dia:connection handle="1" to="O59" connection="62"/>
+        <dia:connection handle="1" to="O59" connection="64"/>
       </dia:connections>
       <dia:childnode parent="O22"/>
     </dia:object>

@@ -45,6 +45,11 @@
             "path": "/img/hud/move-button.png",
             "scale": 0.03,
             "rotation": 0
+        },
+        {
+            "path": "/img/hud/leave.png",
+            "scale": 0.03,
+            "rotation": 0
         }
     ]
 }

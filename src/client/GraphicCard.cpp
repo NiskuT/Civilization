@@ -1,8 +1,8 @@
 #include <client.hpp>
 #include <iostream>
 
-#define ACTION_INDEX 13
-#define PRIORITY_INDEX 9
+#define ACTION_INDEX 14
+#define PRIORITY_INDEX 10
 
 using namespace client;
 

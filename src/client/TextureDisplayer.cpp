@@ -151,6 +151,13 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         break;
     }
 
+    case HudTextureType::leave:
+    {
+        xPos = 10;
+        yPos = 10;
+        break;
+    }
+
     case HudTextureType::techWheel:
     {
         xPos = windowLength;
