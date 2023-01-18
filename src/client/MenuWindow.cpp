@@ -19,7 +19,7 @@
 #define BUTTON_START 7
 
 #define QUIT_OFFSET 10
-#define QUIT_SCALE 0.75
+#define QUIT_SCALE 0.09375
 
 #define CREATE_GAME "new"
 

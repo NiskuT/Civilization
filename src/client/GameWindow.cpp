@@ -730,7 +730,7 @@ void GameWindow::loadHudTexture()
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    if (!bodyFont.loadFromFile(RESOURCES_PATH "/img/hud/Calibri.ttf"))
+    if (!bodyFont.loadFromFile(RESOURCES_PATH "/img/hud/MorrisRomanBlack.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
