@@ -47,6 +47,9 @@ GameWindow::GameWindow()
     loadElementTexture();
     updateElementTexture();
     loadHudTexture();
+
+    validateBoxesWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH);
+
 }
 
 /*!
@@ -95,27 +98,27 @@ void GameWindow::displayWindow()
         }
     boxTexture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
 
-    for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
+    for (auto &actionCardTexture : actionCardsToDisplay)
     {
-        gameEnginePtr->clientWindow->draw(actionCardsToDisplay[i].texture->getSprite(0));
-        gameEnginePtr->clientWindow->draw(*actionCardsToDisplay[i].title);
-        gameEnginePtr->clientWindow->draw(*actionCardsToDisplay[i].body);
+        gameEnginePtr->clientWindow->draw(actionCardTexture.texture->getSprite(0));
+        gameEnginePtr->clientWindow->draw(*actionCardTexture.title);
+        gameEnginePtr->clientWindow->draw(*actionCardTexture.body);
     }
 
-    for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
+    for (auto &whoIsPlayingButton : whoIsPlayingButtons)
     {
-        gameEnginePtr->clientWindow->draw(*whoIsPlayingButtons[i].buttonRect);
-        gameEnginePtr->clientWindow->draw(*whoIsPlayingButtons[i].buttonText);
+        gameEnginePtr->clientWindow->draw(*whoIsPlayingButton.buttonRect);
+        gameEnginePtr->clientWindow->draw(*whoIsPlayingButton.buttonText);
     }
 
     gameEnginePtr->clientWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
-    for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
+    for (auto &hudTexture: hudTextureToDisplay)
     {
-        hudTextureToDisplay[i].drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+        hudTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
-    gameEnginePtr->clientWindow->draw(*validateBoxesWindow.blackBackground->buttonRect);
+    gameEnginePtr->clientWindow->draw(*validateBoxesWindow->blackBackground->buttonRect);
 
     gameEnginePtr->clientWindow->display();
 }
