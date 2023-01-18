@@ -131,9 +131,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ad56651c028b22e70c09315beabe4db0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1ClientGameEngine.html#ad56651c028b22e70c09315beabe4db0f">registerServerAnswer</a> (const std::string &amp;response)</td></tr>
 <tr class="memdesc:ad56651c028b22e70c09315beabe4db0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quentin.  <a href="classclient_1_1ClientGameEngine.html#ad56651c028b22e70c09315beabe4db0f">More...</a><br /></td></tr>
 <tr class="separator:ad56651c028b22e70c09315beabe4db0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4eb4dae842433adc5e21fd44102d240a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1ClientGameEngine.html#a4eb4dae842433adc5e21fd44102d240a">processServerRequest</a> (const std::string &amp;request)</td></tr>
-<tr class="memdesc:a4eb4dae842433adc5e21fd44102d240a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quentin.  <a href="classclient_1_1ClientGameEngine.html#a4eb4dae842433adc5e21fd44102d240a">More...</a><br /></td></tr>
-<tr class="separator:a4eb4dae842433adc5e21fd44102d240a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3177e20c2bfc2af801c56270f7e056b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1ClientGameEngine.html#a3177e20c2bfc2af801c56270f7e056b5">processServerRequest</a> (std::string request)</td></tr>
+<tr class="memdesc:a3177e20c2bfc2af801c56270f7e056b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quentin.  <a href="classclient_1_1ClientGameEngine.html#a3177e20c2bfc2af801c56270f7e056b5">More...</a><br /></td></tr>
+<tr class="separator:a3177e20c2bfc2af801c56270f7e056b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8df2291445764363b11088d077309ea4"><td class="memItemLeft" align="right" valign="top"><a id="a8df2291445764363b11088d077309ea4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1ClientGameEngine.html#a8df2291445764363b11088d077309ea4">askServer</a> ()</td></tr>
 <tr class="memdesc:a8df2291445764363b11088d077309ea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quentin. <br /></td></tr>
@@ -147,15 +147,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a6400434cd674d7cf209908fb49c64a1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1ClientGameEngine.html#a6400434cd674d7cf209908fb49c64a1d">handlePriorityCardPlay</a> (std::string typePlayed, int difficulty)</td></tr>
 <tr class="memdesc:a6400434cd674d7cf209908fb49c64a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print which priority card the user wants to play and its difficulty.  <a href="classclient_1_1ClientGameEngine.html#a6400434cd674d7cf209908fb49c64a1d">More...</a><br /></td></tr>
 <tr class="separator:a6400434cd674d7cf209908fb49c64a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af103cafb10674042a6036df1bfde03b4"><td class="memItemLeft" align="right" valign="top"><a id="af103cafb10674042a6036df1bfde03b4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>printChat</b> (const std::string &amp;message)</td></tr>
+<tr class="separator:af103cafb10674042a6036df1bfde03b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc4b42feb2224ae8f95ba5316e7a30c2"><td class="memItemLeft" align="right" valign="top"><a id="abc4b42feb2224ae8f95ba5316e7a30c2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>processMessage</b> (boost::asio::streambuf &amp;receiveBuffer)</td></tr>
+<tr class="separator:abc4b42feb2224ae8f95ba5316e7a30c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:afeae897ec4f05951bd0776ca9845223b"><td class="memItemLeft" align="right" valign="top"><a id="afeae897ec4f05951bd0776ca9845223b"></a>
 std::shared_ptr&lt; sf::RenderWindow &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>clientWindow</b></td></tr>
 <tr class="separator:afeae897ec4f05951bd0776ca9845223b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c01b43405cbf03e3fba013a1c33e8ca"><td class="memItemLeft" align="right" valign="top"><a id="a1c01b43405cbf03e3fba013a1c33e8ca"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>runningWindow</b> = 1</td></tr>
-<tr class="separator:a1c01b43405cbf03e3fba013a1c33e8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0ff5540f7c450592149fe8662eadb1a"><td class="memItemLeft" align="right" valign="top"><a id="ac0ff5540f7c450592149fe8662eadb1a"></a>
+std::atomic&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>runningWindow</b> = 1</td></tr>
+<tr class="separator:ac0ff5540f7c450592149fe8662eadb1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97ad34082dad8cc2596e36b655958be2"><td class="memItemLeft" align="right" valign="top"><a id="a97ad34082dad8cc2596e36b655958be2"></a>
 <a class="el" href="classclient_1_1GameWindow.html">GameWindow</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clientGame</b></td></tr>
 <tr class="separator:a97ad34082dad8cc2596e36b655958be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,9 +174,6 @@ std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m
 <tr class="memitem:ad7de1379f7d7bff7a85e40bb0d1f60f9"><td class="memItemLeft" align="right" valign="top"><a id="ad7de1379f7d7bff7a85e40bb0d1f60f9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>turn</b> = 0</td></tr>
 <tr class="separator:ad7de1379f7d7bff7a85e40bb0d1f60f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61f4c6820e173b46f4d7ed2e369ac54a"><td class="memItemLeft" align="right" valign="top"><a id="a61f4c6820e173b46f4d7ed2e369ac54a"></a>
-std::mutex&#160;</td><td class="memItemRight" valign="bottom"><b>mutexRunningEngine</b></td></tr>
-<tr class="separator:a61f4c6820e173b46f4d7ed2e369ac54a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb12c8537178de52a826c7a9cad51214"><td class="memItemLeft" align="right" valign="top"><a id="acb12c8537178de52a826c7a9cad51214"></a>
 std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>myself</b></td></tr>
 <tr class="separator:acb12c8537178de52a826c7a9cad51214"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -376,8 +379,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>gameId</b> = &
 
 </div>
 </div>
-<a id="a4eb4dae842433adc5e21fd44102d240a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4eb4dae842433adc5e21fd44102d240a">&#9670;&nbsp;</a></span>processServerRequest()</h2>
+<a id="a3177e20c2bfc2af801c56270f7e056b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3177e20c2bfc2af801c56270f7e056b5">&#9670;&nbsp;</a></span>processServerRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -385,7 +388,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>gameId</b> = &
         <tr>
           <td class="memname">void ClientGameEngine::processServerRequest </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>request</em></td><td>)</td>
           <td></td>
         </tr>

@@ -115,6 +115,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>processClientRequest<
 <tr class="memitem:a5542ea0954494025d22213a120172446"><td class="memItemLeft" align="right" valign="top"><a id="a5542ea0954494025d22213a120172446"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>askClient</b> (int playerId)</td></tr>
 <tr class="separator:a5542ea0954494025d22213a120172446"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dfb023670615f885de4a771e4ad5ece"><td class="memItemLeft" align="right" valign="top"><a id="a8dfb023670615f885de4a771e4ad5ece"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>askClient</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player)</td></tr>
+<tr class="separator:a8dfb023670615f885de4a771e4ad5ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d7429a002a24c7a93a1b104828fa702"><td class="memItemLeft" align="right" valign="top"><a id="a3d7429a002a24c7a93a1b104828fa702"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>sendToEveryone</b> (std::string message)</td></tr>
+<tr class="separator:a3d7429a002a24c7a93a1b104828fa702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a6f3668e246f06622f01a20520d72f8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1GameEngine.html#a6a6f3668e246f06622f01a20520d72f8">getTime</a> ()</td></tr>
+<tr class="memdesc:a6a6f3668e246f06622f01a20520d72f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function return the time under a string format For example, if the time is 1:34pm, the function will return "13:34".  <a href="classserver_1_1GameEngine.html#a6a6f3668e246f06622f01a20520d72f8">More...</a><br /></td></tr>
+<tr class="separator:a6a6f3668e246f06622f01a20520d72f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -136,7 +145,28 @@ GameState&#160;</td><td class="memItemRight" valign="bottom"><b>state</b></td></
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classserver_1_1GameEngine.html" title="class GameEngine -">GameEngine</a> - </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6a6f3668e246f06622f01a20520d72f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a6f3668e246f06622f01a20520d72f8">&#9670;&nbsp;</a></span>getTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string GameEngine::getTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function return the time under a string format For example, if the time is 1:34pm, the function will return "13:34". </p>
+<dl class="section return"><dt>Returns</dt><dd>std::string </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/server/<a class="el" href="GameEngine_8hpp_source.html">GameEngine.hpp</a></li>
 <li>src/server/GameEngine.cpp</li>
 </ul>

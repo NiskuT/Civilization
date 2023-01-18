@@ -114,14 +114,18 @@ $(function() {
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> processClientRequest (std::string requestString, std::shared_ptr&lt;shared::Player&gt; player);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">static</span> std::vector&lt;std::string&gt; splitString (std::string str, <span class="keywordtype">char</span> delimiter);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    std::string askClient (<span class="keywordtype">int</span> playerId);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// Setters and Getters</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  };</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span> askClient (std::shared_ptr&lt;shared::Player&gt; player);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> sendToEveryone (std::string message);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::string <a class="code" href="classserver_1_1GameEngine.html#a6a6f3668e246f06622f01a20520d72f8">getTime</a> ();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// Setters and Getters</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  };</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassserver_1_1GameEngine_html"><div class="ttname"><a href="classserver_1_1GameEngine.html">server::GameEngine</a></div><div class="ttdoc">class GameEngine -</div><div class="ttdef"><b>Definition:</b> GameEngine.hpp:25</div></div>
 <div class="ttc" id="aclassserver_1_1GameEngine_html_a3df977e8beb28d88255da8e9a90c083c"><div class="ttname"><a href="classserver_1_1GameEngine.html#a3df977e8beb28d88255da8e9a90c083c">server::GameEngine::startGame</a></div><div class="ttdeci">void * startGame()</div><div class="ttdoc">This function help to load the map and start the game.</div></div>
+<div class="ttc" id="aclassserver_1_1GameEngine_html_a6a6f3668e246f06622f01a20520d72f8"><div class="ttname"><a href="classserver_1_1GameEngine.html#a6a6f3668e246f06622f01a20520d72f8">server::GameEngine::getTime</a></div><div class="ttdeci">std::string getTime()</div><div class="ttdoc">This function return the time under a string format For example, if the time is 1:34pm,...</div><div class="ttdef"><b>Definition:</b> GameEngine.cpp:143</div></div>
 <div class="ttc" id="aclassserver_1_1GameEngine_html_a733b2a1a5e638a318610d19562d4a590"><div class="ttname"><a href="classserver_1_1GameEngine.html#a733b2a1a5e638a318610d19562d4a590">server::GameEngine::playTurn</a></div><div class="ttdeci">void * playTurn()</div><div class="ttdoc">Function allowing a player to play his turn, composed of several action.</div></div>
 <div class="ttc" id="aclassserver_1_1GameEngine_html_ad76c416c983f85f1c7a8448212ef46c0"><div class="ttname"><a href="classserver_1_1GameEngine.html#ad76c416c983f85f1c7a8448212ef46c0">server::GameEngine::endOfRoundActions</a></div><div class="ttdeci">void * endOfRoundActions()</div><div class="ttdoc">Function handling all the actions at the end of a round (ex: check for end of game,...</div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -127,9 +127,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7199905c413b7f1d67972c7960bea5e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a7199905c413b7f1d67972c7960bea5e4">setUpText</a> (<a class="el" href="classclient_1_1GraphicCard.html">GraphicCard</a> &amp;card, std::string title, std::string body, sf::Font &amp;titleFont, sf::Font &amp;bodyFont, const Json::Value &amp;dataNumber, float titleTextProportion, float bodyTextProportion)</td></tr>
 <tr class="memdesc:a7199905c413b7f1d67972c7960bea5e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display text on the cards.  <a href="classclient_1_1GameWindow.html#a7199905c413b7f1d67972c7960bea5e4">More...</a><br /></td></tr>
 <tr class="separator:a7199905c413b7f1d67972c7960bea5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4bc6afb8d403044b3573d882bea367f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#ab4bc6afb8d403044b3573d882bea367f">clickAction</a> (sf::Vector2i clickPosition)</td></tr>
-<tr class="memdesc:ab4bc6afb8d403044b3573d882bea367f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that deteck where the user click and what to send to the engine.  <a href="classclient_1_1GameWindow.html#ab4bc6afb8d403044b3573d882bea367f">More...</a><br /></td></tr>
-<tr class="separator:ab4bc6afb8d403044b3573d882bea367f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50dec7a9acae5d37853dacf7cffddc84"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a50dec7a9acae5d37853dacf7cffddc84">clickAction</a> (sf::Event &amp;event, sf::Vector2i clickPosition, std::shared_ptr&lt; bool &gt; moveMode)</td></tr>
+<tr class="memdesc:a50dec7a9acae5d37853dacf7cffddc84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that deteck where the user click and what to send to the engine.  <a href="classclient_1_1GameWindow.html#a50dec7a9acae5d37853dacf7cffddc84">More...</a><br /></td></tr>
+<tr class="separator:a50dec7a9acae5d37853dacf7cffddc84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f77141e7397b0f9b6b4c36d8d6dc145"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a7f77141e7397b0f9b6b4c36d8d6dc145">getCurrentTime</a> (bool timeSecond=true)</td></tr>
 <tr class="memdesc:a7f77141e7397b0f9b6b4c36d8d6dc145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that deteck where the user click and what to send to the engine.  <a href="classclient_1_1GameWindow.html#a7f77141e7397b0f9b6b4c36d8d6dc145">More...</a><br /></td></tr>
 <tr class="separator:a7f77141e7397b0f9b6b4c36d8d6dc145"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,15 +139,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a76fc2d59cb17707288094354ff3606c5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a76fc2d59cb17707288094354ff3606c5">handleGameEvent</a> (sf::Event &amp;event, sf::Vector2i &amp;clickStartingPoint, std::shared_ptr&lt; bool &gt; moveMode, std::shared_ptr&lt; bool &gt; clickMode)</td></tr>
 <tr class="memdesc:a76fc2d59cb17707288094354ff3606c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test events and do actions corresponding to the event.  <a href="classclient_1_1GameWindow.html#a76fc2d59cb17707288094354ff3606c5">More...</a><br /></td></tr>
 <tr class="separator:a76fc2d59cb17707288094354ff3606c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d50e8cc8e5dcb4bb94f10afe83759f8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a5d50e8cc8e5dcb4bb94f10afe83759f8">handleKeyboardEvent</a> (sf::Event::KeyEvent keyEvent, std::shared_ptr&lt; bool &gt; moveMode, sf::Vector2i &amp;clickStartingPoint)</td></tr>
-<tr class="memdesc:a5d50e8cc8e5dcb4bb94f10afe83759f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test keyboard events and do actions corresponding to the event.  <a href="classclient_1_1GameWindow.html#a5d50e8cc8e5dcb4bb94f10afe83759f8">More...</a><br /></td></tr>
-<tr class="separator:a5d50e8cc8e5dcb4bb94f10afe83759f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a698fc53a9ab0bb86a1174141f995e9e1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a698fc53a9ab0bb86a1174141f995e9e1">handleKeyboardEvent</a> (sf::Event::KeyEvent keyEvent)</td></tr>
+<tr class="memdesc:a698fc53a9ab0bb86a1174141f995e9e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test keyboard events and do actions corresponding to the event.  <a href="classclient_1_1GameWindow.html#a698fc53a9ab0bb86a1174141f995e9e1">More...</a><br /></td></tr>
+<tr class="separator:a698fc53a9ab0bb86a1174141f995e9e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a481ad274caf12fec145313955fb36c01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a481ad274caf12fec145313955fb36c01">moveMap</a> (sf::Vector2i &amp;clickStartingPoint, sf::Vector2i position, bool reset=false)</td></tr>
 <tr class="memdesc:a481ad274caf12fec145313955fb36c01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the map on the screen.  <a href="classclient_1_1GameWindow.html#a481ad274caf12fec145313955fb36c01">More...</a><br /></td></tr>
 <tr class="separator:a481ad274caf12fec145313955fb36c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65cedd881004445bccca21a06fbf049a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a65cedd881004445bccca21a06fbf049a">changeMouseCursor</a> (std::shared_ptr&lt; bool &gt; moveMode)</td></tr>
-<tr class="memdesc:a65cedd881004445bccca21a06fbf049a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the cursor type to a hand or an arrow.  <a href="classclient_1_1GameWindow.html#a65cedd881004445bccca21a06fbf049a">More...</a><br /></td></tr>
-<tr class="separator:a65cedd881004445bccca21a06fbf049a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8790647660837d9224571b2a0b155e37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a8790647660837d9224571b2a0b155e37">changeMouseCursor</a> (sf::Event &amp;event, std::shared_ptr&lt; bool &gt; moveMode)</td></tr>
+<tr class="memdesc:a8790647660837d9224571b2a0b155e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the cursor type to a hand or an arrow.  <a href="classclient_1_1GameWindow.html#a8790647660837d9224571b2a0b155e37">More...</a><br /></td></tr>
+<tr class="separator:a8790647660837d9224571b2a0b155e37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87ddf238b278739c84c087a6459ea50d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a87ddf238b278739c84c087a6459ea50d">priorityCardClickAction</a> (sf::Vector2i clickPosition)</td></tr>
 <tr class="memdesc:a87ddf238b278739c84c087a6459ea50d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detect when we click on a priority card or on the play button on priorityCard and make the action associated.  <a href="classclient_1_1GameWindow.html#a87ddf238b278739c84c087a6459ea50d">More...</a><br /></td></tr>
 <tr class="separator:a87ddf238b278739c84c087a6459ea50d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,6 +157,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1330b9bbb847a712b4a3bf7da51ca690"><td class="memItemLeft" align="right" valign="top"><a id="a1330b9bbb847a712b4a3bf7da51ca690"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>rotateTechWheel</b> (int newLevel)</td></tr>
 <tr class="separator:a1330b9bbb847a712b4a3bf7da51ca690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebf944ed2de42cfe8c9881593ab3f156"><td class="memItemLeft" align="right" valign="top"><a id="aebf944ed2de42cfe8c9881593ab3f156"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#aebf944ed2de42cfe8c9881593ab3f156">sendMessage</a> ()</td></tr>
+<tr class="memdesc:aebf944ed2de42cfe8c9881593ab3f156"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function send a message to the server. <br /></td></tr>
+<tr class="separator:aebf944ed2de42cfe8c9881593ab3f156"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -202,6 +206,12 @@ std::vector&lt; <a class="el" href="classclient_1_1Button.html">Button</a> &gt;&
 <tr class="memitem:a161f77cbe57717109a35d9d967e819fc"><td class="memItemLeft" align="right" valign="top"><a id="a161f77cbe57717109a35d9d967e819fc"></a>
 sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td></tr>
 <tr class="separator:a161f77cbe57717109a35d9d967e819fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0b3aad63cb21f54d99cedb44680fe33"><td class="memItemLeft" align="right" valign="top"><a id="af0b3aad63cb21f54d99cedb44680fe33"></a>
+std::unique_ptr&lt; <a class="el" href="classclient_1_1Chat.html">Chat</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>chatBox</b></td></tr>
+<tr class="separator:af0b3aad63cb21f54d99cedb44680fe33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06f9f6814e91b66785e736277793b00c"><td class="memItemLeft" align="right" valign="top"><a id="a06f9f6814e91b66785e736277793b00c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isChatOpen</b> = false</td></tr>
+<tr class="separator:a06f9f6814e91b66785e736277793b00c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1GameWindow.html" title="class GameWindow -">GameWindow</a> - </p>
@@ -227,8 +237,8 @@ sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a65cedd881004445bccca21a06fbf049a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65cedd881004445bccca21a06fbf049a">&#9670;&nbsp;</a></span>changeMouseCursor()</h2>
+<a id="a8790647660837d9224571b2a0b155e37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8790647660837d9224571b2a0b155e37">&#9670;&nbsp;</a></span>changeMouseCursor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,9 +246,19 @@ sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td>
         <tr>
           <td class="memname">void GameWindow::changeMouseCursor </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; bool &gt;&#160;</td>
-          <td class="paramname"><em>moveMode</em></td><td>)</td>
+          <td class="paramtype">sf::Event &amp;&#160;</td>
+          <td class="paramname"><em>event</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::shared_ptr&lt; bool &gt;&#160;</td>
+          <td class="paramname"><em>moveMode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -253,18 +273,34 @@ sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td>
 
 </div>
 </div>
-<a id="ab4bc6afb8d403044b3573d882bea367f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4bc6afb8d403044b3573d882bea367f">&#9670;&nbsp;</a></span>clickAction()</h2>
+<a id="a50dec7a9acae5d37853dacf7cffddc84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50dec7a9acae5d37853dacf7cffddc84">&#9670;&nbsp;</a></span>clickAction()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void GameWindow::clickAction </td>
+          <td class="memname">bool GameWindow::clickAction </td>
           <td>(</td>
-          <td class="paramtype">sf::Vector2i&#160;</td>
-          <td class="paramname"><em>clickPosition</em></td><td>)</td>
+          <td class="paramtype">sf::Event &amp;&#160;</td>
+          <td class="paramname"><em>event</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">sf::Vector2i&#160;</td>
+          <td class="paramname"><em>clickPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; bool &gt;&#160;</td>
+          <td class="paramname"><em>moveMode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -401,8 +437,8 @@ sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td>
 
 </div>
 </div>
-<a id="a5d50e8cc8e5dcb4bb94f10afe83759f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d50e8cc8e5dcb4bb94f10afe83759f8">&#9670;&nbsp;</a></span>handleKeyboardEvent()</h2>
+<a id="a698fc53a9ab0bb86a1174141f995e9e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a698fc53a9ab0bb86a1174141f995e9e1">&#9670;&nbsp;</a></span>handleKeyboardEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -411,24 +447,8 @@ sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td>
           <td class="memname">bool GameWindow::handleKeyboardEvent </td>
           <td>(</td>
           <td class="paramtype">sf::Event::KeyEvent&#160;</td>
-          <td class="paramname"><em>keyEvent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>keyEvent</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; bool &gt;&#160;</td>
-          <td class="paramname"><em>moveMode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">sf::Vector2i &amp;&#160;</td>
-          <td class="paramname"><em>clickStartingPoint</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
