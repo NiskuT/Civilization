@@ -137,6 +137,20 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         break;
     }
 
+    case HudTextureType::chat:
+    {
+        xPos = 20;
+        yPos = 585;
+        break;
+    }
+
+    case HudTextureType::moveMap:
+    {
+        xPos = 20;
+        yPos = 653;
+        break;
+    }
+
     case HudTextureType::techWheel:
     {
         xPos = windowLength;

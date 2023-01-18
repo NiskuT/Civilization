@@ -32,6 +32,9 @@
 
 #define CARD_BORDER 18
 
+#define INDEX_CHAT_BUTTON 7
+#define INDEX_MAP_BUTTON 8
+
 #define ELEMENT_PATH "/img/map/element/"
 #define CHAT_MIN_SIZE 7
 
@@ -118,9 +121,6 @@ void GameWindow::displayWindow()
     {
         chatBox->drawChat(gameEnginePtr->clientWindow); 
     }
-
-    chatPicture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
-    movePicture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
 
     gameEnginePtr->clientWindow->display();
 }
@@ -410,7 +410,7 @@ void GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::
     }
 
     // Check if the click position is inside the move map button
-    if (gameEnginePtr->intersectPointRect(clickPosition, movePicture->getSprite().getGlobalBounds()))
+    if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_MAP_BUTTON].getSprite().getGlobalBounds()))
     {
         if(event.mouseButton.button == sf::Mouse::Left)
         {
@@ -424,7 +424,7 @@ void GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::
     }
 
     // Check if the click position is inside the chat button
-    if (gameEnginePtr->intersectPointRect(clickPosition, chatPicture->getSprite().getGlobalBounds()))
+    if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_CHAT_BUTTON].getSprite().getGlobalBounds()))
     {
         isChatOpen = !isChatOpen;
         return;
@@ -701,14 +701,6 @@ void GameWindow::loadHudTexture()
             dataNumber["box-y-offset-proportion"].asFloat(),
             priorityCards.back());
         boxTexture->getSprite(index).setPosition(boxPosition.x, boxPosition.y);
-
-        chatPicture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/chat-button.png");
-        chatPicture->addSprite();
-        chatPicture->getSprite(0).setPosition(sf::Vector2f(20, 585));
-
-        movePicture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/move-button.png");
-        movePicture->addSprite();
-        movePicture->getSprite(0).setPosition(sf::Vector2f(20, 653));
     }
 
     // actionCard

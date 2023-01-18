@@ -35,6 +35,16 @@
             "path": "/img/hud/ladder.png",
             "scale": 0.78,
             "rotation": 0
+        },
+        {
+            "path": "/img/hud/chat-button.png",
+            "scale": 0.03,
+            "rotation": 0
+        },
+        {
+            "path": "/img/hud/move-button.png",
+            "scale": 0.03,
+            "rotation": 0
         }
     ]
 }

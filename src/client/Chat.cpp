@@ -13,6 +13,8 @@
 
 #define BUTTON_TEXT_ENTER 1
 
+#define STARTING_MESSAGE "Game is starting"
+
 const sf::Color TEXT_COLOR = sf::Color(255, 255, 255, 180);
 
 using namespace client;
@@ -32,23 +34,20 @@ Chat::Chat(sf::Font& font)
         gameChat[i].setPosition(CHAT_OFFSET, CHAT_START_POSITION + CHAT_SIZE_X + CHAT_OFFSET * i);
     }
     chatButton.emplace_back(
-        sf::Vector2f(CHAT_SIZE_X + 2 * CHAT_SIZE_X, CHAT_SIZE_Y), 
+        sf::Vector2f(CHAT_SIZE_X + 2 * CHAT_OFFSET, CHAT_SIZE_Y), 
         sf::Vector2f(0, CHAT_SIZE_X), 
         TEXT_COLOR, 
         false);
 
     chatButton.emplace_back(
         sf::Vector2f(CHAT_SIZE_X, CHAT_TEXT_SIZE), 
-        sf::Vector2f(CHAT_SIZE_X, CHAT_START_POSITION + CHAT_SIZE_X + CHAT_OFFSET * (i + 1)), 
+        sf::Vector2f(CHAT_OFFSET, CHAT_START_POSITION + CHAT_SIZE_X + CHAT_OFFSET * (i + 1)), 
         TEXT_COLOR, 
         false);
 
     chatButton.back().setText(CHAT_FONT_SIZE, sf::Vector2f(0, 0), "", font, CHAT_SIZE_X);
 
-    updateChat("19:45", "Lasso", "Game is starting");
-    updateChat("19:50", "Lasso", "Game");
-    updateChat("19:51", "Lasso", "How are you ?");
-    updateChat("19:53", "Lasso", "Game is starting");
+    updateChat("", "", STARTING_MESSAGE);
 }
 
 /*!
