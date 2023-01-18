@@ -1,9 +1,0 @@
-<map id="_IRDirty" name="_IRDirty">
-<area shape="rect" id="node1" title=" " alt="" coords="15,333,85,360"/>
-<area shape="rect" id="node2" href="$structIRCallee.html" title=" " alt="" coords="5,5,79,32"/>
-<area shape="rect" id="node3" href="$struct__IRExpr.html" title=" " alt="" coords="131,147,201,174"/>
-<area shape="rect" id="node5" href="$struct__IRQop.html" title=" " alt="" coords="119,333,186,360"/>
-<area shape="rect" id="node7" href="$struct__IRTriop.html" title=" " alt="" coords="264,333,335,360"/>
-<area shape="rect" id="node4" href="$struct__IRConst.html" title=" " alt="" coords="109,5,188,32"/>
-<area shape="rect" id="node6" href="$structIRRegArray.html" title=" " alt="" coords="213,5,303,32"/>
-</map>

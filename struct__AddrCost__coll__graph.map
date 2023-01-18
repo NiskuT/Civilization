@@ -1,8 +1,0 @@
-<map id="_AddrCost" name="_AddrCost">
-<area shape="rect" id="node1" title=" " alt="" coords="5,199,89,225"/>
-<area shape="rect" id="node2" href="$struct__AddrPos.html" title=" " alt="" coords="8,95,87,121"/>
-<area shape="rect" id="node3" href="$struct__file__node.html" title=" " alt="" coords="151,5,232,32"/>
-<area shape="rect" id="node4" href="$struct__fn__node.html" title=" " alt="" coords="111,95,186,121"/>
-<area shape="rect" id="node6" href="$struct__obj__node.html" title=" " alt="" coords="264,95,345,121"/>
-<area shape="rect" id="node5" href="$struct__Context.html" title=" " alt="" coords="135,199,210,225"/>
-</map>

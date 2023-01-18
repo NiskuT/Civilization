@@ -1,28 +1,4 @@
 var searchData=
 [
-  ['id_5fand_5fwait_5fs_1851',['id_and_wait_s',['../structid__and__wait__s.html',1,'']]],
-  ['imageinfo_1852',['ImageInfo',['../structImageInfo.html',1,'']]],
-  ['inedge_1853',['InEdge',['../structInEdge.html',1,'']]],
-  ['inedgearr_1854',['InEdgeArr',['../structInEdgeArr.html',1,'']]],
-  ['inferior_5flist_1855',['inferior_list',['../structinferior__list.html',1,'']]],
-  ['inferior_5flist_5fentry_1856',['inferior_list_entry',['../structinferior__list__entry.html',1,'']]],
-  ['inferior_5fregcache_5fdata_1857',['inferior_regcache_data',['../structinferior__regcache__data.html',1,'']]],
-  ['info_1858',['Info',['../structInfo.html',1,'']]],
-  ['insn_5fsel_5fflags_5ft_5fstruct_1859',['insn_sel_flags_t_struct',['../structinsn__sel__flags__t__struct.html',1,'']]],
-  ['instance_1860',['instance',['../structinstance.html',1,'']]],
-  ['internalfpf_1861',['InternalFPF',['../structInternalFPF.html',1,'']]],
-  ['interval_1862',['Interval',['../structInterval.html',1,'']]],
-  ['invalidthreadidinfo_1863',['InvalidThreadIdInfo',['../structInvalidThreadIdInfo.html',1,'']]],
-  ['iptofunorobjcompleter_1864',['IPtoFunOrObjCompleter',['../structIPtoFunOrObjCompleter.html',1,'']]],
-  ['ircallee_1865',['IRCallee',['../structIRCallee.html',1,'']]],
-  ['ircas_1866',['IRCAS',['../structIRCAS.html',1,'']]],
-  ['iricb_1867',['IRICB',['../structIRICB.html',1,'']]],
-  ['irloadg_1868',['IRLoadG',['../structIRLoadG.html',1,'']]],
-  ['irop_5ft_1869',['irop_t',['../structirop__t.html',1,'']]],
-  ['irputi_1870',['IRPutI',['../structIRPutI.html',1,'']]],
-  ['irregarray_1871',['IRRegArray',['../structIRRegArray.html',1,'']]],
-  ['irsb_1872',['IRSB',['../structIRSB.html',1,'']]],
-  ['irstoreg_1873',['IRStoreG',['../structIRStoreG.html',1,'']]],
-  ['irtypeenv_1874',['IRTypeEnv',['../structIRTypeEnv.html',1,'']]],
-  ['iselenv_1875',['ISelEnv',['../structISelEnv.html',1,'']]]
+  ['server_115',['Server',['../classserver_1_1Server.html',1,'server']]]
 ];

@@ -1,9 +1,0 @@
-<map id="ARM64Instr" name="ARM64Instr">
-<area shape="rect" id="node1" title=" " alt="" coords="231,392,323,419"/>
-<area shape="rect" id="node2" href="$structRetLoc.html" title=" " alt="" coords="5,191,69,218"/>
-<area shape="rect" id="node3" href="$structARM64RI6.html" title=" " alt="" coords="179,191,266,218"/>
-<area shape="rect" id="node4" href="$structHReg.html" title=" " alt="" coords="305,5,361,32"/>
-<area shape="rect" id="node5" href="$structARM64RIL.html" title=" " alt="" coords="290,191,377,218"/>
-<area shape="rect" id="node6" href="$structARM64AMode.html" title=" " alt="" coords="401,191,508,218"/>
-<area shape="rect" id="node7" href="$structARM64RIA.html" title=" " alt="" coords="533,191,622,218"/>
-</map>

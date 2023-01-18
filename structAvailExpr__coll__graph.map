@@ -1,7 +1,0 @@
-<map id="AvailExpr" name="AvailExpr">
-<area shape="rect" id="node1" title=" " alt="" coords="169,216,248,243"/>
-<area shape="rect" id="node2" href="$structTmpOrConst.html" title=" " alt="" coords="81,103,179,130"/>
-<area shape="rect" id="node3" href="$struct__IRConst.html" title=" " alt="" coords="5,5,84,32"/>
-<area shape="rect" id="node4" href="$structIRCallee.html" title=" " alt="" coords="203,103,276,130"/>
-<area shape="rect" id="node5" href="$structIRRegArray.html" title=" " alt="" coords="301,103,391,130"/>
-</map>

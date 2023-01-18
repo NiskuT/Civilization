@@ -1,8 +1,0 @@
-<map id="_WordSetU" name="_WordSetU">
-<area shape="rect" id="node1" title=" " alt="" coords="69,260,158,287"/>
-<area shape="rect" id="node2" href="$structWordVec.html" title=" " alt="" coords="76,364,151,391"/>
-<area shape="rect" id="node3" href="$structWCache.html" title=" " alt="" coords="15,127,89,153"/>
-<area shape="rect" id="node4" href="$structWCacheEnt.html" title=" " alt="" coords="5,14,99,41"/>
-<area shape="rect" id="node5" href="$struct__WordFM.html" title=" " alt="" coords="137,127,215,153"/>
-<area shape="rect" id="node6" href="$struct__AvlNode.html" title=" " alt="" coords="137,14,215,41"/>
-</map>

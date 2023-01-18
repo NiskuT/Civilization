@@ -1,7 +1,0 @@
-<map id="_DedupPoolAlloc" name="_DedupPoolAlloc">
-<area shape="rect" id="node1" title=" " alt="" coords="99,199,221,225"/>
-<area shape="rect" id="node2" href="$struct__VgHashTable.html" title=" " alt="" coords="5,109,112,136"/>
-<area shape="rect" id="node3" href="$struct__VgHashNode.html" title=" " alt="" coords="5,5,112,32"/>
-<area shape="rect" id="node4" href="$struct__PoolAlloc.html" title=" " alt="" coords="221,109,305,136"/>
-<area shape="rect" id="node5" href="$struct__XArray.html" title=" " alt="" coords="208,5,277,32"/>
-</map>

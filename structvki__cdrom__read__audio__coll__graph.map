@@ -1,5 +1,0 @@
-<map id="vki_cdrom_read_audio" name="vki_cdrom_read_audio">
-<area shape="rect" id="node1" title=" " alt="" coords="5,184,157,211"/>
-<area shape="rect" id="node2" href="$unionvki__cdrom__addr.html" title=" " alt="" coords="24,95,139,121"/>
-<area shape="rect" id="node3" href="$structvki__cdrom__msf0.html" title=" " alt="" coords="22,5,141,32"/>
-</map>

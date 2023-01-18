@@ -1,8 +1,0 @@
-<map id="TTEntryC" name="TTEntryC">
-<area shape="rect" id="node1" title=" " alt="" coords="96,184,175,211"/>
-<area shape="rect" id="node2" href="$structInEdgeArr.html" title=" " alt="" coords="41,95,121,121"/>
-<area shape="rect" id="node3" href="$struct__XArray.html" title=" " alt="" coords="93,5,162,32"/>
-<area shape="rect" id="node5" href="$structOutEdgeArr.html" title=" " alt="" coords="145,95,235,121"/>
-<area shape="rect" id="node4" href="$structInEdge.html" title=" " alt="" coords="5,5,68,32"/>
-<area shape="rect" id="node6" href="$structOutEdge.html" title=" " alt="" coords="187,5,260,32"/>
-</map>

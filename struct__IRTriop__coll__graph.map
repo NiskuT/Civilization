@@ -1,8 +1,0 @@
-<map id="_IRTriop" name="_IRTriop">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,76,32"/>
-<area shape="rect" id="node2" href="$struct__IRExpr.html" title=" " alt="" coords="120,177,191,203"/>
-<area shape="rect" id="node5" href="$struct__IRQop.html" title=" " alt="" coords="122,363,189,389"/>
-<area shape="rect" id="node3" href="$structIRCallee.html" title=" " alt="" coords="109,5,183,32"/>
-<area shape="rect" id="node4" href="$struct__IRConst.html" title=" " alt="" coords="207,5,285,32"/>
-<area shape="rect" id="node6" href="$structIRRegArray.html" title=" " alt="" coords="310,5,401,32"/>
-</map>

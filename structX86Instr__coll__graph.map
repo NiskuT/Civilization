@@ -1,9 +1,0 @@
-<map id="X86Instr" name="X86Instr">
-<area shape="rect" id="node1" title=" " alt="" coords="201,467,271,493"/>
-<area shape="rect" id="node2" href="$structRetLoc.html" title=" " alt="" coords="5,325,69,351"/>
-<area shape="rect" id="node3" href="$structX86AMode.html" title=" " alt="" coords="219,124,306,151"/>
-<area shape="rect" id="node6" href="$structX86RMI.html" title=" " alt="" coords="350,325,421,351"/>
-<area shape="rect" id="node7" href="$structX86RM.html" title=" " alt="" coords="144,325,211,351"/>
-<area shape="rect" id="node4" href="$structHReg.html" title=" " alt="" coords="235,5,291,32"/>
-<area shape="rect" id="node5" href="$structX86RI.html" title=" " alt="" coords="429,205,488,232"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="vki_v4l2_event" name="vki_v4l2_event">
-<area shape="rect" id="node1" title=" " alt="" coords="311,132,420,159"/>
-<area shape="rect" id="node2" href="$structvki__v4l2__event__ctrl.html" title=" " alt="" coords="30,5,165,32"/>
-<area shape="rect" id="node3" href="$structvki__v4l2__event__motion__det.html" title=" " alt="" coords="7,56,187,83"/>
-<area shape="rect" id="node4" href="$structvki__v4l2__event__vsync.html" title=" " alt="" coords="22,107,173,133"/>
-<area shape="rect" id="node5" href="$structvki__timespec.html" title=" " alt="" coords="48,157,147,184"/>
-<area shape="rect" id="node6" href="$structvki__v4l2__event__src__change.html" title=" " alt="" coords="30,209,165,250"/>
-<area shape="rect" id="node7" href="$structvki__v4l2__event__frame__sync.html" title=" " alt="" coords="5,275,189,301"/>
-</map>

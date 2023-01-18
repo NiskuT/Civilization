@@ -1,19 +1,8 @@
 var searchData=
 [
-  ['objtype_552',['ObjType',['../structtest92_1_1ObjType.html',1,'test92']]],
-  ['ocache_553',['OCache',['../structOCache.html',1,'']]],
-  ['ocacheline_554',['OCacheLine',['../structOCacheLine.html',1,'']]],
-  ['ocacheline_5fmain_555',['OCacheLine_Main',['../structOCacheLine__Main.html',1,'']]],
-  ['ocacheset_556',['OCacheSet',['../structOCacheSet.html',1,'']]],
-  ['offset_557',['offset',['../structvki__drm__agp__binding.html#adff4ffa760225d824ccce46cffaaa30e',1,'vki_drm_agp_binding::offset()'],['../structvki__drm__map.html#a06d0323570b01ea8e88b7fdc06ab6765',1,'vki_drm_map::offset()']]],
-  ['oink_558',['Oink',['../structOink.html',1,'']]],
-  ['oldref_559',['OldRef',['../structOldRef.html',1,'']]],
-  ['openjsonfile_560',['openJsonFile',['../classclient_1_1GameWindow.html#aba99a4b7247ae2d707548f35114524a7',1,'client::GameWindow']]],
-  ['operand_561',['Operand',['../structOperand.html',1,'']]],
-  ['operator_28_29_562',['operator()',['../classshared_1_1Map.html#a07d986fe96fde45acc0ba56e3fa4d2e1',1,'shared::Map::operator()()'],['../classclient_1_1Button.html#ada9c03587467d62eaed8801a1a58596f',1,'client::Button::operator()()']]],
-  ['opnd_5ft_563',['opnd_t',['../structopnd__t.html',1,'']]],
-  ['ordinaryclass_564',['OrdinaryClass',['../classOrdinaryClass.html',1,'']]],
-  ['outedge_565',['OutEdge',['../structOutEdge.html',1,'']]],
-  ['outedgearr_566',['OutEdgeArr',['../structOutEdgeArr.html',1,'']]],
-  ['outputsink_567',['OutputSink',['../structOutputSink.html',1,'']]]
+  ['recap_20of_20specific_20actions_68',['Recap of Specific Actions',['../md_docs_rules_recap_of_specific_actions.html',1,'']]],
+  ['registerserveranswer_69',['registerServerAnswer',['../classclient_1_1ClientGameEngine.html#ad56651c028b22e70c09315beabe4db0f',1,'client::ClientGameEngine']]],
+  ['rendergame_70',['renderGame',['../classclient_1_1ClientGameEngine.html#adc01a37a2d275c34d6fbaebc3c89ea9a',1,'client::ClientGameEngine']]],
+  ['rendering_3a_20strategy_20and_20design_71',['Rendering: Strategy and Design',['../md_docs_rendering.html',1,'']]],
+  ['rules_72',['Rules',['../md_docs_rules_rules.html',1,'(Global Namespace)'],['../classshared_1_1Rules.html',1,'shared::Rules']]]
 ];
