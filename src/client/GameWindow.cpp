@@ -36,7 +36,7 @@
 
 #define ARROW_INDEX 5
 
-#define ELEMENT_PATH "/img/map/element/"
+#define ELEMENT_PATH "/map/element/"
 #define CHAT_MIN_SIZE 7
 
 #ifndef RESOURCES_PATH
@@ -381,7 +381,7 @@ const auto GameWindow::openJsonFile(std::string path)
 */
 void GameWindow::moveToRightPriorityCards(int difficulty)
 {
-    const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
+    const Json::Value &dataNumber = openJsonFile("/hud/data-number.json");
 
     int xPos;
     int yPos;
@@ -585,7 +585,7 @@ void GameWindow::loadMapTexture()
 
     mapShared.generateRandomMap(123456789);
 
-    std::string hexagonImgPath = RESOURCES_PATH "/img/map/field/field-";
+    std::string hexagonImgPath = RESOURCES_PATH "/map/field/field-";
     std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
                                             "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
                                             "wonder-messa", "wonder-pantanal", "wonder-volcanic"};
@@ -613,7 +613,7 @@ void GameWindow::loadMapTexture()
  */
 void GameWindow::loadElementTexture()
 {
-    std::string folder_path = RESOURCES_PATH "/img/map/element/";
+    std::string folder_path = RESOURCES_PATH "/map/element/";
     std::vector<std::string> png_files;
     DIR *dir = opendir(folder_path.c_str());
 
@@ -657,7 +657,7 @@ void GameWindow::updateElementTexture()
     std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
     // Data are temporary loaded with the json file but it will be updated from the server soon
-    const Json::Value &data = openJsonFile("/img/map/files.json");
+    const Json::Value &data = openJsonFile("/map/files.json");
 
     for (unsigned index = 0; index < data.size(); ++index)
     {
@@ -702,14 +702,14 @@ void GameWindow::loadHudTexture()
     int rotation = 0;
     int priorityCardIndex = 0;
 
-    const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
+    const Json::Value &dataNumber = openJsonFile("/hud/data-number.json");
 
-    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/background.png");
+    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/hud/background.png");
     backgroundTexture->addSprite();
     float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
     backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);
 
-    const Json::Value &data = openJsonFile("/img/hud/files.json");
+    const Json::Value &data = openJsonFile("/hud/files.json");
 
     for (unsigned index = 0; index < data.size(); ++index)
     {
@@ -721,21 +721,21 @@ void GameWindow::loadHudTexture()
     }
 
     // load the priorityCard
-    boxTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/box.png");
+    boxTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/hud/box.png");
     std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
     std::string boxString = "0";
 
-    if (!titleFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+    if (!titleFont.loadFromFile(RESOURCES_PATH "/hud/font.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    if (!bodyFont.loadFromFile(RESOURCES_PATH "/img/hud/Calibri.ttf"))
+    if (!bodyFont.loadFromFile(RESOURCES_PATH "/hud/MorrisRomanBlack.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    const Json::Value &priorityData = openJsonFile("/img/hud/priority-card.json");
+    const Json::Value &priorityData = openJsonFile("/hud/priority-card.json");
 
     float priorityTitleTextProportion = dataNumber["priority-card-title-proportion"].asFloat();
     float priorityBodyTextProportion = dataNumber["priority-card-body-proportion"].asFloat();
@@ -787,7 +787,7 @@ void GameWindow::loadHudTexture()
     }
 
     // actionCard
-    const Json::Value &actionCardData = openJsonFile("/img/hud/action-card.json");
+    const Json::Value &actionCardData = openJsonFile("/hud/action-card.json");
     float actionTitleTextProportion = dataNumber["action-card-title-proportion"].asFloat();
     float actionBodyTextProportion = dataNumber["action-card-body-proportion"].asFloat();
 
