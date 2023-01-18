@@ -144,6 +144,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7e413bb8c77853c9390ae1d2563cfdcc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1ClientGameEngine.html#a7e413bb8c77853c9390ae1d2563cfdcc">intersectPointRect</a> (sf::Vector2i point, sf::FloatRect rectangle)</td></tr>
 <tr class="memdesc:a7e413bb8c77853c9390ae1d2563cfdcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detect an intersection between a point and a rect.  <a href="classclient_1_1ClientGameEngine.html#a7e413bb8c77853c9390ae1d2563cfdcc">More...</a><br /></td></tr>
 <tr class="separator:a7e413bb8c77853c9390ae1d2563cfdcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6400434cd674d7cf209908fb49c64a1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1ClientGameEngine.html#a6400434cd674d7cf209908fb49c64a1d">handlePriorityCardPlay</a> (std::string typePlayed, int difficulty)</td></tr>
+<tr class="memdesc:a6400434cd674d7cf209908fb49c64a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print which priority card the user wants to play and its difficulty.  <a href="classclient_1_1ClientGameEngine.html#a6400434cd674d7cf209908fb49c64a1d">More...</a><br /></td></tr>
+<tr class="separator:a6400434cd674d7cf209908fb49c64a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -267,6 +270,43 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>gameId</b> = &
   <table class="params">
     <tr><td class="paramname">x</td><td>position on x axis </td></tr>
     <tr><td class="paramname">y</td><td>position on y axis </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6400434cd674d7cf209908fb49c64a1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6400434cd674d7cf209908fb49c64a1d">&#9670;&nbsp;</a></span>handlePriorityCardPlay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ClientGameEngine::handlePriorityCardPlay </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>typePlayed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>difficulty</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print which priority card the user wants to play and its difficulty. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">typePlayed</td><td>type of the priority card played (economy, science, culture, ...) </td></tr>
+    <tr><td class="paramname">difficulty</td><td>level of difficulty played (0 to 4 for the 5 fields) </td></tr>
   </table>
   </dd>
 </dl>

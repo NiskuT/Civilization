@@ -124,9 +124,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aba99a4b7247ae2d707548f35114524a7"><td class="memItemLeft" align="right" valign="top">const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#aba99a4b7247ae2d707548f35114524a7">openJsonFile</a> (std::string path)</td></tr>
 <tr class="memdesc:aba99a4b7247ae2d707548f35114524a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open JSON File.  <a href="classclient_1_1GameWindow.html#aba99a4b7247ae2d707548f35114524a7">More...</a><br /></td></tr>
 <tr class="separator:aba99a4b7247ae2d707548f35114524a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64b9ef54ec81233e579e6ede62d34c21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a64b9ef54ec81233e579e6ede62d34c21">setUpText</a> (<a class="el" href="classclient_1_1GraphicCard.html">GraphicCard</a> &amp;card, std::string title, std::string body, sf::Font &amp;titleFont, sf::Font &amp;bodyFont, float titleTextSizeProportion, float bodyTextSizeProportion)</td></tr>
-<tr class="memdesc:a64b9ef54ec81233e579e6ede62d34c21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display text on the cards.  <a href="classclient_1_1GameWindow.html#a64b9ef54ec81233e579e6ede62d34c21">More...</a><br /></td></tr>
-<tr class="separator:a64b9ef54ec81233e579e6ede62d34c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7199905c413b7f1d67972c7960bea5e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a7199905c413b7f1d67972c7960bea5e4">setUpText</a> (<a class="el" href="classclient_1_1GraphicCard.html">GraphicCard</a> &amp;card, std::string title, std::string body, sf::Font &amp;titleFont, sf::Font &amp;bodyFont, const Json::Value &amp;dataNumber, float titleTextProportion, float bodyTextProportion)</td></tr>
+<tr class="memdesc:a7199905c413b7f1d67972c7960bea5e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display text on the cards.  <a href="classclient_1_1GameWindow.html#a7199905c413b7f1d67972c7960bea5e4">More...</a><br /></td></tr>
+<tr class="separator:a7199905c413b7f1d67972c7960bea5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4bc6afb8d403044b3573d882bea367f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#ab4bc6afb8d403044b3573d882bea367f">clickAction</a> (sf::Vector2i clickPosition)</td></tr>
 <tr class="memdesc:ab4bc6afb8d403044b3573d882bea367f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that deteck where the user click and what to send to the engine.  <a href="classclient_1_1GameWindow.html#ab4bc6afb8d403044b3573d882bea367f">More...</a><br /></td></tr>
 <tr class="separator:ab4bc6afb8d403044b3573d882bea367f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,6 +148,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a65cedd881004445bccca21a06fbf049a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a65cedd881004445bccca21a06fbf049a">changeMouseCursor</a> (std::shared_ptr&lt; bool &gt; moveMode)</td></tr>
 <tr class="memdesc:a65cedd881004445bccca21a06fbf049a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the cursor type to a hand or an arrow.  <a href="classclient_1_1GameWindow.html#a65cedd881004445bccca21a06fbf049a">More...</a><br /></td></tr>
 <tr class="separator:a65cedd881004445bccca21a06fbf049a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87ddf238b278739c84c087a6459ea50d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a87ddf238b278739c84c087a6459ea50d">priorityCardClickAction</a> (sf::Vector2i clickPosition)</td></tr>
+<tr class="memdesc:a87ddf238b278739c84c087a6459ea50d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detect when we click on a priority card or on the play button on priorityCard and make the action associated.  <a href="classclient_1_1GameWindow.html#a87ddf238b278739c84c087a6459ea50d">More...</a><br /></td></tr>
+<tr class="separator:a87ddf238b278739c84c087a6459ea50d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d990a1dc81497bad19db4d9576ddabd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a0d990a1dc81497bad19db4d9576ddabd">moveToRightPriorityCards</a> (int difficulty)</td></tr>
+<tr class="memdesc:a0d990a1dc81497bad19db4d9576ddabd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move to right priority cards when a player play one.  <a href="classclient_1_1GameWindow.html#a0d990a1dc81497bad19db4d9576ddabd">More...</a><br /></td></tr>
+<tr class="separator:a0d990a1dc81497bad19db4d9576ddabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -480,6 +486,32 @@ sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td>
 
 </div>
 </div>
+<a id="a0d990a1dc81497bad19db4d9576ddabd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d990a1dc81497bad19db4d9576ddabd">&#9670;&nbsp;</a></span>moveToRightPriorityCards()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GameWindow::moveToRightPriorityCards </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>difficulty</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Move to right priority cards when a player play one. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">difficulty</td><td>level of difficulty when the card is played (0 to 4 for the 5 different field) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aba99a4b7247ae2d707548f35114524a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba99a4b7247ae2d707548f35114524a7">&#9670;&nbsp;</a></span>openJsonFile()</h2>
 
@@ -506,8 +538,34 @@ sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td>
 
 </div>
 </div>
-<a id="a64b9ef54ec81233e579e6ede62d34c21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64b9ef54ec81233e579e6ede62d34c21">&#9670;&nbsp;</a></span>setUpText()</h2>
+<a id="a87ddf238b278739c84c087a6459ea50d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87ddf238b278739c84c087a6459ea50d">&#9670;&nbsp;</a></span>priorityCardClickAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GameWindow::priorityCardClickAction </td>
+          <td>(</td>
+          <td class="paramtype">sf::Vector2i&#160;</td>
+          <td class="paramname"><em>clickPosition</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Detect when we click on a priority card or on the play button on priorityCard and make the action associated. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cursorRect</td><td>emplacement of the mouse </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7199905c413b7f1d67972c7960bea5e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7199905c413b7f1d67972c7960bea5e4">&#9670;&nbsp;</a></span>setUpText()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -545,14 +603,20 @@ sf::Font&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFont</b></td>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>titleTextSizeProportion</em>, </td>
+          <td class="paramtype">const Json::Value &amp;&#160;</td>
+          <td class="paramname"><em>dataNumber</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>bodyTextSizeProportion</em>&#160;</td>
+          <td class="paramname"><em>titleTextProportion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>bodyTextProportion</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

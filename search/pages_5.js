@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['recap_20of_20specific_20actions_194',['Recap of Specific Actions',['../md_docs_rules_recap_of_specific_actions.html',1,'']]],
-  ['rendering_3a_20strategy_20and_20design_195',['Rendering: Strategy and Design',['../md_docs_rendering.html',1,'']]],
-  ['rules_196',['Rules',['../md_docs_rules_rules.html',1,'']]]
+  ['recap_20of_20specific_20actions_204',['Recap of Specific Actions',['../md_docs_rules_recap_of_specific_actions.html',1,'']]],
+  ['rendering_3a_20strategy_20and_20design_205',['Rendering: Strategy and Design',['../md_docs_rendering.html',1,'']]],
+  ['rules_206',['Rules',['../md_docs_rules_rules.html',1,'']]]
 ];

@@ -81,16 +81,22 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae7383cb4f5647186a22d6819180bc702"><td class="memItemLeft" align="right" valign="top"><a id="ae7383cb4f5647186a22d6819180bc702"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>GraphicCard</b> (const std::string &amp;path, const Json::Value &amp;dataNumber, const float windowLength, const float windowWidth, int index)</td></tr>
-<tr class="separator:ae7383cb4f5647186a22d6819180bc702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb08a1d8e1dabe0137fb7bbaaa4f6f99"><td class="memItemLeft" align="right" valign="top"><a id="abb08a1d8e1dabe0137fb7bbaaa4f6f99"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>GraphicCard</b> (const std::string &amp;path, const Json::Value &amp;dataNumber, const float windowLength, const float windowWidth, int index, sf::Font &amp;font)</td></tr>
+<tr class="separator:abb08a1d8e1dabe0137fb7bbaaa4f6f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a605724e8009909d10542783530e4a315"><td class="memItemLeft" align="right" valign="top"><a id="a605724e8009909d10542783530e4a315"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>GraphicCard</b> (const std::string &amp;path, float actionProportion, const float windowLength, const float windowWidth, int actionCardNumber, int index)</td></tr>
 <tr class="separator:a605724e8009909d10542783530e4a315"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ed19d95de4b1c2916eb2dc66b7afa8f"><td class="memItemLeft" align="right" valign="top"><a id="a2ed19d95de4b1c2916eb2dc66b7afa8f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GraphicCard.html#a2ed19d95de4b1c2916eb2dc66b7afa8f">moveUpPriorityCard</a> ()</td></tr>
-<tr class="memdesc:a2ed19d95de4b1c2916eb2dc66b7afa8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move up priority cards when we click on it. <br /></td></tr>
+<tr class="memdesc:a2ed19d95de4b1c2916eb2dc66b7afa8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move up a priority card when we click on it. <br /></td></tr>
 <tr class="separator:a2ed19d95de4b1c2916eb2dc66b7afa8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95fa579f5b2ff50ccc2847268c979e4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GraphicCard.html#a95fa579f5b2ff50ccc2847268c979e4d">movePriorityCardElements</a> (const Json::Value &amp;dataNumber)</td></tr>
+<tr class="memdesc:a95fa579f5b2ff50ccc2847268c979e4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move all the elements of a priority card if we move one (title, body, play button, ...)  <a href="classclient_1_1GraphicCard.html#a95fa579f5b2ff50ccc2847268c979e4d">More...</a><br /></td></tr>
+<tr class="separator:a95fa579f5b2ff50ccc2847268c979e4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a799da1829a758907245b8c6256f81359"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GraphicCard.html#a799da1829a758907245b8c6256f81359">setPositionPriorityCardTexts</a> (sf::Text &amp;text, int refXOffset, int refYOffset, int xOffset, int yOffset)</td></tr>
+<tr class="memdesc:a799da1829a758907245b8c6256f81359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set position of all the different texts on a priority card.  <a href="classclient_1_1GraphicCard.html#a799da1829a758907245b8c6256f81359">More...</a><br /></td></tr>
+<tr class="separator:a799da1829a758907245b8c6256f81359"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -136,10 +142,101 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>windowWidth</b></td></
 <tr class="memitem:ac719e4b1bb48384f14740a48f84e4101"><td class="memItemLeft" align="right" valign="top"><a id="ac719e4b1bb48384f14740a48f84e4101"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>windowLength</b></td></tr>
 <tr class="separator:ac719e4b1bb48384f14740a48f84e4101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefba99fef3c55c84ba6e58f6036e0e10"><td class="memItemLeft" align="right" valign="top"><a id="aefba99fef3c55c84ba6e58f6036e0e10"></a>
+std::unique_ptr&lt; <a class="el" href="classclient_1_1Button.html">Button</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>validateButton</b></td></tr>
+<tr class="separator:aefba99fef3c55c84ba6e58f6036e0e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a0e6928d119ccf3d58aa9566e7514ff"><td class="memItemLeft" align="right" valign="top"><a id="a6a0e6928d119ccf3d58aa9566e7514ff"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>difficulty</b></td></tr>
+<tr class="separator:a6a0e6928d119ccf3d58aa9566e7514ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1GraphicCard.html" title="class GraphicCard -">GraphicCard</a> - </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a95fa579f5b2ff50ccc2847268c979e4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95fa579f5b2ff50ccc2847268c979e4d">&#9670;&nbsp;</a></span>movePriorityCardElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GraphicCard::movePriorityCardElements </td>
+          <td>(</td>
+          <td class="paramtype">const Json::Value &amp;&#160;</td>
+          <td class="paramname"><em>dataNumber</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Move all the elements of a priority card if we move one (title, body, play button, ...) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataNumber</td><td>json file that contains all the data necessary to move the elements </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a799da1829a758907245b8c6256f81359"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a799da1829a758907245b8c6256f81359">&#9670;&nbsp;</a></span>setPositionPriorityCardTexts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GraphicCard::setPositionPriorityCardTexts </td>
+          <td>(</td>
+          <td class="paramtype">sf::Text &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>refXOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>refYOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>xOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>yOffset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set position of all the different texts on a priority card. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>text to set position </td></tr>
+    <tr><td class="paramname">refXOffset</td><td>x position from where the x offset begin </td></tr>
+    <tr><td class="paramname">refYOffset</td><td>y position from where the y offset begin </td></tr>
+    <tr><td class="paramname">xOffset</td><td>x offset </td></tr>
+    <tr><td class="paramname">yOffset</td><td>y offset </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/client/<a class="el" href="GraphicCard_8hpp_source.html">GraphicCard.hpp</a></li>
 <li>src/client/GraphicCard.cpp</li>
 </ul>
