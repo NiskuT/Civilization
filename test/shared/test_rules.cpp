@@ -84,19 +84,19 @@ BOOST_AUTO_TEST_CASE(TestRulesScienceCardLevel4)
     BOOST_CHECK(player->getLevelOfCard(shared::CardsEnum::science) == 4);
     std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
 
-    std::array<unsigned, 2> position = {5,5};
+    std::array<unsigned, 2> position = {5, 5};
     std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position);
     player->addControlPawn(controlPawn);
     std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *controlPawn;
     (*map)(5, 5)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
 
-    position = {4,4};
+    position = {4, 4};
     controlPawn = std::make_shared<shared::ControlPawn>(position);
     player->addControlPawn(controlPawn);
     element = *controlPawn;
     (*map)(4, 4)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
 
-    position = {6,6};
+    position = {6, 6};
     controlPawn = std::make_shared<shared::ControlPawn>(position);
     player->addControlPawn(controlPawn);
     element = *controlPawn;
@@ -122,12 +122,12 @@ BOOST_AUTO_TEST_CASE(TestRulesEconomyCardLevel1)
     shared::RuleArgsStruct args;
     std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
 
-    std::array<unsigned, 2> position = {0,1};
+    std::array<unsigned, 2> position = {0, 1};
     std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
     player->addCity(city);
     std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *city;
     (*map)(0, 1)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
-    
+
     args.ruleId = shared::CardsEnum::economy;
     args.gameMap = map;
     args.numberOfBoxUsed = 0;
@@ -140,7 +140,52 @@ BOOST_AUTO_TEST_CASE(TestRulesEconomyCardLevel1)
     BOOST_CHECK((*map)(0, 0)->getElements().size() == 0);
     BOOST_CHECK((*map)(2, 1)->getElements().size() == 1);
     BOOST_CHECK(std::holds_alternative<shared::Caravan>(*((*map)(2, 1)->getElements().at(0))) == true);
+}
 
+BOOST_AUTO_TEST_CASE(TestRulesMilitaryReinforceAllLevels)
+{
+    std::shared_ptr<shared::Player> player = std::make_shared<shared::Player>();
+    shared::Rules rules;
+    shared::RuleArgsStruct args;
+    std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
+
+    
+    player->addBox(shared::CardsEnum::military, 50);
+    
+
+    args.ruleId = shared::CardsEnum::military;
+    args.militaryCardAttack = false;
+    args.currentPlayer = player;
+    args.gameMap = map;
+    args.numberOfBoxUsed = 1;
+    args.pawnsPositions.push_back({2, 2});
+    args.pawnsPositions.push_back({3, 4});
+
+    std::array<unsigned, 2> position = {2, 2};
+    std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position);
+    player->addControlPawn(controlPawn);
+    std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *controlPawn;
+    (*map)(2, 2)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
+
+    position = {3, 4};
+    controlPawn = std::make_shared<shared::ControlPawn>(position);
+    player->addControlPawn(controlPawn);
+    element = *controlPawn;
+    (*map)(3, 4)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
+
+    position = {5, 5};
+    controlPawn = std::make_shared<shared::ControlPawn>(position);
+    player->addControlPawn(controlPawn);
+    element = *controlPawn;
+    (*map)(5, 5)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
+
+    rules.runTheRule(args);
+
+    BOOST_CHECK((*map)(2, 2)->getElements().size() == 1);
+    BOOST_CHECK((*map)(3, 4)->getElements().size() == 1);
+    BOOST_CHECK(std::get<shared::ControlPawn>(*((*map)(2, 2)->getElements().at(0))).isReinforced());
+    BOOST_CHECK(std::get<shared::ControlPawn>(*((*map)(3, 4)->getElements().at(0))).isReinforced());
+    BOOST_CHECK(std::get<shared::ControlPawn>(*((*map)(5, 5)->getElements().at(0))).isReinforced() == false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

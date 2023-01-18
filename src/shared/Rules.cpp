@@ -40,9 +40,9 @@ void Rules::runTheRule(RuleArgsStruct &args)
     case CardsEnum::science:
         playScienceCard(args);
         break;
-    // case CardsEnum::military:
-    //     playMilitaryCard(args);
-    //     break;
+    case CardsEnum::military:
+        playMilitaryCard(args);
+        break;
     // case CardsEnum::culture:
     //     playCultureCard(args);
     //     break;
@@ -63,7 +63,6 @@ void Rules::runTheRule(RuleArgsStruct &args)
  */
 void Rules::playEconomyCard(RuleArgsStruct &args)
 {
-    std::cout << "Economy card" << std::endl;
     std::vector<std::array<unsigned, 2>> caravanMovementPath = args.caravanMovementPath;
     std::shared_ptr<Map> map = args.gameMap;
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
@@ -110,8 +109,6 @@ void Rules::playEconomyCard(RuleArgsStruct &args)
         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 1);
 
         moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
-        std::cout << "caravans size : " << caravans.size() << std::endl;
-        std::cout << "caravan[0] position : " << caravans.at(0)->getPosition()[0] << " " << caravans.at(0)->getPosition()[1] << std::endl;
         break;
     case 2:
         verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_2 + numberOfBoxUsed);
@@ -125,21 +122,22 @@ void Rules::playEconomyCard(RuleArgsStruct &args)
             }
         }
         moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
-        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        // TODO : make caravanMovementPath a vector of vector to allow to move several caravans
+        // moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
         break;
     case 3:
         verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_3 + numberOfBoxUsed);
         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 2);
         moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
-        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        // moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
         // exchangeRessourceWithOtherPlayer(); //  TODO: allow to exchange ressource with other player
         break;
     case 4:
         verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_4 + numberOfBoxUsed);
         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 3);
         moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
-        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
-        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        // moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        // moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
         // playAnotherCard(); // TODO: allow to play another card
         break;
     default:
@@ -197,7 +195,7 @@ void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
 {
     for (auto caravan : caravans)
     {
-        if (caravan->getPosition() == pos1 && caravan->isUsed() == true )
+        if (caravan->getPosition() == pos1 && caravan->isUsed() == true)
         {
             caravan->setPos(pos2);
             (*map)(pos1[0], pos1[1])->removeElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
@@ -215,7 +213,6 @@ void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
     {
         if (std::find(neighbors.begin(), neighbors.end(), city->getPosition()) != neighbors.end())
         {
-            std::cout << "YFDGUIHDOIUSHIUDHIS" << std::endl;
             isThereACityOrAControlPawn = true;
             break;
         }
@@ -224,7 +221,6 @@ void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
     {
         if (std::find(neighbors.begin(), neighbors.end(), controlPawn->getPosition()) != neighbors.end() || isThereACityOrAControlPawn)
         {
-            std::cout << "GGGGGGGGGGGGGGGGGGGGGGg" << std::endl;
             isThereACityOrAControlPawn = true;
             break;
         }
@@ -234,7 +230,6 @@ void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
         std::cout << "You can't move your caravan if there is no city or control pawn next to the starting point of the path" << std::endl;
         exit(EXIT_FAILURE);
     }
-    std::cout << "EEEEEEEEEEEEEEEEee" << std::endl;
     for (auto caravan : caravans)
     {
         if (!(caravan->isUsed()))
@@ -567,75 +562,79 @@ std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned
 //     return false;
 // }
 
-// /// MILITARY CARD ///
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::playMilitaryCard(RuleArgsStruct &args)
-//  * @brief This function aim to play the military card
-//  * @param args : struct containing all the arguments needed to run the rule
-//  */
-// void Rules::playMilitaryCard(RuleArgsStruct &args)
-// {
-//     if (args.militaryCardAttack == true)
-//     {
-//         attack(args);
-//     }
-//     else
-//     {
-//         reinforce(args);
-//     }
-// }
+/// MILITARY CARD ///
+/**
+ * @file Rules.cpp
+ * @fn void Rules::playMilitaryCard(RuleArgsStruct &args)
+ * @brief This function aim to play the military card
+ * @param args : struct containing all the arguments needed to run the rule
+ */
+void Rules::playMilitaryCard(RuleArgsStruct &args)
+{
+    std::cout << "playMilitaryCard" << std::endl;
+    if (args.militaryCardAttack == true)
+    {
+        attack(args);
+    }
+    else
+    {
+        reinforce(args);
+    }
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::attack(RuleArgsStruct &args)
-//  * @brief This function aim to attack an enemy pawn or a city
-//  * @param args : struct containing all the arguments needed to run the rule
-//  */
-// void Rules::attack(RuleArgsStruct &args)
-// {
-//     // TODO : attack
-//     // I have problems mesuring the distance of the enemy pawn from the current player hexagons
-// }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::attack(RuleArgsStruct &args)
+ * @brief This function aim to attack an enemy pawn or a city
+ * @param args : struct containing all the arguments needed to run the rule
+ */
+void Rules::attack(RuleArgsStruct &args)
+{
+    // TODO : attack
+    // I have problems mesuring the distance of the enemy pawn from the current player hexagons
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::reinforce(RuleArgsStruct &args)
-//  * @brief This function aim to reinforce a pawn
-//  * @param args : struct containing all the arguments needed to run the rule
-//  */
-// void Rules::reinforce(RuleArgsStruct &args)
-// {
-//     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
-//     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::military))
-//     {
-//         std::cout << "You don't have enough box to play this card" << std::endl;
-//         exit(EXIT_FAILURE);
-//     }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::reinforce(RuleArgsStruct &args)
+ * @brief This function aim to reinforce a pawn
+ * @param args : struct containing all the arguments needed to run the rule
+ */
+void Rules::reinforce(RuleArgsStruct &args)
+{
+    std::cout << "0" << std::endl;
+    unsigned numberOfBoxUsed = args.numberOfBoxUsed;
+    if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::military))
+    {
+        std::cout << "You don't have enough box to play this card" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
-//     std::shared_ptr<Map> gameMap = args.gameMap;
-//     std::vector<std::array<unsigned, 2>> pawnsPositions = args.pawnsPositions;
-//     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::culture);
-//     if (pawnsPositions.size() != cardLevel + numberOfBoxUsed)
-//     {
-//         std::cout << "invalid number of pawn positions" << std::endl;
-//         exit(1);
-//     }
-//     std::shared_ptr<ControlPawn> controlPawn;
-//     for (auto position : pawnsPositions)
-//     {
-//         for (auto element : (*gameMap)(position[0], position[1])->getElements())
-//         {
-//             if (std::holds_alternative<ControlPawn>(*element))
-//             {
-//                 std::get<ControlPawn>(*element).setReinforced();
-//                 return;
-//             }
-//         }
-//         std::cout << "There is no control pawn on this position" << std::endl;
-//         exit(EXIT_FAILURE);
-//     }
-// }
+    std::cout << "1" << std::endl;
+    std::shared_ptr<Map> gameMap = args.gameMap;
+    std::vector<std::array<unsigned, 2>> pawnsPositions = args.pawnsPositions;
+    unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::military);
+    if (pawnsPositions.size() != cardLevel + numberOfBoxUsed)
+    {
+        std::cout << "invalid number of pawn positions" << std::endl;
+        exit(1);
+    }
+    std::shared_ptr<ControlPawn> controlPawn;
+
+    std::cout << "2" << std::endl;
+    for (auto position : pawnsPositions)
+    {
+        for (auto element : (*gameMap)(position[0], position[1])->getElements())
+        {
+            if (std::holds_alternative<ControlPawn>(*element))
+            {
+                std::cout << "test tes ttes ests ets etset" << std::endl;
+                std::get<ControlPawn>(*element).setReinforced();
+                break;
+            }
+        }
+    }
+}
 
 // /// INDUSTRY CARD ///
 // /**
