@@ -34,10 +34,9 @@ void Rules::runTheRule(RuleArgsStruct &args)
 {
     switch (args.ruleId)
     {
-    // case CardsEnum::economy:
-    //     std::cout << "Economy card" << std::endl;
-    //     playEconomyCard(args);
-    //     break;
+    case CardsEnum::economy:
+        playEconomyCard(args);
+        break;
     case CardsEnum::science:
         playScienceCard(args);
         break;
@@ -55,223 +54,253 @@ void Rules::runTheRule(RuleArgsStruct &args)
     }
 }
 
-// /// ECONOMY CARD ///
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::playEconomyCard()
-//  * @brief This function aim to run the rule of the economy card
-//  * @param args : struct containing all the arguments needed to run the rule
-//  */
-// void Rules::playEconomyCard(RuleArgsStruct &args)
-// {
-//     std::shared_ptr<std::vector<std::array<int, 2>>> caravanMovementPath = args.caravanMovementPath;
-//     std::shared_ptr<Map> map = args.gameMap;
-//     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
+/// ECONOMY CARD ///
+/**
+ * @file Rules.cpp
+ * @fn void Rules::playEconomyCard()
+ * @brief This function aim to run the rule of the economy card
+ * @param args : struct containing all the arguments needed to run the rule
+ */
+void Rules::playEconomyCard(RuleArgsStruct &args)
+{
+    std::cout << "Economy card" << std::endl;
+    std::vector<std::array<unsigned, 2>> caravanMovementPath = args.caravanMovementPath;
+    std::shared_ptr<Map> map = args.gameMap;
+    unsigned numberOfBoxUsed = args.numberOfBoxUsed;
 
-//     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::economy))
-//     {
-//         std::cout << "You don't have enough box to play this card" << std::endl;
-//         exit(EXIT_FAILURE);
-// }
+    if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::economy))
+    {
+        std::cout << "You don't have enough box to play this card" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
-//     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::economy);
+    unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::economy);
 
-//     elementList barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
-//     if (barbarianList.size() > 0 && cardLevel != 2)
-//     {
-//         std::cout << "You can't kill a barbarian with this card" << std::endl;
-//         exit(EXIT_FAILURE);
-//     }
+    elementList barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
+    if (barbarianList.size() > 0 && cardLevel != 2)
+    {
+        std::cout << "You can't kill a barbarian with this card" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
-//     bool isWaterOnThePath = checkIfWaterIsOnThePath(caravanMovementPath, map);
-//     if (isWaterOnThePath && cardLevel < 3)
-//     {
-//         std::cout << "You can't move on water with this card" << std::endl;
-//         exit(EXIT_FAILURE);
-//     }
+    bool isWaterOnThePath = checkIfWaterIsOnThePath(caravanMovementPath, map);
+    if (isWaterOnThePath && cardLevel < 3)
+    {
+        std::cout << "You can't move on water with this card" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
-//     unsigned maxLevelReachable = cardLevel; // TODO: check if the player can reach a higher level depending on his caracteristics
-//     for (auto &element : *caravanMovementPath)
-//     {
-//         if ((*map)(element[0], element[1])->getFieldLevel() > (FieldLevel)maxLevelReachable)
-//         {
-//             std::cout << "You can't move your caravan on this field" << std::endl;
-//             exit(EXIT_FAILURE);
-//         }
-//     }
+    unsigned maxLevelReachable = cardLevel; // TODO: check if the player can reach a higher level depending on his caracteristics
+    for (auto &element : caravanMovementPath)
+    {
+        if ((*map)(element[0], element[1])->getFieldLevel() > (FieldLevel)maxLevelReachable)
+        {
+            std::cout << "You can't move your caravan on this field" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
 
-//     std::vector<std::shared_ptr<Caravan>> caravans = args.currentPlayer->getCaravans();
+    std::vector<std::shared_ptr<Caravan>> caravans = args.currentPlayer->getCaravans();
 
-//     switch (cardLevel)
-//     {
-//     case 1:
-//         verifyIfPathSizeIsCorrect(caravanMovementPath->size(), CARAVAN_STEPS_AT_LEVEL_1 + numberOfBoxUsed);
-//         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 1);
+    switch (cardLevel)
+    {
+    case 1:
+        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 1);
+        verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_1 + numberOfBoxUsed);
+        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 1);
 
-//         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
+        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        std::cout << "caravans size : " << caravans.size() << std::endl;
+        std::cout << "caravan[0] position : " << caravans.at(0)->getPosition()[0] << " " << caravans.at(0)->getPosition()[1] << std::endl;
+        break;
+    case 2:
+        verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_2 + numberOfBoxUsed);
+        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 2);
+        if (barbarianList.size() > 0)
+        {
+            for (int i = 0; i < (int)barbarianList.size(); i++)
+            {
+                (std::get<Barbarian>(*barbarianList.at(i))).kill();
+                args.currentPlayer->addBox(CardsEnum::economy, 1);
+            }
+        }
+        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        break;
+    case 3:
+        verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_3 + numberOfBoxUsed);
+        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 2);
+        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        // exchangeRessourceWithOtherPlayer(); //  TODO: allow to exchange ressource with other player
+        break;
+    case 4:
+        verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_4 + numberOfBoxUsed);
+        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 3);
+        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
+        // playAnotherCard(); // TODO: allow to play another card
+        break;
+    default:
+        std::cout << "invalid card level" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
 
-//         break;
-//     case 2:
-//         verifyIfPathSizeIsCorrect(caravanMovementPath->size(), CARAVAN_STEPS_AT_LEVEL_2 + numberOfBoxUsed);
-//         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 2);
-//         if (barbarianList.size() > 0)
-//         {
-//             for (int i = 0; i < (int)barbarianList.size(); i++)
-//             {
-//                 (std::get<Barbarian>(*barbarianList.at(i))).kill();
-//                 args.currentPlayer->addBox(CardsEnum::economy, 1);
-//             }
-//         }
-//         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
-//         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
-//         break;
-//     case 3:
-//         verifyIfPathSizeIsCorrect(caravanMovementPath->size(), CARAVAN_STEPS_AT_LEVEL_3 + numberOfBoxUsed);
-//         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 2);
-//         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
-//         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
-//         // exchangeRessourceWithOtherPlayer(); //  TODO: allow to exchange ressource with other player
-//         break;
-//     case 4:
-//         verifyIfPathSizeIsCorrect(caravanMovementPath->size(), CARAVAN_STEPS_AT_LEVEL_4 + numberOfBoxUsed);
-//         addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 3);
-//         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
-//         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
-//         moveCaravan(caravans, caravanMovementPath->at(0), caravanMovementPath->at(caravanMovementPath->size() - 1), map);
-//         // playAnotherCard(); // TODO: allow to play another card
-//         break;
-//     default:
-//         std::cout << "invalid card level" << std::endl;
-//         exit(EXIT_FAILURE);
-//     }
-// }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
+ * @brief This function aim to verify if the path size is correct
+ * @param pathSize the size of the path
+ * @param maxPathSize the max size of the path
+ */
+void Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
+{
+    if (pathSize > maxPathSize)
+    {
+        std::cout << "You can't move your caravan of " << maxPathSize << " steps" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
-//  * @brief This function aim to verify if the path size is correct
-//  * @param pathSize the size of the path
-//  * @param maxPathSize the max size of the path
-//  */
-// void Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
-// {
-//     if (pathSize > maxPathSize)
-//     {
-//         std::cout << "You can't move your caravan of " << maxPathSize << " steps" << std::endl;
-//         exit(EXIT_FAILURE);
-//     }
-// }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>> caravans, std::shared_ptr<Player> currentPlayer, int numberOfCaravans)
+ * @brief This function aim to add caravan after the card amelioration
+ * @param caravans the caravans of the player
+ * @param currentPlayer the current player
+ * @param numberOfCaravans the number of caravans related to the card level
+ */
+void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>> &caravans, std::shared_ptr<Player> currentPlayer, int numberOfCaravans)
+{
+    while (caravans.size() < numberOfCaravans)
+    {
+        std::array<unsigned, 2> pos = {0, 0};
+        std::shared_ptr<Caravan> caravan = std::make_shared<Caravan>(pos);
+        currentPlayer->addCaravan(caravan);
+        caravans.push_back(caravan);
+    }
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>> caravans, std::shared_ptr<Player> currentPlayer, int numberOfCaravans)
-//  * @brief This function aim to add caravan after the card amelioration
-//  * @param caravans the caravans of the player
-//  * @param currentPlayer the current player
-//  * @param numberOfCaravans the number of caravans related to the card level
-//  */
-// void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>> caravans, std::shared_ptr<Player> currentPlayer, int numberOfCaravans)
-// {
-//     while (caravans.size() < numberOfCaravans)
-//     {
-//         Caravan newCaravan = Caravan(NULL, NULL);
-//         currentPlayer->addCaravan(std::make_shared<Caravan>(newCaravan));
-//         caravans.push_back(std::make_shared<Caravan>(newCaravan));
-//     }
-// }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::array<int, 2> pos1, std::array<int, 2> pos2, std::shared_ptr<Map> map)
+ * @brief This function aim to move the caravan
+ * @param caravans the caravans of the player
+ * @param pos1 the first position of the caravan
+ * @param pos2 the second position of the caravan
+ * @param map the map
+ *
+ */
+void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::array<unsigned, 2> pos1, std::array<unsigned, 2> pos2, std::shared_ptr<Map> map, std::shared_ptr<Player> currentPlayer)
+{
+    for (auto caravan : caravans)
+    {
+        if (caravan->getPosition() == pos1 && caravan->isUsed() == true )
+        {
+            caravan->setPos(pos2);
+            (*map)(pos1[0], pos1[1])->removeElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
+            (*map)(pos2[0], pos2[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
+            return;
+        }
+    }
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::array<int, 2> pos1, std::array<int, 2> pos2, std::shared_ptr<Map> map)
-//  * @brief This function aim to move the caravan
-//  * @param caravans the caravans of the player
-//  * @param pos1 the first position of the caravan
-//  * @param pos2 the second position of the caravan
-//  * @param map the map
-//  *
-//  */
-// void Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::array<int, 2> pos1, std::array<int, 2> pos2, std::shared_ptr<Map> map)
-// {
-//     for (auto caravan : caravans)
-//     {
-//         if (caravan->getPosX() == pos1[0] && caravan->getPosY() == pos1[1])
-//         {
-//             caravan->setPos(pos2[0], pos2[1]);
-//             (*map)(pos1[0], pos1[1])->removeElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
-//             (*map)(pos2[0], pos2[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
-//             return;
-//         }
-//     }
+    // there is no caravan at the starting point of the path.
+    // TODO : check if there is a city or a controlpawn next to this position
+    std::vector<std::array<unsigned, 2>> neighbors;
+    neighbors = getNeighbors((unsigned)pos1[0], (unsigned)pos1[1], map);
+    bool isThereACityOrAControlPawn = false;
+    for (auto city : currentPlayer->getCityList())
+    {
+        if (std::find(neighbors.begin(), neighbors.end(), city->getPosition()) != neighbors.end())
+        {
+            std::cout << "YFDGUIHDOIUSHIUDHIS" << std::endl;
+            isThereACityOrAControlPawn = true;
+            break;
+        }
+    }
+    for (auto controlPawn : currentPlayer->getControlPawns())
+    {
+        if (std::find(neighbors.begin(), neighbors.end(), controlPawn->getPosition()) != neighbors.end() || isThereACityOrAControlPawn)
+        {
+            std::cout << "GGGGGGGGGGGGGGGGGGGGGGg" << std::endl;
+            isThereACityOrAControlPawn = true;
+            break;
+        }
+    }
+    if (!isThereACityOrAControlPawn)
+    {
+        std::cout << "You can't move your caravan if there is no city or control pawn next to the starting point of the path" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    std::cout << "EEEEEEEEEEEEEEEEee" << std::endl;
+    for (auto caravan : caravans)
+    {
+        if (!(caravan->isUsed()))
+        {
+            caravan->setPos(pos2);
+            caravan->setUsed(true);
+            (*map)(pos2[0], pos2[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
+            return;
+        }
+    }
+}
 
-//     // there is no caravan at the starting point of the path.
-//     // TODO : check if there is a city or a controlpawn next to this position
-//     for (auto caravan : caravans)
-//     {
-//         if (caravan->getPosX() == NULL && caravan->getPosY() == NULL)
-//         {
-//             caravan->setPos(pos2[0], pos2[1]);
-//             (*map)(pos2[0], pos2[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*caravan));
-//             return;
-//         }
-//     }
-// }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::checkIfBarbarianIsOnThePath(std::vector<int[2]> *caravanMovementPath)
+ * @brief This function aim to check if a barbarian is on the path of the caravan
+ * @param caravanMovementPath the path of the caravan
+ * @param map the map of the game
+ * @return a list of barbarian
+ */
+elementList Rules::checkIfBarbarianIsOnThePath(std::vector<std::array<unsigned, 2>> caravanMovementPath, std::shared_ptr<shared::Map> map)
+{
+    elementList barbarianList;
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::checkIfBarbarianIsOnThePath(std::vector<int[2]> *caravanMovementPath)
-//  * @brief This function aim to check if a barbarian is on the path of the caravan
-//  * @param caravanMovementPath the path of the caravan
-//  * @param map the map of the game
-//  * @return a list of barbarian
-//  */
-// elementList Rules::checkIfBarbarianIsOnThePath(std::shared_ptr<std::vector<std::array<int, 2>>> caravanMovementPath, std::shared_ptr<shared::Map> map)
-// {
-//     elementList barbarianList;
+    for (int i = 0; i < (int)caravanMovementPath.size(); i++)
+    {
+        elementList elements = (*map)(caravanMovementPath.at(i)[0], caravanMovementPath.at(i)[1])->getElements();
+        for (auto element : elements)
+        {
+            if (std::holds_alternative<Barbarian>(*element))
+            {
+                barbarianList.push_back(element);
+            }
+        }
+    }
 
-//     for (int i = 0; i < (int)caravanMovementPath->size(); i++)
-//     {
-//         unsigned x = caravanMovementPath->at(i)[0];
-//         unsigned y = caravanMovementPath->at(i)[1];
-//         elementList elements = (*map)(x, y)->getElements();
-//         for (auto element : elements)
-//         {
-//             if (std::holds_alternative<Barbarian>(*element))
-//             {
-//                 barbarianList.push_back(element);
-//             }
-//         }
-//     }
+    return barbarianList;
+}
 
-//     return barbarianList;
-// }
+/**
+ * @file Rules.cpp
+ * @fn void Rules::checkIfWaterIsOnThePath(std::vector<int[2]> *caravanMovementPath)
+ * @brief This function aim to check if water is on the path of the caravan
+ * @param caravanMovementPath the path of the caravan
+ * @param map the map of the game
+ * @return true if there is water on the path, false otherwise
+ */
+bool Rules::checkIfWaterIsOnThePath(std::vector<std::array<unsigned, 2>> caravanMovementPath, std::shared_ptr<shared::Map> map)
+{
+    for (auto position : caravanMovementPath)
+    {
+        if ((*map)(position[0], position[1])->getFieldLevel() == FieldLevel::Water)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::checkIfWaterIsOnThePath(std::vector<int[2]> *caravanMovementPath)
-//  * @brief This function aim to check if water is on the path of the caravan
-//  * @param caravanMovementPath the path of the caravan
-//  * @param map the map of the game
-//  * @return true if there is water on the path, false otherwise
-//  */
-// bool Rules::checkIfWaterIsOnThePath(std::shared_ptr<std::vector<std::array<int, 2>>> caravanMovementPath, std::shared_ptr<shared::Map> map)
-// {
-//     for (auto position : *caravanMovementPath)
-//     {
-//         if ((*map)(position[0], position[1])->getFieldLevel() == FieldLevel::Water)
-//         {
-//             return true;
-//         }
-//     }
-//     return false;
-// }
-
-// /// SCIENCE CARD ///
-// /**
-//  * @file Rules.cpp
-//  * @fn void Rules::playScienceCard()
-//  * @brief This function aim to run the rule of the science card
-//  * @param args : struct containing all the arguments needed to run the rule
-//  */
+/// SCIENCE CARD ///
+/**
+ * @file Rules.cpp
+ * @fn void Rules::playScienceCard()
+ * @brief This function aim to run the rule of the science card
+ * @param args : struct containing all the arguments needed to run the rule
+ */
 void Rules::playScienceCard(RuleArgsStruct &args)
 {
     std::shared_ptr<Player> currentPlayer = args.currentPlayer;
@@ -320,12 +349,9 @@ void Rules::playScienceCard(RuleArgsStruct &args)
         args.currentPlayer->addResource(resourceToGet);
         break;
     case 4:
-        std::cout << "case 4" << std::endl;
         positionToNuke = args.positionToNuke;
         gameMap = args.gameMap;
-        std::cout << "position to nuke : " << positionToNuke[0] << " " << positionToNuke[1] << std::endl;
         neighbors = getNeighbors(positionToNuke[0], positionToNuke[1], gameMap);
-        std::cout << "neighbors size : " << neighbors.size() << std::endl;
         neighbors.push_back(positionToNuke);
         nuke(neighbors, gameMap, args.currentPlayer);
         break;

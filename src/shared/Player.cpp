@@ -17,7 +17,8 @@ Player::Player()
     this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry);
     this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture);
 
-    
+    this->listOfCaravan = {};
+    this->listOfCity ={};
 }
 
 void Player::setUsername(std::string username)
@@ -182,4 +183,19 @@ void Player::deleteBox(CardsEnum cardType, unsigned numberOfBoxToDelete)
             card->deleteBox(numberOfBoxToDelete);
         }
     }
+}
+
+std::vector<std::shared_ptr<City>> Player::getCityList()
+{
+    return this->listOfCity;
+}
+
+void Player::addCity(std::shared_ptr<City> newCity)
+{
+    this->listOfCity.push_back(newCity);
+}
+
+std::vector<std::shared_ptr<ControlPawn>> Player::getControlPawns()
+{
+    return this->listOfControlPawn;
 }

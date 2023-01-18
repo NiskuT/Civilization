@@ -5,7 +5,7 @@ using namespace shared;
 
 Hexagon::Hexagon()
 {
-    this->level = FieldLevel::Water;
+    this->level = FieldLevel::Grassland;
     this->elementsList = {};
 }
 

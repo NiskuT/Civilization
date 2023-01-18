@@ -1,29 +1,25 @@
 #include <shared.hpp>
 
 namespace shared {
-    Caravan::Caravan(int posX, int posY) {
-        this->posX = posX;
-        this->posY = posY;
+    Caravan::Caravan(std::array<unsigned, 2> position) {
+        this->position = position;
     }
 
-    int Caravan::getPosX() {
-        return this->posX;
+
+    std::array<unsigned, 2> Caravan::getPosition() {
+        return this->position;
     }
 
-    int Caravan::getPosY() {
-        return this->posY;
+    void Caravan::setPos(std::array<unsigned, 2> position) {
+        this->position = position;
     }
 
-    void Caravan::setPos(int posX, int posY) {
-        this->posX = posX;
-        this->posY = posY;
+    void Caravan::setUsed(bool used) {
+        this->used = used;
     }
 
-    void Caravan::move(std::vector<std::array<int,2>> pathToFollow) {
-        for (int i = 0; i < (int) pathToFollow.size(); i++) {
-            this->posX = pathToFollow.at(i)[0];
-            this->posY = pathToFollow.at(i)[1];
-        }
+    bool Caravan::isUsed() {
+        return this->used;
     }
 
 }

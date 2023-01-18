@@ -2,9 +2,10 @@
 
 using namespace shared;
 
-ControlPawn::ControlPawn()
+ControlPawn::ControlPawn(std::array<unsigned, 2> position)
 {
     this->reinforced = false;
+    this->position = position;
 }
 
 bool ControlPawn::isReinforced()
@@ -15,4 +16,9 @@ bool ControlPawn::isReinforced()
 void ControlPawn::setReinforced()
 {
     this->reinforced = true;
+}
+
+std::array<unsigned, 2> ControlPawn::getPosition()
+{
+    return this->position;
 }
