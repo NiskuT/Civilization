@@ -167,6 +167,13 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         break;
     }
 
+    case HudTextureType::arrow:
+    {
+        xPos = windowLength - getWidth() * scale;
+        yPos = windowWidth - getHeight() * scale;
+        break;
+    }
+
     case HudTextureType::priorityCardEconomy:
     case HudTextureType::priorityCardArmy:
     case HudTextureType::priorityCardScience:
