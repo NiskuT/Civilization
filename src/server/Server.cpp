@@ -70,24 +70,25 @@ namespace server
         else
         {
             game = getGameById(gameId);
+            bool playerConnected = false;
             if (game != nullptr)
             {
-                connectPlayerToGame(player, game);
+                playerConnected = connectPlayerToGame(player, game);
             }
 
-            if (player->state == shared::PlayerState::Disconnected || player->state == shared::PlayerState::WaitingForGame)
+            if (!playerConnected)
             {
                 std::string response = "Error: game not available\n";
                 boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+                player->disconnectPlayer();
                 return;
             }
         }
 
         std::string response = "OK\n";
         boost::asio::write(player->getSocket(), boost::asio::buffer(response));
-        player->state = shared::PlayerState::Connected;
 
-        while (player->state == shared::PlayerState::Connected)
+        while (player->connectedToSocket.load())
         {
             boost::asio::streambuf receiveBuffer;
             boost::system::error_code error;
@@ -153,7 +154,7 @@ namespace server
         return nullptr;
     }
 
-    void Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
+    bool Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
     {
         // check if a player with the same username already exists in the game and is in disconnected state
         for (auto &p : game->getPlayers())
@@ -163,18 +164,19 @@ namespace server
                 p->setSocket(player->getSocket());
                 player.swap(p);
                 std::cout << "Player " << player->getName() << " reconnected to game " << game->getId() << std::endl;
-                return;
+                return true;
             }
         }
         bool res = game->addPlayer(player);
         if (!res)
         {
-            // TODO : a changer (appeler disconnect ?)
-            player->state = shared::PlayerState::Disconnected;
+            player->disconnectPlayer();
+            return false;
         }
         else
         {
             std::cout << "Player " << player->getName() << " connected to game " << game->getId() << std::endl;
+            return true;
         }
     }
 

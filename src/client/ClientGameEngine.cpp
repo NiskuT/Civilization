@@ -38,7 +38,6 @@ namespace client
             exit(1);
         }
         myself->setSocket(clientSocket);
-        myself->state = shared::PlayerState::Connected;
 
         std::thread t(&ClientGameEngine::startReceiving, this);
 
@@ -55,7 +54,7 @@ namespace client
     {
         std::cout << "Starting receiving" << std::endl;
 
-        while (myself->state == shared::PlayerState::Connected)
+        while (myself->connectedToSocket.load())
         {
 
             boost::asio::streambuf receiveBuffer;
@@ -109,7 +108,7 @@ namespace client
     {
         std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
         lock.unlock();
-        if (myself->state != shared::PlayerState::Connected)
+        if (myself->connectedToSocket.load() == false )
         {
             std::cout << "You are not connected to the server" << std::endl;
             exit(1);
@@ -138,7 +137,8 @@ namespace client
 
     void ClientGameEngine::loadMap()
     {
-        if (myself->state != shared::PlayerState::Connected)
+        if (myself->connectedToSocket.load() == false )
+
         {
             std::cout << "You are not connected to the server" << std::endl;
             exit(1);
@@ -197,8 +197,11 @@ namespace client
     void ClientGameEngine::handleQuitMenu(bool quitDef)
     {
         std::lock_guard<std::mutex> lock(mutexRunningEngine);
-        if (quitDef)
+        if (quitDef) 
+        {
+            myself->disconnectPlayer();
             runningWindow = 0;
+        }
         else
             runningWindow = runningWindow == MENU ? GAME : MENU;
     }
@@ -239,6 +242,7 @@ namespace client
             playGame();
             playMenu();
         }
+
     }
 
     void ClientGameEngine::playGame()

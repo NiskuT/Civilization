@@ -108,7 +108,7 @@ namespace client
     void MenuWindow::loadMenuTexture()
     {
 
-        backgroundTexture = (std::unique_ptr<TextureDisplayer>)new TextureDisplayer(RESOURCES_PATH "/img/menu/background.png");
+        backgroundTexture =std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/menu/background.png");
         backgroundTexture->addSprite();
         float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
         backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, 0, 0);

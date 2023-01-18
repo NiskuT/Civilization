@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(connectionTest)
 
     std::thread serv(&server::Server::start, &server);
     serv.detach();
-    usleep(10000);
+    usleep(200000);
     client.gameId = "new";
     client.connect("127.0.0.1", 8080);
 /*
