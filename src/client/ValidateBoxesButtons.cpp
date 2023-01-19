@@ -7,7 +7,7 @@
 #endif
 
 const sf::Color BACKGROUND_COLOR = sf::Color(0, 0, 0, 150);
-const sf::Color NUMBER_BUTTON_COLOR = sf::Color(247, 200, 195, 240);
+const sf::Color NUMBER_BUTTON_COLOR = sf::Color(247, 200, 195, 130);
 
 
 using namespace client;
@@ -82,5 +82,4 @@ void ValidateBoxesButtons::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWi
     window->draw(arrowLessTexture->getSprite());
     window->draw(arrowMoreTexture->getSprite());
     window->draw(doneTexture->getSprite());
-
 }

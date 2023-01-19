@@ -7,8 +7,6 @@
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
-#define MAP_WIDTH 15
-#define MAP_HEIGHT 11
 
 #define NUMBER_OF_FIELD 12
 
@@ -16,8 +14,6 @@
 #define WINDOW_WIDTH 900
 
 #define ACTION_CARD_PROPORTION 0.125
-#define TITLE_PROPORTION 0.025
-#define MAX_CHARACTER_SIZE 19
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
 
@@ -31,7 +27,6 @@
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
-std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
 
 using namespace client;
 
@@ -375,15 +370,21 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
 {
     std::string questionString;
     std::string nbOfBoxesOnPriorityCard;
+    int newNumberOfBoxes;
 
     sf::FloatRect spriteArrowMoreBoxes = validateBoxesWindow->arrowMoreTexture->getSprite().getGlobalBounds();
     sf::FloatRect spriteArrowLessBoxes = validateBoxesWindow->arrowLessTexture->getSprite().getGlobalBounds();
     sf::FloatRect spriteValidateBoxesButton = validateBoxesWindow->doneTexture->getSprite().getGlobalBounds();
 
+    // If we click on the done button to accept the number of boxes to play
     if (gameEnginePtr->intersectPointRect(clickPosition, spriteValidateBoxesButton) && validateBoxesWindow->isWindowActive)
     {
         validateBoxesWindow->isWindowActive = false;
         moveToRightPriorityCards(validateBoxesWindow->priorityCardPlayed);
+        newNumberOfBoxes = validateBoxesWindow->nbOfBoxesMax - validateBoxesWindow->nbOfBoxesChosen;
+        validateBoxesWindow->nbOfBoxesMax = newNumberOfBoxes;
+        priorityCards[0].nbOfBoxesText->setString(std::to_string(newNumberOfBoxes) + " x");
+
         gameEnginePtr->handlePriorityCardPlay(
             validateBoxesWindow->priorityCardPlayedType, 
             validateBoxesWindow->priorityCardPlayed, 
@@ -391,6 +392,7 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
         return true;
     }
 
+    // if we click on the little arrow to add boxes
     if (
         gameEnginePtr->intersectPointRect(clickPosition, spriteArrowMoreBoxes) 
         && validateBoxesWindow->isWindowActive 
@@ -401,6 +403,7 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
         return true;
     }
 
+    // if we click on the little arrow to delete boxes
     if (
         gameEnginePtr->intersectPointRect(clickPosition, spriteArrowLessBoxes) && validateBoxesWindow->isWindowActive && validateBoxesWindow->nbOfBoxesChosen > 0)
     {
@@ -414,6 +417,7 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
         sf::FloatRect spriteCards = priorityCard.texture->getSprite().getGlobalBounds();
         sf::FloatRect spriteValidateButton = priorityCard.validateButton->buttonRect->getGlobalBounds();
 
+        // if we click on the play button on priorityCards
         if (gameEnginePtr->intersectPointRect(clickPosition, spriteValidateButton) && priorityCard.isUp)
         {
             validateBoxesWindow->isWindowActive = true;
@@ -430,6 +434,7 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
             return true;
         }
 
+        // if we click on a priorityCard card
         if (gameEnginePtr->intersectPointRect(clickPosition, spriteCards))
         {
             priorityCard.moveUpPriorityCard();
@@ -675,6 +680,7 @@ void GameWindow::loadHudTexture()
 
     int rotation = 0;
     int priorityCardIndex = 0;
+    std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
 
     const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
 
