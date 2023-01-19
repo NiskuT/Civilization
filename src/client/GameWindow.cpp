@@ -49,7 +49,7 @@ GameWindow::GameWindow()
     loadHudTexture();
 
     validateBoxesWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH);
-
+    validateBoxesWindow->gameWindow = this;
 }
 
 /*!
@@ -319,7 +319,7 @@ void GameWindow::moveMap(sf::Vector2i &clickStartingPoint, sf::Vector2i position
  * @brief Open JSON File
  * @param path path of the JSON File
  */
-const auto GameWindow::openJsonFile(std::string path)
+const Json::Value GameWindow::openJsonFile(std::string path)
 {
     std::ifstream file(RESOURCES_PATH + path);
 
@@ -375,6 +375,7 @@ void GameWindow::moveToRightPriorityCards(int difficulty)
 */
 bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
 {
+    std::cout << "click: " << clickPosition.x << " " << clickPosition.y << std::endl;
     for (auto &priorityCard : priorityCards)
     {
         sf::FloatRect spriteCards = priorityCard.texture->getSprite().getGlobalBounds();

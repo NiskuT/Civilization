@@ -1,6 +1,25 @@
 {
     "data": 
     {
+        "little-background-scale-x": 1.5,
+        "little-background-pos-x": 580,
+        "little-background-pos-y": 340,
 
+        "boxes-button-size": 50,
+        "boxes-button-pos-x": 775,
+        "boxes-button-pos-y": 455,
+        "boxes-button-text-size": 30,
+
+        "arrow-less-pos-x": 822,
+        "arrow-less-pos-y": 475,
+
+        "arrow-more-pos-x": 822,
+        "arrow-more-pos-y": 445,
+
+        "done-pos-x": 955,
+        "done-pos-y": 510,
+
+        "text-size": 27,
+        "text-offset-y": 20
     }
 }

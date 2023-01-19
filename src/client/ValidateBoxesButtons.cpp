@@ -7,35 +7,22 @@
 #endif
 
 const sf::Color BACKGROUND_COLOR = sf::Color(0, 0, 0, 150);
-const sf::Color LITTLE_BACKGROUND_COLOR = sf::Color(247, 200, 195, 240);
-const sf::Color NUMBER_BUTTON_COLOR = sf::Color(150, 90, 90, 240);
-
+const sf::Color NUMBER_BUTTON_COLOR = sf::Color(247, 200, 195, 240);
 
 
 using namespace client;
 
+void setImage(std::unique_ptr<TextureDisplayer>& texture, std::string path, sf::Vector2f position, sf::Vector2f scale) 
+{
+    texture = std::make_unique<TextureDisplayer>(RESOURCES_PATH + path);
+    texture->addSprite();
+    texture->getSprite().setPosition(position);
+    texture->getSprite().setScale(scale);
+}
+
 ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
 {
-    /*
-    // open JSON File
-    std::ifstream file(RESOURCES_PATH "/img/validateBoxes/dataButton.json");
-
-    if (!file.is_open())
-    {
-        std::cerr << "Error while opening json ressources file" << std::endl;
-        std::cerr << "/img/validateBoxes/dataButton.json" << std::endl;
-        exit(1);
-    }
-    std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-    std::unique_ptr<Json::CharReader> reader = std::unique_ptr<Json::CharReader>(Json::CharReaderBuilder().newCharReader());
-    Json::Value obj;
-    std::string errors;
-    reader->parse(str.c_str(), str.c_str() + str.size(), &obj, &errors);
-
-    const Json::Value &data = obj["data"];  
-    */  
-
+    const Json::Value &data = gameWindow->openJsonFile("/img/validateBoxes/dataButton.json");
 
     blackBackground = std::make_unique<Button>(sf::Vector2f(windowLength, windowWidth), sf::Vector2f(0, 0), BACKGROUND_COLOR, false);
 
@@ -43,33 +30,53 @@ ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
     {
         std::cerr << "Font not loaded" << std::endl;
     }
-    sf::Vector2f littleBackgroundSize = sf::Vector2f(480, 220);
-    sf::Vector2f littleBackgroundPos = sf::Vector2f(windowLength/2 - littleBackgroundSize.x/2, windowWidth/2 - littleBackgroundSize.y/2);
-    littleBackground = std::make_unique<Button>(littleBackgroundSize, littleBackgroundPos, LITTLE_BACKGROUND_COLOR, false);
-    littleBackground->setText(27, sf::Vector2f(0, -littleBackgroundSize.y/2 + 70) , "You have X boxes, \nHow many boxes do you want to play?", font);
+   
+    setImage(
+        littleBackground,
+        "/img/validateBoxes/little-background.png",
+        sf::Vector2f(data["little-background-pos-x"].asFloat(), data["little-background-pos-y"].asFloat()),
+        sf::Vector2f(data["little-background-scale-x"].asFloat(), 1));
 
-    chooseNumberOfBoxesButton = std::make_unique<Button>(sf::Vector2f(50, 50), sf::Vector2f(775, 450), NUMBER_BUTTON_COLOR, false);
-    chooseNumberOfBoxesButton->setText(30, sf::Vector2f(0, 0) , "X", font);
+    std::string questionString = "You have X boxes, \nHow many boxes do you want to play?";
+    question = std::make_unique<sf::Text>(questionString, font, data["text-size"].asInt());
+    question->setFillColor(sf::Color::Black);
+    question->setPosition(
+        windowLength/2 - question->getGlobalBounds().width/2, 
+        littleBackground->getSprite().getPosition().y + data["text-offset-y"].asInt());
 
 
-    arrowLessTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/validateBoxes/arrow-less.png");
-    arrowLessTexture->addSprite();
-    arrowLessTexture->getSprite().setPosition(822, 470);
+    chooseNumberOfBoxesButton = std::make_unique<Button>(
+        sf::Vector2f(data["boxes-button-size"].asInt(), data["boxes-button-size"].asInt()), 
+        sf::Vector2f(data["boxes-button-pos-x"].asInt(), data["boxes-button-pos-y"].asInt()), 
+        NUMBER_BUTTON_COLOR, 
+        false);
+    chooseNumberOfBoxesButton->setText(data["boxes-button-text-size"].asInt(), sf::Vector2f(0, 0) , "X", font);
 
-    arrowMoreTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/validateBoxes/arrow-more.png");
-    arrowMoreTexture->addSprite();
-    arrowMoreTexture->getSprite().setPosition(822, 440);
+    setImage(
+        arrowLessTexture, 
+        "/img/validateBoxes/arrow-less.png", 
+        sf::Vector2f(data["arrow-less-pos-x"].asFloat(), data["arrow-less-pos-y"].asFloat()),
+        sf::Vector2f(1, 1));
 
-    doneTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/validateBoxes/done.png");
-    doneTexture->addSprite();
-    doneTexture->getSprite().setPosition(littleBackgroundPos.x + littleBackgroundSize.x - doneTexture->getWidth(), littleBackgroundPos.y + littleBackgroundSize.y - doneTexture->getHeight());
+    setImage(
+        arrowMoreTexture, 
+        "/img/validateBoxes/arrow-more.png", 
+        sf::Vector2f(data["arrow-more-pos-x"].asFloat(), data["arrow-more-pos-y"].asFloat()),
+        sf::Vector2f(1, 1));
+
+    setImage(
+        doneTexture, 
+        "/img/validateBoxes/done.png", 
+        sf::Vector2f(data["done-pos-x"].asFloat(), data["done-pos-y"].asFloat()), 
+        sf::Vector2f(1, 1));
 
 }
 
+
 void ValidateBoxesButtons::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWindow> window){
     window->draw(*blackBackground->buttonRect);
-    window->draw(*littleBackground->buttonRect);
-    window->draw(*littleBackground->buttonText);
+    window->draw(littleBackground->getSprite());
+    window->draw(*question);
     window->draw(*chooseNumberOfBoxesButton->buttonRect);
     window->draw(*chooseNumberOfBoxesButton->buttonText);
     window->draw(arrowLessTexture->getSprite());
