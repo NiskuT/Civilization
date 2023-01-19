@@ -1,6 +1,8 @@
 #include <shared.hpp>
 #include <math.h>
 #include <ctime>
+#include <variant>
+#include <iostream>
 #include "shared/Map.hpp"
 
 #define NUMBER_OF_FIELDS 5
@@ -81,6 +83,10 @@ void Map::generateRandomMap(int seed)
             double n = pn.noise(PERLIN_NOISE_WIDTH * x, PERLIN_NOISE_WIDTH * y, PERLIN_NOISE_PARAM);
             int field = (int)round(n * (NUMBER_OF_FIELDS + 1));
 
+            std::array<unsigned, 2> position;
+            std::shared_ptr<shared::BarbarianVillage> barbareVillage;
+            std::shared_ptr<shared::Barbarian> barbare;
+
             switch (field)
             {
             case 0:
@@ -97,6 +103,13 @@ void Map::generateRandomMap(int seed)
                 break;
             case 4:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Desert);
+                if(rand() % 10 < 2)
+                {
+                    barbareVillage = std::make_shared<shared::BarbarianVillage>();
+                    barbare = std::make_shared<shared::Barbarian>();
+                    mapOfTheGame[i * this->width + j]->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*barbareVillage));
+                    mapOfTheGame[i * this->width + j]->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*barbare));
+                }
                 break;
             case 5:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Mountain);
@@ -112,14 +125,14 @@ void Map::generateRandomMap(int seed)
             }
             else if (i == 1 || i == this->height - 2 || j == 1 || j == this->width - 2)
             {
-                // 70% chance to be water
-                if (rand() % 10 < 7)
+                // 50% chance to be water
+                if (rand() % 10 < 5)
                     mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
             }
             else if (i == 2 || i == this->height - 3 || j == 2 || j == this->width - 3)
             {
-                // 30% chance to be water
-                if (rand() % 10 < 3)
+                // 10% chance to be water
+                if (rand() % 10 < 1)
                     mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
             }
             else

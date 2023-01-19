@@ -22,7 +22,7 @@ using namespace client;
 /*!
  * @brief Load all the chat
  */
-Chat::Chat(sf::Font& font)
+Chat::Chat()
 {
     unsigned i;
     for(i = 0; i < gameChat.size(); i++ )

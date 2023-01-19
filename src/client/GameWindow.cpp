@@ -6,6 +6,7 @@
 #include <cmath>
 #include <string>
 #include <codecvt>
+#include <variant>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -644,13 +645,13 @@ void GameWindow::loadElementTexture()
 
     closedir(dir);
 
-        // Affiche les noms de fichiers trouvés
-        for (const std::string &filename : png_files)
-        {
-            std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
-            elementTextureToDisplay[path] = std::make_unique<TextureDisplayer>(path);
-        }
+    // Affiche les noms de fichiers trouvés
+    for (const std::string &filename : png_files)
+    {
+        std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
+        elementTextureToDisplay[path] = std::make_unique<TextureDisplayer>(path);
     }
+}
 
 /*!
  * @brief Update all the textures of the map
@@ -665,17 +666,27 @@ void GameWindow::updateElementTexture()
 
     std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-    // Data are temporary loaded with the json file but it will be updated from the server soon
-    const Json::Value &data = openJsonFile("/map/files.json");
+    const Json::Value &data = openJsonFile("/map/elementPath.json");
 
-    for (unsigned index = 0; index < data.size(); ++index)
+    for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
     {
+        for (unsigned j = 0; j < mapShared.getMapWidth(); j++)
+        {
+            for (unsigned k = 0; k < mapShared(j, i)->getElements().size(); k++)
+            {
+                std::shared_ptr<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>> variant = mapShared(j, i)->getElements()[k];
 
-        std::string path = RESOURCES_PATH + data[index]["path"].asString();
+                int index = std::visit([](auto&& arg){
+                    arg.getType();
+                }, *variant);
 
-        elementTextureToDisplay[path]->addSprite();
+                std::string path = RESOURCES_PATH + data[index]["path"].asString();
 
-        elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+                elementTextureToDisplay[path]->addSprite();
+
+                elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, j, i, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+            }
+        }
     }
 }
 
