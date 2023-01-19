@@ -31,18 +31,18 @@
             <td class="headerValue">code-coverage.info.cleaned</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">382</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">0.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-18 20:19:44</td>
+            <td class="headerValue">2023-01-19 09:23:32</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">5.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -116,7 +116,7 @@
 <a name="54"><span class="lineNum">      54 </span>            :  *</a>
 <a name="55"><span class="lineNum">      55 </span>            :  * Constructor of GameWindow class</a>
 <a name="56"><span class="lineNum">      56 </span>            :  */</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 : GameWindow::GameWindow()</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          1 : GameWindow::GameWindow()</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : {</a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :     firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
@@ -697,13 +697,13 @@
 <a name="635"><span class="lineNum">     635 </span>            : </a>
 <a name="636"><span class="lineNum">     636 </span><span class="lineNoCov">          0 :     closedir(dir);</span></a>
 <a name="637"><span class="lineNum">     637 </span>            : </a>
-<a name="638"><span class="lineNum">     638 </span>            :     // Affiche les noms de fichiers trouvés</a>
-<a name="639"><span class="lineNum">     639 </span><span class="lineNoCov">          0 :     for (const std::string &amp;filename : png_files)</span></a>
-<a name="640"><span class="lineNum">     640 </span>            :     {</a>
-<a name="641"><span class="lineNum">     641 </span><span class="lineNoCov">          0 :         std::string path = RESOURCES_PATH ELEMENT_PATH + filename;</span></a>
-<a name="642"><span class="lineNum">     642 </span><span class="lineNoCov">          0 :         elementTextureToDisplay[path] = (std::unique_ptr&lt;client::TextureDisplayer&gt;)new TextureDisplayer(path);</span></a>
-<a name="643"><span class="lineNum">     643 </span><span class="lineNoCov">          0 :     }</span></a>
-<a name="644"><span class="lineNum">     644 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="638"><span class="lineNum">     638 </span>            :         // Affiche les noms de fichiers trouvés</a>
+<a name="639"><span class="lineNum">     639 </span><span class="lineNoCov">          0 :         for (const std::string &amp;filename : png_files)</span></a>
+<a name="640"><span class="lineNum">     640 </span>            :         {</a>
+<a name="641"><span class="lineNum">     641 </span><span class="lineNoCov">          0 :             std::string path = RESOURCES_PATH ELEMENT_PATH + filename;</span></a>
+<a name="642"><span class="lineNum">     642 </span><span class="lineNoCov">          0 :             elementTextureToDisplay[path] = std::make_unique&lt;TextureDisplayer&gt;(path);</span></a>
+<a name="643"><span class="lineNum">     643 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="644"><span class="lineNum">     644 </span><span class="lineNoCov">          0 :     }</span></a>
 <a name="645"><span class="lineNum">     645 </span>            : </a>
 <a name="646"><span class="lineNum">     646 </span>            : /*!</a>
 <a name="647"><span class="lineNum">     647 </span>            :  * @brief Update all the textures of the map</a>

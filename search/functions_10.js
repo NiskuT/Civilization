@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['writechar_213',['writeChar',['../classclient_1_1MenuWindow.html#aa96f6a02231162ad010bf4c20a80d9c6',1,'client::MenuWindow']]]
+  ['writechar_214',['writeChar',['../classclient_1_1MenuWindow.html#aa96f6a02231162ad010bf4c20a80d9c6',1,'client::MenuWindow']]]
 ];

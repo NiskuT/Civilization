@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">31</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-18 20:19:44</td>
+            <td class="headerValue">2023-01-19 09:23:32</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -66,7 +66,7 @@
 <a name="4"><span class="lineNum">       4 </span>            : </a>
 <a name="5"><span class="lineNum">       5 </span><span class="lineNoCov">          0 : Player::Player()</span></a>
 <a name="6"><span class="lineNum">       6 </span>            : {</a>
-<a name="7"><span class="lineNum">       7 </span><span class="lineNoCov">          0 :     this-&gt;state = PlayerState::WaitingForGame;</span></a>
+<a name="7"><span class="lineNum">       7 </span><span class="lineNoCov">          0 :     connectedToSocket.store(false);</span></a>
 <a name="8"><span class="lineNum">       8 </span><span class="lineNoCov">          0 :     for (int i = 1; i &lt; 4; i++)</span></a>
 <a name="9"><span class="lineNum">       9 </span>            :     {</a>
 <a name="10"><span class="lineNum">      10 </span><span class="lineNoCov">          0 :         this-&gt;ressources[i] = 0;</span></a>
@@ -81,11 +81,11 @@
 <a name="19"><span class="lineNum">      19 </span>            : </a>
 <a name="20"><span class="lineNum">      20 </span><span class="lineNoCov">          0 : void Player::setSocket(boost::asio::ip::tcp::socket &amp;clientSocket)</span></a>
 <a name="21"><span class="lineNum">      21 </span>            : {</a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineNoCov">          0 :     if (state == PlayerState::Connected)</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineNoCov">          0 :     if (connectedToSocket.load())</span></a>
 <a name="23"><span class="lineNum">      23 </span>            :     {</a>
 <a name="24"><span class="lineNum">      24 </span><span class="lineNoCov">          0 :         disconnectPlayer();</span></a>
 <a name="25"><span class="lineNum">      25 </span>            :     }</a>
-<a name="26"><span class="lineNum">      26 </span><span class="lineNoCov">          0 :     state = shared::PlayerState::Connected;</span></a>
+<a name="26"><span class="lineNum">      26 </span><span class="lineNoCov">          0 :     connectedToSocket.store(true);</span></a>
 <a name="27"><span class="lineNum">      27 </span><span class="lineNoCov">          0 :     this-&gt;playerSocket = std::make_shared&lt;boost::asio::ip::tcp::socket&gt;(std::move(clientSocket));</span></a>
 <a name="28"><span class="lineNum">      28 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="29"><span class="lineNum">      29 </span>            : </a>
@@ -96,22 +96,27 @@
 <a name="34"><span class="lineNum">      34 </span>            : </a>
 <a name="35"><span class="lineNum">      35 </span><span class="lineNoCov">          0 : bool Player::operator==(Player &amp;otherPlayer)</span></a>
 <a name="36"><span class="lineNum">      36 </span>            : {</a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineNoCov">          0 :     return (this-&gt;getName() == otherPlayer.getName() &amp;&amp; this-&gt;state == PlayerState::WaitingForGame &amp;&amp; otherPlayer.state == PlayerState::Disconnected) || (this-&gt;getName() == otherPlayer.getName() &amp;&amp; this-&gt;state == PlayerState::Disconnected &amp;&amp; otherPlayer.state == PlayerState::WaitingForGame);</span></a>
-<a name="38"><span class="lineNum">      38 </span>            : }</a>
-<a name="39"><span class="lineNum">      39 </span>            : </a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 : boost::asio::ip::tcp::socket &amp;Player::getSocket()</span></a>
-<a name="41"><span class="lineNum">      41 </span>            : {</a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineNoCov">          0 :     return *(this-&gt;playerSocket.get());</span></a>
-<a name="43"><span class="lineNum">      43 </span>            : }</a>
-<a name="44"><span class="lineNum">      44 </span>            : </a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 : void Player::disconnectPlayer()</span></a>
-<a name="46"><span class="lineNum">      46 </span>            : {</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 :     state = shared::PlayerState::Disconnected;</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 :     std::lock_guard&lt;std::mutex&gt; socketLock(socketReadMutex);</span></a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :     std::lock_guard&lt;std::mutex&gt; socketLock2(socketWriteMutex);</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :     playerSocket-&gt;close();</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 :     playerSocket.reset();</span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineNoCov">          0 :     return (this-&gt;getName() == otherPlayer.getName() &amp;&amp;</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineNoCov">          0 :             connectedToSocket.load() == false &amp;&amp;</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineNoCov">          0 :             otherPlayer.connectedToSocket.load() == false);</span></a>
+<a name="40"><span class="lineNum">      40 </span>            : }</a>
+<a name="41"><span class="lineNum">      41 </span>            : </a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineNoCov">          0 : boost::asio::ip::tcp::socket &amp;Player::getSocket()</span></a>
+<a name="43"><span class="lineNum">      43 </span>            : {</a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 :     return *(this-&gt;playerSocket.get());</span></a>
+<a name="45"><span class="lineNum">      45 </span>            : }</a>
+<a name="46"><span class="lineNum">      46 </span>            : </a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 : void Player::disconnectPlayer()</span></a>
+<a name="48"><span class="lineNum">      48 </span>            : {</a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :     connectedToSocket.store(false);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :     std::lock_guard&lt;std::mutex&gt; socketLock(socketReadMutex);</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 :     std::lock_guard&lt;std::mutex&gt; socketLock2(socketWriteMutex);</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 :     if (playerSocket &amp;&amp; playerSocket-&gt;is_open())</span></a>
+<a name="53"><span class="lineNum">      53 </span>            :     {</a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 :         playerSocket-&gt;close();</span></a>
+<a name="55"><span class="lineNum">      55 </span>            :     }</a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :     playerSocket.reset();</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 : }</span></a>
 </pre>
       </td>
     </tr>

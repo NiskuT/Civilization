@@ -67,6 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classserver_1_1Server-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">server::Server Class Reference</div>  </div>
@@ -92,15 +93,27 @@ std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngi
 <tr class="memitem:ad8f77f6b2d2ab9421b3dbd629c701ee1"><td class="memItemLeft" align="right" valign="top"><a id="ad8f77f6b2d2ab9421b3dbd629c701ee1"></a>
 std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getGameById</b> (std::string gameId)</td></tr>
 <tr class="separator:ad8f77f6b2d2ab9421b3dbd629c701ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c756b2af1cdbfd7ced6c865303c4a60"><td class="memItemLeft" align="right" valign="top"><a id="a0c756b2af1cdbfd7ced6c865303c4a60"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>connectPlayerToGame</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player, std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt; game)</td></tr>
-<tr class="separator:a0c756b2af1cdbfd7ced6c865303c4a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9561ae5693c200b05ece4a966ce57881"><td class="memItemLeft" align="right" valign="top"><a id="a9561ae5693c200b05ece4a966ce57881"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>connectPlayerToGame</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player, std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt; game)</td></tr>
+<tr class="separator:a9561ae5693c200b05ece4a966ce57881"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a440675505ad0102ecec2ba315b3d1247"><td class="memItemLeft" align="right" valign="top"><a id="a440675505ad0102ecec2ba315b3d1247"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>registerClientAnswer</b> (const std::string &amp;response, std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player)</td></tr>
 <tr class="separator:a440675505ad0102ecec2ba315b3d1247"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1c4bf350d6bf28acdd5d5a82e078f40"><td class="memItemLeft" align="right" valign="top"><a id="ae1c4bf350d6bf28acdd5d5a82e078f40"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>processMessage</b> (boost::asio::streambuf &amp;receiveBuffer, std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player, std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt; game)</td></tr>
 <tr class="separator:ae1c4bf350d6bf28acdd5d5a82e078f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a7ebcb0f880eb70ce7d80b6fcb5de38c9"><td class="memItemLeft" align="right" valign="top"><a id="a7ebcb0f880eb70ce7d80b6fcb5de38c9"></a>
+std::vector&lt; std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>games</b></td></tr>
+<tr class="separator:a7ebcb0f880eb70ce7d80b6fcb5de38c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1813694f9b25e8fbb28a41c2976195f"><td class="memItemLeft" align="right" valign="top"><a id="ab1813694f9b25e8fbb28a41c2976195f"></a>
+std::mutex&#160;</td><td class="memItemRight" valign="bottom"><b>gamesMutex</b></td></tr>
+<tr class="separator:ab1813694f9b25e8fbb28a41c2976195f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7337d96f26cd162650eb79aa682ad6e"><td class="memItemLeft" align="right" valign="top"><a id="af7337d96f26cd162650eb79aa682ad6e"></a>
+std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>running</b></td></tr>
+<tr class="separator:af7337d96f26cd162650eb79aa682ad6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classserver_1_1Server.html" title="class Server -">Server</a> - </p>
