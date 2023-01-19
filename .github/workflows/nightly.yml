@@ -18,6 +18,7 @@ jobs:
         sudo apt update
         sudo apt install libboost-all-dev
         sudo apt-get install libsfml-dev
+        sudo apt-get install libjsoncpp-dev
         
     - name: Configure CMake
       run: |
