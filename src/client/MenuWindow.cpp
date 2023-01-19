@@ -18,6 +18,9 @@
 #define BUTTON_CONNECT 6
 #define BUTTON_START 7
 
+#define QUIT_OFFSET 10
+#define QUIT_SCALE 0.09375
+
 #define CREATE_GAME "new"
 
 #define ASCI_BEGIN 41
@@ -51,6 +54,7 @@ void MenuWindow::displayWindow()
     gameEnginePtr->clientWindow->clear(sf::Color::Blue);
 
     gameEnginePtr->clientWindow->draw(backgroundTexture->getSprite());
+    gameEnginePtr->clientWindow->draw(quitTexture->getSprite());
 
     for (unsigned i = 0; i < currentMenu->size(); i++)
     {
@@ -151,6 +155,7 @@ bool MenuWindow::menuEventHappened(sf::Event &event)
 
         case sf::Keyboard::BackSpace:
             deleteChar();
+            break;
 
         default:
             break;
@@ -183,6 +188,13 @@ bool MenuWindow::clickAction(sf::Vector2i clickPoint, int index, bool isOnButton
             currentMenu->at(index).buttonRect->getGlobalBounds()))
     {
         isOnButton = currentMenu->at(index).clickButton();
+    }
+    if (gameEnginePtr->intersectPointRect( 
+        clickPoint, 
+        quitTexture->getSprite().getGlobalBounds()))
+    {
+        gameEnginePtr->handleQuitMenu(true);
+        return true;
     }
     if (isOnButton && index == BUTTON_CREAT && currentMenu == &menuButtons)
     {
@@ -271,20 +283,26 @@ void MenuWindow::deleteChar()
 void MenuWindow::loadMenuTexture()
 {
 
-    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/menu/background.png");
+    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/menu/background.png");
     backgroundTexture->addSprite();
     float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(gameEnginePtr->clientWindow->getSize().x));
     backgroundTexture->setHudSpritePosition(backgroundScale, gameEnginePtr->clientWindow->getSize().x, gameEnginePtr->clientWindow->getSize().y, 0, 0);
 
-    if (!menuFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+    quitTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/hud/leave.png");
+    quitTexture->addSprite();
+    quitTexture->moveSpritePosition(QUIT_OFFSET, QUIT_OFFSET);
+    quitTexture->getSprite().setScale(QUIT_SCALE, QUIT_SCALE);
+
+
+    if (!menuFont.loadFromFile(RESOURCES_PATH "/hud/font.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    std::ifstream file(RESOURCES_PATH "/img/menu/menu.json");
+    std::ifstream file(RESOURCES_PATH "/menu/menu.json");
     if (!file.is_open())
     {
-        std::cerr << "Error while opening json ressources file /img/menu/menu.json" << std::endl;
+        std::cerr << "Error while opening json ressources file /menu/menu.json" << std::endl;
         exit(1);
     }
     std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());

@@ -721,6 +721,7 @@ struct stdlib_includes {
    int limits;
    int map;
    int unordered_map;
+   int boost_serialize;
    int set;
    int list;
    int unordered_set;
@@ -813,6 +814,11 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        if (!si->unordered_map && strstr(name,"std::unordered_map")) {
            print ("#include <unordered_map>\n");
            si->unordered_map = 1;
+       }
+        if (!si->boost_serialize && strstr(name,"boost::serialization::access")) {
+           print("#include <boost/serialization/access.hpp>\n");
+           print("#include <boost/serialization/vector.hpp>\n");
+           si->boost_serialize = 1;
        }
        if (!si->unordered_set && strstr(name,"std::unordered_set")) {
            print ("#include <unordered_set>\n");

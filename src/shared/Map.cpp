@@ -1,8 +1,11 @@
 #include <shared.hpp>
 #include <math.h>
 #include <ctime>
+#include "shared/Map.hpp"
 
 #define NUMBER_OF_FIELDS 5
+#define PERLIN_NOISE_WIDTH 10
+#define PERLIN_NOISE_PARAM 0.8
 
 using namespace shared;
 
@@ -15,13 +18,32 @@ Map::Map(unsigned width, unsigned height)
 {
     this->height = height;
     this->width = width;
-    for (unsigned i = 0; i < height; i++)
+}
+
+void Map::init()
+{
+    if (isInizialize)
     {
-        for (unsigned j = 0; j < width; j++)
+        return;
+    }
+    for (unsigned i = 0; i < this->height; i++)
+    {
+        for (unsigned j = 0; j < this->width; j++)
         {
-            mapOfTheGame.push_back(new Hexagon());
+            mapOfTheGame.push_back(std::make_shared<Hexagon>());
         }
     }
+    isInizialize = true;
+}
+
+void Map::setMapHeight(unsigned height)
+{
+    this->height = height;
+}
+
+void Map::setMapWidth(unsigned width)
+{
+    this->width = width;
 }
 
 unsigned Map::getMapHeight()
@@ -40,6 +62,12 @@ unsigned Map::getMapWidth()
  */
 void Map::generateRandomMap(int seed)
 {
+
+    if (!isInizialize)
+    {
+        init();
+    }
+
     PerlinNoise pn(seed);
     srand(time(NULL));
 
@@ -50,7 +78,7 @@ void Map::generateRandomMap(int seed)
             double x = (double)j / ((double)this->width);
             double y = (double)i / ((double)this->height);
 
-            double n = pn.noise(10 * x, 10 * y, 0.8);
+            double n = pn.noise(PERLIN_NOISE_WIDTH * x, PERLIN_NOISE_WIDTH * y, PERLIN_NOISE_PARAM);
             int field = (int)round(n * (NUMBER_OF_FIELDS + 1));
 
             switch (field)
@@ -120,7 +148,7 @@ void Map::generateRandomMap(int seed)
  * @param y Y coordinate of the hexagon
  * @return Pointer to the hexagon
  */
-Hexagon *Map::operator()(unsigned x, unsigned y)
+std::shared_ptr<Hexagon> Map::operator()(unsigned x, unsigned y)
 {
     if (x < this->width && y < this->height && mapOfTheGame.size() > 0)
     {
@@ -129,16 +157,5 @@ Hexagon *Map::operator()(unsigned x, unsigned y)
     else
     {
         return nullptr;
-    }
-}
-
-/*!
- * @brief Map destructor
- */
-Map::~Map()
-{
-    for (unsigned i = 0; i < mapOfTheGame.size(); i++)
-    {
-        delete mapOfTheGame[i];
     }
 }

@@ -22,18 +22,18 @@ void setImage(std::unique_ptr<TextureDisplayer>& texture, std::string path, sf::
 
 ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
 {
-    const Json::Value &data = gameWindow->openJsonFile("/img/validateBoxes/dataButton.json");
+    const Json::Value &data = gameWindow->openJsonFile("/validateBoxes/dataButton.json");
 
     blackBackground = std::make_unique<Button>(sf::Vector2f(windowLength, windowWidth), sf::Vector2f(0, 0), BACKGROUND_COLOR, false);
 
-     if (!font.loadFromFile(RESOURCES_PATH "/img/hud/Calibri.ttf"))
+     if (!font.loadFromFile(RESOURCES_PATH "/hud/Calibri.ttf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
    
     setImage(
         littleBackground,
-        "/img/validateBoxes/little-background.png",
+        "/validateBoxes/little-background.png",
         sf::Vector2f(data["little-background-pos-x"].asFloat(), data["little-background-pos-y"].asFloat()),
         sf::Vector2f(data["little-background-scale-x"].asFloat(), 1));
 
@@ -54,19 +54,19 @@ ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
 
     setImage(
         arrowLessTexture, 
-        "/img/validateBoxes/arrow-less.png", 
+        "/validateBoxes/arrow-less.png", 
         sf::Vector2f(data["arrow-less-pos-x"].asFloat(), data["arrow-less-pos-y"].asFloat()),
         sf::Vector2f(1, 1));
 
     setImage(
         arrowMoreTexture, 
-        "/img/validateBoxes/arrow-more.png", 
+        "/validateBoxes/arrow-more.png", 
         sf::Vector2f(data["arrow-more-pos-x"].asFloat(), data["arrow-more-pos-y"].asFloat()),
         sf::Vector2f(1, 1));
 
     setImage(
         doneTexture, 
-        "/img/validateBoxes/done.png", 
+        "/validateBoxes/done.png", 
         sf::Vector2f(data["done-pos-x"].asFloat(), data["done-pos-y"].asFloat()), 
         sf::Vector2f(1, 1));
 
