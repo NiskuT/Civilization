@@ -41,7 +41,6 @@
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
-const std::array<int,25> techWheelRotation = {178, 168, 155, 142, 126, 98, 85, 75, 64, 53, 40, 30, 16, 4, 354, 344, 336, 326, 316, 306, 294, 283, 272, 261, 250};
 
 using namespace client;
 
@@ -889,6 +888,15 @@ void GameWindow::loadHudTexture()
 
         whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, titleFont);
     }
+
+    // rotation of the techWheel
+
+    const Json::Value &dataRotation = openJsonFile("/hud/tech-wheel-rotation.json");
+    for (unsigned index = 0; index < dataRotation.size(); ++index)
+    {
+        techWheelRotation[index] = dataRotation[index]["rotation"].asInt();
+    }
+
 }
 /*!
  * @brief Function that deteck where the user click and what to send to the engine
