@@ -201,7 +201,21 @@ bool MenuWindow::clickAction(sf::Vector2i clickPoint, int index, bool isOnButton
     }
     else if (isOnButton && index == BUTTON_CONNECT && currentMenu == &menuButtons)
     {
-        return connectToGame(menuButtons[BUTTON_ID]());
+        if(menuButtons[BUTTON_ID]().size() == BUTTON_ID && menuButtons[BUTTON_USERNAME]().size() != 0)
+        {
+            return connectToGame(menuButtons[BUTTON_ID]());
+        }
+        else if(menuButtons[BUTTON_ID]().size() != BUTTON_ID)
+        {
+            menuButtons[BUTTON_ID].buttonText->setString("Wrong");
+            menuButtons[BUTTON_ID].centerText(false);
+        }
+        if (menuButtons[BUTTON_USERNAME]().size() == 0)
+        {
+            menuButtons[BUTTON_USERNAME].buttonText->setString("Write Username");
+            menuButtons[BUTTON_USERNAME].centerText(false);
+        }
+        
     }
     else if (isOnButton && index == BUTTON_LOAD && currentMenu == &newGameButtons)
     {
