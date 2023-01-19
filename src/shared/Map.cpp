@@ -10,19 +10,20 @@
 using namespace shared;
 
 /*!
-    * @brief Map constructor
-    * @param width Width of the map to instantiate
-    * @param height Height of the map to instantiate
-    */
+ * @brief Map constructor
+ * @param width Width of the map to instantiate
+ * @param height Height of the map to instantiate
+ */
 Map::Map(unsigned width, unsigned height)
 {
     this->height = height;
     this->width = width;
 }
 
-void Map::init() 
+void Map::init()
 {
-    if (isInizialize) {
+    if (isInizialize)
+    {
         return;
     }
     for (unsigned i = 0; i < this->height; i++)
@@ -56,13 +57,14 @@ unsigned Map::getMapWidth()
 }
 
 /*!
-    * @brief Function to generate a random map based on Perlin Noise
-    * @param seed Seed to use for the random generation
-    */
+ * @brief Function to generate a random map based on Perlin Noise
+ * @param seed Seed to use for the random generation
+ */
 void Map::generateRandomMap(int seed)
 {
 
-    if (!isInizialize) {
+    if (!isInizialize)
+    {
         init();
     }
 
@@ -76,8 +78,8 @@ void Map::generateRandomMap(int seed)
             double x = (double)j / ((double)this->width);
             double y = (double)i / ((double)this->height);
 
-                double n = pn.noise(PERLIN_NOISE_WIDTH * x, PERLIN_NOISE_WIDTH * y, PERLIN_NOISE_PARAM);
-                int field = (int)round(n * (NUMBER_OF_FIELDS + 1));
+            double n = pn.noise(PERLIN_NOISE_WIDTH * x, PERLIN_NOISE_WIDTH * y, PERLIN_NOISE_PARAM);
+            int field = (int)round(n * (NUMBER_OF_FIELDS + 1));
 
             switch (field)
             {
@@ -141,11 +143,11 @@ void Map::generateRandomMap(int seed)
 }
 
 /*!
-    * @brief Operator to access a specific hexagon of the map
-    * @param x X coordinate of the hexagon
-    * @param y Y coordinate of the hexagon
-    * @return Pointer to the hexagon
-    */
+ * @brief Operator to access a specific hexagon of the map
+ * @param x X coordinate of the hexagon
+ * @param y Y coordinate of the hexagon
+ * @return Pointer to the hexagon
+ */
 std::shared_ptr<Hexagon> Map::operator()(unsigned x, unsigned y)
 {
     if (x < this->width && y < this->height && mapOfTheGame.size() > 0)
@@ -157,4 +159,3 @@ std::shared_ptr<Hexagon> Map::operator()(unsigned x, unsigned y)
         return nullptr;
     }
 }
-
