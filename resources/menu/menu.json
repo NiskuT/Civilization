@@ -66,23 +66,23 @@
         },
         {
             "text": "Connect to existing Game",
-            "size": 35,
-            "xOffset": 7,
-            "yOffset": 16.5,
+            "size": 30,
+            "xOffset": 6.3,
+            "yOffset": 17.5,
             "bold": false
         },
         {
             "text": "Serveur adress",
-            "size": 35,
-            "xOffset": 13.5,
-            "yOffset": 30,
+            "size": 30,
+            "xOffset": 14,
+            "yOffset": 32.52,
             "bold": false
         },
         {
             "text": "Port Number",
-            "size": 35,
-            "xOffset": 5.5,
-            "yOffset": 28.8,
+            "size": 30,
+            "xOffset": 4.8,
+            "yOffset": 26.5,
             "bold": false
         }
     ],
@@ -97,23 +97,23 @@
         },
         {
             "text": "New Game Parameters",
-            "size": 35,
-            "xOffset": 7.5,
-            "yOffset": 20.9,
+            "size": 25,
+            "xOffset": 8.5,
+            "yOffset": 22.5,
             "bold": false
         },
         {
             "text": "Serveur adress",
-            "size": 35,
-            "xOffset": 13.5,
-            "yOffset": 30,
+            "size": 30,
+            "xOffset": 14,
+            "yOffset": 32.52,
             "bold": false
         },
         {
             "text": "Port Number",
-            "size": 35,
-            "xOffset": 5.5,
-            "yOffset": 28.8,
+            "size": 30,
+            "xOffset": 4.8,
+            "yOffset": 26.5,
             "bold": false
         }
     ],
@@ -147,7 +147,7 @@
             "x": 0.525,
             "y": 1,
             "text": "Seed",
-            "sizeMax": 30
+            "sizeMax": 8
         },
         {
             "width": 0.2,
