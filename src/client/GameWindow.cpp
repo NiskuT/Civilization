@@ -678,8 +678,10 @@ void GameWindow::updateElementTexture()
             {
                 std::shared_ptr<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>> variant = mapShared(j, i)->getElements()[k];
 
-                int index = std::visit([](auto&& arg){
-                    arg.getType();
+                int index;
+                
+                std::visit([&index](auto&& arg){
+                    index = (int)arg.getType();
                 }, *variant);
 
                 std::string path = RESOURCES_PATH + data[index]["path"].asString();
