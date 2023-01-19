@@ -854,7 +854,7 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            si->boostAsio = 1;
        }
        if (!si->json && strstr(name,"Json::Value")) {
-           print (" #include <json/json.h>\n");
+           print ("#include <json/json.h>\n");
            si->json = 1;
        }
        if (!si->variant && strstr(name,"std::variant")) {
