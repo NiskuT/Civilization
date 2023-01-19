@@ -137,6 +137,7 @@ unsigned Player::getNumberOfBox(CardsEnum cardType)
             return card->getNumberOfBox();
         }
     }
+    return 0;
 }
 
 void Player::addCaravan(std::shared_ptr<Caravan> newCaravan)
