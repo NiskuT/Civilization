@@ -4,6 +4,8 @@
 #include <fstream>
 #include <json/json.h>
 #include <cmath>
+#include <string>
+#include <codecvt>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -12,20 +14,30 @@
 
 #define NUMBER_OF_FIELD 12
 
+#define TCHAT_MAX_SIZE 200
+
 #define WINDOW_LENGTH 1600
 #define WINDOW_WIDTH 900
 
 #define ACTION_CARD_PROPORTION 0.125
 #define TITLE_PROPORTION 0.025
-#define BODY_PROPORTION_X 0.0075
-#define BODY_PROPORTION_Y 0.055
 #define MAX_CHARACTER_SIZE 19
 #define NBR_CHAR_MAX_PER_LIGNE 22
 #define TURN_NUMBER 2
 
+#define ASCI_BEGIN 19
+#define ASCI_END 127
+
 #define CARD_BORDER 18
 
-#define ELEMENT_PATH "/img/map/element/"
+#define INDEX_CHAT_BUTTON 8
+#define INDEX_MAP_BUTTON 9
+#define INDEX_QUIT_BUTTON 10
+
+#define ARROW_INDEX 5
+
+#define ELEMENT_PATH "/map/element/"
+#define CHAT_MIN_SIZE 7
 
 #ifndef RESOURCES_PATH
 #define RESOURCES_PATH "../resources"
@@ -33,6 +45,7 @@
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
+const std::array<int,25> techWheelRotation = {178, 168, 155, 142, 126, 98, 85, 75, 64, 53, 40, 30, 16, 4, 354, 344, 336, 326, 316, 306, 294, 283, 272, 261, 250};
 
 using namespace client;
 
@@ -49,6 +62,8 @@ GameWindow::GameWindow()
     loadElementTexture();
     updateElementTexture();
     loadHudTexture();
+    chatBox = std::make_unique<Chat>(bodyFont);
+
 }
 
 /*!
@@ -82,6 +97,19 @@ void GameWindow::displayWindow()
         }
     }
 
+        for (auto &priorityCardTexture : priorityCards)
+        {
+            priorityCardTexture.texture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+            gameEnginePtr->clientWindow->draw(*priorityCardTexture.title);
+            gameEnginePtr->clientWindow->draw(*priorityCardTexture.nbOfBoxesText);
+            if (priorityCardTexture.isUp)
+            {
+                gameEnginePtr->clientWindow->draw(*priorityCardTexture.body);
+                gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonRect);
+                gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonText);
+
+            }
+        }
     boxTexture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
 
     for (unsigned i = 0; i < actionCardsToDisplay.size(); i++)
@@ -102,6 +130,11 @@ void GameWindow::displayWindow()
     for (unsigned i = 5; i < hudTextureToDisplay.size(); i++)
     {
         hudTextureToDisplay[i].drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+    }
+
+    if (isChatOpen)
+    {
+        chatBox->drawChat(gameEnginePtr->clientWindow); 
     }
 
     gameEnginePtr->clientWindow->display();
@@ -157,16 +190,18 @@ void GameWindow::startGame()
  */
 bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPoint, std::shared_ptr<bool> moveMode, std::shared_ptr<bool> clickMode)
 {
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
     switch (event.type)
     {
     case sf::Event::MouseButtonPressed:
 
         *clickMode = true;
         clickStartingPoint = sf::Mouse::getPosition(*gameEnginePtr->clientWindow);
-
-        if (!*moveMode)
+        if (clickAction(event, clickStartingPoint, moveMode))
         {
-            clickAction(clickStartingPoint);
+            std::cout << "You have quit the game\n";
+            gameEnginePtr->handleQuitMenu(true);
+            return true;
         }
         break;
 
@@ -181,8 +216,15 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
         }
         break;
 
+    case sf::Event::TextEntered:
+        if (event.text.unicode > ASCI_BEGIN && event.text.unicode < ASCI_END && isChatOpen)
+        {
+            chatBox->addChatChar(converter.to_bytes(event.text.unicode));
+        }
+        break;
+
     case sf::Event::KeyPressed:
-        if (handleKeyboardEvent(event.key, moveMode, clickStartingPoint))
+        if (handleKeyboardEvent(event.key))
             return true;
         break;
 
@@ -202,28 +244,19 @@ bool GameWindow::handleGameEvent(sf::Event &event, sf::Vector2i &clickStartingPo
  * @param moveMode pointer to know if the map is moving on the screen
  * @param clickStartingPoint reference used to know where the user start pressing mouse
  */
-bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent, std::shared_ptr<bool> moveMode, sf::Vector2i &clickStartingPoint)
+bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent)
 {
     switch (keyEvent.code)
     {
-    case sf::Keyboard::M:
-        changeMouseCursor(moveMode);
+    case sf::Keyboard::Enter:
+        if (isChatOpen)
+        {
+            sendMessage();
+        }
         break;
 
-    case sf::Keyboard::K:
-        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-        {
-            gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
-        }
-        gameEnginePtr->handleQuitMenu(false);
-        return true;
-
-    case sf::Keyboard::Escape:
-        gameEnginePtr->handleQuitMenu(true);
-        return true;
-
-    case sf::Keyboard::L:
-        moveMap(clickStartingPoint, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
+    case sf::Keyboard::BackSpace:
+        chatBox->deleteChatChar();
         break;
 
     default:
@@ -233,27 +266,47 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent, std::shared_p
 }
 
 /*!
+ * @brief This function send a message to the server
+ */
+void GameWindow::sendMessage() {
+    std::unique_lock<std::mutex> lock(chatBox->mutexChat);
+    std::string message = "chat " + chatBox->message + "\n";
+    lock.unlock();
+
+    if (message.size() < CHAT_MIN_SIZE)  return;
+
+    std::unique_lock<std::mutex> lock2(gameEnginePtr->myself->qAndA.sharedDataMutex);
+    gameEnginePtr->myself->qAndA.question = message;
+    lock2.unlock();
+    gameEnginePtr->askServer();
+
+}
+
+/*!
  * @brief Change the cursor type to a hand or an arrow
  * @param moveMode pointer to know if the map is moving on the screen
  */
-void GameWindow::changeMouseCursor(std::shared_ptr<bool> moveMode)
+void GameWindow::changeMouseCursor(sf::Event& event, std::shared_ptr<bool> moveMode)
 {
+    if(event.mouseButton.button == sf::Mouse::Right)
+    {
+        sf::Vector2i nullPosition(0, 0);
+        moveMap(nullPosition, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
+        gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
+        return;
+    }
+
     if (*moveMode)
     {
         *moveMode = false;
-        if (clientCursor.loadFromSystem(sf::Cursor::Arrow))
-        {
-            gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
-        }
+        clientCursor.loadFromSystem(sf::Cursor::Arrow);
     }
     else
     {
         *moveMode = true;
-        if (clientCursor.loadFromSystem(sf::Cursor::Hand))
-        {
-            gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
-        }
+        clientCursor.loadFromSystem(sf::Cursor::Hand);
     }
+    gameEnginePtr->clientWindow->setMouseCursor(clientCursor);
 }
 
 /*!
@@ -269,8 +322,8 @@ void GameWindow::moveMap(sf::Vector2i &clickStartingPoint, sf::Vector2i position
         clickStartingPoint.x = firstHexagonPosition[0];
         clickStartingPoint.y = firstHexagonPosition[1];
     }
-    std::array<int, 2> newMapOffset = {position.x - clickStartingPoint.x,
-                                       position.y - clickStartingPoint.y};
+    std::array<int, 2> newMapOffset = { position.x - clickStartingPoint.x, 
+                                        position.y - clickStartingPoint.y};
 
     if (reset)
     {
@@ -293,6 +346,7 @@ void GameWindow::moveMap(sf::Vector2i &clickStartingPoint, sf::Vector2i position
     }
 
     clickStartingPoint = sf::Mouse::getPosition(*gameEnginePtr->clientWindow);
+
 }
 
 /*!
@@ -322,83 +376,167 @@ const auto GameWindow::openJsonFile(std::string path)
 }
 
 /*!
+* @brief Move to right priority cards when a player play one
+* @param difficulty level of difficulty when the card is played (0 to 4 for the 5 different field)
+*/
+void GameWindow::moveToRightPriorityCards(int difficulty)
+{
+    const Json::Value &dataNumber = openJsonFile("/hud/data-number.json");
+
+    int xPos;
+    int yPos;
+
+    for (unsigned i = difficulty; i > 0; i--) 
+    {
+        priorityCards[i-1].difficulty = i;
+        std::iter_swap(priorityCards.begin() + i, priorityCards.begin() + (i-1));
+    }
+    priorityCards[0].difficulty = 0;
+
+    for (int i = 0; i <= difficulty; i++) 
+    {
+        xPos = dataNumber["priority-card-offset"].asFloat() * WINDOW_LENGTH * i + dataNumber["priority-card-first-offset"].asFloat() * WINDOW_LENGTH;
+        yPos = priorityCards[i].texture->getSprite().getPosition().y;
+        priorityCards[i].texture->getSprite().setPosition(xPos, yPos);
+        priorityCards[i].movePriorityCardElements(dataNumber);
+    }
+    
+}
+
+/*!
+* @brief Detect when we click on a priority card or on the play button on priorityCard and make the action associated
+* @param cursorRect emplacement of the mouse
+*/
+bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
+{
+    for (auto &priorityCard : priorityCards)
+    {
+        sf::FloatRect spriteCards = priorityCard.texture->getSprite().getGlobalBounds();
+        sf::FloatRect spriteValidateButton = priorityCard.validateButton->buttonRect->getGlobalBounds();
+
+        if (gameEnginePtr->intersectPointRect(clickPosition,spriteValidateButton) && priorityCard.isUp)
+        {
+            gameEnginePtr->handlePriorityCardPlay(priorityCard.type, priorityCard.difficulty);
+            moveToRightPriorityCards(priorityCard.difficulty);
+            rotateTechWheel(3);
+            return true;
+        }
+
+        if (gameEnginePtr->intersectPointRect(clickPosition,spriteCards))
+        {
+            priorityCard.moveUpPriorityCard();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+
+/*!
  * @brief Function that deteck where the user click and what to send to the engine
  * @param clickPosition is the position on the cursor when the user click
  * @brief Dectect click and actions to do after
  */
-void GameWindow::clickAction(sf::Vector2i clickPosition)
+bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
 {
     int minimumDistance = WINDOW_LENGTH;
     std::array<int, 2> hexagonOnClick = {0, 0};
 
     bool isClickable = false;
 
-    for (unsigned i = 0; i < priorityCards.size(); i++)
+    if (!*moveMode)
     {
-        // Check if the click position is inside the sprite
-        if (gameEnginePtr->intersectPointRect(clickPosition, priorityCards[i].texture->getSprite().getGlobalBounds()))
-        {
-            gameEnginePtr->handleInformation(-1, i + 1); // -1 to signify that the space clicked is a priority card
-            priorityCards[i].moveUpPriorityCard();
-            return;
+        if (priorityCardClickAction(clickPosition)) {
+            return false;
         }
-    }
 
-    for (auto &mapTexture : mapTextureToDisplay)
-    {
-        for (unsigned j = 0; j < mapTexture.getSize(); j++)
+        for (auto &mapTexture : mapTextureToDisplay)
         {
-
-            if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
+            for (unsigned j = 0; j < mapTexture.getSize(); j++)
             {
-                isClickable = true;
 
-                int x = mapTexture.getSprite(j).getGlobalBounds().left;
-                int y = mapTexture.getSprite(j).getGlobalBounds().top;
-                int width = mapTexture.getSprite(j).getGlobalBounds().width;
-                int height = mapTexture.getSprite(j).getGlobalBounds().height;
-
-                int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
-                                    pow(y + height / 2 - clickPosition.y, 2));
-
-                if (distance < minimumDistance)
+                if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
                 {
+                    isClickable = true;
 
-                    minimumDistance = distance;
-                    hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
-                    hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
+                    int x = mapTexture.getSprite(j).getGlobalBounds().left;
+                    int y = mapTexture.getSprite(j).getGlobalBounds().top;
+                    int width = mapTexture.getSprite(j).getGlobalBounds().width;
+                    int height = mapTexture.getSprite(j).getGlobalBounds().height;
+
+                    int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
+                                        pow(y + height / 2 - clickPosition.y, 2));
+
+                    if (distance < minimumDistance)
+                    {
+
+                        minimumDistance = distance;
+                        hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
+                        hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
+                    }
                 }
             }
         }
+    }
+
+    // Check if the click position is inside the move map button
+    if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_MAP_BUTTON].getSprite().getGlobalBounds()))
+    {
+        changeMouseCursor(event, moveMode);
+        return false;
+    }
+
+    // Check if the click position is inside the chat button
+    if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_CHAT_BUTTON].getSprite().getGlobalBounds()))
+    {
+        isChatOpen = !isChatOpen;
+        return false;
+    }
+
+    // Check if the click position is inside the chat button
+    if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_QUIT_BUTTON].getSprite().getGlobalBounds()))
+    {
+        return true;
     }
 
     if (isClickable)
     {
         gameEnginePtr->handleInformation(hexagonOnClick[0], hexagonOnClick[1]);
     }
+    return false;
 }
 
-/*!
- * @brief Display text on the cards
- * @param cards pointer to the card you want to setUp the text
- * @param title text to be display on the top of the card
- * @param body text to be display on body of the card, float
- * @param titleFont Font that will be used for the titile of the card
- * @param bodyFont Font that will be used for the body of the card
- * @param titleTextSizeProportion Proportion of the title
- * @param bodyTextSizeProportion Proportion of the body
- */
-void GameWindow::setUpText(
-    GraphicCard &card,
-    std::string title,
-    std::string body,
-    sf::Font &titleFont,
-    sf::Font &bodyFont,
-    float titleTextSizeProportion,
-    float bodyTextSizeProportion)
+void GameWindow::rotateTechWheel(int newLevel) 
 {
-    int titleTextSize = titleTextSizeProportion * WINDOW_LENGTH;
-    int bodyTextSize = bodyTextSizeProportion * WINDOW_LENGTH;
+    int newRotation = techWheelRotation[newLevel];
+    hudTextureToDisplay[ARROW_INDEX].getSprite(0).setRotation(newRotation);
+}
+
+
+/*!
+* @brief Display text on the cards
+* @param cards pointer to the card you want to setUp the text
+* @param title text to be display on the top of the card
+* @param body text to be display on body of the card, float
+* @param titleFont Font that will be used for the titile of the card
+* @param bodyFont Font that will be used for the body of the card
+* @param titleTextSizeProportion Proportion of the title
+* @param bodyTextSizeProportion Proportion of the body
+*/
+void GameWindow::setUpText(
+    GraphicCard &card, 
+    std::string title, 
+    std::string body, 
+    sf::Font &titleFont, 
+    sf::Font &bodyFont, 
+    const Json::Value& dataNumber, 
+    float titleTextProportion, 
+    float bodyTextProportion)
+{
+    int titleTextSize = titleTextProportion * WINDOW_LENGTH;
+    int bodyTextSize = bodyTextProportion * WINDOW_LENGTH;
 
     // display the title on the card
     card.title = std::make_unique<sf::Text>(title, titleFont, titleTextSize);
@@ -429,11 +567,11 @@ void GameWindow::setUpText(
         }
         card.body->setString(body);
     }
-
+    
     card.body->setFillColor(TEXT_COLOR);
-    card.body->setLineSpacing(0.9f);
-    int xBodyOffset = BODY_PROPORTION_X * WINDOW_LENGTH;
-    int yBodyOffset = BODY_PROPORTION_Y * WINDOW_WIDTH;
+    card.body->setLineSpacing(dataNumber["body-line-space"].asFloat());
+    int xBodyOffset = dataNumber["body-x-proportion"].asFloat() * WINDOW_LENGTH;
+    int yBodyOffset = dataNumber["body-y-proportion"].asFloat() * WINDOW_WIDTH;
     int xBodyPosition = card.texture->getSprite().getPosition().x + xBodyOffset;
     int yBodyPosition = card.texture->getSprite().getPosition().y + yBodyOffset;
     card.body->setPosition(xBodyPosition, yBodyPosition);
@@ -447,7 +585,7 @@ void GameWindow::loadMapTexture()
 
     mapShared.generateRandomMap(123456789);
 
-    std::string hexagonImgPath = RESOURCES_PATH "/img/map/field/field-";
+    std::string hexagonImgPath = RESOURCES_PATH "/map/field/field-";
     std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
                                             "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
                                             "wonder-messa", "wonder-pantanal", "wonder-volcanic"};
@@ -475,7 +613,7 @@ void GameWindow::loadMapTexture()
  */
 void GameWindow::loadElementTexture()
 {
-    std::string folder_path = RESOURCES_PATH "/img/map/element/";
+    std::string folder_path = RESOURCES_PATH "/map/element/";
     std::vector<std::string> png_files;
     DIR *dir = opendir(folder_path.c_str());
 
@@ -497,13 +635,13 @@ void GameWindow::loadElementTexture()
 
     closedir(dir);
 
-    // Affiche les noms de fichiers trouvés
-    for (const std::string &filename : png_files)
-    {
-        std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
-        elementTextureToDisplay[path] = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(path);
+        // Affiche les noms de fichiers trouvés
+        for (const std::string &filename : png_files)
+        {
+            std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
+            elementTextureToDisplay[path] = std::make_unique<TextureDisplayer>(path);
+        }
     }
-}
 
 /*!
  * @brief Update all the textures of the map
@@ -519,7 +657,7 @@ void GameWindow::updateElementTexture()
     std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
     // Data are temporary loaded with the json file but it will be updated from the server soon
-    const Json::Value &data = openJsonFile("/img/map/files.json");
+    const Json::Value &data = openJsonFile("/map/files.json");
 
     for (unsigned index = 0; index < data.size(); ++index)
     {
@@ -556,22 +694,22 @@ sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float bo
 }
 
 /*!
- * @brief Load all the HUD textures
- */
+* @brief Load all the HUD textures
+*/
 void GameWindow::loadHudTexture()
 {
 
     int rotation = 0;
     int priorityCardIndex = 0;
 
-    const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
+    const Json::Value &dataNumber = openJsonFile("/hud/data-number.json");
 
-    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/background.png");
+    backgroundTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/hud/background.png");
     backgroundTexture->addSprite();
     float backgroundScale = 1 / (float(backgroundTexture->getWidth()) / float(WINDOW_LENGTH));
     backgroundTexture->setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);
 
-    const Json::Value &data = openJsonFile("/img/hud/files.json");
+    const Json::Value &data = openJsonFile("/hud/files.json");
 
     for (unsigned index = 0; index < data.size(); ++index)
     {
@@ -583,21 +721,22 @@ void GameWindow::loadHudTexture()
     }
 
     // load the priorityCard
-    boxTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/box.png");
+    boxTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/hud/box.png");
     std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
     std::string boxString = "0";
 
-    if (!titleFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
+    if (!titleFont.loadFromFile(RESOURCES_PATH "/hud/font.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    if (!bodyFont.loadFromFile(RESOURCES_PATH "/img/hud/Calibri.ttf"))
+    if (!bodyFont.loadFromFile(RESOURCES_PATH "/hud/MorrisRomanBlack.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    const Json::Value &priorityData = openJsonFile("/img/hud/priority-card.json");
+    const Json::Value &priorityData = openJsonFile("/hud/priority-card.json");
+
     float priorityTitleTextProportion = dataNumber["priority-card-title-proportion"].asFloat();
     float priorityBodyTextProportion = dataNumber["priority-card-body-proportion"].asFloat();
 
@@ -608,7 +747,8 @@ void GameWindow::loadHudTexture()
             dataNumber,
             WINDOW_LENGTH,
             WINDOW_WIDTH,
-            index);
+            index,
+            bodyFont);
 
         // title and body
 
@@ -618,6 +758,7 @@ void GameWindow::loadHudTexture()
             priorityData[index]["body"][priorityCards.back().level].asString(),
             titleFont,
             bodyFont,
+            dataNumber,
             priorityTitleTextProportion,
             priorityBodyTextProportion);
 
@@ -646,7 +787,7 @@ void GameWindow::loadHudTexture()
     }
 
     // actionCard
-    const Json::Value &actionCardData = openJsonFile("/img/hud/action-card.json");
+    const Json::Value &actionCardData = openJsonFile("/hud/action-card.json");
     float actionTitleTextProportion = dataNumber["action-card-title-proportion"].asFloat();
     float actionBodyTextProportion = dataNumber["action-card-body-proportion"].asFloat();
 
@@ -671,6 +812,7 @@ void GameWindow::loadHudTexture()
             bodyCardAction,
             titleFont,
             bodyFont,
+            dataNumber,
             actionTitleTextProportion,
             actionBodyTextProportion);
     }
@@ -696,7 +838,6 @@ void GameWindow::loadHudTexture()
         whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, titleFont);
     }
 }
-
 /*!
  * @brief Function that deteck where the user click and what to send to the engine
  * @param timeSecond is a boolean used to

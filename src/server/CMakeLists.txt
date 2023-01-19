@@ -18,6 +18,7 @@ target_link_libraries(${lib_server_target} PUBLIC
   ${MHD_LIBRARY}
   $<TARGET_NAME:shared_static>
   )
+target_link_libraries(${lib_server_target} PRIVATE boost_serialization)
 
 # Compile "server" executable
 set(server_target server)

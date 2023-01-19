@@ -828,32 +828,31 @@ gen_decl(declaration *d)
     }
 }
 
-struct stdlib_includes
-{
-    int string;
-    int stdint;
-    int stdlib;
-    int vector;
-    int memory;
-    int limits;
-    int map;
-    int unordered_map;
-    int set;
-    int list;
-    int unordered_set;
-    int stack;
-    int queue;
-    int function;
-    int array;
-    int thread;
-    int mutex;
-    int condition_variable;
-    int random;
-    int sfmlGraphics;
-    int jsoncpp;
-    int boostAsio;
-    int variant;
-    int json;
+struct stdlib_includes {
+   int string;
+   int stdint;
+   int stdlib;
+   int vector;
+   int memory;
+   int limits;
+   int map;
+   int unordered_map;
+   int boost_serialize;
+   int set;
+   int list;
+   int unordered_set;
+   int stack;
+   int queue;
+   int function;
+   int array;   
+   int thread;
+   int mutex;
+   int condition_variable;
+   int random;
+   int sfmlGraphics;
+   int jsoncpp;
+   int boostAsio;
+   int json;
 };
 
 void print_include_stdlib(struct stdlib_includes *si, char *name)
@@ -895,91 +894,86 @@ void print_include_stdlib(struct stdlib_includes *si, char *name)
             print("#include <functional>\n");
             si->function = 1;
         }
-        if (!si->set && strstr(name, "std::set"))
-        {
-            print("#include <set>\n");
-            si->set = 1;
-        }
-        if (!si->limits && strstr(name, "std::numeric_limits"))
-        {
-            print("#include <limits>\n");
-            si->limits = 1;
-        }
-        if (!si->list && strstr(name, "std::list"))
-        {
-            print("#include <list>\n");
-            si->list = 1;
-        }
-        if (!si->stack && strstr(name, "std::stack"))
-        {
-            print("#include <stack>\n");
-            si->stack = 1;
-        }
-        if (!si->mutex && strstr(name, "std::mutex"))
-        {
-            print("#include <mutex>\n");
-            si->mutex = 1;
-        }
-        if (!si->condition_variable && strstr(name, "std::condition_variable"))
-        {
-            print("#include <condition_variable>\n");
-            si->condition_variable = 1;
-        }
-        if (!si->thread && strstr(name, "std::thread"))
-        {
-            print("#include <thread>\n");
-            si->thread = 1;
-        }
-        if (!si->queue && (strstr(name, "std::queue") || strstr(name, "std::priority_queue")))
-        {
-            print("#include <queue>\n");
-            si->queue = 1;
-        }
-        if (!si->unordered_map && strstr(name, "std::unordered_map"))
-        {
-            print("#include <unordered_map>\n");
-            si->unordered_map = 1;
-        }
-        if (!si->unordered_set && strstr(name, "std::unordered_set"))
-        {
-            print("#include <unordered_set>\n");
-            si->unordered_set = 1;
-        }
-        if (!si->memory && (strstr(name, "std::unique_ptr") || strstr(name, "std::shared_ptr") || strstr(name, "std::weak_ptr")))
-        {
-            print("#include <memory>\n");
-            si->memory = 1;
-        }
-        if (!si->random && (strstr(name, "std::mt19937") || strstr(name, "std::random_device") || strstr(name, "std::uniform_int_distribution")))
-        {
-            print("#include <random>\n");
-            si->random = 1;
-        }
-        if (!si->sfmlGraphics && strstr(name, "sf::"))
-        {
-            print("#include <SFML/Graphics.hpp>\n");
-            si->sfmlGraphics = 1;
-        }
-        if (!si->jsoncpp && (strstr(name, "Json::") == name))
-        {
-            print("#include <json/json.h>\n");
-            si->jsoncpp = 1;
-        }
-        if (!si->boostAsio && strstr(name, "boost::asio"))
-        {
-            print("#include <boost/asio.hpp>\n");
-            si->boostAsio = 1;
-        }
-        if (!si->variant && strstr(name, "std::variant"))
-        {
-            print("#include <variant>\n");
-            si->boostAsio = 1;
-        }
-    }
-    if (!si->json && strstr(name, "Json::Value"))
-    {
-        print(" #include <json/json.h>\n");
-        si->json = 1;
+       if (!si->set && strstr(name,"std::set")) {
+           print ("#include <set>\n");
+           si->set = 1;
+       }
+       if (!si->limits && strstr(name,"std::numeric_limits")) {
+           print ("#include <limits>\n");
+           si->limits = 1;
+       }
+       if (!si->list && strstr(name,"std::list")) {
+           print ("#include <list>\n");
+           si->list = 1;
+       }
+       if (!si->stack && strstr(name,"std::stack")) {
+           print ("#include <stack>\n");
+           si->stack = 1;
+       }
+       if (!si->mutex && strstr(name,"std::mutex")) {
+           print ("#include <mutex>\n");
+           si->mutex = 1;
+       }
+       if (!si->condition_variable && strstr(name,"std::condition_variable")) {
+           print ("#include <condition_variable>\n");
+           si->condition_variable = 1;
+       }
+       if (!si->thread && strstr(name,"std::thread")) {
+           print ("#include <thread>\n");
+           si->thread = 1;
+       }
+       if (!si->queue
+       && (strstr(name,"std::queue")
+       ||  strstr(name,"std::priority_queue"))) {
+           print ("#include <queue>\n");
+           si->queue = 1;
+       }
+       if (!si->unordered_map && strstr(name,"std::unordered_map")) {
+           print ("#include <unordered_map>\n");
+           si->unordered_map = 1;
+       }
+        if (!si->boost_serialize && strstr(name,"boost::serialization::access")) {
+           print("#include <boost/serialization/access.hpp>\n");
+           print("#include <boost/serialization/vector.hpp>\n");
+           si->boost_serialize = 1;
+       }
+       if (!si->unordered_set && strstr(name,"std::unordered_set")) {
+           print ("#include <unordered_set>\n");
+           si->unordered_set = 1;
+       }
+       if (!si->memory 
+       && (strstr(name,"std::unique_ptr")
+       ||  strstr(name,"std::shared_ptr")
+       ||  strstr(name,"std::weak_ptr"))) {
+           print ("#include <memory>\n");
+           si->memory = 1;
+       }
+       if (!si->random 
+       && (strstr(name,"std::mt19937")
+       ||  strstr(name,"std::random_device")
+       ||  strstr(name,"std::uniform_int_distribution"))) {
+           print ("#include <random>\n");
+           si->random = 1;
+       }
+       if (!si->sfmlGraphics 
+       && strstr(name,"sf::")) {
+           print ("#include <SFML/Graphics.hpp>\n");
+           si->sfmlGraphics = 1;
+       }       
+       if (!si->jsoncpp
+       && (strstr(name,"Json::") == name)) {
+           print ("#include <json/json.h>\n");
+           si->jsoncpp = 1;
+       }
+       if (!si->boostAsio && strstr(name,"boost::asio")) {
+           print ("#include <boost/asio.hpp>\n");
+           si->boostAsio = 1;
+       }
+       if (!si->json && strstr(name,"Json::Value")) {
+           print (" #include <json/json.h>\n");
+           si->json = 1;
+       }
+       
     }
 }
 
