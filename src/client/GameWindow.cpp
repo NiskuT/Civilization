@@ -443,43 +443,15 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
  */
 bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
 {
-    int minimumDistance = WINDOW_LENGTH;
-    std::array<int, 2> hexagonOnClick = {0, 0};
-
-    bool isClickable = false;
-
     if (!*moveMode)
     {
         if (priorityCardClickAction(clickPosition)) {
             return false;
         }
 
-        for (auto &mapTexture : mapTextureToDisplay)
+        if (onHexagonClick(clickPosition))
         {
-            for (unsigned j = 0; j < mapTexture.getSize(); j++)
-            {
-
-                if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
-                {
-                    isClickable = true;
-
-                    int x = mapTexture.getSprite(j).getGlobalBounds().left;
-                    int y = mapTexture.getSprite(j).getGlobalBounds().top;
-                    int width = mapTexture.getSprite(j).getGlobalBounds().width;
-                    int height = mapTexture.getSprite(j).getGlobalBounds().height;
-
-                    int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
-                                        pow(y + height / 2 - clickPosition.y, 2));
-
-                    if (distance < minimumDistance)
-                    {
-
-                        minimumDistance = distance;
-                        hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
-                        hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
-                    }
-                }
-            }
+            return false;
         }
     }
 
@@ -501,11 +473,6 @@ bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::
     if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_QUIT_BUTTON].getSprite().getGlobalBounds()))
     {
         return true;
-    }
-
-    if (isClickable)
-    {
-        gameEnginePtr->handleInformation(hexagonOnClick[0], hexagonOnClick[1]);
     }
     return false;
 }
@@ -577,6 +544,48 @@ void GameWindow::setUpText(
     int xBodyPosition = card.texture->getSprite().getPosition().x + xBodyOffset;
     int yBodyPosition = card.texture->getSprite().getPosition().y + yBodyOffset;
     card.body->setPosition(xBodyPosition, yBodyPosition);
+}
+
+bool GameWindow::onHexagonClick(sf::Vector2i clickPosition)
+{
+    bool isClickable = false;
+    std::array<int, 2> hexagonOnClick = {0, 0};    
+    int minimumDistance = WINDOW_LENGTH;
+
+    for (auto &mapTexture : mapTextureToDisplay)
+    {
+        for (unsigned j = 0; j < mapTexture.getSize(); j++)
+        {
+            if (!gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
+            {
+                continue;
+            }
+            isClickable = true;
+
+            int x = mapTexture.getSprite(j).getGlobalBounds().left;
+            int y = mapTexture.getSprite(j).getGlobalBounds().top;
+            int width = mapTexture.getSprite(j).getGlobalBounds().width;
+            int height = mapTexture.getSprite(j).getGlobalBounds().height;
+
+            int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
+                                pow(y + height / 2 - clickPosition.y, 2));
+
+            if (distance < minimumDistance)
+            {
+
+                minimumDistance = distance;
+                hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
+                hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
+            }
+        }
+    }
+
+    if (isClickable)
+    {
+        gameEnginePtr->handleInformation(hexagonOnClick[0], hexagonOnClick[1]);
+        return true;
+    }
+    return false;
 }
 
 /*!
