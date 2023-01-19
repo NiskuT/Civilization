@@ -11,6 +11,13 @@
 #define CARAVAN_STEPS_AT_LEVEL_3 6
 #define CARAVAN_STEPS_AT_LEVEL_4 6
 
+#define CARVAN_NUMBER_AT_LEVEL_1 1
+#define CARVAN_NUMBER_AT_LEVEL_2 2
+#define CARVAN_NUMBER_AT_LEVEL_3 2
+#define CARVAN_NUMBER_AT_LEVEL_4 3
+
+#define NUMBER_PAWNS_ECONOMY_LVL_1 2
+
 using namespace shared;
 
 typedef std::vector<std::shared_ptr<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>> elementList;
@@ -100,18 +107,20 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     switch (cardLevel)
     {
     case 1:
-        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 1);
         if (!verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_1 + numberOfBoxUsed))
         {
             return false;
         }
-        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 1);
+        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, CARVAN_NUMBER_AT_LEVEL_1);
 
         moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
         break;
     case 2:
-        verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_2 + numberOfBoxUsed);
-        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 2);
+        if (!verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_2 + numberOfBoxUsed))
+        {
+            return false;
+        }
+        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, CARVAN_NUMBER_AT_LEVEL_2);
         if (barbarianList.size() > 0)
         {
             for (int i = 0; i < (int)barbarianList.size(); i++)
@@ -125,15 +134,21 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
         // moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
         break;
     case 3:
-        verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_3 + numberOfBoxUsed);
-        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 2);
+        if (!verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_3 + numberOfBoxUsed))
+        {
+            return false;
+        }
+        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, CARVAN_NUMBER_AT_LEVEL_3);
         moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
         // moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
         // exchangeRessourceWithOtherPlayer(); //  TODO: allow to exchange ressource with other player
         break;
     case 4:
-        verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_4 + numberOfBoxUsed);
-        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, 3);
+        if (!verifyIfPathSizeIsCorrect(caravanMovementPath.size(), CARAVAN_STEPS_AT_LEVEL_4 + numberOfBoxUsed))
+        {
+            return false;
+        }
+        addCaravanAfterCardAmelioration(caravans, args.currentPlayer, CARVAN_NUMBER_AT_LEVEL_4);
         moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
         // moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
         // moveCaravan(caravans, caravanMovementPath.at(0), caravanMovementPath.at(caravanMovementPath.size() - 1), map, args.currentPlayer);
@@ -294,7 +309,7 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
     std::shared_ptr<Map> gameMap;
     std::vector<CardsEnum> cardsToImprove = args.cardsToImprove;
 
-    std::vector<std::array<unsigned, 2>> neighbors; // for the nuke
+    std::vector<std::array<unsigned, 2>> neighbors;
 
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::science);
     std::array<int, 3> cardsLevelToImprove = currentPlayer->incrementTechWheel(cardLevel + numberOfBoxUsed);
@@ -466,7 +481,7 @@ bool Rules::playCultureCard(RuleArgsStruct &args)
     switch (cardLevel)
     {
     case 1:
-        if (pawnsPositions.size() <= 2 + numberOfBoxUsed)
+        if (pawnsPositions.size() <= NUMBER_PAWNS_ECONOMY_LVL_1 + numberOfBoxUsed)
         {
             if (!placeControlPawns(pawnsPositions, gameMap, args.currentPlayer))
             {
@@ -563,9 +578,9 @@ bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::sha
     std::vector<std::array<unsigned, 2>> neighbors = getNeighbors(position[0], position[1], gameMap);
     for (auto neighbor : neighbors)
     {
-        for (auto element2 : (*gameMap)(neighbor[0], neighbor[1])->getElements())
+        for (auto element : (*gameMap)(neighbor[0], neighbor[1])->getElements())
         {
-            if (std::holds_alternative<ControlPawn>(*element2))
+            if (std::holds_alternative<ControlPawn>(*element))
             {
                 return true; // TODO : check if the city is owned by the player
             }
