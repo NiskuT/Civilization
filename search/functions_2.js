@@ -2,7 +2,7 @@ var searchData=
 [
   ['centertext_159',['centerText',['../classclient_1_1Button.html#a3b5c540a112985c60e6e0ad3aaaa4f79',1,'client::Button']]],
   ['changemousecursor_160',['changeMouseCursor',['../classclient_1_1GameWindow.html#a8790647660837d9224571b2a0b155e37',1,'client::GameWindow']]],
-  ['chat_161',['Chat',['../classclient_1_1Chat.html#a592d71ec9ca70d5fe5fa6dbf23756930',1,'client::Chat']]],
+  ['chat_161',['Chat',['../classclient_1_1Chat.html#a4427e061b727c06cccca9626cc0cf9c8',1,'client::Chat']]],
   ['checkifbarbarianisonthepath_162',['checkIfBarbarianIsOnThePath',['../classshared_1_1Rules.html#a0cb50360dd9a694d6d7b4adbe704b7aa',1,'shared::Rules']]],
   ['checkifwaterisonthepath_163',['checkIfWaterIsOnThePath',['../classshared_1_1Rules.html#ac81451928c28adc9c119eb04a0593c23',1,'shared::Rules']]],
   ['clearsprites_164',['clearSprites',['../classclient_1_1TextureDisplayer.html#ad4640b865d4311c87d97ae821e4ef98c',1,'client::TextureDisplayer']]],

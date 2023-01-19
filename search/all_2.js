@@ -4,7 +4,7 @@ var searchData=
   ['card_12',['Card',['../classshared_1_1Card.html',1,'shared']]],
   ['centertext_13',['centerText',['../classclient_1_1Button.html#a3b5c540a112985c60e6e0ad3aaaa4f79',1,'client::Button']]],
   ['changemousecursor_14',['changeMouseCursor',['../classclient_1_1GameWindow.html#a8790647660837d9224571b2a0b155e37',1,'client::GameWindow']]],
-  ['chat_15',['Chat',['../classclient_1_1Chat.html#a592d71ec9ca70d5fe5fa6dbf23756930',1,'client::Chat::Chat()'],['../classclient_1_1Chat.html',1,'client::Chat']]],
+  ['chat_15',['Chat',['../classclient_1_1Chat.html#a4427e061b727c06cccca9626cc0cf9c8',1,'client::Chat::Chat()'],['../classclient_1_1Chat.html',1,'client::Chat']]],
   ['checkifbarbarianisonthepath_16',['checkIfBarbarianIsOnThePath',['../classshared_1_1Rules.html#a0cb50360dd9a694d6d7b4adbe704b7aa',1,'shared::Rules']]],
   ['checkifwaterisonthepath_17',['checkIfWaterIsOnThePath',['../classshared_1_1Rules.html#ac81451928c28adc9c119eb04a0593c23',1,'shared::Rules']]],
   ['city_18',['City',['../classshared_1_1City.html',1,'shared']]],

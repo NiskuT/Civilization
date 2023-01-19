@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">193</td>
+            <td class="headerCovTableEntry">201</td>
             <td class="headerCovTableEntryLo">0.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-19 21:08:13</td>
+            <td class="headerValue">2023-01-19 22:59:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -266,211 +266,223 @@
 <a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :         request = request.substr(5);</span></a>
 <a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :         printChat(request);</span></a>
 <a name="206"><span class="lineNum">     206 </span>            :     }</a>
-<a name="207"><span class="lineNum">     207 </span>            :     else </a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :     else if(request.find(&quot;connected&quot;) == 0)</span></a>
 <a name="208"><span class="lineNum">     208 </span>            :     {</a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :         std::cout &lt;&lt; &quot;Received request: &quot; &lt;&lt; request &lt;&lt; std::endl;</span></a>
-<a name="210"><span class="lineNum">     210 </span>            :     }</a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="212"><span class="lineNum">     212 </span>            : </a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 : void ClientGameEngine::printChat(const std::string &amp;message)</span></a>
-<a name="214"><span class="lineNum">     214 </span>            : {</a>
-<a name="215"><span class="lineNum">     215 </span>            : </a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :     if (clientGame.chatBox != nullptr)</span></a>
-<a name="217"><span class="lineNum">     217 </span>            :     {</a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :         size_t firstSpace = message.find(&quot; &quot;);</span></a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :         std::string chatTime = message.substr(0, firstSpace);</span></a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :         size_t secondSpace = message.find(&quot; &quot;, firstSpace + 1);</span></a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :         std::string chatUsername = message.substr(firstSpace + 1, secondSpace - firstSpace - 1);</span></a>
-<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :         std::string chatMessage = message.substr(secondSpace + 1);</span></a>
-<a name="223"><span class="lineNum">     223 </span>            : </a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :         clientGame.chatBox-&gt;updateChat(chatTime, chatUsername, chatMessage);</span></a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineNoCov">          0 :     }</span></a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :         request = request.substr(10);</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :         printChat(request);</span></a>
+<a name="211"><span class="lineNum">     211 </span>            :     }</a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :     else if(request.find(&quot;player&quot;) == 0)</span></a>
+<a name="213"><span class="lineNum">     213 </span>            :     {</a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :         std::string player = request.substr(20);</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :         clientGame.addPlayer(player);</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :         request = request.substr(7) + &quot; join the game&quot;;</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :         printChat(request);</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :     }</span></a>
+<a name="219"><span class="lineNum">     219 </span>            :     else </a>
+<a name="220"><span class="lineNum">     220 </span>            :     {</a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :         std::cout &lt;&lt; &quot;Received request: &quot; &lt;&lt; request &lt;&lt; std::endl;</span></a>
+<a name="222"><span class="lineNum">     222 </span>            :     }</a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="224"><span class="lineNum">     224 </span>            : </a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineNoCov">          0 : void ClientGameEngine::printChat(const std::string &amp;message)</span></a>
+<a name="226"><span class="lineNum">     226 </span>            : {</a>
 <a name="227"><span class="lineNum">     227 </span>            : </a>
-<a name="228"><span class="lineNum">     228 </span>            : /*!</a>
-<a name="229"><span class="lineNum">     229 </span>            :  * @brief Quentin</a>
-<a name="230"><span class="lineNum">     230 </span>            :  */</a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 : void ClientGameEngine::askServer()</span></a>
-<a name="232"><span class="lineNum">     232 </span>            : {</a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 :     std::unique_lock&lt;std::mutex&gt; responseLock(myself-&gt;qAndA.sharedDataMutex);</span></a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :     myself-&gt;qAndA.answerReady = false;</span></a>
-<a name="235"><span class="lineNum">     235 </span>            :     {</a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineNoCov">          0 :         std::lock_guard&lt;std::mutex&gt; lock(myself-&gt;socketWriteMutex);</span></a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :         boost::asio::write(myself-&gt;getSocket(), boost::asio::buffer(myself-&gt;qAndA.question));</span></a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 :     }</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 :     if (clientGame.chatBox != nullptr)</span></a>
+<a name="229"><span class="lineNum">     229 </span>            :     {</a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :         size_t firstSpace = message.find(&quot; &quot;);</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 :         std::string chatTime = message.substr(0, firstSpace);</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 :         size_t secondSpace = message.find(&quot; &quot;, firstSpace + 1);</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 :         std::string chatUsername = message.substr(firstSpace + 1, secondSpace - firstSpace - 1);</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :         std::string chatMessage = message.substr(secondSpace + 1);</span></a>
+<a name="235"><span class="lineNum">     235 </span>            : </a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineNoCov">          0 :         clientGame.chatBox-&gt;updateChat(chatTime, chatUsername, chatMessage);</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :     }</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="239"><span class="lineNum">     239 </span>            : </a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :     myself-&gt;qAndA.condition.wait(responseLock, [&amp;]</span></a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :                                  { return myself-&gt;qAndA.answerReady; });</span></a>
-<a name="242"><span class="lineNum">     242 </span>            :                                  </a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :     std::string response = myself-&gt;qAndA.answer;</span></a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :     myself-&gt;qAndA.answerReady = false;</span></a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="246"><span class="lineNum">     246 </span>            : </a>
-<a name="247"><span class="lineNum">     247 </span>            : /*!</a>
-<a name="248"><span class="lineNum">     248 </span>            :  * @brief Print where the user click on the GameWindow</a>
-<a name="249"><span class="lineNum">     249 </span>            :  * @param x position on x axis</a>
-<a name="250"><span class="lineNum">     250 </span>            :  * @param y position on y axis</a>
-<a name="251"><span class="lineNum">     251 </span>            :  */</a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 : void ClientGameEngine::handleInformation(int x, int y)</span></a>
-<a name="253"><span class="lineNum">     253 </span>            : {</a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineNoCov">          0 :     std::cout &lt;&lt; &quot;User click on the Hex x=&quot; &lt;&lt; x &lt;&lt; &quot; &amp; y=&quot; &lt;&lt; y &lt;&lt; std::endl;</span></a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="256"><span class="lineNum">     256 </span>            : </a>
-<a name="257"><span class="lineNum">     257 </span>            : /*!</a>
-<a name="258"><span class="lineNum">     258 </span>            : * @brief Print which priority card the user wants to play and its difficulty</a>
-<a name="259"><span class="lineNum">     259 </span>            : * @param typePlayed type of the priority card played (economy, science, culture, ...)</a>
-<a name="260"><span class="lineNum">     260 </span>            : * @param difficulty level of difficulty played (0 to 4 for the 5 fields) </a>
-<a name="261"><span class="lineNum">     261 </span>            : */</a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineNoCov">          0 : void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty)</span></a>
-<a name="263"><span class="lineNum">     263 </span>            : {</a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :     std::cout &lt;&lt; &quot;User wants to play &quot; &lt;&lt; typePlayed &lt;&lt; &quot; with a difficulty of &quot; &lt;&lt; difficulty &lt;&lt; std::endl;</span></a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="266"><span class="lineNum">     266 </span>            : </a>
-<a name="267"><span class="lineNum">     267 </span>            : /*!</a>
-<a name="268"><span class="lineNum">     268 </span>            :  * @brief Change the Window for nothing, Menu or Game</a>
-<a name="269"><span class="lineNum">     269 </span>            :  * @param quitDef if quitDef is true, the game stop, else it change Menu to Game</a>
-<a name="270"><span class="lineNum">     270 </span>            :  */</a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 : void ClientGameEngine::handleQuitMenu(bool quitDef)</span></a>
-<a name="272"><span class="lineNum">     272 </span>            : {</a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :     if (quitDef)</span></a>
-<a name="274"><span class="lineNum">     274 </span>            :     {</a>
-<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :         myself-&gt;disconnectPlayer();</span></a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :         runningWindow.store(0);</span></a>
-<a name="277"><span class="lineNum">     277 </span>            :     }</a>
-<a name="278"><span class="lineNum">     278 </span>            :     else</a>
-<a name="279"><span class="lineNum">     279 </span>            :     {</a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :         runningWindow.store(runningWindow == MENU ? GAME : MENU);</span></a>
-<a name="281"><span class="lineNum">     281 </span>            :     }</a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="283"><span class="lineNum">     283 </span>            : </a>
-<a name="284"><span class="lineNum">     284 </span>            : /*!</a>
-<a name="285"><span class="lineNum">     285 </span>            :  * @brief A player is connecting to a Game</a>
-<a name="286"><span class="lineNum">     286 </span>            :  * @param id game ID, = new for a new Game</a>
-<a name="287"><span class="lineNum">     287 </span>            :  * @param username player username</a>
-<a name="288"><span class="lineNum">     288 </span>            :  * @param server serveur adresse</a>
-<a name="289"><span class="lineNum">     289 </span>            :  * @param port port number</a>
-<a name="290"><span class="lineNum">     290 </span>            :  */</a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 : bool ClientGameEngine::tryConnection(std::string id, std::string username, std::string server, std::string port)</span></a>
-<a name="292"><span class="lineNum">     292 </span>            : {</a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :     myself-&gt;setUsername(username);</span></a>
-<a name="294"><span class="lineNum">     294 </span>            : </a>
-<a name="295"><span class="lineNum">     295 </span>            :     int portNumber;</a>
-<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :     std::stringstream sStream(port);</span></a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :     if ((sStream &gt;&gt; portNumber).fail())</span></a>
-<a name="298"><span class="lineNum">     298 </span>            :     {</a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :         return false;</span></a>
-<a name="300"><span class="lineNum">     300 </span>            :     }</a>
-<a name="301"><span class="lineNum">     301 </span>            : </a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :     gameId = id;</span></a>
-<a name="303"><span class="lineNum">     303 </span>            : </a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 :     return connect(server, portNumber);</span></a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="240"><span class="lineNum">     240 </span>            : /*!</a>
+<a name="241"><span class="lineNum">     241 </span>            :  * @brief Quentin</a>
+<a name="242"><span class="lineNum">     242 </span>            :  */</a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 : void ClientGameEngine::askServer()</span></a>
+<a name="244"><span class="lineNum">     244 </span>            : {</a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :     std::unique_lock&lt;std::mutex&gt; responseLock(myself-&gt;qAndA.sharedDataMutex);</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :     myself-&gt;qAndA.answerReady = false;</span></a>
+<a name="247"><span class="lineNum">     247 </span>            :     {</a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :         std::lock_guard&lt;std::mutex&gt; lock(myself-&gt;socketWriteMutex);</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :         boost::asio::write(myself-&gt;getSocket(), boost::asio::buffer(myself-&gt;qAndA.question));</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :     }</span></a>
+<a name="251"><span class="lineNum">     251 </span>            : </a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :     myself-&gt;qAndA.condition.wait(responseLock, [&amp;]</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :                                  { return myself-&gt;qAndA.answerReady; });</span></a>
+<a name="254"><span class="lineNum">     254 </span>            :                                  </a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :     std::string response = myself-&gt;qAndA.answer;</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :     myself-&gt;qAndA.answerReady = false;</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="258"><span class="lineNum">     258 </span>            : </a>
+<a name="259"><span class="lineNum">     259 </span>            : /*!</a>
+<a name="260"><span class="lineNum">     260 </span>            :  * @brief Print where the user click on the GameWindow</a>
+<a name="261"><span class="lineNum">     261 </span>            :  * @param x position on x axis</a>
+<a name="262"><span class="lineNum">     262 </span>            :  * @param y position on y axis</a>
+<a name="263"><span class="lineNum">     263 </span>            :  */</a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 : void ClientGameEngine::handleInformation(int x, int y)</span></a>
+<a name="265"><span class="lineNum">     265 </span>            : {</a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :     std::cout &lt;&lt; &quot;User click on the Hex x=&quot; &lt;&lt; x &lt;&lt; &quot; &amp; y=&quot; &lt;&lt; y &lt;&lt; std::endl;</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="268"><span class="lineNum">     268 </span>            : </a>
+<a name="269"><span class="lineNum">     269 </span>            : /*!</a>
+<a name="270"><span class="lineNum">     270 </span>            : * @brief Print which priority card the user wants to play and its difficulty</a>
+<a name="271"><span class="lineNum">     271 </span>            : * @param typePlayed type of the priority card played (economy, science, culture, ...)</a>
+<a name="272"><span class="lineNum">     272 </span>            : * @param difficulty level of difficulty played (0 to 4 for the 5 fields) </a>
+<a name="273"><span class="lineNum">     273 </span>            : */</a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 : void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty)</span></a>
+<a name="275"><span class="lineNum">     275 </span>            : {</a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :     std::cout &lt;&lt; &quot;User wants to play &quot; &lt;&lt; typePlayed &lt;&lt; &quot; with a difficulty of &quot; &lt;&lt; difficulty &lt;&lt; std::endl;</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="278"><span class="lineNum">     278 </span>            : </a>
+<a name="279"><span class="lineNum">     279 </span>            : /*!</a>
+<a name="280"><span class="lineNum">     280 </span>            :  * @brief Change the Window for nothing, Menu or Game</a>
+<a name="281"><span class="lineNum">     281 </span>            :  * @param quitDef if quitDef is true, the game stop, else it change Menu to Game</a>
+<a name="282"><span class="lineNum">     282 </span>            :  */</a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 : void ClientGameEngine::handleQuitMenu(bool quitDef)</span></a>
+<a name="284"><span class="lineNum">     284 </span>            : {</a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :     if (quitDef)</span></a>
+<a name="286"><span class="lineNum">     286 </span>            :     {</a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :         runningWindow.store(0);</span></a>
+<a name="288"><span class="lineNum">     288 </span>            :         //myself-&gt;disconnectPlayer();</a>
+<a name="289"><span class="lineNum">     289 </span>            :     }</a>
+<a name="290"><span class="lineNum">     290 </span>            :     else</a>
+<a name="291"><span class="lineNum">     291 </span>            :     {</a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :         runningWindow.store(runningWindow == MENU ? GAME : MENU);</span></a>
+<a name="293"><span class="lineNum">     293 </span>            :     }</a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="295"><span class="lineNum">     295 </span>            : </a>
+<a name="296"><span class="lineNum">     296 </span>            : /*!</a>
+<a name="297"><span class="lineNum">     297 </span>            :  * @brief A player is connecting to a Game</a>
+<a name="298"><span class="lineNum">     298 </span>            :  * @param id game ID, = new for a new Game</a>
+<a name="299"><span class="lineNum">     299 </span>            :  * @param username player username</a>
+<a name="300"><span class="lineNum">     300 </span>            :  * @param server serveur adresse</a>
+<a name="301"><span class="lineNum">     301 </span>            :  * @param port port number</a>
+<a name="302"><span class="lineNum">     302 </span>            :  */</a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 : bool ClientGameEngine::tryConnection(std::string id, std::string username, std::string server, std::string port)</span></a>
+<a name="304"><span class="lineNum">     304 </span>            : {</a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :     myself-&gt;setUsername(username);</span></a>
 <a name="306"><span class="lineNum">     306 </span>            : </a>
-<a name="307"><span class="lineNum">     307 </span>            : /*!</a>
-<a name="308"><span class="lineNum">     308 </span>            :  * @brief Start the loop that manage the GameWindow</a>
-<a name="309"><span class="lineNum">     309 </span>            :  */</a>
-<a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 : void ClientGameEngine::startGameWindow()</span></a>
-<a name="311"><span class="lineNum">     311 </span>            : {</a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineNoCov">          0 :     clientGame.startGame();</span></a>
-<a name="313"><span class="lineNum">     313 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="314"><span class="lineNum">     314 </span>            : </a>
-<a name="315"><span class="lineNum">     315 </span>            : /*!</a>
-<a name="316"><span class="lineNum">     316 </span>            :  * @brief Start the loop that manage the MenuWindow</a>
-<a name="317"><span class="lineNum">     317 </span>            :  */</a>
-<a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 : void ClientGameEngine::startMenuWindow()</span></a>
-<a name="319"><span class="lineNum">     319 </span>            : {</a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :     clientMenu.startMenu();</span></a>
-<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="322"><span class="lineNum">     322 </span>            : </a>
-<a name="323"><span class="lineNum">     323 </span>            : /*!</a>
-<a name="324"><span class="lineNum">     324 </span>            :  * @brief Loop that manage the entire Engine</a>
-<a name="325"><span class="lineNum">     325 </span>            :  */</a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 : void ClientGameEngine::renderGame()</span></a>
-<a name="327"><span class="lineNum">     327 </span>            : {</a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :     clientWindow = std::make_shared&lt;sf::RenderWindow&gt;();</span></a>
-<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :     clientWindow-&gt;create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH),</span></a>
-<a name="330"><span class="lineNum">     330 </span>            :                          &quot;Civilization VII&quot;,</a>
-<a name="331"><span class="lineNum">     331 </span>            :                          sf::Style::Close);</a>
-<a name="332"><span class="lineNum">     332 </span>            : </a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :     clientWindow-&gt;setPosition(sf::Vector2i(0, 0));</span></a>
+<a name="307"><span class="lineNum">     307 </span>            :     int portNumber;</a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :     std::stringstream sStream(port);</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 :     if ((sStream &gt;&gt; portNumber).fail())</span></a>
+<a name="310"><span class="lineNum">     310 </span>            :     {</a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 :         return false;</span></a>
+<a name="312"><span class="lineNum">     312 </span>            :     }</a>
+<a name="313"><span class="lineNum">     313 </span>            : </a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 :     gameId = id;        </span></a>
+<a name="315"><span class="lineNum">     315 </span>            : </a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :     return connect(server, portNumber);</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="318"><span class="lineNum">     318 </span>            : </a>
+<a name="319"><span class="lineNum">     319 </span>            : /*!</a>
+<a name="320"><span class="lineNum">     320 </span>            :  * @brief Start the loop that manage the GameWindow</a>
+<a name="321"><span class="lineNum">     321 </span>            :  */</a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 : void ClientGameEngine::startGameWindow()</span></a>
+<a name="323"><span class="lineNum">     323 </span>            : {</a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :     clientGame.startGame();</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="326"><span class="lineNum">     326 </span>            : </a>
+<a name="327"><span class="lineNum">     327 </span>            : /*!</a>
+<a name="328"><span class="lineNum">     328 </span>            :  * @brief Start the loop that manage the MenuWindow</a>
+<a name="329"><span class="lineNum">     329 </span>            :  */</a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineNoCov">          0 : void ClientGameEngine::startMenuWindow()</span></a>
+<a name="331"><span class="lineNum">     331 </span>            : {</a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :     clientMenu.startMenu();</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="334"><span class="lineNum">     334 </span>            : </a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :     while (runningWindow.load())</span></a>
-<a name="336"><span class="lineNum">     336 </span>            :     {</a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :         if (runningWindow.load() == GAME)</span></a>
-<a name="338"><span class="lineNum">     338 </span>            :         {</a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :             playGame();</span></a>
-<a name="340"><span class="lineNum">     340 </span>            :         }</a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :         else if (runningWindow.load() == MENU)</span></a>
-<a name="342"><span class="lineNum">     342 </span>            :         {</a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :             playMenu();</span></a>
-<a name="344"><span class="lineNum">     344 </span>            :         }</a>
-<a name="345"><span class="lineNum">     345 </span>            :     }</a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :     clientWindow-&gt;close();</span></a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="348"><span class="lineNum">     348 </span>            : </a>
-<a name="349"><span class="lineNum">     349 </span>            : /*!</a>
-<a name="350"><span class="lineNum">     350 </span>            :  * @brief Loop that is used when the client is in GameMode</a>
-<a name="351"><span class="lineNum">     351 </span>            :  */</a>
-<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 : void ClientGameEngine::playGame()</span></a>
-<a name="353"><span class="lineNum">     353 </span>            : {</a>
-<a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 :     std::thread t(&amp;ClientGameEngine::startGameWindow, this);</span></a>
-<a name="355"><span class="lineNum">     355 </span>            : </a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :     long lastUpdateTimer = clientGame.getCurrentTime();</span></a>
-<a name="357"><span class="lineNum">     357 </span>            :     struct stat file_stat;</a>
-<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :     std::string file_path = RESOURCES_PATH &quot;/map/files.json&quot;;</span></a>
-<a name="359"><span class="lineNum">     359 </span>            : </a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :     if (stat(file_path.c_str(), &amp;file_stat) == -1)</span></a>
-<a name="361"><span class="lineNum">     361 </span>            :     {</a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Erreur lors de l'obtention des informations sur le fichier &quot; &lt;&lt; file_path &lt;&lt; '\n';</span></a>
-<a name="363"><span class="lineNum">     363 </span>            :     }</a>
-<a name="364"><span class="lineNum">     364 </span>            : </a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 :     time_t last_modified = file_stat.st_mtime;</span></a>
-<a name="366"><span class="lineNum">     366 </span>            : </a>
-<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 :     while (runningWindow.load() == GAME)</span></a>
-<a name="368"><span class="lineNum">     368 </span>            :     {</a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :         if (clientGame.getCurrentTime() - lastUpdateTimer &gt; REFRESH_ELEMENT)</span></a>
-<a name="370"><span class="lineNum">     370 </span>            :         {</a>
+<a name="335"><span class="lineNum">     335 </span>            : /*!</a>
+<a name="336"><span class="lineNum">     336 </span>            :  * @brief Loop that manage the entire Engine</a>
+<a name="337"><span class="lineNum">     337 </span>            :  */</a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 : void ClientGameEngine::renderGame()</span></a>
+<a name="339"><span class="lineNum">     339 </span>            : {</a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :     clientWindow = std::make_shared&lt;sf::RenderWindow&gt;();</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :     clientWindow-&gt;create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH),</span></a>
+<a name="342"><span class="lineNum">     342 </span>            :                          &quot;Civilization VII&quot;,</a>
+<a name="343"><span class="lineNum">     343 </span>            :                          sf::Style::Close);</a>
+<a name="344"><span class="lineNum">     344 </span>            : </a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :     clientWindow-&gt;setPosition(sf::Vector2i(0, 0));</span></a>
+<a name="346"><span class="lineNum">     346 </span>            : </a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 :     while (runningWindow.load())</span></a>
+<a name="348"><span class="lineNum">     348 </span>            :     {</a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 :         if (runningWindow.load() == GAME)</span></a>
+<a name="350"><span class="lineNum">     350 </span>            :         {</a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :             playGame();</span></a>
+<a name="352"><span class="lineNum">     352 </span>            :         }</a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :         else if (runningWindow.load() == MENU)</span></a>
+<a name="354"><span class="lineNum">     354 </span>            :         {</a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :             playMenu();</span></a>
+<a name="356"><span class="lineNum">     356 </span>            :         }</a>
+<a name="357"><span class="lineNum">     357 </span>            :     }</a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :     clientWindow-&gt;close();</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="360"><span class="lineNum">     360 </span>            : </a>
+<a name="361"><span class="lineNum">     361 </span>            : /*!</a>
+<a name="362"><span class="lineNum">     362 </span>            :  * @brief Loop that is used when the client is in GameMode</a>
+<a name="363"><span class="lineNum">     363 </span>            :  */</a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 : void ClientGameEngine::playGame()</span></a>
+<a name="365"><span class="lineNum">     365 </span>            : {</a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :     std::thread t(&amp;ClientGameEngine::startGameWindow, this);</span></a>
+<a name="367"><span class="lineNum">     367 </span>            : </a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 :     long lastUpdateTimer = clientGame.getCurrentTime();</span></a>
+<a name="369"><span class="lineNum">     369 </span>            :     struct stat file_stat;</a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :     std::string file_path = RESOURCES_PATH &quot;/map/files.json&quot;;</span></a>
 <a name="371"><span class="lineNum">     371 </span>            : </a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 :             if (stat(file_path.c_str(), &amp;file_stat) == -1)</span></a>
-<a name="373"><span class="lineNum">     373 </span>            :             {</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :                 std::cerr &lt;&lt; &quot;Erreur lors de l'obtention des informations sur le fichier &quot; &lt;&lt; file_path &lt;&lt; '\n';</span></a>
-<a name="375"><span class="lineNum">     375 </span>            :             }</a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 :     if (stat(file_path.c_str(), &amp;file_stat) == -1)</span></a>
+<a name="373"><span class="lineNum">     373 </span>            :     {</a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Erreur lors de l'obtention des informations sur le fichier &quot; &lt;&lt; file_path &lt;&lt; '\n';</span></a>
+<a name="375"><span class="lineNum">     375 </span>            :     }</a>
 <a name="376"><span class="lineNum">     376 </span>            : </a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :             time_t modified = file_stat.st_mtime;</span></a>
-<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :             lastUpdateTimer = clientGame.getCurrentTime();</span></a>
-<a name="379"><span class="lineNum">     379 </span>            : </a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :             if (modified != last_modified)</span></a>
-<a name="381"><span class="lineNum">     381 </span>            :             {</a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 :                 last_modified = modified;</span></a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :                 clientGame.updateElementTexture();</span></a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :                 turn++;</span></a>
-<a name="385"><span class="lineNum">     385 </span>            :             }</a>
-<a name="386"><span class="lineNum">     386 </span>            :         }</a>
-<a name="387"><span class="lineNum">     387 </span>            :     }</a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :     t.join();</span></a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="390"><span class="lineNum">     390 </span>            : </a>
-<a name="391"><span class="lineNum">     391 </span>            : /*!</a>
-<a name="392"><span class="lineNum">     392 </span>            :  * @brief Loop that is used when the client is in MenuMode</a>
-<a name="393"><span class="lineNum">     393 </span>            :  */</a>
-<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 : void ClientGameEngine::playMenu()</span></a>
-<a name="395"><span class="lineNum">     395 </span>            : {</a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :     std::thread t(&amp;ClientGameEngine::startMenuWindow, this);</span></a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineNoCov">          0 :     t.join();</span></a>
-<a name="398"><span class="lineNum">     398 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="399"><span class="lineNum">     399 </span>            : </a>
-<a name="400"><span class="lineNum">     400 </span>            : /*!</a>
-<a name="401"><span class="lineNum">     401 </span>            :  * @brief Detect an intersection between a point and a rect</a>
-<a name="402"><span class="lineNum">     402 </span>            :  * @param point the point</a>
-<a name="403"><span class="lineNum">     403 </span>            :  * @param rectangle the rectangle</a>
-<a name="404"><span class="lineNum">     404 </span>            :  */</a>
-<a name="405"><span class="lineNum">     405 </span><span class="lineNoCov">          0 : bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rectangle)</span></a>
-<a name="406"><span class="lineNum">     406 </span>            : {</a>
-<a name="407"><span class="lineNum">     407 </span><span class="lineNoCov">          0 :     return (point.x &gt;= rectangle.left &amp;&amp;</span></a>
-<a name="408"><span class="lineNum">     408 </span><span class="lineNoCov">          0 :             point.x &lt;= rectangle.left + rectangle.width &amp;&amp;</span></a>
-<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :             point.y &gt;= rectangle.top &amp;&amp;</span></a>
-<a name="410"><span class="lineNum">     410 </span><span class="lineNoCov">          0 :             point.y &lt;= rectangle.top + rectangle.height);</span></a>
-<a name="411"><span class="lineNum">     411 </span>            : }</a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :     time_t last_modified = file_stat.st_mtime;</span></a>
+<a name="378"><span class="lineNum">     378 </span>            : </a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :     while (runningWindow.load() == GAME)</span></a>
+<a name="380"><span class="lineNum">     380 </span>            :     {</a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :         if (clientGame.getCurrentTime() - lastUpdateTimer &gt; REFRESH_ELEMENT)</span></a>
+<a name="382"><span class="lineNum">     382 </span>            :         {</a>
+<a name="383"><span class="lineNum">     383 </span>            : </a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :             if (stat(file_path.c_str(), &amp;file_stat) == -1)</span></a>
+<a name="385"><span class="lineNum">     385 </span>            :             {</a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineNoCov">          0 :                 std::cerr &lt;&lt; &quot;Erreur lors de l'obtention des informations sur le fichier &quot; &lt;&lt; file_path &lt;&lt; '\n';</span></a>
+<a name="387"><span class="lineNum">     387 </span>            :             }</a>
+<a name="388"><span class="lineNum">     388 </span>            : </a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 :             time_t modified = file_stat.st_mtime;</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :             lastUpdateTimer = clientGame.getCurrentTime();</span></a>
+<a name="391"><span class="lineNum">     391 </span>            : </a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :             if (modified != last_modified)</span></a>
+<a name="393"><span class="lineNum">     393 </span>            :             {</a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :                 last_modified = modified;</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :                 clientGame.updateElementTexture();</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :                 turn++;</span></a>
+<a name="397"><span class="lineNum">     397 </span>            :             }</a>
+<a name="398"><span class="lineNum">     398 </span>            :         }</a>
+<a name="399"><span class="lineNum">     399 </span>            :     }</a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 :     t.join();</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="402"><span class="lineNum">     402 </span>            : </a>
+<a name="403"><span class="lineNum">     403 </span>            : /*!</a>
+<a name="404"><span class="lineNum">     404 </span>            :  * @brief Loop that is used when the client is in MenuMode</a>
+<a name="405"><span class="lineNum">     405 </span>            :  */</a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 : void ClientGameEngine::playMenu()</span></a>
+<a name="407"><span class="lineNum">     407 </span>            : {</a>
+<a name="408"><span class="lineNum">     408 </span><span class="lineNoCov">          0 :     std::thread t(&amp;ClientGameEngine::startMenuWindow, this);</span></a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :     t.join();</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="411"><span class="lineNum">     411 </span>            : </a>
+<a name="412"><span class="lineNum">     412 </span>            : /*!</a>
+<a name="413"><span class="lineNum">     413 </span>            :  * @brief Detect an intersection between a point and a rect</a>
+<a name="414"><span class="lineNum">     414 </span>            :  * @param point the point</a>
+<a name="415"><span class="lineNum">     415 </span>            :  * @param rectangle the rectangle</a>
+<a name="416"><span class="lineNum">     416 </span>            :  */</a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 : bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rectangle)</span></a>
+<a name="418"><span class="lineNum">     418 </span>            : {</a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :     return (point.x &gt;= rectangle.left &amp;&amp;</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 :             point.x &lt;= rectangle.left + rectangle.width &amp;&amp;</span></a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 :             point.y &gt;= rectangle.top &amp;&amp;</span></a>
+<a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 :             point.y &lt;= rectangle.top + rectangle.height);</span></a>
+<a name="423"><span class="lineNum">     423 </span>            : }</a>
 </pre>
       </td>
     </tr>

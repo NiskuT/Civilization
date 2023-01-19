@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">119</td>
+            <td class="headerCovTableEntry">122</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-19 21:08:13</td>
+            <td class="headerValue">2023-01-19 22:59:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -147,7 +147,7 @@
 <a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :         }</span></a>
 <a name="86"><span class="lineNum">      86 </span>            :     }</a>
 <a name="87"><span class="lineNum">      87 </span>            : </a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :     std::string response = &quot;OK &quot; + game-&gt;getId() + &quot;\n&quot;;</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :     std::string response = &quot;connected &quot; + game-&gt;getTime() + &quot; server Game ID: &quot; + game-&gt;getId() + &quot;\n&quot;;</span></a>
 <a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :     boost::asio::write(player-&gt;getSocket(), boost::asio::buffer(response));</span></a>
 <a name="90"><span class="lineNum">      90 </span>            :     </a>
 <a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 :     while (player-&gt;connectedToSocket.load())</span></a>
@@ -249,28 +249,30 @@
 <a name="187"><span class="lineNum">     187 </span>            :     else</a>
 <a name="188"><span class="lineNum">     188 </span>            :     {</a>
 <a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :         std::cout &lt;&lt; &quot;Player &quot; &lt;&lt; player-&gt;getName() &lt;&lt; &quot; connected to game &quot; &lt;&lt; game-&gt;getId() &lt;&lt; std::endl;</span></a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :         return true;</span></a>
-<a name="191"><span class="lineNum">     191 </span>            :     }</a>
-<a name="192"><span class="lineNum">     192 </span>            : }</a>
-<a name="193"><span class="lineNum">     193 </span>            : </a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 : std::shared_ptr&lt;GameEngine&gt; Server::createNewGame(std::shared_ptr&lt;shared::Player&gt; player)</span></a>
-<a name="195"><span class="lineNum">     195 </span>            : {</a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :     auto game = std::make_shared&lt;GameEngine&gt;(games, player);</span></a>
-<a name="197"><span class="lineNum">     197 </span>            : </a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :     std::cout &lt;&lt; &quot;Player &quot; &lt;&lt; player-&gt;getName() &lt;&lt; &quot; created game &quot; &lt;&lt; game-&gt;getId() &lt;&lt; std::endl;</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :         std::string newUserConnected = &quot;player &quot; + game-&gt;getTime() + &quot; &quot; + &quot;server&quot; + &quot; &quot; + player-&gt;getName() + &quot;\n&quot;;</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :         game-&gt;sendToEveryone(newUserConnected);</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :         return true;</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :     }</span></a>
+<a name="194"><span class="lineNum">     194 </span>            : }</a>
+<a name="195"><span class="lineNum">     195 </span>            : </a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 : std::shared_ptr&lt;GameEngine&gt; Server::createNewGame(std::shared_ptr&lt;shared::Player&gt; player)</span></a>
+<a name="197"><span class="lineNum">     197 </span>            : {</a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :     auto game = std::make_shared&lt;GameEngine&gt;(games, player);</span></a>
 <a name="199"><span class="lineNum">     199 </span>            : </a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :     std::lock_guard&lt;std::mutex&gt; lock(gamesMutex);</span></a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :     games.push_back(game);</span></a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :     return game;</span></a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="204"><span class="lineNum">     204 </span>            : </a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 : void Server::registerClientAnswer(const std::string &amp;response, std::shared_ptr&lt;shared::Player&gt; player)</span></a>
-<a name="206"><span class="lineNum">     206 </span>            : {</a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :     std::lock_guard&lt;std::mutex&gt; lock(player-&gt;qAndA.sharedDataMutex);</span></a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 :     player-&gt;qAndA.answer = response;</span></a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :     player-&gt;qAndA.answerReady = true;</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :     player-&gt;qAndA.condition.notify_one();</span></a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :     std::cout &lt;&lt; &quot;Player &quot; &lt;&lt; player-&gt;getName() &lt;&lt; &quot; created game &quot; &lt;&lt; game-&gt;getId() &lt;&lt; std::endl;</span></a>
+<a name="201"><span class="lineNum">     201 </span>            : </a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :     std::lock_guard&lt;std::mutex&gt; lock(gamesMutex);</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :     games.push_back(game);</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :     return game;</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="206"><span class="lineNum">     206 </span>            : </a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 : void Server::registerClientAnswer(const std::string &amp;response, std::shared_ptr&lt;shared::Player&gt; player)</span></a>
+<a name="208"><span class="lineNum">     208 </span>            : {</a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :     std::lock_guard&lt;std::mutex&gt; lock(player-&gt;qAndA.sharedDataMutex);</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :     player-&gt;qAndA.answer = response;</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :     player-&gt;qAndA.answerReady = true;</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :     player-&gt;qAndA.condition.notify_one();</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 : }</span></a>
 </pre>
       </td>
     </tr>
