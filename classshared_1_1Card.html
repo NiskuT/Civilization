@@ -78,35 +78,60 @@ $(function() {
  <a href="classshared_1_1Card.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Card_8hpp_source.html">Card.hpp</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for shared::Card:</div>
-<div class="dyncontent">
-<div class="center"><img src="classshared_1_1Card__coll__graph.png" border="0" usemap="#ashared_1_1Card_coll__map" alt="Collaboration graph"/></div>
-<map name="ashared_1_1Card_coll__map" id="ashared_1_1Card_coll__map">
-<area shape="rect" title="class Card &#45; Is dynamically allocated" alt="" coords="8,95,105,121"/>
-<area shape="rect" href="classshared_1_1Rules.html" title="class Rules &#45;" alt="" coords="5,5,108,32"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a65bb2c4627fa862917c79560b20d0f3c"><td class="memItemLeft" align="right" valign="top"><a id="a65bb2c4627fa862917c79560b20d0f3c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>changeOwner</b> (std::vector&lt; <a class="el" href="classshared_1_1Card.html">Card</a> &gt; &amp;prevOwner, std::vector&lt; <a class="el" href="classshared_1_1Card.html">Card</a> &gt; &amp;nextOwner)</td></tr>
-<tr class="separator:a65bb2c4627fa862917c79560b20d0f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33f6cc00fac007686e5d1d3210751393"><td class="memItemLeft" align="right" valign="top"><a id="a33f6cc00fac007686e5d1d3210751393"></a>
+CardsEnum&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> ()</td></tr>
+<tr class="separator:a33f6cc00fac007686e5d1d3210751393"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bdb361a29f099ca87f3c7e2bf0a92d4"><td class="memItemLeft" align="right" valign="top"><a id="a1bdb361a29f099ca87f3c7e2bf0a92d4"></a>
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>getLevel</b> ()</td></tr>
+<tr class="separator:a1bdb361a29f099ca87f3c7e2bf0a92d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a389eea86fe9b5ad6fd3f6041bcebe873"><td class="memItemLeft" align="right" valign="top"><a id="a389eea86fe9b5ad6fd3f6041bcebe873"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addLevel</b> ()</td></tr>
+<tr class="separator:a389eea86fe9b5ad6fd3f6041bcebe873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84f743b80300419e20692e3a886848eb"><td class="memItemLeft" align="right" valign="top"><a id="a84f743b80300419e20692e3a886848eb"></a>
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>getNumberOfBox</b> ()</td></tr>
+<tr class="separator:a84f743b80300419e20692e3a886848eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a284491108c97474f1975fc003a5c2f8e"><td class="memItemLeft" align="right" valign="top"><a id="a284491108c97474f1975fc003a5c2f8e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addBox</b> (unsigned numberOfBoxToAdd)</td></tr>
+<tr class="separator:a284491108c97474f1975fc003a5c2f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e3d5d0492a2025a17683497c09cb974"><td class="memItemLeft" align="right" valign="top"><a id="a1e3d5d0492a2025a17683497c09cb974"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>removeBox</b> (unsigned numberOfBoxToDelete)</td></tr>
+<tr class="separator:a1e3d5d0492a2025a17683497c09cb974"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3327845bd6e5c4ddda30b1ee02796363"><td class="memItemLeft" align="right" valign="top"><a id="a3327845bd6e5c4ddda30b1ee02796363"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Card</b> (CardsEnum type)</td></tr>
+<tr class="separator:a3327845bd6e5c4ddda30b1ee02796363"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13b5be571197f74b58e2373b7f7ddf87"><td class="memItemLeft" align="right" valign="top"><a id="a13b5be571197f74b58e2373b7f7ddf87"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>deleteBox</b> (unsigned numberOfBox)</td></tr>
+<tr class="separator:a13b5be571197f74b58e2373b7f7ddf87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65019fb37d57b07a2527a80f952cc278"><td class="memItemLeft" align="right" valign="top"><a id="a65019fb37d57b07a2527a80f952cc278"></a>
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>getDificulty</b> ()</td></tr>
+<tr class="separator:a65019fb37d57b07a2527a80f952cc278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd6187649153e7bf3740a1ded34e5080"><td class="memItemLeft" align="right" valign="top"><a id="acd6187649153e7bf3740a1ded34e5080"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDificulty</b> (unsigned newDificulty)</td></tr>
+<tr class="separator:acd6187649153e7bf3740a1ded34e5080"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a9d2a5e3a3d42f73ab483212bdaeff5e6"><td class="memItemLeft" align="right" valign="top"><a id="a9d2a5e3a3d42f73ab483212bdaeff5e6"></a>
-<a class="el" href="classshared_1_1Rules.html">shared::Rules</a>&#160;</td><td class="memItemRight" valign="bottom"><b>listOfRules</b></td></tr>
-<tr class="separator:a9d2a5e3a3d42f73ab483212bdaeff5e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a037ac11dfd85d21ee1e47447e19138c8"><td class="memItemLeft" align="right" valign="top"><a id="a037ac11dfd85d21ee1e47447e19138c8"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
-<tr class="separator:a037ac11dfd85d21ee1e47447e19138c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53c4e417d77157202a121874ee86177d"><td class="memItemLeft" align="right" valign="top"><a id="a53c4e417d77157202a121874ee86177d"></a>
+CardsEnum&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="separator:a53c4e417d77157202a121874ee86177d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59ee405a4cafc13b60f0a18e1c2a1b55"><td class="memItemLeft" align="right" valign="top"><a id="a59ee405a4cafc13b60f0a18e1c2a1b55"></a>
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>level</b></td></tr>
+<tr class="separator:a59ee405a4cafc13b60f0a18e1c2a1b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec64da401b213e93d34e70cfebc73d0c"><td class="memItemLeft" align="right" valign="top"><a id="aec64da401b213e93d34e70cfebc73d0c"></a>
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>dificulty</b></td></tr>
+<tr class="separator:aec64da401b213e93d34e70cfebc73d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64406de1c9dde9a444d9d0ac38441cf7"><td class="memItemLeft" align="right" valign="top"><a id="a64406de1c9dde9a444d9d0ac38441cf7"></a>
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfBox</b></td></tr>
+<tr class="separator:a64406de1c9dde9a444d9d0ac38441cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classshared_1_1Card.html" title="class Card - Is dynamically allocated">Card</a> - Is dynamically allocated </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/shared/<a class="el" href="Card_8hpp_source.html">Card.hpp</a></li>
+<li>src/shared/Card.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
