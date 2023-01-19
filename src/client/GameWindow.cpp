@@ -118,7 +118,10 @@ void GameWindow::displayWindow()
         hudTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
-    gameEnginePtr->clientWindow->draw(*validateBoxesWindow->blackBackground->buttonRect);
+    if (validateBoxesWindow->isWindowActive) {
+        validateBoxesWindow->drawValidateBoxesButtons(gameEnginePtr->clientWindow);
+    }
+
 
     gameEnginePtr->clientWindow->display();
 }
@@ -376,11 +379,21 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
     {
         sf::FloatRect spriteCards = priorityCard.texture->getSprite().getGlobalBounds();
         sf::FloatRect spriteValidateButton = priorityCard.validateButton->buttonRect->getGlobalBounds();
+        sf::FloatRect spriteValidateBoxesButton = validateBoxesWindow->doneTexture->getSprite().getGlobalBounds();
 
+        if(gameEnginePtr->intersectPointRect(clickPosition, spriteValidateBoxesButton) && validateBoxesWindow->isWindowActive) 
+        {
+                validateBoxesWindow->isWindowActive = false; 
+                moveToRightPriorityCards(validateBoxesWindow->priorityCardPlayed);
+                gameEnginePtr->handlePriorityCardPlay(validateBoxesWindow->priorityCardPlayedType, validateBoxesWindow->priorityCardPlayed);
+                return true;
+        }
+ 
         if (gameEnginePtr->intersectPointRect(clickPosition,spriteValidateButton) && priorityCard.isUp)
         {
-            gameEnginePtr->handlePriorityCardPlay(priorityCard.type, priorityCard.difficulty);
-            moveToRightPriorityCards(priorityCard.difficulty);
+            validateBoxesWindow->isWindowActive = true;
+            validateBoxesWindow->priorityCardPlayed = priorityCard.difficulty;
+            validateBoxesWindow->priorityCardPlayedType = priorityCard.type;
             return true;
         }
 
