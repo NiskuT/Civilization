@@ -4,8 +4,11 @@
 #include <fstream>
 #include <string>
 #include <codecvt>
+#include <stdexcept>
 
 #define REFRESH_TIME 30
+
+#define BUTTON_TEXT_SIZE 25
 
 #define BUTTON_CREAT 1
 #define BUTTON_USERNAME 2
@@ -145,10 +148,6 @@ bool MenuWindow::menuEventHappened(sf::Event &event)
 
         switch (event.key.code)
         {
-        case sf::Keyboard::Escape:
-            gameEnginePtr->handleQuitMenu(true);
-            return true;
-
         case sf::Keyboard::K:
             gameEnginePtr->handleQuitMenu(false);
             return true;
@@ -203,7 +202,21 @@ bool MenuWindow::clickAction(sf::Vector2i clickPoint, int index, bool isOnButton
     }
     else if (isOnButton && index == BUTTON_CONNECT && currentMenu == &menuButtons)
     {
-        return connectToGame(menuButtons[BUTTON_ID]());
+        if(menuButtons[BUTTON_ID]().size() == 6 && menuButtons[BUTTON_USERNAME]().size() != 0)
+        {
+            return connectToGame(menuButtons[BUTTON_ID]());
+        }
+        else if(menuButtons[BUTTON_ID]().size() != 6)
+        {
+            menuButtons[BUTTON_ID].buttonText->setString("Wrong");
+            menuButtons[BUTTON_ID].centerText(false);
+        }
+        if (menuButtons[BUTTON_USERNAME]().size() == 0)
+        {
+            menuButtons[BUTTON_USERNAME].buttonText->setString("Write Username");
+            menuButtons[BUTTON_USERNAME].centerText(false);
+        }
+        
     }
     else if (isOnButton && index == BUTTON_LOAD && currentMenu == &newGameButtons)
     {
@@ -211,6 +224,12 @@ bool MenuWindow::clickAction(sf::Vector2i clickPoint, int index, bool isOnButton
     }
     else if (isOnButton && index == BUTTON_START && currentMenu == &newGameButtons)
     {
+        if (menuButtons[BUTTON_USERNAME]().size() == 0)
+        {
+            menuButtons[BUTTON_USERNAME].buttonText->setString("Write Username");
+            menuButtons[BUTTON_USERNAME].centerText(false);
+            return false;
+        }
         return connectToGame(CREATE_GAME);
     }
     return false;
@@ -230,7 +249,6 @@ bool MenuWindow::connectToGame(std::string gameID)
 
     if (isConnected)
     {
-        std::cout << "Change\n";
         gameEnginePtr->handleQuitMenu(false);
         currentMenu = &menuButtons;
         currentText = &menuTexts;
@@ -248,15 +266,31 @@ void MenuWindow::writeChar(std::string ch)
     for (unsigned i = 0; i < currentMenu->size(); i++)
     {
         std::string newString = currentMenu->at(i)();
+        if (currentMenu->at(i).redBorder 
+            && i == BUTTON_PLAYER 
+            && currentMenu == &newGameButtons)
+        {
+            int numberOfPlayer = 0;
+            try
+            {
+                numberOfPlayer = std::stoi(ch);
+            }
+            catch ( ... )
+            {
+                numberOfPlayer = -1;
+            }
+            if (numberOfPlayer > 1 && numberOfPlayer < 5)
+            {
+                currentMenu->at(i).buttonText->setString(ch);
+                currentMenu->at(i).centerText(true);
+            }
+            return;
+        }
         if (currentMenu->at(i).redBorder &&
             (int)((std::string)currentMenu->at(i)()).size() < currentMenu->at(i).maxTextSize)
         {
             currentMenu->at(i).addChar(ch);
-        }
-        if (currentMenu->at(i).redBorder && i == BUTTON_PLAYER && currentMenu == &newGameButtons)
-        {
-            currentMenu->at(i).buttonText->setString(ch);
-            currentMenu->at(i).centerText(true);
+            return;
         }
     }
 }
@@ -294,7 +328,12 @@ void MenuWindow::loadMenuTexture()
     quitTexture->getSprite().setScale(QUIT_SCALE, QUIT_SCALE);
 
 
-    if (!menuFont.loadFromFile(RESOURCES_PATH "/hud/font.otf"))
+    if (!titleMenuFont.loadFromFile(RESOURCES_PATH "/font/EnchantedLand.otf"))
+    {
+        std::cerr << "Font not loaded" << std::endl;
+    }
+
+    if (!menuFont.loadFromFile(RESOURCES_PATH "/font/MorrisRomanBlack.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
@@ -337,7 +376,14 @@ void MenuWindow::loadText(Json::Value &data)
 {
     for (auto &dataMenu : data)
     {
-        currentText->emplace_back(dataMenu["text"].asString(), menuFont, dataMenu["size"].asInt());
+        if(dataMenu["size"].asInt() == 200)
+        {
+            currentText->emplace_back(dataMenu["text"].asString(), titleMenuFont, dataMenu["size"].asInt());
+        }
+        else
+        {
+            currentText->emplace_back(dataMenu["text"].asString(), menuFont, dataMenu["size"].asInt());
+        }
         if (dataMenu["bold"].asBool())
         {
             currentText->back().setStyle(sf::Text::Bold);
@@ -360,7 +406,7 @@ void MenuWindow::loadButton(Json::Value &data)
                                   setButtonPosition(dataMenu["x"].asFloat(), dataMenu["y"].asFloat()),
                                   buttonColor);
 
-        currentMenu->back().setText(40, sf::Vector2f(0, 0), dataMenu["text"].asString(), menuFont, dataMenu["sizeMax"].asInt());
+        currentMenu->back().setText(BUTTON_TEXT_SIZE, sf::Vector2f(0, 0), dataMenu["text"].asString(), menuFont, dataMenu["sizeMax"].asInt());
     }
 }
 

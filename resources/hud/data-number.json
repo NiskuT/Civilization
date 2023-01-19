@@ -1,8 +1,6 @@
 {
     "data" : 
         {
-            "nb-player": 2,
-
             "box-x-offset-proportion": 0.041 ,
             "box-y-offset-proportion": 0.059 ,
             "box-x-number-offset-proportion": 0.015625,
