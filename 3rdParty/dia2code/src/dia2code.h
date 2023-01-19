@@ -60,7 +60,7 @@
 #define DBG_GENCODE    6
 #define DBG_CORE       8
 
-#define SMALL_BUFFER    80
+#define SMALL_BUFFER    250
 #define BIG_BUFFER     512
 #define LARGE_BUFFER  4096
 #define HUGE_BUFFER  16384
