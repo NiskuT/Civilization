@@ -31,6 +31,7 @@
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
+std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
 
 using namespace client;
 
@@ -83,19 +84,18 @@ void GameWindow::displayWindow()
         }
     }
 
-        for (auto &priorityCardTexture : priorityCards)
+    for (auto &priorityCardTexture : priorityCards)
+    {
+        priorityCardTexture.texture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
+        gameEnginePtr->clientWindow->draw(*priorityCardTexture.title);
+        gameEnginePtr->clientWindow->draw(*priorityCardTexture.nbOfBoxesText);
+        if (priorityCardTexture.isUp)
         {
-            priorityCardTexture.texture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
-            gameEnginePtr->clientWindow->draw(*priorityCardTexture.title);
-            gameEnginePtr->clientWindow->draw(*priorityCardTexture.nbOfBoxesText);
-            if (priorityCardTexture.isUp)
-            {
-                gameEnginePtr->clientWindow->draw(*priorityCardTexture.body);
-                gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonRect);
-                gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonText);
-
-            }
+            gameEnginePtr->clientWindow->draw(*priorityCardTexture.body);
+            gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonRect);
+            gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonText);
         }
+    }
     boxTexture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
 
     for (auto &actionCardTexture : actionCardsToDisplay)
@@ -113,15 +113,15 @@ void GameWindow::displayWindow()
 
     gameEnginePtr->clientWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
 
-    for (auto &hudTexture: hudTextureToDisplay)
+    for (auto &hudTexture : hudTextureToDisplay)
     {
         hudTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
-    if (validateBoxesWindow->isWindowActive) {
+    if (validateBoxesWindow->isWindowActive)
+    {
         validateBoxesWindow->drawValidateBoxesButtons(gameEnginePtr->clientWindow);
     }
-
 
     gameEnginePtr->clientWindow->display();
 }
@@ -288,8 +288,8 @@ void GameWindow::moveMap(sf::Vector2i &clickStartingPoint, sf::Vector2i position
         clickStartingPoint.x = firstHexagonPosition[0];
         clickStartingPoint.y = firstHexagonPosition[1];
     }
-    std::array<int, 2> newMapOffset = { position.x - clickStartingPoint.x, 
-                                        position.y - clickStartingPoint.y};
+    std::array<int, 2> newMapOffset = {position.x - clickStartingPoint.x,
+                                       position.y - clickStartingPoint.y};
 
     if (reset)
     {
@@ -312,7 +312,6 @@ void GameWindow::moveMap(sf::Vector2i &clickStartingPoint, sf::Vector2i position
     }
 
     clickStartingPoint = sf::Mouse::getPosition(*gameEnginePtr->clientWindow);
-
 }
 
 /*!
@@ -342,9 +341,9 @@ const Json::Value GameWindow::openJsonFile(std::string path)
 }
 
 /*!
-* @brief Move to right priority cards when a player play one
-* @param difficulty level of difficulty when the card is played (0 to 4 for the 5 different field)
-*/
+ * @brief Move to right priority cards when a player play one
+ * @param difficulty level of difficulty when the card is played (0 to 4 for the 5 different field)
+ */
 void GameWindow::moveToRightPriorityCards(int difficulty)
 {
     const Json::Value &dataNumber = openJsonFile("/img/hud/data-number.json");
@@ -352,53 +351,86 @@ void GameWindow::moveToRightPriorityCards(int difficulty)
     int xPos;
     int yPos;
 
-    for (unsigned i = difficulty; i > 0; i--) 
+    for (unsigned i = difficulty; i > 0; i--)
     {
-        priorityCards[i-1].difficulty = i;
-        std::iter_swap(priorityCards.begin() + i, priorityCards.begin() + (i-1));
+        priorityCards[i - 1].difficulty = i;
+        std::iter_swap(priorityCards.begin() + i, priorityCards.begin() + (i - 1));
     }
     priorityCards[0].difficulty = 0;
 
-    for (int i = 0; i <= difficulty; i++) 
+    for (int i = 0; i <= difficulty; i++)
     {
         xPos = dataNumber["priority-card-offset"].asFloat() * WINDOW_LENGTH * i + dataNumber["priority-card-first-offset"].asFloat() * WINDOW_LENGTH;
         yPos = priorityCards[i].texture->getSprite().getPosition().y;
         priorityCards[i].texture->getSprite().setPosition(xPos, yPos);
         priorityCards[i].movePriorityCardElements(dataNumber);
     }
-    
 }
 
 /*!
-* @brief Detect when we click on a priority card or on the play button on priorityCard and make the action associated
-* @param cursorRect emplacement of the mouse
-*/
+ * @brief Detect when we click on a priority card or on the play button on priorityCard and make the action associated
+ * @param cursorRect emplacement of the mouse
+ */
 bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
 {
-    std::cout << "click: " << clickPosition.x << " " << clickPosition.y << std::endl;
+    std::string questionString;
+    std::string nbOfBoxesOnPriorityCard;
+
+    sf::FloatRect spriteArrowMoreBoxes = validateBoxesWindow->arrowMoreTexture->getSprite().getGlobalBounds();
+    sf::FloatRect spriteArrowLessBoxes = validateBoxesWindow->arrowLessTexture->getSprite().getGlobalBounds();
+    sf::FloatRect spriteValidateBoxesButton = validateBoxesWindow->doneTexture->getSprite().getGlobalBounds();
+
+    if (gameEnginePtr->intersectPointRect(clickPosition, spriteValidateBoxesButton) && validateBoxesWindow->isWindowActive)
+    {
+        validateBoxesWindow->isWindowActive = false;
+        moveToRightPriorityCards(validateBoxesWindow->priorityCardPlayed);
+        gameEnginePtr->handlePriorityCardPlay(
+            validateBoxesWindow->priorityCardPlayedType, 
+            validateBoxesWindow->priorityCardPlayed, 
+            validateBoxesWindow->nbOfBoxesChosen);
+        return true;
+    }
+
+    if (
+        gameEnginePtr->intersectPointRect(clickPosition, spriteArrowMoreBoxes) 
+        && validateBoxesWindow->isWindowActive 
+        && validateBoxesWindow->nbOfBoxesChosen < validateBoxesWindow->nbOfBoxesMax)
+    {
+        validateBoxesWindow->nbOfBoxesChosen++;
+        validateBoxesWindow->chooseNumberOfBoxesButton->buttonText->setString(std::to_string(validateBoxesWindow->nbOfBoxesChosen)); // sent by the server
+        return true;
+    }
+
+    if (
+        gameEnginePtr->intersectPointRect(clickPosition, spriteArrowLessBoxes) && validateBoxesWindow->isWindowActive && validateBoxesWindow->nbOfBoxesChosen > 0)
+    {
+        validateBoxesWindow->nbOfBoxesChosen--;
+        validateBoxesWindow->chooseNumberOfBoxesButton->buttonText->setString(std::to_string(validateBoxesWindow->nbOfBoxesChosen)); // sent by the server
+        return true;
+    }
+
     for (auto &priorityCard : priorityCards)
     {
         sf::FloatRect spriteCards = priorityCard.texture->getSprite().getGlobalBounds();
         sf::FloatRect spriteValidateButton = priorityCard.validateButton->buttonRect->getGlobalBounds();
-        sf::FloatRect spriteValidateBoxesButton = validateBoxesWindow->doneTexture->getSprite().getGlobalBounds();
 
-        if(gameEnginePtr->intersectPointRect(clickPosition, spriteValidateBoxesButton) && validateBoxesWindow->isWindowActive) 
-        {
-                validateBoxesWindow->isWindowActive = false; 
-                moveToRightPriorityCards(validateBoxesWindow->priorityCardPlayed);
-                gameEnginePtr->handlePriorityCardPlay(validateBoxesWindow->priorityCardPlayedType, validateBoxesWindow->priorityCardPlayed);
-                return true;
-        }
- 
-        if (gameEnginePtr->intersectPointRect(clickPosition,spriteValidateButton) && priorityCard.isUp)
+        if (gameEnginePtr->intersectPointRect(clickPosition, spriteValidateButton) && priorityCard.isUp)
         {
             validateBoxesWindow->isWindowActive = true;
             validateBoxesWindow->priorityCardPlayed = priorityCard.difficulty;
             validateBoxesWindow->priorityCardPlayedType = priorityCard.type;
+
+            nbOfBoxesOnPriorityCard = priorityCard.nbOfBoxesText->getString().substring(0, 1);
+            validateBoxesWindow->nbOfBoxesChosen = std::stoi(nbOfBoxesOnPriorityCard); // sent by the server
+            validateBoxesWindow->nbOfBoxesMax = std::stoi(nbOfBoxesOnPriorityCard);    // sent by the server
+
+            validateBoxesWindow->chooseNumberOfBoxesButton->buttonText->setString(nbOfBoxesOnPriorityCard); // sent by the server
+            questionString = "You have " + nbOfBoxesOnPriorityCard + " boxes \nHow many boxes do you want to play?";
+            validateBoxesWindow->question->setString(questionString);
             return true;
         }
 
-        if (gameEnginePtr->intersectPointRect(clickPosition,spriteCards))
+        if (gameEnginePtr->intersectPointRect(clickPosition, spriteCards))
         {
             priorityCard.moveUpPriorityCard();
             return true;
@@ -407,8 +439,6 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
 
     return false;
 }
-
-
 
 /*!
  * @brief Function that deteck where the user click and what to send to the engine
@@ -422,15 +452,16 @@ void GameWindow::clickAction(sf::Vector2i clickPosition)
 
     bool isClickable = false;
 
-    if (priorityCardClickAction(clickPosition)) {
-            return;
+    if (priorityCardClickAction(clickPosition))
+    {
+        return;
     }
 
     for (auto &mapTexture : mapTextureToDisplay)
     {
         for (unsigned j = 0; j < mapTexture.getSize(); j++)
-        { 
-            if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
+        {
+            if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()) && !validateBoxesWindow->isWindowActive )
             {
                 isClickable = true;
 
@@ -455,28 +486,27 @@ void GameWindow::clickAction(sf::Vector2i clickPosition)
     if (isClickable)
     {
         gameEnginePtr->handleInformation(hexagonOnClick[0], hexagonOnClick[1]);
-    } 
+    }
 }
 
-
 /*!
-* @brief Display text on the cards
-* @param cards pointer to the card you want to setUp the text
-* @param title text to be display on the top of the card
-* @param body text to be display on body of the card, float
-* @param titleFont Font that will be used for the titile of the card
-* @param bodyFont Font that will be used for the body of the card
-* @param titleTextSizeProportion Proportion of the title
-* @param bodyTextSizeProportion Proportion of the body
-*/
+ * @brief Display text on the cards
+ * @param cards pointer to the card you want to setUp the text
+ * @param title text to be display on the top of the card
+ * @param body text to be display on body of the card, float
+ * @param titleFont Font that will be used for the titile of the card
+ * @param bodyFont Font that will be used for the body of the card
+ * @param titleTextSizeProportion Proportion of the title
+ * @param bodyTextSizeProportion Proportion of the body
+ */
 void GameWindow::setUpText(
-    GraphicCard &card, 
-    std::string title, 
-    std::string body, 
-    sf::Font &titleFont, 
-    sf::Font &bodyFont, 
-    const Json::Value& dataNumber, 
-    float titleTextProportion, 
+    GraphicCard &card,
+    std::string title,
+    std::string body,
+    sf::Font &titleFont,
+    sf::Font &bodyFont,
+    const Json::Value &dataNumber,
+    float titleTextProportion,
     float bodyTextProportion)
 {
     int titleTextSize = titleTextProportion * WINDOW_LENGTH;
@@ -638,8 +668,8 @@ sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float bo
 }
 
 /*!
-* @brief Load all the HUD textures
-*/
+ * @brief Load all the HUD textures
+ */
 void GameWindow::loadHudTexture()
 {
 
@@ -666,7 +696,6 @@ void GameWindow::loadHudTexture()
 
     // load the priorityCard
     boxTexture = std::make_unique<TextureDisplayer>(RESOURCES_PATH "/img/hud/box.png");
-    std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
     std::string boxString = "0";
 
     if (!titleFont.loadFromFile(RESOURCES_PATH "/img/hud/font.otf"))
