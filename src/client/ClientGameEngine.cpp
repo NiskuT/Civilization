@@ -271,9 +271,9 @@ void ClientGameEngine::handleInformation(int x, int y)
 * @param typePlayed type of the priority card played (economy, science, culture, ...)
 * @param difficulty level of difficulty played (0 to 4 for the 5 fields) 
 */
-void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty)
+void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty, int boxes)
 {
-    std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << std::endl;
+    std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << " and with " << boxes << " boxes" << std::endl;
 }
 
 /*!
