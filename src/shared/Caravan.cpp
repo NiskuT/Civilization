@@ -1,6 +1,13 @@
 #include <shared.hpp>
 
 using namespace shared;
+
+Caravan::Caravan()
+{
+    this->position = {0, 0};
+    this->used = false;
+}
+
 Caravan::Caravan(std::array<unsigned, 2> position)
 {
     this->position = position;

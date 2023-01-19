@@ -28,9 +28,41 @@ bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
 
     if (players.size() == MAX_PLAYERS)
     {
-        state = GameState::Running;
+        std::cout << "Tous les joueurs sont connectés\n"
+                  << std::endl;
+        std::thread gameThread(&GameEngine::startGame, this);
+        gameThread.detach();
     }
     return true;
+}
+
+void GameEngine::startGame() // rename rungame
+{
+    std::cout << "start game" << std::endl;
+    std::cout << "map initialized" << std::endl;
+    std::string message = "chat ";
+    message += getTime() + " ";
+    message += "Game started\n";
+    sendToEveryone(message);
+    shared::Rules rules;
+    while (true) // TODO: add condition to stop the game
+    {
+        for (auto &player : players)
+        {
+            shared::RuleArgsStruct ruleArgs;
+            do
+            {
+                player->qAndA.question = "playturn\n";
+                askClient(player);
+                binary.castToObject(player->qAndA.answer, ruleArgs);
+                ruleArgs.gameMap = this->gameMap;
+                ruleArgs.currentPlayer = player;
+            } while (!rules.runTheRule(ruleArgs));
+
+            // sendToEveryone
+            // TODO: send the coup
+        }
+    }
 }
 
 std::vector<std::shared_ptr<shared::Player>> &GameEngine::getPlayers()
@@ -118,7 +150,7 @@ bool GameEngine::setMapParam(std::string &param, std::string &value)
     {
         paramValue = std::stoi(value);
     }
-    catch (std::exception& e)
+    catch (std::exception &e)
     {
         return false;
     }
@@ -182,7 +214,7 @@ void GameEngine::sendToEveryone(std::string message)
     }
 }
 
-/*! 
+/*!
  * @brief This function return the time under a string format
  * For example, if the time is 1:34pm, the function will return "13:34"
  * @return std::string
