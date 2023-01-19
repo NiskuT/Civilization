@@ -209,7 +209,13 @@ void ClientGameEngine::processServerRequest(std::string request)
         request = request.substr(10);
         printChat(request);
     }
-
+    else if(request.find("player") == 0)
+    {
+        request = request.substr(20);
+        clientGame.addPlayer(request);
+        request += " join the game";
+        printChat(request);
+    }
     else 
     {
         std::cout << "Received request: " << request << std::endl;

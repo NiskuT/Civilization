@@ -187,7 +187,7 @@ bool Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::sh
     else
     {
         std::cout << "Player " << player->getName() << " connected to game " << game->getId() << std::endl;
-        std::string newUserConnected = "chat " + game->getTime() + " " + "server" + " " + player->getName() + " join the game\n";
+        std::string newUserConnected = "player " + game->getTime() + " " + "server" + " " + player->getName() + "\n";
         game->sendToEveryone(newUserConnected);
         return true;
     }

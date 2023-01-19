@@ -153,6 +153,8 @@ void GameWindow::startGame()
         return;
     }
 
+    addPlayer(gameEnginePtr->myself->getName());
+
     std::shared_ptr<bool> moveMode = std::make_shared<bool>(false);
     std::shared_ptr<bool> clickMode = std::make_shared<bool>(false);
 
@@ -816,28 +818,36 @@ void GameWindow::loadHudTexture()
             actionTitleTextProportion,
             actionBodyTextProportion);
     }
+}
 
-    // isPlaying buttons
-    int whoIsPlaying = 2; // sent by the server (temporary)
-
-    for (int i = 0; i < dataNumber["nb-player"].asInt(); i++)
+void GameWindow::addPlayer(std::string username)
+{
+    for(auto &button: whoIsPlayingButtons)
     {
-        bool isPlaying;
-        (i + 1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
-        std::string text = "Player ";
-        text += std::to_string(i + 1);
-        int offset = dataNumber["offset-between-up-player"].asInt();
-        int upPosition = (WINDOW_LENGTH + (float(2 / 3) - dataNumber["nb-player"].asInt()) * offset) / 2;
+        if(!username.compare(button.buttonText->getString()))
+        {
+            return;
+        }
+    }
 
-        whoIsPlayingButtons.emplace_back(
-            sf::Vector2f(offset * float(float(2) / float(3)), offset / 2),
-            sf::Vector2f(upPosition + offset * i, 0),
-            PLAYER_COLOR[i],
-            isPlaying);
+    whoIsPlayingButtons.emplace_back(
+        sf::Vector2f(75, 90 / 2),
+        sf::Vector2f(0, 0),
+        PLAYER_COLOR[whoIsPlayingButtons.size()],
+        false);
 
-        whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, titleFont);
+    whoIsPlayingButtons.back().setText(18, sf::Vector2f(0, 0), username, titleFont);
+
+    for(unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
+    {
+        whoIsPlayingButtons[i].buttonRect->setPosition(
+            (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2
+            + 105 * i, 
+            0);
+        whoIsPlayingButtons[i].centerText(false);
     }
 }
+
 /*!
  * @brief Function that deteck where the user click and what to send to the engine
  * @param timeSecond is a boolean used to
