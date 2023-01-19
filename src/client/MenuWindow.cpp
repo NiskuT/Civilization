@@ -294,7 +294,12 @@ void MenuWindow::loadMenuTexture()
     quitTexture->getSprite().setScale(QUIT_SCALE, QUIT_SCALE);
 
 
-    if (!menuFont.loadFromFile(RESOURCES_PATH "/hud/font.otf"))
+    if (!titleMenuFont.loadFromFile(RESOURCES_PATH "/font/EnchantedLand.otf"))
+    {
+        std::cerr << "Font not loaded" << std::endl;
+    }
+
+    if (!menuFont.loadFromFile(RESOURCES_PATH "/font/MorrisRomanBlack.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
@@ -335,6 +340,7 @@ void MenuWindow::loadMenuTexture()
  */
 void MenuWindow::loadText(Json::Value &data)
 {
+    currentText->emplace_back(data[0]["text"].asString(), titleMenuFont, data[0]["size"].asInt());
     for (auto &dataMenu : data)
     {
         currentText->emplace_back(dataMenu["text"].asString(), menuFont, dataMenu["size"].asInt());
@@ -345,7 +351,9 @@ void MenuWindow::loadText(Json::Value &data)
         currentText->back().setFillColor(sf::Color::Black);
         currentText->back().setPosition(setXAxisButtonTextPosition(dataMenu["xOffset"].asFloat()),
                                         setYAxisButtonTextPosition(dataMenu["yOffset"].asFloat()));
+        currentText->emplace_back(dataMenu["text"].asString(), menuFont, dataMenu["size"].asInt());
     }
+    currentText->pop_back();
 }
 
 /*!

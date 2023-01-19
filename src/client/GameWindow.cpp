@@ -62,7 +62,7 @@ GameWindow::GameWindow()
     loadElementTexture();
     updateElementTexture();
     loadHudTexture();
-    chatBox = std::make_unique<Chat>(bodyFont);
+    chatBox = std::make_unique<Chat>();
 
 }
 
@@ -725,12 +725,12 @@ void GameWindow::loadHudTexture()
     std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
     std::string boxString = "0";
 
-    if (!titleFont.loadFromFile(RESOURCES_PATH "/hud/font.otf"))
+    if (!titleFont.loadFromFile(RESOURCES_PATH "/font/EnchantedLand.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    if (!bodyFont.loadFromFile(RESOURCES_PATH "/hud/MorrisRomanBlack.otf"))
+    if (!bodyFont.loadFromFile(RESOURCES_PATH "/font/MorrisRomanBlack.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }

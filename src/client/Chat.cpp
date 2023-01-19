@@ -1,4 +1,5 @@
 #include <client.hpp>
+#include <iostream>
 
 #define CHAT_MAX_SIZE 300
 
@@ -15,6 +16,10 @@
 
 #define STARTING_MESSAGE "Game is starting"
 
+#ifndef RESOURCES_PATH
+#define RESOURCES_PATH "../resources"
+#endif
+
 const sf::Color TEXT_COLOR = sf::Color(255, 255, 255, 180);
 
 using namespace client;
@@ -22,13 +27,18 @@ using namespace client;
 /*!
  * @brief Load all the chat
  */
-Chat::Chat(sf::Font& font)
+Chat::Chat()
 {
+    if (!chatFont.loadFromFile(RESOURCES_PATH "/font/Calibri.ttf"))
+    {
+        std::cerr << "Font not loaded" << std::endl;
+    }
+
     unsigned i;
     for(i = 0; i < gameChat.size(); i++ )
     {
         gameChat[i].setString("");
-        gameChat[i].setFont(font);
+        gameChat[i].setFont(chatFont);
         gameChat[i].setCharacterSize(CHAT_FONT_SIZE);
         gameChat[i].setFillColor(sf::Color::Black);
         gameChat[i].setPosition(CHAT_OFFSET, CHAT_START_POSITION + CHAT_SIZE_X + CHAT_OFFSET * i);
@@ -45,7 +55,7 @@ Chat::Chat(sf::Font& font)
         TEXT_COLOR, 
         false);
 
-    chatButton.back().setText(CHAT_FONT_SIZE, sf::Vector2f(0, 0), "", font, CHAT_SIZE_X);
+    chatButton.back().setText(CHAT_FONT_SIZE, sf::Vector2f(0, 0), "", chatFont, CHAT_SIZE_X);
 
     updateChat("", "", STARTING_MESSAGE);
 }
