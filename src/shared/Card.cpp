@@ -6,6 +6,7 @@ namespace shared
     {
         this->type = type;
         this->level = 1;
+        this->dificulty = 1;
         this->numberOfBox = 0;
     }
 
@@ -42,6 +43,16 @@ namespace shared
     void Card::deleteBox(unsigned numberOfBoxToDelete)
     {
         this->numberOfBox -= numberOfBoxToDelete;
+    }
+
+    unsigned Card::getDificulty()
+    {
+        return this->dificulty;
+    }
+
+    void Card::setDificulty(unsigned newDificulty)
+    {
+        this->dificulty = newDificulty;
     }
 
 }

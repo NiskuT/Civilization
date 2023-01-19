@@ -4,12 +4,10 @@ using namespace shared;
 
 Player::Player()
 {
-    this->state = PlayerState::WaitingForGame;
     connectedToSocket.store(false);
     for (int i = 0; i < 4; i++)
     {
-        this->ressources[i] = 0;
-        this->wonderRessources[i] = 0;
+        this->resources[i] = 0;
     }
     this->techLevel = 0;
     this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military);
@@ -148,8 +146,9 @@ void Player::addCaravan(std::shared_ptr<Caravan> newCaravan)
 
 bool Player::haveResource(ResourceEnum resourceType)
 {
-    return this->ressources[(int)resourceType] > 0;
+    return this->resources[(int)resourceType] > 0;
 }
+
 void Player::addControlPawn(std::shared_ptr<ControlPawn> newControlPawn)
 {
     this->listOfControlPawn.push_back(newControlPawn);
@@ -168,7 +167,7 @@ void Player::removeControlPawn(std::shared_ptr<ControlPawn> controlPawnToRemove)
 
 void Player::addResource(ResourceEnum resourceType)
 {
-    this->ressources[(int)resourceType] += 1;
+    this->resources[(int)resourceType] += 1;
 }
 
 unsigned Player::getTechLevel()
@@ -178,7 +177,7 @@ unsigned Player::getTechLevel()
 
 unsigned Player::getNumberOfResource(ResourceEnum resourceType)
 {
-    return this->ressources[(int)resourceType];
+    return this->resources[(int)resourceType];
 }
 
 void Player::deleteBox(CardsEnum cardType, unsigned numberOfBoxToDelete)
@@ -205,4 +204,27 @@ void Player::addCity(std::shared_ptr<City> newCity)
 std::vector<std::shared_ptr<ControlPawn>> Player::getControlPawns()
 {
     return this->listOfControlPawn;
+}
+
+void Player::setDificultyOfCard(CardsEnum cardType, unsigned newDificulty)
+{
+    for (auto card : this->listOfPriorityCard)
+    {
+        if (card->getType() == cardType)
+        {
+            card->setDificulty(newDificulty);
+        }
+    }
+}
+
+unsigned Player::getDificultyOfCard(CardsEnum cardType)
+{
+    for (auto card : this->listOfPriorityCard)
+    {
+        if (card->getType() == cardType)
+        {
+            return card->getDificulty();
+        }
+    }
+    return 0;
 }

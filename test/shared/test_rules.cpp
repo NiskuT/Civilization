@@ -81,8 +81,10 @@ BOOST_AUTO_TEST_CASE(TestRulesScienceCardLevel4)
     args.cardsToImprove.push_back(shared::CardsEnum::science);
     rules.runTheRule(args);
 
+    // std::cout << "Level of science card: " << player->getLevelOfCard(shared::CardsEnum::science) << std::endl;
     BOOST_CHECK(player->getLevelOfCard(shared::CardsEnum::science) == 4);
     std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
+    map->init();
 
     std::array<unsigned, 2> position = {5, 5};
     std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position);
@@ -121,6 +123,7 @@ BOOST_AUTO_TEST_CASE(TestRulesEconomyCardLevel1)
     shared::Rules rules;
     shared::RuleArgsStruct args;
     std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
+    map->init();
 
     std::array<unsigned, 2> position = {0, 1};
     std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
@@ -148,6 +151,7 @@ BOOST_AUTO_TEST_CASE(TestRulesMilitaryReinforceAllLevels)
     shared::Rules rules;
     shared::RuleArgsStruct args;
     std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
+    map->init();
 
     
     player->addBox(shared::CardsEnum::military, 50);
@@ -195,6 +199,7 @@ BOOST_AUTO_TEST_CASE(TestRulesIndustryCardForBuildingCity)
     shared::Rules rules;
     shared::RuleArgsStruct args;
     std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
+    map->init();
     args.gameMap = map;
     args.ruleId = shared::CardsEnum::industry;
     args.industryCardBuildWonder = false;
@@ -216,6 +221,7 @@ BOOST_AUTO_TEST_CASE(TestRulesCultureCardLevel1)
     shared::Rules rules;
     shared::RuleArgsStruct args;
     std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
+    map->init();
 
     std::array<unsigned, 2> position = {4, 3};
     std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);

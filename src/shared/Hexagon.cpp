@@ -6,7 +6,6 @@ using namespace shared;
 Hexagon::Hexagon()
 {
     this->level = FieldLevel::Grassland;
-    this->elementsList = {};
 }
 
 FieldLevel Hexagon::getFieldLevel()

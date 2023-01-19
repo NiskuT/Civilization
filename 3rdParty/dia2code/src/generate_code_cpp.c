@@ -853,6 +853,7 @@ struct stdlib_includes {
    int jsoncpp;
    int boostAsio;
    int json;
+   int variant;
 };
 
 void print_include_stdlib(struct stdlib_includes *si, char *name)
@@ -973,6 +974,11 @@ void print_include_stdlib(struct stdlib_includes *si, char *name)
            print (" #include <json/json.h>\n");
            si->json = 1;
        }
+       if (!si->variant && strstr(name,"std::variant")) {
+           print ("#include <variant>\n");
+           si->variant = 1;
+       }
+
        
     }
 }

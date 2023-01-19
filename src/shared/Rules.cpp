@@ -92,7 +92,7 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
         exit(EXIT_FAILURE);
     }
 
-    unsigned maxLevelReachable = cardLevel; // TODO: check if the player can reach a higher level depending on his caracteristics
+    unsigned maxLevelReachable = args.currentPlayer->getDificultyOfCard(CardsEnum::economy); // TODO: check if the player can reach a higher level depending on his caracteristics
     for (auto &element : caravanMovementPath)
     {
         if ((*map)(element[0], element[1])->getFieldLevel() > (FieldLevel)maxLevelReachable)
@@ -312,15 +312,6 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
     std::vector<std::array<unsigned, 2>> neighbors;
 
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::science);
-    std::array<int, 3> cardsLevelToImprove = currentPlayer->incrementTechWheel(cardLevel + numberOfBoxUsed);
-    for (auto cardtoImprove : cardsToImprove)
-    {
-        if (cardsLevelToImprove[currentPlayer->getLevelOfCard(cardtoImprove) - 1] > 0)
-        {
-            cardsLevelToImprove[currentPlayer->getLevelOfCard(cardtoImprove) - 1]--;
-            args.currentPlayer->upgradeCard(cardtoImprove);
-        }
-    }
     switch (cardLevel)
     {
     case 1:
@@ -349,6 +340,16 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
     default:
         std::cout << "invalid card level" << std::endl;
         return false;
+    }
+    unsigned dificulty = currentPlayer->getDificultyOfCard(CardsEnum::science);
+    std::array<int, 3> cardsLevelToImprove = currentPlayer->incrementTechWheel(dificulty + numberOfBoxUsed);
+    for (auto cardtoImprove : cardsToImprove)
+    {
+        if (cardsLevelToImprove[currentPlayer->getLevelOfCard(cardtoImprove) - 1] > 0)
+        {
+            cardsLevelToImprove[currentPlayer->getLevelOfCard(cardtoImprove) - 1]--;
+            args.currentPlayer->upgradeCard(cardtoImprove);
+        }
     }
     return true;
 }
