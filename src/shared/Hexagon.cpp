@@ -11,16 +11,3 @@ void Hexagon::setFieldType(FieldLevel field)
 {
     this->level = field;
 }
-
-bool Hexagon::getElements(std::vector<Element *> *fieldElement)
-{
-    if (fieldElement == NULL)
-    {
-        return false;
-    }
-    else
-    {
-        *fieldElement = this->listElements;
-        return true;
-    }
-}

@@ -13,14 +13,26 @@ void Server::start()
     boost::asio::io_context io_context;
     boost::asio::ip::tcp::acceptor acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT));
 
-    while (true)
+    while (running.load())
     {
 
         boost::asio::ip::tcp::socket socket(io_context);
         acceptor.accept(socket);
 
+        handleAccept(acceptor, socket);
+    }
+}
+
+void Server::handleAccept(boost::asio::ip::tcp::acceptor &acceptor, boost::asio::ip::tcp::socket &socket)
+{
+    if (running.load())
+    {
         std::thread t(&Server::handleClient, this, std::move(socket));
         t.detach();
+    }
+    else
+    {
+        acceptor.cancel();
     }
 }
 
@@ -58,24 +70,25 @@ void Server::handleClient(boost::asio::ip::tcp::socket socket)
     else
     {
         game = getGameById(gameId);
+        bool playerConnected = false;
         if (game != nullptr)
         {
-            connectPlayerToGame(player, game);
+            playerConnected = connectPlayerToGame(player, game);
         }
 
-        if (player->state == shared::PlayerState::Disconnected || player->state == shared::PlayerState::WaitingForGame)
+        if (!playerConnected)
         {
             std::string response = "Error: game not available\n";
             boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+            player->disconnectPlayer();
             return;
         }
     }
 
     std::string response = "OK " + game->getId() + "\n";
     boost::asio::write(player->getSocket(), boost::asio::buffer(response));
-    player->state = shared::PlayerState::Connected;
-
-    while (player->state == shared::PlayerState::Connected)
+    
+    while (player->connectedToSocket.load())
     {
         boost::asio::streambuf receiveBuffer;
         boost::system::error_code error;
@@ -102,14 +115,13 @@ void Server::handleClient(boost::asio::ip::tcp::socket socket)
             player->disconnectPlayer();
             continue;
         }
-
         if (bytesTransferred)
         {
             processMessage(receiveBuffer, player, game);
             receiveBuffer.consume(receiveBuffer.size());
         }
     }
-    std::cout << "Client disconnected" << std::endl;
+    std::cout << "Player " << player->getName() << " disconnected" << std::endl;
 }
 
 void Server::processMessage(boost::asio::streambuf& receiveBuffer, std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
@@ -126,11 +138,18 @@ void Server::processMessage(boost::asio::streambuf& receiveBuffer, std::shared_p
         {
             registerClientAnswer(messageReceived, player);
         }
+        else if (messageReceived.find("binary") == 0) // binary reception
+        {
+            size_t size = std::stoi(messageReceived.substr(8));
+            std::string data = binary.receive(player, size);
+            registerClientAnswer(data, player);
+        }
         else
         {
             game->processClientRequest(messageReceived, player);
         }
     }
+
 }
 
 std::shared_ptr<GameEngine> Server::getGameById(std::string gameId)
@@ -146,7 +165,7 @@ std::shared_ptr<GameEngine> Server::getGameById(std::string gameId)
     return nullptr;
 }
 
-void Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
+bool Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
 {
     // check if a player with the same username already exists in the game and is in disconnected state
     for (auto &p : game->getPlayers())
@@ -155,14 +174,20 @@ void Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::sh
         {
             p->setSocket(player->getSocket());
             player.swap(p);
-            return;
+            std::cout << "Player " << player->getName() << " reconnected to game " << game->getId() << std::endl;
+            return true;
         }
     }
     bool res = game->addPlayer(player);
     if (!res)
     {
-        // TODO : a changer (appeler disconnect ?)
-        player->state = shared::PlayerState::Disconnected;
+        player->disconnectPlayer();
+        return false;
+    }
+    else
+    {
+        std::cout << "Player " << player->getName() << " connected to game " << game->getId() << std::endl;
+        return true;
     }
 }
 
@@ -170,7 +195,7 @@ std::shared_ptr<GameEngine> Server::createNewGame(std::shared_ptr<shared::Player
 {
     auto game = std::make_shared<GameEngine>(games, player);
 
-    std::cout << "New game created with id: " << game->getId() << std::endl;
+    std::cout << "Player " << player->getName() << " created game " << game->getId() << std::endl;
 
     std::lock_guard<std::mutex> lock(gamesMutex);
     games.push_back(game);

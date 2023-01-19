@@ -17,16 +17,14 @@ using namespace client;
  *
  * @param filename name of the png path
  */
-TextureDisplayer::TextureDisplayer(const std::string &filename)
-{
-    std::unique_ptr<sf::Texture> resource(new sf::Texture());
-    if (!resource->loadFromFile(filename))
-    {
-        throw std::runtime_error("Holder::load - Failed to load " + filename);
-    }
+TextureDisplayer::TextureDisplayer(const std::string& filename)
+{    
+    texture = std::make_shared<sf::Texture>();
 
-    texture = std::move(resource);
-    mutexTexture = std::unique_ptr<std::mutex>(new std::mutex);
+	if (!texture->loadFromFile(filename))
+		throw std::runtime_error("Holder::load - Failed to load " + filename);
+
+    mutexTexture = std::make_unique<std::mutex>();
 }
 
 void TextureDisplayer::setImageType(HudTextureType imageType)
@@ -40,7 +38,7 @@ void TextureDisplayer::setImageType(HudTextureType imageType)
 void TextureDisplayer::addSprite()
 {
     std::lock_guard<std::mutex> lock(*mutexTexture);
-    std::unique_ptr<sf::Sprite> sprite(new sf::Sprite());
+    std::unique_ptr<sf::Sprite> sprite = std::make_unique<sf::Sprite>();
     sprite->setTexture(*texture);
     sprites.push_back(std::move(sprite));
 }

@@ -19,6 +19,7 @@ bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
     if (isPublic && (players.size() < MAX_PLAYERS))
     {
         players.push_back(player);
+        gameMap = std::make_unique<shared::Map>();
     }
     else
     {
@@ -69,7 +70,7 @@ void GameEngine::processClientRequest(std::string requestString, std::shared_ptr
 
     std::string command = requestComponents[0];
 
-    std::string response;
+    std::string response = "response error: invalid command\n";
     if (command.find("getstate") == 0)
     {
         response = "response" + player->getName() + " is connected\n";
@@ -83,15 +84,61 @@ void GameEngine::processClientRequest(std::string requestString, std::shared_ptr
         sendToEveryone(message);
         response = "response ok\n";
     }
-    else
+    else if (command.find("getmap") == 0)
     {
-        response = "Error: invalid command\n";
+        if (gameMap == nullptr)
+        {
+            response = "error: map not initialized\n";
+        }
+        else
+        {
+            binary.castToBinary(*gameMap, response);
+            binary.send(player, response);
+            return;
+        }
+    }
+    else if (command.find("setmapparam") == 0)
+    {
+        if (requestComponents.size() == 3)
+        {
+            std::string param = requestComponents[1];
+            std::string value = requestComponents[2];
+            response = setMapParam(param, value) ? "response ok\n" : "response error: invalid parameter\n";
+        }
     }
 
+    std::lock_guard<std::mutex> lock(player->socketWriteMutex);
+    boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+}
+
+bool GameEngine::setMapParam(std::string &param, std::string &value)
+{
+    int paramValue;
+    try
     {
-        std::lock_guard<std::mutex> lock(player->socketWriteMutex);
-        boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+        paramValue = std::stoi(value);
     }
+    catch (std::exception& e)
+    {
+        return false;
+    }
+    if (param.find("width") == 0)
+    {
+        gameMap->setMapWidth(paramValue);
+    }
+    else if (param.find("height") == 0)
+    {
+        gameMap->setMapHeight(paramValue);
+    }
+    else if (param.find("generate") == 0)
+    {
+        gameMap->generateRandomMap(paramValue);
+    }
+    else
+    {
+        return false;
+    }
+    return true;
 }
 
 std::vector<std::string> GameEngine::splitString(std::string str, char delimiter)
@@ -127,7 +174,7 @@ void GameEngine::sendToEveryone(std::string message)
     std::cout << message;
     for (auto &player : players)
     {
-        if (player->state == shared::PlayerState::Connected)
+        if (player->connectedToSocket.load())
         {
             std::lock_guard<std::mutex> lock(player->socketWriteMutex);
             boost::asio::write(player->getSocket(), boost::asio::buffer(message));

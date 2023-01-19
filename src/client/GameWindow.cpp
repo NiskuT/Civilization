@@ -635,13 +635,13 @@ void GameWindow::loadElementTexture()
 
     closedir(dir);
 
-    // Affiche les noms de fichiers trouvés
-    for (const std::string &filename : png_files)
-    {
-        std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
-        elementTextureToDisplay[path] = (std::unique_ptr<client::TextureDisplayer>)new TextureDisplayer(path);
+        // Affiche les noms de fichiers trouvés
+        for (const std::string &filename : png_files)
+        {
+            std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
+            elementTextureToDisplay[path] = std::make_unique<TextureDisplayer>(path);
+        }
     }
-}
 
 /*!
  * @brief Update all the textures of the map

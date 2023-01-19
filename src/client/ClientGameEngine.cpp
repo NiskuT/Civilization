@@ -50,7 +50,6 @@ bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
         return false;
     }
     myself->setSocket(clientSocket);
-    myself->state = shared::PlayerState::Connected;
 
     std::thread t(&ClientGameEngine::startReceiving, this);
 
@@ -72,7 +71,7 @@ void ClientGameEngine::startReceiving()
 {
     std::cout << "Starting receiving" << std::endl;
 
-    while (myself->state == shared::PlayerState::Connected)
+    while (myself->connectedToSocket.load())
     {
 
         boost::asio::streambuf receiveBuffer;
@@ -110,12 +109,77 @@ void ClientGameEngine::processMessage(boost::asio::streambuf& receiveBuffer)
         {
             registerServerAnswer(messageReceived);
         }
+        else if (messageReceived.find("binary") == 0) // binary reception
+        {
+            size_t size = std::stoi(messageReceived.substr(7));
+            std::string data = binary.receive(myself, size);
+            registerServerAnswer(data);
+        }
         else
         {
             processServerRequest(messageReceived);
         }
     }
 }
+
+    void checkOk(std::string &response)
+    {
+        if (response.find("ok") == std::string::npos)
+        {
+            std::cout << "Error in server response: " << response << std::endl;
+            exit(1);
+        }
+    }
+
+    void ClientGameEngine::generateMap(const unsigned height, const unsigned width, const int seed)
+    {
+        std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
+        lock.unlock();
+        if (myself->connectedToSocket.load() == false )
+        {
+            std::cout << "You are not connected to the server" << std::endl;
+            exit(1);
+        }
+        if (height > 0) {
+            lock.lock();
+            myself->qAndA.question = "setmapparam height " + std::to_string(height) + "\n";
+            lock.unlock();
+            askServer();
+            checkOk(myself->qAndA.answer);
+
+        }
+        if (width > 0) {
+            lock.lock();
+            myself->qAndA.question = "setmapparam width " + std::to_string(width) + "\n";
+            lock.unlock();
+            askServer();
+            checkOk(myself->qAndA.answer);
+        }
+        lock.lock();
+        myself->qAndA.question = "setmapparam generate " + std::to_string(seed) + "\n";
+        lock.unlock();
+        askServer();
+        checkOk(myself->qAndA.answer);
+    }
+
+    void ClientGameEngine::loadMap()
+    {
+        if (myself->connectedToSocket.load() == false )
+
+        {
+            std::cout << "You are not connected to the server" << std::endl;
+            exit(1);
+        }
+        std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
+        myself->qAndA.question = "getmap\n";
+        lock.unlock();
+
+        askServer();
+        lock.lock();
+        binary.castToObject(myself->qAndA.answer, clientMap);
+        lock.unlock();
+
+    }
 
 /*!
  * @brief Quentin
@@ -208,6 +272,7 @@ void ClientGameEngine::handleQuitMenu(bool quitDef)
 {
     if (quitDef)
     {
+        myself->disconnectPlayer();
         runningWindow.store(0);
     }
     else
