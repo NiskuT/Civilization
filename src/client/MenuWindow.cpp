@@ -7,6 +7,8 @@
 
 #define REFRESH_TIME 30
 
+#define BUTTON_TEXT_SIZE 25
+
 #define BUTTON_CREAT 1
 #define BUTTON_USERNAME 2
 #define BUTTON_SERVER 3
@@ -145,10 +147,6 @@ bool MenuWindow::menuEventHappened(sf::Event &event)
 
         switch (event.key.code)
         {
-        case sf::Keyboard::Escape:
-            gameEnginePtr->handleQuitMenu(true);
-            return true;
-
         case sf::Keyboard::K:
             gameEnginePtr->handleQuitMenu(false);
             return true;
@@ -340,10 +338,16 @@ void MenuWindow::loadMenuTexture()
  */
 void MenuWindow::loadText(Json::Value &data)
 {
-    currentText->emplace_back(data[0]["text"].asString(), titleMenuFont, data[0]["size"].asInt());
     for (auto &dataMenu : data)
     {
-        currentText->emplace_back(dataMenu["text"].asString(), menuFont, dataMenu["size"].asInt());
+        if(dataMenu["size"].asInt() == 200)
+        {
+            currentText->emplace_back(dataMenu["text"].asString(), titleMenuFont, dataMenu["size"].asInt());
+        }
+        else
+        {
+            currentText->emplace_back(dataMenu["text"].asString(), menuFont, dataMenu["size"].asInt());
+        }
         if (dataMenu["bold"].asBool())
         {
             currentText->back().setStyle(sf::Text::Bold);
@@ -351,9 +355,7 @@ void MenuWindow::loadText(Json::Value &data)
         currentText->back().setFillColor(sf::Color::Black);
         currentText->back().setPosition(setXAxisButtonTextPosition(dataMenu["xOffset"].asFloat()),
                                         setYAxisButtonTextPosition(dataMenu["yOffset"].asFloat()));
-        currentText->emplace_back(dataMenu["text"].asString(), menuFont, dataMenu["size"].asInt());
     }
-    currentText->pop_back();
 }
 
 /*!
@@ -368,7 +370,7 @@ void MenuWindow::loadButton(Json::Value &data)
                                   setButtonPosition(dataMenu["x"].asFloat(), dataMenu["y"].asFloat()),
                                   buttonColor);
 
-        currentMenu->back().setText(40, sf::Vector2f(0, 0), dataMenu["text"].asString(), menuFont, dataMenu["sizeMax"].asInt());
+        currentMenu->back().setText(BUTTON_TEXT_SIZE, sf::Vector2f(0, 0), dataMenu["text"].asString(), menuFont, dataMenu["sizeMax"].asInt());
     }
 }
 
