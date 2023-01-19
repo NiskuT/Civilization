@@ -204,6 +204,12 @@ void ClientGameEngine::processServerRequest(std::string request)
         request = request.substr(5);
         printChat(request);
     }
+    else if(request.find("connected") == 0)
+    {
+        request = request.substr(10);
+        printChat(request);
+    }
+
     else 
     {
         std::cout << "Received request: " << request << std::endl;
@@ -272,8 +278,8 @@ void ClientGameEngine::handleQuitMenu(bool quitDef)
 {
     if (quitDef)
     {
-        myself->disconnectPlayer();
         runningWindow.store(0);
+        //myself->disconnectPlayer();
     }
     else
     {
@@ -299,7 +305,7 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
         return false;
     }
 
-    gameId = id;
+    gameId = id;        
 
     return connect(server, portNumber);
 }

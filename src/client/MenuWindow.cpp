@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <codecvt>
+#include <stdexcept>
 
 #define REFRESH_TIME 30
 
@@ -201,11 +202,11 @@ bool MenuWindow::clickAction(sf::Vector2i clickPoint, int index, bool isOnButton
     }
     else if (isOnButton && index == BUTTON_CONNECT && currentMenu == &menuButtons)
     {
-        if(menuButtons[BUTTON_ID]().size() == BUTTON_ID && menuButtons[BUTTON_USERNAME]().size() != 0)
+        if(menuButtons[BUTTON_ID]().size() == 6 && menuButtons[BUTTON_USERNAME]().size() != 0)
         {
             return connectToGame(menuButtons[BUTTON_ID]());
         }
-        else if(menuButtons[BUTTON_ID]().size() != BUTTON_ID)
+        else if(menuButtons[BUTTON_ID]().size() != 6)
         {
             menuButtons[BUTTON_ID].buttonText->setString("Wrong");
             menuButtons[BUTTON_ID].centerText(false);
@@ -223,6 +224,12 @@ bool MenuWindow::clickAction(sf::Vector2i clickPoint, int index, bool isOnButton
     }
     else if (isOnButton && index == BUTTON_START && currentMenu == &newGameButtons)
     {
+        if (menuButtons[BUTTON_USERNAME]().size() == 0)
+        {
+            menuButtons[BUTTON_USERNAME].buttonText->setString("Write Username");
+            menuButtons[BUTTON_USERNAME].centerText(false);
+            return false;
+        }
         return connectToGame(CREATE_GAME);
     }
     return false;
@@ -242,7 +249,6 @@ bool MenuWindow::connectToGame(std::string gameID)
 
     if (isConnected)
     {
-        std::cout << "Change\n";
         gameEnginePtr->handleQuitMenu(false);
         currentMenu = &menuButtons;
         currentText = &menuTexts;
@@ -260,15 +266,31 @@ void MenuWindow::writeChar(std::string ch)
     for (unsigned i = 0; i < currentMenu->size(); i++)
     {
         std::string newString = currentMenu->at(i)();
+        if (currentMenu->at(i).redBorder 
+            && i == BUTTON_PLAYER 
+            && currentMenu == &newGameButtons)
+        {
+            int numberOfPlayer = 0;
+            try
+            {
+                numberOfPlayer = std::stoi(ch);
+            }
+            catch ( ... )
+            {
+                numberOfPlayer = -1;
+            }
+            if (numberOfPlayer > 1 && numberOfPlayer < 5)
+            {
+                currentMenu->at(i).buttonText->setString(ch);
+                currentMenu->at(i).centerText(true);
+            }
+            return;
+        }
         if (currentMenu->at(i).redBorder &&
             (int)((std::string)currentMenu->at(i)()).size() < currentMenu->at(i).maxTextSize)
         {
             currentMenu->at(i).addChar(ch);
-        }
-        if (currentMenu->at(i).redBorder && i == BUTTON_PLAYER && currentMenu == &newGameButtons)
-        {
-            currentMenu->at(i).buttonText->setString(ch);
-            currentMenu->at(i).centerText(true);
+            return;
         }
     }
 }
