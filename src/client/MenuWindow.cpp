@@ -72,8 +72,6 @@ void MenuWindow::displayWindow()
 
 /*!
  * @brief Loop that look for events to happend and call displayWindow()
- * @param clientWindow is window that comes from the engine
- * @param quitGame is the function used to quit the menu, it is load as an attribut
  */
 void MenuWindow::startMenu()
 {
@@ -178,6 +176,7 @@ bool MenuWindow::menuEventHappened(sf::Event &event)
  * @brief Do the action corresponding to a click on a particular button
  * @param clickPoint cursor coordonate
  * @param index index of the testing button
+ * @param isOnButton check if the button is active
  */
 bool MenuWindow::clickAction(sf::Vector2i clickPoint, int index, bool isOnButton)
 {

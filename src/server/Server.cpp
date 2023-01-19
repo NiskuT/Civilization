@@ -8,6 +8,9 @@
 
 using namespace server;
 
+/*!
+ * @brief Quentin
+ */
 void Server::start()
 {
     boost::asio::io_context io_context;
@@ -23,6 +26,11 @@ void Server::start()
     }
 }
 
+/*!
+ * @brief Quentin
+ * @param acceptor
+ * @param socket
+ */
 void Server::handleAccept(boost::asio::ip::tcp::acceptor &acceptor, boost::asio::ip::tcp::socket &socket)
 {
     if (running.load())
@@ -36,6 +44,10 @@ void Server::handleAccept(boost::asio::ip::tcp::acceptor &acceptor, boost::asio:
     }
 }
 
+/*!
+ * @brief Quentin
+ * @param socket
+ */
 void Server::handleClient(boost::asio::ip::tcp::socket socket)
 {
     std::cout << "New client connected" << std::endl;
@@ -124,6 +136,12 @@ void Server::handleClient(boost::asio::ip::tcp::socket socket)
     std::cout << "Player " << player->getName() << " disconnected" << std::endl;
 }
 
+/*!
+ * @brief Quentin
+ * @param receiveBuffer
+ * @param player
+ * @param game
+ */
 void Server::processMessage(boost::asio::streambuf& receiveBuffer, std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
 {
     std::istream receiveStream(&receiveBuffer);
@@ -152,6 +170,10 @@ void Server::processMessage(boost::asio::streambuf& receiveBuffer, std::shared_p
 
 }
 
+/*!
+ * @brief Quentin
+ * @param gameId
+ */
 std::shared_ptr<GameEngine> Server::getGameById(std::string gameId)
 {
     std::lock_guard<std::mutex> lock(gamesMutex);
@@ -165,6 +187,11 @@ std::shared_ptr<GameEngine> Server::getGameById(std::string gameId)
     return nullptr;
 }
 
+/*!
+ * @brief Quentin
+ * @param player
+ * @param game
+ */
 bool Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
 {
     // check if a player with the same username already exists in the game and is in disconnected state
@@ -191,6 +218,10 @@ bool Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::sh
     }
 }
 
+/*!
+ * @brief Quentin
+ * @param player
+ */
 std::shared_ptr<GameEngine> Server::createNewGame(std::shared_ptr<shared::Player> player)
 {
     auto game = std::make_shared<GameEngine>(games, player);
@@ -202,6 +233,11 @@ std::shared_ptr<GameEngine> Server::createNewGame(std::shared_ptr<shared::Player
     return game;
 }
 
+/*!
+ * @brief Quentin
+ * @param response
+ * @param player
+ */
 void Server::registerClientAnswer(const std::string &response, std::shared_ptr<shared::Player> player)
 {
     std::lock_guard<std::mutex> lock(player->qAndA.sharedDataMutex);

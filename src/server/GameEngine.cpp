@@ -8,12 +8,19 @@
 
 using namespace server;
 
+/*!
+ * @brief Quentin
+ */
 GameEngine::GameEngine(std::vector<std::shared_ptr<GameEngine>> &games, std::shared_ptr<shared::Player> player)
 {
     gameId = GameEngine::generateRandomId(games);
     players.push_back(player);
 }
 
+/*!
+ * @brief Quentin
+ * @param player
+ */
 bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
 {
     if (isPublic && (players.size() < MAX_PLAYERS))
@@ -33,11 +40,18 @@ bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
     return true;
 }
 
+/*!
+ * @brief Quentin
+ */
 std::vector<std::shared_ptr<shared::Player>> &GameEngine::getPlayers()
 {
     return players;
 }
 
+/*!
+ * @brief Quentin
+ * @param games
+ */
 std::string GameEngine::generateRandomId(const std::vector<std::shared_ptr<GameEngine>> &games)
 {
     static const std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -55,11 +69,19 @@ std::string GameEngine::generateRandomId(const std::vector<std::shared_ptr<GameE
     return id;
 }
 
+/*!
+ * @brief Quentin
+ */
 std::string GameEngine::getId()
 {
     return gameId;
 }
 
+/*!
+ * @brief Quentin
+ * @param requestString
+ * @param player
+ */
 void GameEngine::processClientRequest(std::string requestString, std::shared_ptr<shared::Player> player)
 {
     std::vector<std::string> requestComponents = splitString(requestString, ' ');
@@ -111,6 +133,11 @@ void GameEngine::processClientRequest(std::string requestString, std::shared_ptr
     boost::asio::write(player->getSocket(), boost::asio::buffer(response));
 }
 
+/*!
+ * @brief Quentin
+ * @param param
+ * @param value
+ */
 bool GameEngine::setMapParam(std::string &param, std::string &value)
 {
     int paramValue;
@@ -141,6 +168,11 @@ bool GameEngine::setMapParam(std::string &param, std::string &value)
     return true;
 }
 
+/*!
+ * @brief Quentin
+ * @param str
+ * @param delimiter
+ */
 std::vector<std::string> GameEngine::splitString(std::string str, char delimiter)
 {
     std::vector<std::string> components;
@@ -153,6 +185,10 @@ std::vector<std::string> GameEngine::splitString(std::string str, char delimiter
     return components;
 }
 
+/*!
+ * @brief Quentin
+ * @param player
+ */
 void GameEngine::askClient(std::shared_ptr<shared::Player> player)
 {
     std::unique_lock<std::mutex> responseLock(player->qAndA.sharedDataMutex);
@@ -169,6 +205,10 @@ void GameEngine::askClient(std::shared_ptr<shared::Player> player)
     player->qAndA.answerReady = false;
 }
 
+/*!
+ * @brief Quentin
+ * @param message
+ */
 void GameEngine::sendToEveryone(std::string message)
 {
     std::cout << message;

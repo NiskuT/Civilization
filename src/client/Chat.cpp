@@ -21,6 +21,7 @@ using namespace client;
 
 /*!
  * @brief Load all the chat
+ * @param font Font of the chat
  */
 Chat::Chat(sf::Font& font)
 {
@@ -101,6 +102,7 @@ void Chat::updateChat(std::string time, std::string username, std::string sendMe
 
 /*!
  * @brief Add a char to the chat message
+ * @param ch Char to be add the the enter text box
  */
 void Chat::addChatChar(std::string ch)
 {
@@ -136,6 +138,7 @@ void Chat::deleteChatChar()
 
 /*!
  * @brief display the entire Chat
+ * @param window RenderWindow where you want to display the chat
  */
 void Chat::drawChat(std::shared_ptr<sf::RenderWindow> window)
 {

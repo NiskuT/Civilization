@@ -435,9 +435,10 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
 
 
 /*!
- * @brief Function that deteck where the user click and what to send to the engine
+ * @brief Function that detect where the user click and what to send to the engine
+ * @param event cause the start of the function
  * @param clickPosition is the position on the cursor when the user click
- * @brief Dectect click and actions to do after
+ * @param moveMode explain if the user can click on hexagon or cards
  */
 bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
 {

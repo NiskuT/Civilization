@@ -9,6 +9,9 @@ const std::vector<std::string> typeOfPriorityCards = {"economy", "army", "scienc
 
 using namespace client;
 
+/*!
+ * @brief Violaine
+ */
 GraphicCard::GraphicCard(const std::string &path, const Json::Value &dataNumber, const float windowLength, const float windowWidth, int index, sf::Font &font)
 {
     this->windowLength = windowLength;
@@ -41,6 +44,15 @@ GraphicCard::GraphicCard(const std::string &path, const Json::Value &dataNumber,
         font);
 }
 
+/*!
+ * @brief Violaine
+ * @param path
+ * @param actionProportion
+ * @param windowLength
+ * @param windowWidth
+ * @param actionCardNumber
+ * @param index
+ */
 GraphicCard::GraphicCard(const std::string &path, float actionProportion, const float windowLength, const float windowWidth, int actionCardNumber, int index)
 {
     texture = std::make_unique<TextureDisplayer>(path);

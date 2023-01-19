@@ -20,6 +20,9 @@ Map::Map(unsigned width, unsigned height)
     this->width = width;
 }
 
+/*!
+ * @brief Quentin
+ */
 void Map::init()
 {
     if (isInizialize)
@@ -36,21 +39,35 @@ void Map::init()
     isInizialize = true;
 }
 
+/*!
+ * @brief Quentin
+ * @param height
+ */
 void Map::setMapHeight(unsigned height)
 {
     this->height = height;
 }
 
+/*!
+ * @brief Quentin
+ * @param width
+ */
 void Map::setMapWidth(unsigned width)
 {
     this->width = width;
 }
 
+/*!
+ * @brief Quentin
+ */
 unsigned Map::getMapHeight()
 {
     return this->height;
 }
 
+/*!
+ * @brief Quentin
+ */
 unsigned Map::getMapWidth()
 {
     return this->width;

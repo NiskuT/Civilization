@@ -2,6 +2,9 @@
 
 using namespace shared;
 
+/*!
+ * @brief Quentin
+ */
 Player::Player()
 {
     connectedToSocket.store(false);
@@ -12,11 +15,19 @@ Player::Player()
     }
 }
 
+/*!
+ * @brief Quentin
+ * @param username
+ */
 void Player::setUsername(std::string username)
 {
     this->username = username;
 }
 
+/*!
+ * @brief Quentin
+ * @param clientSocket
+ */
 void Player::setSocket(boost::asio::ip::tcp::socket &clientSocket)
 {
     if (connectedToSocket.load())
@@ -27,11 +38,18 @@ void Player::setSocket(boost::asio::ip::tcp::socket &clientSocket)
     this->playerSocket = std::make_shared<boost::asio::ip::tcp::socket>(std::move(clientSocket));
 }
 
+/*!
+ * @brief Quentin
+ */
 std::string Player::getName()
 {
     return this->username;
 }
 
+/*!
+ * @brief Quentin
+ * @param otherPlayer
+ */
 bool Player::operator==(Player &otherPlayer)
 {
     return (this->getName() == otherPlayer.getName() &&
@@ -39,11 +57,17 @@ bool Player::operator==(Player &otherPlayer)
             otherPlayer.connectedToSocket.load() == false);
 }
 
+/*!
+ * @brief Quentin
+ */
 boost::asio::ip::tcp::socket &Player::getSocket()
 {
     return *(this->playerSocket.get());
 }
 
+/*!
+ * @brief Quentin
+ */
 void Player::disconnectPlayer()
 {
     connectedToSocket.store(false);

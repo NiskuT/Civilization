@@ -4,12 +4,22 @@
 
 using namespace shared;
 
+/*!
+ * @brief Quentin
+ * @param version
+ * @param ar
+ */
 template <class Archive>
 void Map::serialize(Archive &ar, const unsigned int version)
 {
     boost::serialization::split_member(ar, *this, version);
 }
 
+/*!
+ * @brief Quentin
+ * @param ar
+ * @param version
+ */
 template <class Archive>
 void Map::save(Archive &ar, const unsigned int version) const
 {
@@ -22,6 +32,11 @@ void Map::save(Archive &ar, const unsigned int version) const
     }*/
 }
 
+/*!
+ * @brief Quentin
+ * @param ar
+ * @param version
+ */
 template <class Archive>
 void Map::load(Archive &ar, const unsigned int version)
 {
@@ -36,6 +51,11 @@ void Map::load(Archive &ar, const unsigned int version)
     }*/
 }
 
+/*!
+ * @brief Quentin
+ * @param ar
+ * @param version
+ */
 template <class Archive>
 void Hexagon::serialize(Archive &ar, const unsigned int version)
 {
