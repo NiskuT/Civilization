@@ -109,7 +109,7 @@ namelist find_classes(umlclasslist current_class, batch *b) {
 
 umlclasslist find_by_name(umlclasslist list, const char * name ) {
     if ( name != NULL && strlen(name) > 0 ) {
-        char tmp[MAXNAMLEN];
+        char tmp[LARGE_BUFFER];
         char* dots = strstr(name,"::");
         while ( list != NULL ) {
             if (dots) {

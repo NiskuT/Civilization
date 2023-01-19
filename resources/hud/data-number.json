@@ -18,13 +18,10 @@
 
             "body-y-proportion": 0.055,
             "body-x-proportion": 0.0075,
-            "body-line-space": 0.9,
+            "body-line-space": 1.2,
 
             "action-card-title-proportion": 0.021,
             "action-card-body-proportion": 0.012,
-
-
-
 
             "up-player-text-size": 18,
             "offset-between-up-player": 90,

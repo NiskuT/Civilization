@@ -26,7 +26,7 @@ ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
 
     blackBackground = std::make_unique<Button>(sf::Vector2f(windowLength, windowWidth), sf::Vector2f(0, 0), BACKGROUND_COLOR, false);
 
-     if (!font.loadFromFile(RESOURCES_PATH "/hud/Calibri.ttf"))
+     if (!font.loadFromFile(RESOURCES_PATH "/hud/MorrisRomanBlack.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
