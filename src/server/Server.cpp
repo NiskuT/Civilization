@@ -85,7 +85,7 @@ void Server::handleClient(boost::asio::ip::tcp::socket socket)
         }
     }
 
-    std::string response = "OK " + game->getId() + "\n";
+    std::string response = "connected " + game->getTime() + " server Game ID: " + game->getId() + "\n";
     boost::asio::write(player->getSocket(), boost::asio::buffer(response));
     
     while (player->connectedToSocket.load())
@@ -187,6 +187,8 @@ bool Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::sh
     else
     {
         std::cout << "Player " << player->getName() << " connected to game " << game->getId() << std::endl;
+        std::string newUserConnected = "player " + game->getTime() + " " + "server" + " " + player->getName() + "\n";
+        game->sendToEveryone(newUserConnected);
         return true;
     }
 }

@@ -60,7 +60,7 @@ GameWindow::GameWindow()
 
     validateBoxesWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH);
     validateBoxesWindow->gameWindow = this;
-    chatBox = std::make_unique<Chat>(bodyFont);
+    chatBox = std::make_unique<Chat>();
 
 }
 
@@ -154,6 +154,8 @@ void GameWindow::startGame()
     {
         return;
     }
+
+    addPlayer(gameEnginePtr->myself->getName());
 
     std::shared_ptr<bool> moveMode = std::make_shared<bool>(false);
     std::shared_ptr<bool> clickMode = std::make_shared<bool>(false);
@@ -493,43 +495,15 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
  */
 bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
 {
-    int minimumDistance = WINDOW_LENGTH;
-    std::array<int, 2> hexagonOnClick = {0, 0};
-
-    bool isClickable = false;
-
     if (!*moveMode)
     {
         if (priorityCardClickAction(clickPosition)) {
             return false;
         }
 
-        for (auto &mapTexture : mapTextureToDisplay)
+        if (onHexagonClick(clickPosition))
         {
-            for (unsigned j = 0; j < mapTexture.getSize(); j++)
-            {
-
-                if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()) && !validateBoxesWindow->isWindowActive)
-                {
-                    isClickable = true;
-
-                    int x = mapTexture.getSprite(j).getGlobalBounds().left;
-                    int y = mapTexture.getSprite(j).getGlobalBounds().top;
-                    int width = mapTexture.getSprite(j).getGlobalBounds().width;
-                    int height = mapTexture.getSprite(j).getGlobalBounds().height;
-
-                    int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
-                                        pow(y + height / 2 - clickPosition.y, 2));
-
-                    if (distance < minimumDistance)
-                    {
-
-                        minimumDistance = distance;
-                        hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
-                        hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
-                    }
-                }
-            }
+            return false;
         }
     }
 
@@ -551,11 +525,6 @@ bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::
     if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_QUIT_BUTTON].getSprite().getGlobalBounds()))
     {
         return true;
-    }
-
-    if (isClickable)
-    {
-        gameEnginePtr->handleInformation(hexagonOnClick[0], hexagonOnClick[1]);
     }
     return false;
 }
@@ -626,6 +595,48 @@ void GameWindow::setUpText(
     int xBodyPosition = card.texture->getSprite().getPosition().x + xBodyOffset;
     int yBodyPosition = card.texture->getSprite().getPosition().y + yBodyOffset;
     card.body->setPosition(xBodyPosition, yBodyPosition);
+}
+
+bool GameWindow::onHexagonClick(sf::Vector2i clickPosition)
+{
+    bool isClickable = false;
+    std::array<int, 2> hexagonOnClick = {0, 0};    
+    int minimumDistance = WINDOW_LENGTH;
+
+    for (auto &mapTexture : mapTextureToDisplay)
+    {
+        for (unsigned j = 0; j < mapTexture.getSize(); j++)
+        {
+            if (!gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
+            {
+                continue;
+            }
+            isClickable = true;
+
+            int x = mapTexture.getSprite(j).getGlobalBounds().left;
+            int y = mapTexture.getSprite(j).getGlobalBounds().top;
+            int width = mapTexture.getSprite(j).getGlobalBounds().width;
+            int height = mapTexture.getSprite(j).getGlobalBounds().height;
+
+            int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
+                                pow(y + height / 2 - clickPosition.y, 2));
+
+            if (distance < minimumDistance)
+            {
+
+                minimumDistance = distance;
+                hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
+                hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
+            }
+        }
+    }
+
+    if (isClickable)
+    {
+        gameEnginePtr->handleInformation(hexagonOnClick[0], hexagonOnClick[1]);
+        return true;
+    }
+    return false;
 }
 
 /*!
@@ -776,12 +787,12 @@ void GameWindow::loadHudTexture()
     std::vector<int> numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server
     std::string boxString = "0";
 
-    if (!titleFont.loadFromFile(RESOURCES_PATH "/hud/font.otf"))
+    if (!titleFont.loadFromFile(RESOURCES_PATH "/font/EnchantedLand.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
 
-    if (!bodyFont.loadFromFile(RESOURCES_PATH "/hud/MorrisRomanBlack.otf"))
+    if (!bodyFont.loadFromFile(RESOURCES_PATH "/font/MorrisRomanBlack.otf"))
     {
         std::cerr << "Font not loaded" << std::endl;
     }
@@ -867,26 +878,33 @@ void GameWindow::loadHudTexture()
             actionTitleTextProportion,
             actionBodyTextProportion);
     }
+}
 
-    // isPlaying buttons
-    int whoIsPlaying = 2; // sent by the server (temporary)
-
-    for (int i = 0; i < dataNumber["nb-player"].asInt(); i++)
+void GameWindow::addPlayer(std::string username)
+{
+    for(auto &button: whoIsPlayingButtons)
     {
-        bool isPlaying;
-        (i + 1 == whoIsPlaying) ? isPlaying = true : isPlaying = false;
-        std::string text = "Player ";
-        text += std::to_string(i + 1);
-        int offset = dataNumber["offset-between-up-player"].asInt();
-        int upPosition = (WINDOW_LENGTH + (float(2 / 3) - dataNumber["nb-player"].asInt()) * offset) / 2;
+        if(!username.compare(button.buttonText->getString()))
+        {
+            return;
+        }
+    }
 
-        whoIsPlayingButtons.emplace_back(
-            sf::Vector2f(offset * float(float(2) / float(3)), offset / 2),
-            sf::Vector2f(upPosition + offset * i, 0),
-            PLAYER_COLOR[i],
-            isPlaying);
+    whoIsPlayingButtons.emplace_back(
+        sf::Vector2f(75, 90 / 2),
+        sf::Vector2f(0, 0),
+        PLAYER_COLOR[whoIsPlayingButtons.size()],
+        false);
 
-        whoIsPlayingButtons.back().setText(dataNumber["up-player-text-size"].asInt(), sf::Vector2f(0, 0), text, titleFont);
+    whoIsPlayingButtons.back().setText(18, sf::Vector2f(0, 0), username, titleFont);
+
+    for(unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
+    {
+        whoIsPlayingButtons[i].buttonRect->setPosition(
+            (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2
+            + 105 * i, 
+            0);
+        whoIsPlayingButtons[i].centerText(false);
     }
 
     // rotation of the techWheel
@@ -898,6 +916,7 @@ void GameWindow::loadHudTexture()
     }
 
 }
+
 /*!
  * @brief Function that deteck where the user click and what to send to the engine
  * @param timeSecond is a boolean used to
