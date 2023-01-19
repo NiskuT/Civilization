@@ -4,44 +4,46 @@
 #include "shared/Map.hpp"
 
 #define NUMBER_OF_FIELDS 5
+#define PERLIN_NOISE_WIDTH 10
+#define PERLIN_NOISE_PARAM 0.8
 
-namespace shared
+using namespace shared;
+
+/*!
+    * @brief Map constructor
+    * @param width Width of the map to instantiate
+    * @param height Height of the map to instantiate
+    */
+Map::Map(unsigned width, unsigned height)
 {
-    /*!
-     * @brief Map constructor
-     * @param width Width of the map to instantiate
-     * @param height Height of the map to instantiate
-     */
-    Map::Map(unsigned width, unsigned height)
-    {
-        this->height = height;
-        this->width = width;
-    }
+    this->height = height;
+    this->width = width;
+}
 
-    void Map::init() 
+void Map::init() 
+{
+    if (isInizialize) {
+        return;
+    }
+    for (unsigned i = 0; i < this->height; i++)
     {
-        if (isInizialize) {
-            return;
-        }
-        for (unsigned i = 0; i < this->height; i++)
+        for (unsigned j = 0; j < this->width; j++)
         {
-            for (unsigned j = 0; j < this->width; j++)
-            {
-                mapOfTheGame.push_back(std::make_shared<Hexagon>());
-            }
+            mapOfTheGame.push_back(std::make_shared<Hexagon>());
         }
-        isInizialize = true;
     }
+    isInizialize = true;
+}
 
-    void Map::setMapHeight(unsigned height)
-    {
-        this->height = height;
-    }
+void Map::setMapHeight(unsigned height)
+{
+    this->height = height;
+}
 
-    void Map::setMapWidth(unsigned width)
-    {
-        this->width = width;
-    }
+void Map::setMapWidth(unsigned width)
+{
+    this->width = width;
+}
 
 unsigned Map::getMapHeight()
 {
@@ -53,19 +55,19 @@ unsigned Map::getMapWidth()
     return this->width;
 }
 
-    /*!
-     * @brief Function to generate a random map based on Perlin Noise
-     * @param seed Seed to use for the random generation
-     */
-    void Map::generateRandomMap(int seed)
-    {
+/*!
+    * @brief Function to generate a random map based on Perlin Noise
+    * @param seed Seed to use for the random generation
+    */
+void Map::generateRandomMap(int seed)
+{
 
-        if (!isInizialize) {
-            init();
-        }
+    if (!isInizialize) {
+        init();
+    }
 
-        PerlinNoise pn(seed);
-        srand(time(NULL));
+    PerlinNoise pn(seed);
+    srand(time(NULL));
 
     for (unsigned i = 0; i < this->height; i++)
     {
@@ -74,7 +76,7 @@ unsigned Map::getMapWidth()
             double x = (double)j / ((double)this->width);
             double y = (double)i / ((double)this->height);
 
-                double n = pn.noise(10 * x, 10 * y, 0.8);
+                double n = pn.noise(PERLIN_NOISE_WIDTH * x, PERLIN_NOISE_WIDTH * y, PERLIN_NOISE_PARAM);
                 int field = (int)round(n * (NUMBER_OF_FIELDS + 1));
 
             switch (field)
@@ -138,22 +140,21 @@ unsigned Map::getMapWidth()
     }
 }
 
-    /*!
-     * @brief Operator to access a specific hexagon of the map
-     * @param x X coordinate of the hexagon
-     * @param y Y coordinate of the hexagon
-     * @return Pointer to the hexagon
-     */
-    std::shared_ptr<Hexagon> Map::operator()(unsigned x, unsigned y)
+/*!
+    * @brief Operator to access a specific hexagon of the map
+    * @param x X coordinate of the hexagon
+    * @param y Y coordinate of the hexagon
+    * @return Pointer to the hexagon
+    */
+std::shared_ptr<Hexagon> Map::operator()(unsigned x, unsigned y)
+{
+    if (x < this->width && y < this->height && mapOfTheGame.size() > 0)
     {
-        if (x < this->width && y < this->height && mapOfTheGame.size() > 0)
-        {
-            return mapOfTheGame[y * this->width + x];
-        }
-        else
-        {
-            return nullptr;
-        }
+        return mapOfTheGame[y * this->width + x];
     }
-
+    else
+    {
+        return nullptr;
+    }
 }
+
