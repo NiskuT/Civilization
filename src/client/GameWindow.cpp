@@ -554,25 +554,26 @@ bool GameWindow::onHexagonClick(sf::Vector2i clickPosition)
     {
         for (unsigned j = 0; j < mapTexture.getSize(); j++)
         {
-            if (gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
+            if (!gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
             {
-                isClickable = true;
+                continue;
+            }
+            isClickable = true;
 
-                int x = mapTexture.getSprite(j).getGlobalBounds().left;
-                int y = mapTexture.getSprite(j).getGlobalBounds().top;
-                int width = mapTexture.getSprite(j).getGlobalBounds().width;
-                int height = mapTexture.getSprite(j).getGlobalBounds().height;
+            int x = mapTexture.getSprite(j).getGlobalBounds().left;
+            int y = mapTexture.getSprite(j).getGlobalBounds().top;
+            int width = mapTexture.getSprite(j).getGlobalBounds().width;
+            int height = mapTexture.getSprite(j).getGlobalBounds().height;
 
-                int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
-                                    pow(y + height / 2 - clickPosition.y, 2));
+            int distance = sqrt(pow(x + width / 2 - clickPosition.x, 2) +
+                                pow(y + height / 2 - clickPosition.y, 2));
 
-                if (distance < minimumDistance)
-                {
+            if (distance < minimumDistance)
+            {
 
-                    minimumDistance = distance;
-                    hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
-                    hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
-                }
+                minimumDistance = distance;
+                hexagonOnClick[1] = (int)((y - firstHexagonPosition[1])) / (int)((height * 3 / 4));
+                hexagonOnClick[0] = (int)((x - firstHexagonPosition[0])) / (int)((width - 1));
             }
         }
     }
