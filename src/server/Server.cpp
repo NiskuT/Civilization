@@ -97,7 +97,6 @@ void Server::handleClient(boost::asio::ip::tcp::socket socket)
         try
         {
             std::lock_guard<std::mutex> lock(player->socketReadMutex);
-            std::cout << "Waiting for message"  << std::endl;
             bytesTransferred = boost::asio::read_until(player->getSocket(), receiveBuffer, '\n', error);
         }
         catch (const boost::system::system_error &e)
