@@ -330,7 +330,7 @@ char* strndup (const char *s, size_t n);
 #endif
 
 #ifndef MAXNAMLEN
-#define MAXNAMLEN 2048
+#define MAXNAMLEN 1024
 #endif
 
 #ifdef ENABLE_FILE_UPDATE_ON_CHANGE
