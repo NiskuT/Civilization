@@ -211,9 +211,9 @@ void ClientGameEngine::processServerRequest(std::string request)
     }
     else if(request.find("player") == 0)
     {
-        request = request.substr(20);
-        clientGame.addPlayer(request);
-        request += " join the game";
+        std::string player = request.substr(20);
+        clientGame.addPlayer(player);
+        request = request.substr(7) + " join the game";
         printChat(request);
     }
     else 
