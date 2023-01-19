@@ -61,7 +61,6 @@ GameWindow::GameWindow()
     validateBoxesWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH);
     validateBoxesWindow->gameWindow = this;
     chatBox = std::make_unique<Chat>();
-
 }
 
 /*!
@@ -136,7 +135,7 @@ void GameWindow::displayWindow()
 
     if (isChatOpen)
     {
-        chatBox->drawChat(gameEnginePtr->clientWindow); 
+        chatBox->drawChat(gameEnginePtr->clientWindow);
     }
 
     gameEnginePtr->clientWindow->display();
@@ -272,27 +271,28 @@ bool GameWindow::handleKeyboardEvent(sf::Event::KeyEvent keyEvent)
 /*!
  * @brief This function send a message to the server
  */
-void GameWindow::sendMessage() {
+void GameWindow::sendMessage()
+{
     std::unique_lock<std::mutex> lock(chatBox->mutexChat);
     std::string message = "chat " + chatBox->message + "\n";
     lock.unlock();
 
-    if (message.size() < CHAT_MIN_SIZE)  return;
+    if (message.size() < CHAT_MIN_SIZE)
+        return;
 
     std::unique_lock<std::mutex> lock2(gameEnginePtr->myself->qAndA.sharedDataMutex);
     gameEnginePtr->myself->qAndA.question = message;
     lock2.unlock();
     gameEnginePtr->askServer();
-
 }
 
 /*!
  * @brief Change the cursor type to a hand or an arrow
  * @param moveMode pointer to know if the map is moving on the screen
  */
-void GameWindow::changeMouseCursor(sf::Event& event, std::shared_ptr<bool> moveMode)
+void GameWindow::changeMouseCursor(sf::Event &event, std::shared_ptr<bool> moveMode)
 {
-    if(event.mouseButton.button == sf::Mouse::Right)
+    if (event.mouseButton.button == sf::Mouse::Right)
     {
         sf::Vector2i nullPosition(0, 0);
         moveMap(nullPosition, {MAP_X_OFFSET, MAP_Y_OFFSET}, true);
@@ -429,17 +429,16 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
         priorityCards[0].nbOfBoxesText->setString(std::to_string(newNumberOfBoxes) + " x");
 
         gameEnginePtr->handlePriorityCardPlay(
-            validateBoxesWindow->priorityCardPlayedType, 
-            validateBoxesWindow->priorityCardPlayed, 
+            validateBoxesWindow->priorityCardPlayedType,
+            validateBoxesWindow->priorityCardPlayed,
             validateBoxesWindow->nbOfBoxesChosen);
         return true;
     }
 
     // if we click on the little arrow to add boxes
-    if (
-        gameEnginePtr->intersectPointRect(clickPosition, spriteArrowMoreBoxes) 
-        && validateBoxesWindow->isWindowActive 
-        && validateBoxesWindow->nbOfBoxesChosen < validateBoxesWindow->nbOfBoxesMax)
+    if (gameEnginePtr->intersectPointRect(clickPosition, spriteArrowMoreBoxes) &&
+        validateBoxesWindow->isWindowActive &&
+        validateBoxesWindow->nbOfBoxesChosen < validateBoxesWindow->nbOfBoxesMax)
     {
         validateBoxesWindow->nbOfBoxesChosen++;
         validateBoxesWindow->chooseNumberOfBoxesButton->buttonText->setString(std::to_string(validateBoxesWindow->nbOfBoxesChosen)); // sent by the server
@@ -447,8 +446,9 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
     }
 
     // if we click on the little arrow to delete boxes
-    if (
-        gameEnginePtr->intersectPointRect(clickPosition, spriteArrowLessBoxes) && validateBoxesWindow->isWindowActive && validateBoxesWindow->nbOfBoxesChosen > 0)
+    if (gameEnginePtr->intersectPointRect(clickPosition, spriteArrowLessBoxes) &&
+        validateBoxesWindow->isWindowActive &&
+        validateBoxesWindow->nbOfBoxesChosen > 0)
     {
         validateBoxesWindow->nbOfBoxesChosen--;
         validateBoxesWindow->chooseNumberOfBoxesButton->buttonText->setString(std::to_string(validateBoxesWindow->nbOfBoxesChosen)); // sent by the server
@@ -493,11 +493,12 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
  * @param clickPosition is the position on the cursor when the user click
  * @brief Dectect click and actions to do after
  */
-bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
+bool GameWindow::clickAction(sf::Event &event, sf::Vector2i clickPosition, std::shared_ptr<bool> moveMode)
 {
     if (!*moveMode)
     {
-        if (priorityCardClickAction(clickPosition)) {
+        if (priorityCardClickAction(clickPosition))
+        {
             return false;
         }
 
@@ -529,7 +530,7 @@ bool GameWindow::clickAction(sf::Event& event, sf::Vector2i clickPosition, std::
     return false;
 }
 
-void GameWindow::rotateTechWheel(int newLevel) 
+void GameWindow::rotateTechWheel(int newLevel)
 {
     int newRotation = techWheelRotation[newLevel];
     hudTextureToDisplay[ARROW_INDEX].getSprite(0).setRotation(newRotation);
@@ -587,7 +588,7 @@ void GameWindow::setUpText(
         }
         card.body->setString(body);
     }
-    
+
     card.body->setFillColor(TEXT_COLOR);
     card.body->setLineSpacing(dataNumber["body-line-space"].asFloat());
     int xBodyOffset = dataNumber["body-x-proportion"].asFloat() * WINDOW_LENGTH;
@@ -600,7 +601,7 @@ void GameWindow::setUpText(
 bool GameWindow::onHexagonClick(sf::Vector2i clickPosition)
 {
     bool isClickable = false;
-    std::array<int, 2> hexagonOnClick = {0, 0};    
+    std::array<int, 2> hexagonOnClick = {0, 0};
     int minimumDistance = WINDOW_LENGTH;
 
     for (auto &mapTexture : mapTextureToDisplay)
@@ -697,13 +698,13 @@ void GameWindow::loadElementTexture()
 
     closedir(dir);
 
-        // Affiche les noms de fichiers trouvés
-        for (const std::string &filename : png_files)
-        {
-            std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
-            elementTextureToDisplay[path] = std::make_unique<TextureDisplayer>(path);
-        }
+    // Affiche les noms de fichiers trouvés
+    for (const std::string &filename : png_files)
+    {
+        std::string path = RESOURCES_PATH ELEMENT_PATH + filename;
+        elementTextureToDisplay[path] = std::make_unique<TextureDisplayer>(path);
     }
+}
 
 /*!
  * @brief Update all the textures of the map
@@ -882,9 +883,9 @@ void GameWindow::loadHudTexture()
 
 void GameWindow::addPlayer(std::string username)
 {
-    for(auto &button: whoIsPlayingButtons)
+    for (auto &button : whoIsPlayingButtons)
     {
-        if(!username.compare(button.buttonText->getString()))
+        if (!username.compare(button.buttonText->getString()))
         {
             return;
         }
@@ -898,11 +899,10 @@ void GameWindow::addPlayer(std::string username)
 
     whoIsPlayingButtons.back().setText(18, sf::Vector2f(0, 0), username, titleFont);
 
-    for(unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
+    for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
     {
         whoIsPlayingButtons[i].buttonRect->setPosition(
-            (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2
-            + 105 * i, 
+            (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2 + 105 * i,
             0);
         whoIsPlayingButtons[i].centerText(false);
     }
@@ -914,7 +914,6 @@ void GameWindow::addPlayer(std::string username)
     {
         techWheelRotation[index] = dataRotation[index]["rotation"].asInt();
     }
-
 }
 
 /*!
