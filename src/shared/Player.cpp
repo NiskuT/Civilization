@@ -1,23 +1,25 @@
 #include <shared.hpp>
 
+#define TECH_LEVEL_1 3
+#define TECH_LEVEL_2 6
+#define TECH_LEVEL_3 10
+#define TECH_LEVEL_4 14
+#define TECH_LEVEL_5 19
+#define TECH_LEVEL_END 24
+#define TECH_LEVEL_RESET 17
+
 using namespace shared;
 
 Player::Player()
 {
     connectedToSocket.store(false);
-    for (int i = 0; i < 4; i++)
-    {
-        this->resources[i] = 0;
-    }
+    std::fill(resources.begin(), resources.end(), 0);
     this->techLevel = 0;
     this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military);
     this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::economy);
     this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science);
     this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry);
     this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture);
-
-    this->listOfCaravan = {};
-    this->listOfCity ={};
 }
 
 void Player::setUsername(std::string username)
@@ -42,25 +44,26 @@ std::string Player::getName()
 
 std::array<int, 3> Player::incrementTechWheel(unsigned toIncrement)
 {
-    std::array<int, 3> result = {0, 0, 0};
+    std::array<int, 3> result;
+    std::fill(result.begin(), result.end(), 0);
     for (unsigned i = 0; i < toIncrement; i++)
     {
         this->techLevel += 1;
-        if (this->techLevel == 3 || this->techLevel == 6)
+        if (this->techLevel == TECH_LEVEL_1 || this->techLevel == TECH_LEVEL_2)
         {
             result[0]++;
         }
-        else if (this->techLevel == 10 || this->techLevel == 14)
+        else if (this->techLevel == TECH_LEVEL_3 || this->techLevel == TECH_LEVEL_4)
         {
             result[1]++;
         }
-        else if (this->techLevel == 19 || this->techLevel == 24)
+        else if (this->techLevel == TECH_LEVEL_5 || this->techLevel == TECH_LEVEL_END)
         {
             result[2]++;
         }
-        if(this->techLevel == 24)
+        if(this->techLevel == TECH_LEVEL_END)
         {
-            this->techLevel = 17;
+            this->techLevel = TECH_LEVEL_RESET;
         }
     }
     return result;

@@ -22,3 +22,8 @@ std::array<unsigned, 2> ControlPawn::getPosition()
 {
     return this->position;
 }
+
+ElementEnum ControlPawn::getType()
+{
+    return ElementEnum::controlPawn;
+}

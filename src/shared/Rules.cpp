@@ -1,7 +1,6 @@
 #include <shared.hpp>
 #include <algorithm>
 #include <vector>
-#include <iostream>
 #include <array>
 
 #define RULESLENGTH 16
@@ -51,7 +50,6 @@ bool Rules::runTheRule(RuleArgsStruct &args)
     case CardsEnum::industry:
         return playIndustryCard(args);
     default:
-        std::cout << "This rule doesn't have utility" << std::endl;
         return false;
     }
 }
@@ -71,7 +69,6 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
 
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::economy))
     {
-        std::cout << "You don't have enough box to play this card" << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -80,14 +77,12 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     elementList barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
     if (barbarianList.size() > 0 && cardLevel != 2)
     {
-        std::cout << "You can't kill a barbarian with this card" << std::endl;
         exit(EXIT_FAILURE);
     }
 
     bool isWaterOnThePath = checkIfWaterIsOnThePath(caravanMovementPath, map);
     if (isWaterOnThePath && cardLevel < 3)
     {
-        std::cout << "You can't move on water with this card" << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -96,7 +91,6 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     {
         if ((*map)(element[0], element[1])->getFieldLevel() > (FieldLevel)maxLevelReachable)
         {
-            std::cout << "You can't move your caravan on this field" << std::endl;
             exit(EXIT_FAILURE);
         }
     }
@@ -154,7 +148,6 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
         // playAnotherCard(); // TODO: allow to play another card
         break;
     default:
-        std::cout << "invalid card level" << std::endl;
         return false;
     }
     return true;
@@ -171,7 +164,6 @@ bool Rules::verifyIfPathSizeIsCorrect(int pathSize, int maxPathSize)
 {
     if (pathSize > maxPathSize)
     {
-        std::cout << "You can't move your caravan of " << maxPathSize << " steps" << std::endl;
         return false;
     }
     return true;
@@ -221,7 +213,6 @@ bool Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
 
     if (!(isThereACityAround(pos1, map) || isThereAControlPawnAround(pos1, map)))
     {
-        std::cout << "You can't move your caravan if there is no city or control pawn next to the starting point of the path" << std::endl;
         return false;
     }
     for (auto caravan : caravans)
@@ -297,7 +288,6 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::science))
     {
-        std::cout << "You don't have enough box to play this card" << std::endl;
         return false;
     }
     args.currentPlayer->deleteBox(CardsEnum::science, numberOfBoxUsed);
@@ -324,7 +314,6 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
         resourceToGet = args.resourceToGet;
         if (args.currentPlayer->haveResource(resourceToGet))
         {
-            std::cout << "You already have this resource" << std::endl;
             return false;
         }
         args.currentPlayer->addResource(resourceToGet);
@@ -337,7 +326,6 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
         nuke(neighbors, gameMap, args.currentPlayer);
         break;
     default:
-        std::cout << "invalid card level" << std::endl;
         return false;
     }
     unsigned dificulty = currentPlayer->getDificultyOfCard(CardsEnum::science);
@@ -396,12 +384,11 @@ void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_pt
  */
 std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned posY, std::shared_ptr<Map> gameMap)
 {
-    std::vector<std::array<unsigned, 2>> neighbors = {};
+    std::vector<std::array<unsigned, 2>> neighbors;
     unsigned mapSizeX = gameMap->getMapWidth();
     unsigned mapSizeY = gameMap->getMapHeight();
     if (posY % 2)
     {
-        std::cout << "odd" << std::endl;
         if (posY > 0)
         {
             neighbors.push_back({posX, posY - 1});
@@ -429,7 +416,6 @@ std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned
     }
     else
     {
-        std::cout << "even" << std::endl;
         if (posY > 0)
         {
             neighbors.push_back({posX, posY - 1});
@@ -470,7 +456,6 @@ bool Rules::playCultureCard(RuleArgsStruct &args)
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::culture))
     {
-        std::cout << "You don't have enough box to play this card" << std::endl;
         return false;
     }
 
@@ -490,7 +475,6 @@ bool Rules::playCultureCard(RuleArgsStruct &args)
         }
         else
         {
-            std::cout << "invalid number of pawn positions" << std::endl;
             return false;
         }
         break;
@@ -504,7 +488,6 @@ bool Rules::playCultureCard(RuleArgsStruct &args)
         // TODO: replace enemy pawn (reinforced or not) by one of your pawn (non reinforced)
         break;
     default:
-        std::cout << "invalid card level" << std::endl;
         return false;
     }
     return true;
@@ -526,7 +509,6 @@ bool Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, st
         {
             if (!std::holds_alternative<Caravan>(*element))
             {
-                std::cout << "There is already an element on this position" << std::endl;
                 return false;
             }
         }
@@ -598,7 +580,6 @@ bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::sha
  */
 bool Rules::playMilitaryCard(RuleArgsStruct &args)
 {
-    std::cout << "playMilitaryCard" << std::endl;
     if (args.militaryCardAttack == true)
     {
         return attack(args);
@@ -633,7 +614,6 @@ bool Rules::reinforce(RuleArgsStruct &args)
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::military))
     {
-        std::cout << "You don't have enough box to play this card" << std::endl;
         return false;
     }
 
@@ -642,7 +622,6 @@ bool Rules::reinforce(RuleArgsStruct &args)
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::military);
     if (pawnsPositions.size() != cardLevel + numberOfBoxUsed)
     {
-        std::cout << "invalid number of pawn positions" << std::endl;
         return false;
     }
     std::shared_ptr<ControlPawn> controlPawn;
@@ -703,7 +682,6 @@ bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::industry))
     {
-        std::cout << "You don't have enough box to play this card" << std::endl;
         return false;
     }
 
@@ -713,7 +691,6 @@ bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::industry);
     if (cardLevel + numberOfBoxUsed < (unsigned)(*gameMap)(position[0], position[1])->getFieldLevel())
     {
-        std::cout << "invalid position, the hexagon is to high" << std::endl;
         return false;
     }
 
@@ -721,7 +698,6 @@ bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
     {
         if (!(std::holds_alternative<Caravan>(*element)))
         {
-            std::cout << "There is already an Element on this position" << std::endl;
             return false;
         }
     }

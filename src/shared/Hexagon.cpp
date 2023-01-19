@@ -1,5 +1,4 @@
 #include <shared.hpp>
-#include <iostream>
 
 using namespace shared;
 

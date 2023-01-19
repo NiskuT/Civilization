@@ -1,58 +1,55 @@
 #include <shared.hpp>
 
-namespace shared
+using namespace shared;
+Card::Card(CardsEnum type)
 {
-    Card::Card(CardsEnum type)
-    {
-        this->type = type;
-        this->level = 1;
-        this->dificulty = 1;
-        this->numberOfBox = 0;
-    }
+    this->type = type;
+    this->level = 1;
+    this->dificulty = 1;
+    this->numberOfBox = 0;
+}
 
-    CardsEnum Card::getType()
-    {
-        return this->type;
-    }
+CardsEnum Card::getType()
+{
+    return this->type;
+}
 
-    unsigned Card::getLevel()
-    {
-        return this->level;
-    }
+unsigned Card::getLevel()
+{
+    return this->level;
+}
 
-    void Card::addLevel()
-    {
-        this->level += 1;
-    }
+void Card::addLevel()
+{
+    this->level += 1;
+}
 
-    unsigned Card::getNumberOfBox()
-    {
-        return this->numberOfBox;
-    }
+unsigned Card::getNumberOfBox()
+{
+    return this->numberOfBox;
+}
 
-    void Card::addBox(unsigned numberOfBoxToAdd)
-    {
-        this->numberOfBox += numberOfBoxToAdd;
-    }
+void Card::addBox(unsigned numberOfBoxToAdd)
+{
+    this->numberOfBox += numberOfBoxToAdd;
+}
 
-    void Card::removeBox(unsigned numberOfBoxToRemove)
-    {
-        this->numberOfBox -= numberOfBoxToRemove;
-    }
+void Card::removeBox(unsigned numberOfBoxToRemove)
+{
+    this->numberOfBox -= numberOfBoxToRemove;
+}
 
-    void Card::deleteBox(unsigned numberOfBoxToDelete)
-    {
-        this->numberOfBox -= numberOfBoxToDelete;
-    }
+void Card::deleteBox(unsigned numberOfBoxToDelete)
+{
+    this->numberOfBox -= numberOfBoxToDelete;
+}
 
-    unsigned Card::getDificulty()
-    {
-        return this->dificulty;
-    }
+unsigned Card::getDificulty()
+{
+    return this->dificulty;
+}
 
-    void Card::setDificulty(unsigned newDificulty)
-    {
-        this->dificulty = newDificulty;
-    }
-
+void Card::setDificulty(unsigned newDificulty)
+{
+    this->dificulty = newDificulty;
 }

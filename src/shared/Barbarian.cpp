@@ -6,3 +6,8 @@ void Barbarian::kill()
 {
     this->isAlive = false;
 }
+
+ElementEnum Barbarian::getType()
+{
+    return ElementEnum::barbarian;
+}
