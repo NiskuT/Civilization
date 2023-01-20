@@ -3,6 +3,8 @@
 #include <sstream>
 #include <sys/stat.h>
 
+#define OFFLINE 1
+
 #define REFRESH_ELEMENT 1
 
 #define WINDOW_LENGTH 1600
@@ -158,19 +160,6 @@ void ClientGameEngine::generateMap(const unsigned height, const unsigned width, 
         std::cout << "You are not connected to the server" << std::endl;
         exit(1);
     }
-    
-    /*std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
-    myself->qAndA.question = "getmap\n";
-    lock.unlock();
-
-    askServer();
-
-    if (clientMap == nullptr)
-    {
-        clientMap = std::make_shared<shared::Map>();
-    }
-    lock.lock();
-    binary.castToObject(myself->qAndA.answer, *clientMap);*/
 
     if (height > 0)
     {
@@ -365,7 +354,14 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
  */
 void ClientGameEngine::startGameWindow()
 {
+#ifdef OFFLINE
     clientMap->generateRandomMap(rand() % 1000000000);
+#else
+    if(gameId == "new") {
+        generateMap(11,15,rand() % 1000000000);
+    }
+    loadMap();
+#endif
     clientGame.mapShared = clientMap;
     clientGame.startGame();
 }

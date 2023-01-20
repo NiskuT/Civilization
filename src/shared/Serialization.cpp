@@ -4,6 +4,7 @@
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/variant.hpp>
 #include <algorithm>
+#include <iostream>
 
 using namespace shared;
 
@@ -26,11 +27,13 @@ void Map::save(Archive &ar, const unsigned int version) const
 template <class Archive>
 void Map::load(Archive &ar, const unsigned int version)
 {
+    std::cout << "Loading map" << std::endl;
     ar >> height;
     ar >> width;
     isInizialize = false;
     this->init();
     ar >> mapOfTheGame;
+    std::cout << "Map loaded" << std::endl;
 }
 
 template <class Archive>
