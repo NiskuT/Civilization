@@ -174,7 +174,7 @@ void Map::generateRandomMap(int seed)
                 continue;
             }   
 
-            if( rand() % 100 < 5)
+            if( rand() % 100 < 5 )
             {
                 std::shared_ptr<shared::BarbarianVillage> barbareVillage = std::make_shared<shared::BarbarianVillage>();
                 std::shared_ptr<shared::Barbarian> barbare = std::make_shared<shared::Barbarian>();
@@ -183,7 +183,7 @@ void Map::generateRandomMap(int seed)
                 continue;
             }
 
-            if( rand() % 100 < 3)
+            if( rand() % 100 < 3 )
             {
                 int index = rand() % stateCityField.size();
                 std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);

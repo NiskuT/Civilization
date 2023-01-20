@@ -694,9 +694,22 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
         if(std::holds_alternative<shared::City>(*variant))
         {
-            shared::City stateCity = std::get<shared::City>(*variant);
+            shared::City city = std::get<shared::City>(*variant);
 
-            path = stateCityData[(int)stateCity.stateCityType]["path"].asString();
+            if (city.isStateCity)
+            {
+                path = stateCityData[(int)city.stateCityType]["path"].asString();
+            }
+            else
+            {
+                path = elementData[index]["path"].asString();
+
+                path =  path.substr(0, 20) 
+                        + std::to_string(getPlayerNumber(city.player)) 
+                        +   (city.isMature ? "-mature" : 
+                            (city.isCapital ? "-capital" : "-city")) 
+                        + ".png";
+            }
         }
         else if(std::holds_alternative<shared::ControlPawn>(*variant))
         {
