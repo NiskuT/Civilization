@@ -668,7 +668,8 @@ void GameWindow::updateElementTexture()
 
     std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-    const Json::Value &data = openJsonFile("/map/elementPath.json");
+    const Json::Value &elementData = openJsonFile("/map/elementPath.json");
+    const Json::Value &resourceData = openJsonFile("/map/resourcePath.json");
 
     for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
     {
@@ -684,7 +685,21 @@ void GameWindow::updateElementTexture()
                     index = (int)arg.getType();
                 }, *variant);
 
-                std::string path = RESOURCES_PATH + data[index]["path"].asString();
+                std::string path = RESOURCES_PATH + elementData[index]["path"].asString();
+
+                elementTextureToDisplay[path]->addSprite();
+
+                elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, j, i, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+            }
+
+
+            if (mapShared(j, i)->hexResource != nullptr)
+            {
+                shared::Resource resource = *mapShared(j, i)->hexResource;
+
+                int index = (int)resource.getType() ;
+
+                std::string path = RESOURCES_PATH + resourceData[index]["path"].asString();
 
                 elementTextureToDisplay[path]->addSprite();
 

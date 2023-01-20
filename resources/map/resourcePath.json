@@ -1,0 +1,17 @@
+{
+    "data" : 
+    [
+        {
+            "path": "/map/element/resource-antic.png"
+        },
+        {
+            "path": "/map/element/resource-stone.png"
+        },
+        {
+            "path": "/map/element/resource-oil.png"
+        },
+        {
+            "path": "/map/element/resource-diamond.png"
+        }
+    ]
+}

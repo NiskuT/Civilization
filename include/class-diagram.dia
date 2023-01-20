@@ -15799,10 +15799,10 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#resourcesList#</dia:string>
+            <dia:string>#hexResource#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::vector&lt;std::shared_ptr&lt;Resource&gt;&gt;#</dia:string>
+            <dia:string>#std::shared_ptr&lt;Resource&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>

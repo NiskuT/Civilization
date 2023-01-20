@@ -12,7 +12,7 @@ ResourceEnum Resource::getType()
     return type;
 }
 
-Resource::Resource(ResourceEnum type)
+Resource::Resource(ResourceEnum resource)
 {
-    type = type;
+    type = resource;
 }

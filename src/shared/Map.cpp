@@ -104,18 +104,63 @@ void Map::generateRandomMap(int seed)
                 break;
             case 1:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Grassland);
+                // 4% chance to be stone or antiquity
+                if (rand() % 100 < 2)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::stone);
+                }
+                else if (rand() % 100 < 2)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::antiquity);
+                }
                 break;
             case 2:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Hill);
+                // 4% chance to be stone or antiquity
+                if (rand() % 100 < 2)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::stone);
+                }
+                else if (rand() % 100 < 2)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::antiquity);
+                }
                 break;
             case 3:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Forest);
+                // 4% chance to be stone or antiquity
+                if (rand() % 100 < 2)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::stone);
+                }
+                else if (rand() % 100 < 2)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::antiquity);
+                }
                 break;
             case 4:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Desert);
+                // 18% chance to be oil or antiquity
+                if (rand() % 100 < 12)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::oil);
+                }
+                else if (rand() % 100 < 6)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::antiquity);
+                }
                 break;
             case 5:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Mountain);
+                // 18% chance to be diamond or stone
+                if (rand() % 100 < 12)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::diamond);
+                }
+                else if (rand() % 100 < 6)
+                {
+                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::stone);
+                }
                 break;
             default:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
@@ -126,43 +171,44 @@ void Map::generateRandomMap(int seed)
             {
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
                 mapOfTheGame[i * this->width + j]->clearElement();
+                mapOfTheGame[i * this->width + j]->hexResource = nullptr;
             }
             // 50% chance to be water
             else if (rand() % 10 < 5 && (i == 1 || i == this->height - 2 || j == 1 || j == this->width - 2))
             {
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
                 mapOfTheGame[i * this->width + j]->clearElement();
+                mapOfTheGame[i * this->width + j]->hexResource = nullptr;
             }
             // 10% chance to be water
             else if (rand() % 10 < 1 && (i == 2 || i == this->height - 3 || j == 2 || j == this->width - 3 ))
             {
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
                 mapOfTheGame[i * this->width + j]->clearElement();
+                mapOfTheGame[i * this->width + j]->hexResource = nullptr;
             }
             
             for (auto &wonder : wonderField)
             {
-                if (mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water && rand() % 1000 < 5)
+                if (mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water 
+                    && mapOfTheGame[i * this->width + j]->hexResource == nullptr
+                    && rand() % 1000 < 5)
                 {
                     mapOfTheGame[i * this->width + j]->setFieldType(wonder.second);
                     wonderField.erase(wonder.first);
+                    continue;
                 }
             }
 
-            if(mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water && rand() % 100 < 4)
+            if( mapOfTheGame[i * this->width + j]->getElements().empty()
+                && mapOfTheGame[i * this->width + j]->hexResource == nullptr
+                && mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water 
+                && rand() % 100 < 5)
             {
                 barbareVillage = std::make_shared<shared::BarbarianVillage>();
                 barbare = std::make_shared<shared::Barbarian>();
-                mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbareVillage));
                 mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbare));
-            }
-
-            if(mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water && rand() % 100 < 4)
-            {
-                barbareVillage = std::make_shared<shared::BarbarianVillage>();
-                barbare = std::make_shared<shared::Barbarian>();
                 mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbareVillage));
-                mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbare));
             }
         }
     }
