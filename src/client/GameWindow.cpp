@@ -690,7 +690,7 @@ void GameWindow::updateElementTexture()
                 {
                     shared::City stateCity = std::get<shared::City>(*variant);
 
-                    path = RESOURCES_PATH + stateCityData[(int)stateCity.stateCityType]["path"].asString();
+                    path = stateCityData[(int)stateCity.stateCityType]["path"].asString();
                 }
                 else if(std::holds_alternative<shared::ControlPawn>(*variant))
                 {
@@ -700,13 +700,22 @@ void GameWindow::updateElementTexture()
 
                     path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "" : "-reinforced") + ".png";
 
-                    path = RESOURCES_PATH + path;
+                }
+                else if(std::holds_alternative<shared::Caravan>(*variant))
+                {
+                    shared::Caravan caravan = std::get<shared::Caravan>(*variant);
+
+                    path = elementData[index]["path"].asString();
+
+                    path = path.substr(0, 20) + std::to_string(getPlayerNumber(caravan.player)) + path.substr(21);
                 }
                 else
                 {
-                    path = RESOURCES_PATH + elementData[index]["path"].asString();
+                    path = elementData[index]["path"].asString();
 
                 }
+
+                path = RESOURCES_PATH + path;
 
                 elementTextureToDisplay[path]->addSprite();
 

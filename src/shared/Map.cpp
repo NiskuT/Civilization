@@ -233,6 +233,14 @@ void Map::generateRandomMap(int seed)
                 mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*city));
                 continue;
             }
+
+            if( rand() % 100 < 20)
+            {
+                std::shared_ptr<shared::Caravan> pawn = std::make_shared<shared::Caravan>(position);
+                pawn->player = "PlayerTest";
+                mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*pawn));
+                continue;
+            }
         }
     }
 }
