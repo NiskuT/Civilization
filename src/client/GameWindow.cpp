@@ -879,6 +879,13 @@ void GameWindow::loadHudTexture()
             actionTitleTextProportion,
             actionBodyTextProportion);
     }
+
+    // rotation of the techWheel
+    const Json::Value &dataRotation = openJsonFile("/hud/tech-wheel-rotation.json");
+    for (unsigned index = 0; index < dataRotation.size(); ++index)
+    {
+        techWheelRotation[index] = dataRotation[index]["rotation"].asInt();
+    }
 }
 
 void GameWindow::addPlayer(std::string username)
@@ -905,14 +912,6 @@ void GameWindow::addPlayer(std::string username)
             (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2 + 105 * i,
             0);
         whoIsPlayingButtons[i].centerText(false);
-    }
-
-    // rotation of the techWheel
-
-    const Json::Value &dataRotation = openJsonFile("/hud/tech-wheel-rotation.json");
-    for (unsigned index = 0; index < dataRotation.size(); ++index)
-    {
-        techWheelRotation[index] = dataRotation[index]["rotation"].asInt();
     }
 }
 
