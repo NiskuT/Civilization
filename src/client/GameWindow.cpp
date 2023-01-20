@@ -692,6 +692,16 @@ void GameWindow::updateElementTexture()
 
                     path = RESOURCES_PATH + stateCityData[(int)stateCity.stateCityType]["path"].asString();
                 }
+                else if(std::holds_alternative<shared::ControlPawn>(*variant))
+                {
+                    shared::ControlPawn pawn = std::get<shared::ControlPawn>(*variant);
+
+                    path = elementData[index]["path"].asString();
+
+                    path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "" : "-reinforced") + ".png";
+
+                    path = RESOURCES_PATH + path;
+                }
                 else
                 {
                     path = RESOURCES_PATH + elementData[index]["path"].asString();
@@ -719,6 +729,18 @@ void GameWindow::updateElementTexture()
             }
         }
     }
+}
+
+int GameWindow::getPlayerNumber(std::string username)
+{
+    for(unsigned i; i < whoIsPlayingButtons.size(); i++)
+    {
+        if(username.compare(whoIsPlayingButtons[i].buttonText->getString()))
+        {
+            return i + 1;
+        }
+    }
+    return 1;
 }
 
 /*!

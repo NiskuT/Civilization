@@ -104,7 +104,7 @@ void Map::generateRandomMap(int seed)
             double n = pn.noise(PERLIN_NOISE_WIDTH * x, PERLIN_NOISE_WIDTH * y, PERLIN_NOISE_PARAM);
             int field = (int)round(n * (NUMBER_OF_FIELDS + 1));
 
-            std::array<unsigned, 2> position;
+            std::array<unsigned, 2> position = {i, j};
 
             switch (field)
             {
@@ -209,27 +209,29 @@ void Map::generateRandomMap(int seed)
                 }
             }
 
-            if( mapOfTheGame[i * this->width + j]->hexResource == nullptr
-                && mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water 
-                && rand() % 100 < 5)
+            if( mapOfTheGame[i * this->width + j]->hexResource != nullptr
+                || mapOfTheGame[i * this->width + j]->getFieldLevel() == FieldLevel::Water )
+            {
+                continue;
+            }   
+
+            if( rand() % 100 < 5)
             {
                 std::shared_ptr<shared::BarbarianVillage> barbareVillage = std::make_shared<shared::BarbarianVillage>();
                 std::shared_ptr<shared::Barbarian> barbare = std::make_shared<shared::Barbarian>();
                 mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbare));
                 mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbareVillage));
+                continue;
             }
 
-            if( mapOfTheGame[i * this->width + j]->getElements().empty()
-                && mapOfTheGame[i * this->width + j]->hexResource == nullptr
-                && mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water 
-                && rand() % 100 < 3)
+            if( rand() % 100 < 3)
             {
                 int index = rand() % stateCityField.size();
-                position[0] = i; position[1] = j;
                 std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
                 city->setStateCity(stateCityField[index]);
                 stateCityField.erase(stateCityField.begin() + index);
                 mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*city));
+                continue;
             }
         }
     }
