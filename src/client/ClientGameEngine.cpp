@@ -28,6 +28,7 @@ ClientGameEngine::ClientGameEngine()
     clientGame.gameEnginePtr = this;
     myself = std::make_shared<shared::Player>();
     myself->setUsername("PlayerTest");
+    clientMap = std::make_shared<shared::Map>();
 }
 
 /*!
@@ -175,8 +176,13 @@ void ClientGameEngine::processMessage(boost::asio::streambuf& receiveBuffer)
         lock.unlock();
 
         askServer();
+
+        if (clientMap == nullptr)
+        {
+            clientMap = std::make_shared<shared::Map>();
+        }
         lock.lock();
-        binary.castToObject(myself->qAndA.answer, clientMap);
+        binary.castToObject(myself->qAndA.answer, *clientMap);
         lock.unlock();
 
     }
@@ -326,6 +332,8 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
  */
 void ClientGameEngine::startGameWindow()
 {
+    clientMap->generateRandomMap(rand() % 1000000000);
+    clientGame.mapShared = clientMap;
     clientGame.startGame();
 }
 

@@ -40,6 +40,8 @@
 #define RESOURCES_PATH "../resources"
 #endif
 
+typedef std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> variantElement;
+
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
 const sf::Color TEXT_FOR_USER_BUTTON_COLOR = sf::Color(255, 255, 255, 100);
@@ -651,9 +653,6 @@ bool GameWindow::onHexagonClick(sf::Vector2i clickPosition)
  */
 void GameWindow::loadMapTexture()
 {
-
-    mapShared.generateRandomMap(rand() % 1000000000);
-
     std::string hexagonImgPath = RESOURCES_PATH "/map/field/field-";
     std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
                                             "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
@@ -665,13 +664,13 @@ void GameWindow::loadMapTexture()
         mapTextureToDisplay.emplace_back(mapElementPath);
     }
 
-    for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
+    for (unsigned i = 0; i < mapShared->getMapHeight(); i++)
     {
-        for (unsigned j = 0; j < mapShared.getMapWidth(); j++)
+        for (unsigned j = 0; j < mapShared->getMapWidth(); j++)
         {
-            int indexSprite = mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).getSize();
-            mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).addSprite();
-            mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel())
+            int indexSprite = mapTextureToDisplay.at((int)(*mapShared)(j, i)->getFieldLevel()).getSize();
+            mapTextureToDisplay.at((int)(*mapShared)(j, i)->getFieldLevel()).addSprite();
+            mapTextureToDisplay.at((int)(*mapShared)(j, i)->getFieldLevel())
                 .setSpritePosition(indexSprite, j, i, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
         }
     }
@@ -722,9 +721,9 @@ void GameWindow::updateElementTexture()
         kv.second->clearSprites();
     }
 
-    for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
+    for (unsigned i = 0; i < mapShared->getMapHeight(); i++)
     {
-        for (unsigned j = 0; j < mapShared.getMapWidth(); j++)
+        for (unsigned j = 0; j < mapShared->getMapWidth(); j++)
         {
             selectElementToDisplay(j, i);
         }
@@ -739,9 +738,9 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
     std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-    for (unsigned k = 0; k < mapShared(x, y)->getElements().size(); k++)
+    for (unsigned k = 0; k < (*mapShared)(x, y)->getElements().size(); k++)
     {
-        std::shared_ptr<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>> variant = mapShared(x, y)->getElements()[k];
+        std::shared_ptr<variantElement> variant = (*mapShared)(x, y)->getElements()[k];
 
         int index;
         std::string path;
@@ -800,9 +799,9 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
     }
 
-    if (mapShared(x, y)->hexResource != nullptr)
+    if ((*mapShared)(x, y)->hexResource != nullptr)
     {
-        shared::Resource resource = *mapShared(x, y)->hexResource;
+        shared::Resource resource = *(*mapShared)(x, y)->hexResource;
 
         int index = (int)resource.getType() ;
 
@@ -1019,11 +1018,11 @@ void GameWindow::addPlayer(std::string username)
 
     while(1)
     {
-        unsigned x = rand() % mapShared.getMapWidth();
-        unsigned y = rand() % mapShared.getMapHeight();
-        if (mapShared(x, y)->getElements().empty() 
-            && mapShared(x, y)->hexResource == nullptr 
-            && mapShared(x, y)->getFieldLevel() != shared::FieldLevel::Water )
+        unsigned x = rand() % mapShared->getMapWidth();
+        unsigned y = rand() % mapShared->getMapHeight();
+        if ((*mapShared)(x, y)->getElements().empty() 
+            && (*mapShared)(x, y)->hexResource == nullptr 
+            && (*mapShared)(x, y)->getFieldLevel() != shared::FieldLevel::Water )
         {
             std::array<unsigned, 2> position = {x, y};
             std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
@@ -1031,7 +1030,7 @@ void GameWindow::addPlayer(std::string username)
             city->isMature = false;
             city->isCapital = true;
             city->player = username;
-            mapShared(x, y)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(*city));
+            (*mapShared)(x, y)->addElement(std::make_shared<variantElement>(*city));
             updateElementTexture();
             break;
         }
