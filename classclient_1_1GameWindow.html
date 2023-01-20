@@ -83,10 +83,9 @@ Collaboration diagram for client::GameWindow:</div>
 <div class="dyncontent">
 <div class="center"><img src="classclient_1_1GameWindow__coll__graph.png" border="0" usemap="#aclient_1_1GameWindow_coll__map" alt="Collaboration graph"/></div>
 <map name="aclient_1_1GameWindow_coll__map" id="aclient_1_1GameWindow_coll__map">
-<area shape="rect" title="class GameWindow &#45;" alt="" coords="19,95,162,121"/>
-<area shape="rect" href="classclient_1_1ClientGameEngine.html" title="class ClientGameEngine &#45;" alt="" coords="5,184,176,211"/>
-<area shape="rect" href="classclient_1_1MenuWindow.html" title="class MenuWindow &#45;" alt="" coords="21,273,161,300"/>
-<area shape="rect" href="classshared_1_1Map.html" title="class Map &#45;" alt="" coords="43,5,138,32"/>
+<area shape="rect" title="class GameWindow &#45;" alt="" coords="19,5,162,32"/>
+<area shape="rect" href="classclient_1_1ClientGameEngine.html" title="class ClientGameEngine &#45;" alt="" coords="5,95,176,121"/>
+<area shape="rect" href="classclient_1_1MenuWindow.html" title="class MenuWindow &#45;" alt="" coords="21,184,161,211"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -170,6 +169,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addPlayer</b> (std::s
 <tr class="memitem:a0173676d1f553827bd7d9039fd2239ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a0173676d1f553827bd7d9039fd2239ad">modifyTextForUser</a> (std::string text)</td></tr>
 <tr class="memdesc:a0173676d1f553827bd7d9039fd2239ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to modify the text that is specified at a player.  <a href="classclient_1_1GameWindow.html#a0173676d1f553827bd7d9039fd2239ad">More...</a><br /></td></tr>
 <tr class="separator:a0173676d1f553827bd7d9039fd2239ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb662d786590eaeee59629406ff6a41a"><td class="memItemLeft" align="right" valign="top"><a id="abb662d786590eaeee59629406ff6a41a"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getPlayerNumber</b> (std::string username)</td></tr>
+<tr class="separator:abb662d786590eaeee59629406ff6a41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38d4312e9a9711964f131c6c51ae57cc"><td class="memItemLeft" align="right" valign="top"><a id="a38d4312e9a9711964f131c6c51ae57cc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>selectElementToDisplay</b> (int x, int y)</td></tr>
+<tr class="separator:a38d4312e9a9711964f131c6c51ae57cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -197,9 +202,9 @@ std::vector&lt; <a class="el" href="classclient_1_1GraphicCard.html">GraphicCard
 <tr class="memitem:a235f3b23a1c67eb3d9b833c10253703a"><td class="memItemLeft" align="right" valign="top"><a id="a235f3b23a1c67eb3d9b833c10253703a"></a>
 std::vector&lt; <a class="el" href="classclient_1_1GraphicCard.html">GraphicCard</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>actionCardsToDisplay</b></td></tr>
 <tr class="separator:a235f3b23a1c67eb3d9b833c10253703a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d5351344023bdd039bf93413dfcf045"><td class="memItemLeft" align="right" valign="top"><a id="a6d5351344023bdd039bf93413dfcf045"></a>
-<a class="el" href="classshared_1_1Map.html">shared::Map</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mapShared</b></td></tr>
-<tr class="separator:a6d5351344023bdd039bf93413dfcf045"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae29f338bf7de4a0c1f7d54b4001a8b0a"><td class="memItemLeft" align="right" valign="top"><a id="ae29f338bf7de4a0c1f7d54b4001a8b0a"></a>
+std::shared_ptr&lt; <a class="el" href="classshared_1_1Map.html">shared::Map</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mapShared</b> = nullptr</td></tr>
+<tr class="separator:ae29f338bf7de4a0c1f7d54b4001a8b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dbed87aa2526b6cc6fd72193946b51c"><td class="memItemLeft" align="right" valign="top"><a id="a9dbed87aa2526b6cc6fd72193946b51c"></a>
 sf::Cursor&#160;</td><td class="memItemRight" valign="bottom"><b>clientCursor</b></td></tr>
 <tr class="separator:a9dbed87aa2526b6cc6fd72193946b51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
