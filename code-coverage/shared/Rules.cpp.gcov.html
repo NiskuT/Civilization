@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-20 02:32:43</td>
+            <td class="headerValue">2023-01-20 09:27:15</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">18</td>
@@ -361,35 +361,35 @@
 <a name="299"><span class="lineNum">     299 </span><span class="lineCov">          7 :     std::vector&lt;CardsEnum&gt; cardsToImprove = args.cardsToImprove;</span></a>
 <a name="300"><span class="lineNum">     300 </span>            : </a>
 <a name="301"><span class="lineNum">     301 </span><span class="lineCov">          7 :     std::vector&lt;std::array&lt;unsigned, 2&gt;&gt; neighbors;</span></a>
-<a name="302"><span class="lineNum">     302 </span>            : </a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          7 :     unsigned cardLevel = args.currentPlayer-&gt;getLevelOfCard(CardsEnum::science);</span></a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          7 :     switch (cardLevel)</span></a>
-<a name="305"><span class="lineNum">     305 </span>            :     {</a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          4 :     case 1:</span></a>
-<a name="307"><span class="lineNum">     307 </span>            :         // do nothing special</a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          4 :         break;</span></a>
-<a name="309"><span class="lineNum">     309 </span><span class="lineCov">          1 :     case 2:</span></a>
-<a name="310"><span class="lineNum">     310 </span><span class="lineCov">          1 :         cardToGetABox = args.cardToGetABox;</span></a>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          1 :         args.currentPlayer-&gt;addBox(cardToGetABox, 1);</span></a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          1 :         break;</span></a>
-<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          1 :     case 3:</span></a>
-<a name="314"><span class="lineNum">     314 </span><span class="lineCov">          1 :         resourceToGet = args.resourceToGet;</span></a>
-<a name="315"><span class="lineNum">     315 </span><span class="lineCov">          1 :         if (args.currentPlayer-&gt;haveResource(resourceToGet))</span></a>
-<a name="316"><span class="lineNum">     316 </span>            :         {</a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :             return false;</span></a>
-<a name="318"><span class="lineNum">     318 </span>            :         }</a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineCov">          1 :         args.currentPlayer-&gt;addResource(resourceToGet);</span></a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineCov">          1 :         break;</span></a>
-<a name="321"><span class="lineNum">     321 </span><span class="lineCov">          1 :     case 4:</span></a>
-<a name="322"><span class="lineNum">     322 </span><span class="lineCov">          1 :         positionToNuke = args.positionToNuke;</span></a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          1 :         gameMap = args.gameMap;</span></a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">          1 :         neighbors = getNeighbors(positionToNuke[0], positionToNuke[1], gameMap);</span></a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          1 :         neighbors.push_back(positionToNuke);</span></a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineCov">          1 :         nuke(neighbors, gameMap, args.currentPlayer);</span></a>
-<a name="327"><span class="lineNum">     327 </span><span class="lineCov">          1 :         break;</span></a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :     default:</span></a>
-<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :         return false;</span></a>
-<a name="330"><span class="lineNum">     330 </span>            :     }</a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">          7 :     unsigned cardLevel = args.currentPlayer-&gt;getLevelOfCard(CardsEnum::science);</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          7 :     switch (cardLevel)</span></a>
+<a name="304"><span class="lineNum">     304 </span>            :     {</a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          4 :     case 1:</span></a>
+<a name="306"><span class="lineNum">     306 </span>            :         // do nothing special</a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">          4 :         break;</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          1 :     case 2:</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineCov">          1 :         cardToGetABox = args.cardToGetABox;</span></a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineCov">          1 :         args.currentPlayer-&gt;addBox(cardToGetABox, 1);</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          1 :         break;</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          1 :     case 3:</span></a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          1 :         resourceToGet = args.resourceToGet;</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">          1 :         if (args.currentPlayer-&gt;haveResource(resourceToGet))</span></a>
+<a name="315"><span class="lineNum">     315 </span>            :         {</a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :             return false;</span></a>
+<a name="317"><span class="lineNum">     317 </span>            :         }</a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineCov">          1 :         args.currentPlayer-&gt;addResource(resourceToGet);</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineCov">          1 :         break;</span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineCov">          1 :     case 4:</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineCov">          1 :         positionToNuke = args.positionToNuke;</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineCov">          1 :         gameMap = args.gameMap;</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          1 :         neighbors = getNeighbors(positionToNuke[0], positionToNuke[1], gameMap);</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">          1 :         neighbors.push_back(positionToNuke);</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          1 :         nuke(neighbors, gameMap, args.currentPlayer);</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineCov">          1 :         break;</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :     default:</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :         return false;</span></a>
+<a name="329"><span class="lineNum">     329 </span>            :     }</a>
+<a name="330"><span class="lineNum">     330 </span>            : </a>
 <a name="331"><span class="lineNum">     331 </span><span class="lineCov">          7 :     unsigned dificulty = currentPlayer-&gt;getDificultyOfCard(CardsEnum::science);</span></a>
 <a name="332"><span class="lineNum">     332 </span><span class="lineCov">          7 :     std::array&lt;int, 3&gt; cardsLevelToImprove = currentPlayer-&gt;incrementTechWheel(dificulty + numberOfBoxUsed);</span></a>
 <a name="333"><span class="lineNum">     333 </span><span class="lineCov">         16 :     for (auto cardtoImprove : cardsToImprove)</span></a>

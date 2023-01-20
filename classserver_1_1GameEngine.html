@@ -85,14 +85,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb0941fc87bb66ea23dfc71d103c2efa"><td class="memItemLeft" align="right" valign="top"><a id="aeb0941fc87bb66ea23dfc71d103c2efa"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>handleConnect</b> ()</td></tr>
 <tr class="separator:aeb0941fc87bb66ea23dfc71d103c2efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3df977e8beb28d88255da8e9a90c083c"><td class="memItemLeft" align="right" valign="top"><a id="a3df977e8beb28d88255da8e9a90c083c"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1GameEngine.html#a3df977e8beb28d88255da8e9a90c083c">startGame</a> ()</td></tr>
-<tr class="memdesc:a3df977e8beb28d88255da8e9a90c083c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function help to load the map and start the game. <br /></td></tr>
-<tr class="separator:a3df977e8beb28d88255da8e9a90c083c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a733b2a1a5e638a318610d19562d4a590"><td class="memItemLeft" align="right" valign="top"><a id="a733b2a1a5e638a318610d19562d4a590"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1GameEngine.html#a733b2a1a5e638a318610d19562d4a590">playTurn</a> ()</td></tr>
-<tr class="memdesc:a733b2a1a5e638a318610d19562d4a590"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function allowing a player to play his turn, composed of several action. <br /></td></tr>
-<tr class="separator:a733b2a1a5e638a318610d19562d4a590"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d548d96b4c9ed49192dcea02190c860"><td class="memItemLeft" align="right" valign="top"><a id="a1d548d96b4c9ed49192dcea02190c860"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1GameEngine.html#a1d548d96b4c9ed49192dcea02190c860">runGame</a> ()</td></tr>
+<tr class="memdesc:a1d548d96b4c9ed49192dcea02190c860"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function help to load the map and start the game. <br /></td></tr>
+<tr class="separator:a1d548d96b4c9ed49192dcea02190c860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaff13d57bb66841d3e21474bc8f65649"><td class="memItemLeft" align="right" valign="top"><a id="aaff13d57bb66841d3e21474bc8f65649"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1GameEngine.html#aaff13d57bb66841d3e21474bc8f65649">playTurn</a> ()</td></tr>
+<tr class="memdesc:aaff13d57bb66841d3e21474bc8f65649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function allowing a player to play his turn, composed of several action. <br /></td></tr>
+<tr class="separator:aaff13d57bb66841d3e21474bc8f65649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad76c416c983f85f1c7a8448212ef46c0"><td class="memItemLeft" align="right" valign="top"><a id="ad76c416c983f85f1c7a8448212ef46c0"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1GameEngine.html#ad76c416c983f85f1c7a8448212ef46c0">endOfRoundActions</a> ()</td></tr>
 <tr class="memdesc:ad76c416c983f85f1c7a8448212ef46c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function handling all the actions at the end of a round (ex: check for end of game, move barabarian wheel...) <br /></td></tr>
@@ -145,9 +145,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPublic</b> = true</
 <tr class="memitem:a6c762370257a2bd2171927fd27debaf5"><td class="memItemLeft" align="right" valign="top"><a id="a6c762370257a2bd2171927fd27debaf5"></a>
 GameState&#160;</td><td class="memItemRight" valign="bottom"><b>state</b></td></tr>
 <tr class="separator:a6c762370257a2bd2171927fd27debaf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68ed47e89f92fd934cfe5bc12581c9fa"><td class="memItemLeft" align="right" valign="top"><a id="a68ed47e89f92fd934cfe5bc12581c9fa"></a>
-std::unique_ptr&lt; <a class="el" href="classshared_1_1Map.html">shared::Map</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>gameMap</b></td></tr>
-<tr class="separator:a68ed47e89f92fd934cfe5bc12581c9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2788cf1425bfe97c801221b6242e86d"><td class="memItemLeft" align="right" valign="top"><a id="aa2788cf1425bfe97c801221b6242e86d"></a>
+std::shared_ptr&lt; <a class="el" href="classshared_1_1Map.html">shared::Map</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>gameMap</b></td></tr>
+<tr class="separator:aa2788cf1425bfe97c801221b6242e86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classserver_1_1GameEngine.html" title="class GameEngine -">GameEngine</a> - </p>
