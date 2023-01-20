@@ -9,9 +9,17 @@
 
 using namespace shared;
 
-void Binary::send(std::shared_ptr<shared::Player> player, std::string serializedData)
+void Binary::send(std::shared_ptr<shared::Player> player, std::string serializedData, bool answerRequired)
 {
-    std::string header = "binary " + std::to_string(serializedData.size()) + "\n";
+    std::string header;
+    if (answerRequired)
+    {
+        header = "binary " + std::to_string(serializedData.size()) + "\n";
+    }
+    else
+    {
+        header = "rulesturn " + std::to_string(serializedData.size()) + "\n";
+    }
     std::lock_guard<std::mutex> lock(player->socketWriteMutex);
     boost::asio::write(player->getSocket(), boost::asio::buffer(header));
     boost::asio::write(player->getSocket(), boost::asio::buffer(serializedData));
@@ -64,5 +72,7 @@ void Binary::castToBinary(T &data, std::string &serializedData)
     serializedData = stream.str();
 }
 
-template void Binary::castToBinary<Map>(Map& data, std::string& serializedData);
-template void Binary::castToObject<Map>(std::string receivedData, Map& data);
+template void Binary::castToBinary<Map>(Map &data, std::string &serializedData);
+template void Binary::castToObject<Map>(std::string receivedData, Map &data);
+template void Binary::castToBinary<RuleArgsStruct>(RuleArgsStruct &data, std::string &serializedData);
+template void Binary::castToObject<RuleArgsStruct>(std::string receivedData, RuleArgsStruct &data);

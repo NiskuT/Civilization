@@ -28,9 +28,50 @@ bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
 
     if (players.size() == MAX_PLAYERS)
     {
-        state = GameState::Running;
+        std::cout << "Tous les joueurs sont connectés\n"
+                  << std::endl;
+        std::thread gameThread(&GameEngine::runGame, this);
+        gameThread.detach();
     }
     return true;
+}
+
+void GameEngine::runGame() // rename rungame
+{
+    std::cout << "start game" << std::endl;
+    std::cout << "map initialized" << std::endl;
+    std::string message = "chat ";
+    message += getTime() + " ";
+    message += "Game started\n";
+    sendToEveryone(message);
+    shared::Rules rules;
+    while (true) // TODO: add condition to stop the game
+    {
+        for (auto &player : players)
+        {
+            shared::RuleArgsStruct ruleArgs;
+            do
+            {
+                player->qAndA.question = "playturn\n";
+                askClient(player);
+                binary.castToObject(player->qAndA.answer, ruleArgs);
+                ruleArgs.gameMap = this->gameMap;
+                ruleArgs.currentPlayer = player;
+
+                std::cout << "ruleId: " << (int)ruleArgs.ruleId << std::endl;
+
+            } while (!(rules.runTheRule(ruleArgs)));
+
+            // ruleArgs.playerName = player->getName();
+            // message = "rulesturn ";
+            // std::string struc;
+            // binary.castToBinary(ruleArgs, struc);
+            // message += struc.size();
+            // message += struc;
+            // sendToEveryone(message);
+        }
+        std::cout << "end of turn" << std::endl;
+    }
 }
 
 std::vector<std::shared_ptr<shared::Player>> &GameEngine::getPlayers()
@@ -118,7 +159,7 @@ bool GameEngine::setMapParam(std::string &param, std::string &value)
     {
         paramValue = std::stoi(value);
     }
-    catch (std::exception& e)
+    catch (std::exception &e)
     {
         return false;
     }
@@ -182,7 +223,7 @@ void GameEngine::sendToEveryone(std::string message)
     }
 }
 
-/*! 
+/*!
  * @brief This function return the time under a string format
  * For example, if the time is 1:34pm, the function will return "13:34"
  * @return std::string

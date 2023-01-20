@@ -299,7 +299,6 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
     std::vector<CardsEnum> cardsToImprove = args.cardsToImprove;
 
     std::vector<std::array<unsigned, 2>> neighbors;
-
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::science);
     switch (cardLevel)
     {
@@ -328,6 +327,7 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
     default:
         return false;
     }
+
     unsigned dificulty = currentPlayer->getDificultyOfCard(CardsEnum::science);
     std::array<int, 3> cardsLevelToImprove = currentPlayer->incrementTechWheel(dificulty + numberOfBoxUsed);
     for (auto cardtoImprove : cardsToImprove)
