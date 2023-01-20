@@ -1015,6 +1015,24 @@ void GameWindow::addPlayer(std::string username)
         }
     }
 
+    while(1)
+    {
+        unsigned x = rand() % mapShared.getMapWidth();
+        unsigned y = rand() % mapShared.getMapHeight();
+        if (mapShared(x, y)->getElements().empty() && mapShared(x, y)->hexResource == nullptr && mapShared(x, y)->getFieldLevel() != shared::FieldLevel::Water )
+        {
+            std::array<unsigned, 2> position = {x, y};
+            std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
+            city->isStateCity = false;
+            city->isMature = false;
+            city->isCapital = true;
+            city->player = username;
+            mapShared(x, y)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(*city));
+            updateElementTexture();
+            break;
+        }
+    }
+
     whoIsPlayingButtons.emplace_back(
         sf::Vector2f(75, 90 / 2),
         sf::Vector2f(0, 0),
