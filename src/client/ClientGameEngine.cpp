@@ -28,6 +28,7 @@ ClientGameEngine::ClientGameEngine()
     clientGame.gameEnginePtr = this;
     myself = std::make_shared<shared::Player>();
     myself->setUsername("PlayerTest");
+    playerTurn.store(false);
 }
 
 /*!
@@ -90,16 +91,15 @@ void ClientGameEngine::startReceiving()
         {
             processMessage(receiveBuffer);
             receiveBuffer.consume(receiveBuffer.size());
-
         }
     }
 }
 
-void ClientGameEngine::processMessage(boost::asio::streambuf& receiveBuffer)
+void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
 {
     std::istream receiveStream(&receiveBuffer);
     std::string messageReceived;
-    while(std::getline(receiveStream, messageReceived))
+    while (std::getline(receiveStream, messageReceived))
     {
         if (messageReceived.size() == 0)
         {
@@ -115,6 +115,23 @@ void ClientGameEngine::processMessage(boost::asio::streambuf& receiveBuffer)
             std::string data = binary.receive(myself, size);
             registerServerAnswer(data);
         }
+        else if (messageReceived.find("rulesturn") == 0) // binary reception without response
+        {
+            // shared::RuleArgsStruct ruleArgs;
+            // std::cout << messageReceived << std::endl;
+            // binary.castToObject(messageReceived.substr(10), ruleArgs);
+            // // for (auto &player : ruleArgs.playerList)
+            // // {
+            // //     if (player->getName() == myself->getName())
+            // //     {
+            // //         myself = player;
+            // //     }
+            // // }
+            // ruleArgs.gameMap = clientMap;
+            
+            // shared::Rules rules;
+            // rules.runTheRule(ruleArgs);
+        }
         else
         {
             processServerRequest(messageReceived);
@@ -122,64 +139,67 @@ void ClientGameEngine::processMessage(boost::asio::streambuf& receiveBuffer)
     }
 }
 
-    void checkOk(std::string &response)
+void checkOk(std::string &response)
+{
+    if (response.find("ok") == std::string::npos)
     {
-        if (response.find("ok") == std::string::npos)
-        {
-            std::cout << "Error in server response: " << response << std::endl;
-            exit(1);
-        }
+        std::cout << "Error in server response: " << response << std::endl;
+        exit(1);
     }
+}
 
-    void ClientGameEngine::generateMap(const unsigned height, const unsigned width, const int seed)
+void ClientGameEngine::generateMap(const unsigned height, const unsigned width, const int seed)
+{
+    std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
+    lock.unlock();
+    if (myself->connectedToSocket.load() == false)
     {
-        std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
-        lock.unlock();
-        if (myself->connectedToSocket.load() == false )
-        {
-            std::cout << "You are not connected to the server" << std::endl;
-            exit(1);
-        }
-        if (height > 0) {
-            lock.lock();
-            myself->qAndA.question = "setmapparam height " + std::to_string(height) + "\n";
-            lock.unlock();
-            askServer();
-            checkOk(myself->qAndA.answer);
-
-        }
-        if (width > 0) {
-            lock.lock();
-            myself->qAndA.question = "setmapparam width " + std::to_string(width) + "\n";
-            lock.unlock();
-            askServer();
-            checkOk(myself->qAndA.answer);
-        }
+        std::cout << "You are not connected to the server" << std::endl;
+        exit(1);
+    }
+    if (height > 0)
+    {
         lock.lock();
-        myself->qAndA.question = "setmapparam generate " + std::to_string(seed) + "\n";
+        myself->qAndA.question = "setmapparam height " + std::to_string(height) + "\n";
         lock.unlock();
         askServer();
         checkOk(myself->qAndA.answer);
     }
-
-    void ClientGameEngine::loadMap()
+    if (width > 0)
     {
-        if (myself->connectedToSocket.load() == false )
-
-        {
-            std::cout << "You are not connected to the server" << std::endl;
-            exit(1);
-        }
-        std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
-        myself->qAndA.question = "getmap\n";
-        lock.unlock();
-
-        askServer();
         lock.lock();
-        binary.castToObject(myself->qAndA.answer, clientMap);
+        myself->qAndA.question = "setmapparam width " + std::to_string(width) + "\n";
         lock.unlock();
-
+        askServer();
+        checkOk(myself->qAndA.answer);
     }
+    lock.lock();
+    myself->qAndA.question = "setmapparam generate " + std::to_string(seed) + "\n";
+    lock.unlock();
+    askServer();
+    checkOk(myself->qAndA.answer);
+}
+
+void ClientGameEngine::loadMap()
+{
+    if (myself->connectedToSocket.load() == false)
+    {
+        std::cout << "You are not connected to the server" << std::endl;
+        exit(1);
+    }
+    std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
+    myself->qAndA.question = "getmap\n";
+    lock.unlock();
+
+    askServer();
+    lock.lock();
+    if (clientMap == nullptr)
+    {
+        clientMap = std::make_shared<shared::Map>();
+    }
+    binary.castToObject(myself->qAndA.answer, *clientMap);
+    lock.unlock();
+}
 
 /*!
  * @brief Quentin
@@ -203,6 +223,10 @@ void ClientGameEngine::processServerRequest(std::string request)
     {
         request = request.substr(5);
         printChat(request);
+    }
+    else if (request.find("playturn") == 0)
+    {
+        playerTurn.store(true);
     }
     else if (request.find("connected") == 0)
     {
@@ -256,7 +280,7 @@ void ClientGameEngine::askServer()
 
     myself->qAndA.condition.wait(responseLock, [&]
                                  { return myself->qAndA.answerReady; });
-                                 
+
     std::string response = myself->qAndA.answer;
     myself->qAndA.answerReady = false;
 }
@@ -401,8 +425,41 @@ void ClientGameEngine::playGame()
                 turn++;
             }
         }
+        if (playerTurn.load())
+        {
+            playTurn();
+        }
     }
     t.join();
+}
+
+void ClientGameEngine::playTurn()
+{
+    shared::RuleArgsStruct ruleArgsStruct;
+    ruleArgsStruct.ruleId = shared::CardsEnum::science;
+    ruleArgsStruct.numberOfBoxUsed = 0;
+    ruleArgsStruct.caravanMovementPath.push_back({0, 1});
+    ruleArgsStruct.caravanMovementPath.push_back({4, 8});
+    ruleArgsStruct.caravanMovementPath.push_back({5, 6});
+    ruleArgsStruct.resourceToGet = shared::ResourceEnum::oil;
+    ruleArgsStruct.cardToGetABox = shared::CardsEnum::economy;
+    ruleArgsStruct.positionToNuke = {3, 4};
+    ruleArgsStruct.pawnsPositions.push_back({1, 1});
+    ruleArgsStruct.pawnsPositions.push_back({2, 2});
+    ruleArgsStruct.pawnsPositions.push_back({3, 3});
+    ruleArgsStruct.militaryCardAttack = true;
+    ruleArgsStruct.industryCardBuildWonder = true;
+    ruleArgsStruct.positionOfWonder = {4, 5};
+    ruleArgsStruct.positionOfCity = {6, 7};
+    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::economy);
+    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::military);
+
+
+
+    std::string struc;
+    binary.castToBinary(ruleArgsStruct, struc);
+    binary.send(myself, struc);
+    playerTurn.store(false);
 }
 
 /*!

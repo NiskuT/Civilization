@@ -6,3 +6,7 @@ ElementEnum BarbarianVillage::getType()
 {
     return ElementEnum::barbarianVillage;
 }
+
+BarbarianVillage::BarbarianVillage()
+{
+}
