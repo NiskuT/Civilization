@@ -12,6 +12,15 @@ using namespace shared;
 
 typedef std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City> variantElement;
 
+std::unordered_map<std::string, FieldLevel> wonderField = {
+    {"everest", FieldLevel::WonderEverest},
+    {"galapagos", FieldLevel::WonderGalapagos},
+    {"kilimanjaro", FieldLevel::WonderKilimanjaro},
+    {"messa", FieldLevel::WonderMessa},
+    {"pantanal", FieldLevel::WonderPantanal},
+    {"volcanic", FieldLevel::WonderVolcanic},
+};
+
 /*!
  * @brief Map constructor
  * @param width Width of the map to instantiate
@@ -104,13 +113,6 @@ void Map::generateRandomMap(int seed)
                 break;
             case 4:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Desert);
-                if(rand() % 10 < 2)
-                {
-                    barbareVillage = std::make_shared<shared::BarbarianVillage>();
-                    barbare = std::make_shared<shared::Barbarian>();
-                    mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbareVillage));
-                    mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbare));
-                }
                 break;
             case 5:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Mountain);
@@ -125,39 +127,42 @@ void Map::generateRandomMap(int seed)
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
                 mapOfTheGame[i * this->width + j]->clearElement();
             }
-            else if (i == 1 || i == this->height - 2 || j == 1 || j == this->width - 2)
+            // 50% chance to be water
+            else if (rand() % 10 < 5 && (i == 1 || i == this->height - 2 || j == 1 || j == this->width - 2))
             {
-                // 50% chance to be water
-                if (rand() % 10 < 5)
+                mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
+                mapOfTheGame[i * this->width + j]->clearElement();
+            }
+            // 10% chance to be water
+            else if (rand() % 10 < 1 && (i == 2 || i == this->height - 3 || j == 2 || j == this->width - 3 ))
+            {
+                mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
+                mapOfTheGame[i * this->width + j]->clearElement();
+            }
+            
+            for (auto &wonder : wonderField)
+            {
+                if (mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water && rand() % 1000 < 5)
                 {
-                    mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
-                    mapOfTheGame[i * this->width + j]->clearElement();
+                    mapOfTheGame[i * this->width + j]->setFieldType(wonder.second);
+                    wonderField.erase(wonder.first);
                 }
             }
-            else if (i == 2 || i == this->height - 3 || j == 2 || j == this->width - 3)
+
+            if(mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water && rand() % 100 < 4)
             {
-                // 10% chance to be water
-                if (rand() % 10 < 1)
-                {
-                    mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
-                    mapOfTheGame[i * this->width + j]->clearElement();
-                }
+                barbareVillage = std::make_shared<shared::BarbarianVillage>();
+                barbare = std::make_shared<shared::Barbarian>();
+                mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbareVillage));
+                mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbare));
             }
-            else
+
+            if(mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water && rand() % 100 < 4)
             {
-                // 5% chance to be a random wonder
-                if (rand() % 100 < 1)
-                    mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::WonderEverest);
-                else if (rand() % 100 < 1)
-                    mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::WonderGalapagos);
-                else if (rand() % 100 < 1)
-                    mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::WonderKilimanjaro);
-                else if (rand() % 100 < 1)
-                    mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::WonderMessa);
-                else if (rand() % 100 < 1)
-                    mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::WonderPantanal);
-                else if (rand() % 100 < 1)
-                    mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::WonderVolcanic);
+                barbareVillage = std::make_shared<shared::BarbarianVillage>();
+                barbare = std::make_shared<shared::Barbarian>();
+                mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbareVillage));
+                mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*barbare));
             }
         }
     }
