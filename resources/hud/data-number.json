@@ -29,7 +29,16 @@
             "validate-button-offset-x": 150,
             "validate-button-offset-y": 52,
             "validate-button-size-text": 18,
-            "validate-button-offset-text-y": 4
+            "validate-button-offset-text-y": 4,
+
+            "text-for-user-size-x": 500,
+            "text-for-user-size-y": 40,
+            "text-for-user-pos-x": 90,
+            "text-for-user-pos-y": 7,
+            "text-for-user-string-size": 30,
+            "text-for-user-max-char": 36
+
+
 
 
  

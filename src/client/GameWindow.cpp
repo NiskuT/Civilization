@@ -41,6 +41,8 @@
 
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
+const sf::Color TEXT_FOR_USER_BUTTON_COLOR = sf::Color(255, 255, 255, 100);
+const sf::Color TEXT_FOR_USER_COLOR = sf::Color(204, 0, 102);
 
 using namespace client;
 
@@ -137,6 +139,9 @@ void GameWindow::displayWindow()
     {
         chatBox->drawChat(gameEnginePtr->clientWindow);
     }
+
+    gameEnginePtr->clientWindow->draw(*textForTheUser->buttonRect);
+    gameEnginePtr->clientWindow->draw(*textForTheUser->buttonText);
 
     gameEnginePtr->clientWindow->display();
 }
@@ -608,7 +613,7 @@ bool GameWindow::onHexagonClick(sf::Vector2i clickPosition)
     {
         for (unsigned j = 0; j < mapTexture.getSize(); j++)
         {
-            if (!gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
+            if (validateBoxesWindow->isWindowActive || !gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
             {
                 continue;
             }
@@ -886,6 +891,29 @@ void GameWindow::loadHudTexture()
     {
         techWheelRotation[index] = dataRotation[index]["rotation"].asInt();
     }
+
+    // text for the user
+    std::string textForTheUserString = "Do that";
+    textForTheUser = std::make_shared<Button>(sf::Vector2f(dataNumber["text-for-user-size-x"].asFloat(), dataNumber["text-for-user-size-y"].asFloat()),
+                                              sf::Vector2f(dataNumber["text-for-user-pos-x"].asFloat(), dataNumber["text-for-user-pos-y"].asFloat()),
+                                              TEXT_FOR_USER_BUTTON_COLOR,
+                                              false);
+    textForTheUser->setText(dataNumber["text-for-user-string-size"].asInt(),
+                            sf::Vector2f(0, 0),
+                            textForTheUserString,
+                            bodyFont,
+                            dataNumber["text-for-user-max-char"].asInt());
+    textForTheUser->buttonText->setFillColor(TEXT_FOR_USER_COLOR);
+}
+
+/*!
+ * @brief Function to modify the text that is specified at a player
+ * @param text string: text we want to set
+ */
+void GameWindow::modifyTextForUser(std::string text)
+{
+    textForTheUser->buttonText->setString(text);
+    textForTheUser->centerText();
 }
 
 void GameWindow::addPlayer(std::string username)
