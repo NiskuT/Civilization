@@ -58,11 +58,6 @@ using namespace client;
 GameWindow::GameWindow()
 {
     firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
-
-    loadMapTexture();
-    loadElementTexture();
-    updateElementTexture();
-    loadHudTexture();
     chatBox = std::make_unique<Chat>();
 
 }
@@ -154,6 +149,10 @@ void GameWindow::startGame()
         return;
     }
 
+    loadMapTexture();
+    loadElementTexture();
+    updateElementTexture();
+    loadHudTexture();
     addPlayer(gameEnginePtr->myself->getName());
 
     std::shared_ptr<bool> moveMode = std::make_shared<bool>(false);
@@ -670,6 +669,7 @@ void GameWindow::updateElementTexture()
 
     const Json::Value &elementData = openJsonFile("/map/elementPath.json");
     const Json::Value &resourceData = openJsonFile("/map/resourcePath.json");
+    const Json::Value &stateCityData = openJsonFile("/map/stateCityPath.json");
 
     for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
     {
@@ -680,16 +680,28 @@ void GameWindow::updateElementTexture()
                 std::shared_ptr<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>> variant = mapShared(j, i)->getElements()[k];
 
                 int index;
+                std::string path;
                 
                 std::visit([&index](auto&& arg){
                     index = (int)arg.getType();
                 }, *variant);
 
-                std::string path = RESOURCES_PATH + elementData[index]["path"].asString();
+                if(std::holds_alternative<shared::City>(*variant))
+                {
+                    shared::City stateCity = std::get<shared::City>(*variant);
+
+                    path = RESOURCES_PATH + stateCityData[(int)stateCity.stateCityType]["path"].asString();
+                }
+                else
+                {
+                    path = RESOURCES_PATH + elementData[index]["path"].asString();
+
+                }
 
                 elementTextureToDisplay[path]->addSprite();
 
                 elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, j, i, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+        
             }
 
 

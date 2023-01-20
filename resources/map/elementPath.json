@@ -8,7 +8,7 @@
             "path": "/map/element/player-1.png"
         },
         {
-            "path": "/map/element/player-1-city.png"
+            "path": "/map/stateCityPath.json"
         },
         {
             "path": "/map/element/barbarians.png"
