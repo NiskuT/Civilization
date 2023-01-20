@@ -19,6 +19,13 @@ void setImage(std::unique_ptr<TextureDisplayer> &texture, std::string path, sf::
     texture->getSprite().setScale(scale);
 }
 
+/*!
+ * @brief Constructor
+ * Constructor of ValidateBoxesButtons class
+ * @param windowLength length of the window
+ * @param windowWidth width of the window
+ */
+
 ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
 {
     const Json::Value &data = gameWindow->openJsonFile("/validateBoxes/dataButton.json");
