@@ -228,7 +228,6 @@ void ClientGameEngine::processServerRequest(std::string request)
     {
         playerTurn.store(true);
     }
-    else
     else if (request.find("connected") == 0)
     {
         request = request.substr(10);
