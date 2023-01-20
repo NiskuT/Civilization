@@ -817,9 +817,11 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
 int GameWindow::getPlayerNumber(std::string username)
 {
-    for(unsigned i; i < whoIsPlayingButtons.size(); i++)
+    int i = 0;
+    for(auto& button: whoIsPlayingButtons)
     {
-        if(username.compare(whoIsPlayingButtons[i].buttonText->getString()))
+        i++;
+        if(username.compare(button.buttonText->getString()))
         {
             return i + 1;
         }
@@ -1019,7 +1021,9 @@ void GameWindow::addPlayer(std::string username)
     {
         unsigned x = rand() % mapShared.getMapWidth();
         unsigned y = rand() % mapShared.getMapHeight();
-        if (mapShared(x, y)->getElements().empty() && mapShared(x, y)->hexResource == nullptr && mapShared(x, y)->getFieldLevel() != shared::FieldLevel::Water )
+        if (mapShared(x, y)->getElements().empty() 
+            && mapShared(x, y)->hexResource == nullptr 
+            && mapShared(x, y)->getFieldLevel() != shared::FieldLevel::Water )
         {
             std::array<unsigned, 2> position = {x, y};
             std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
