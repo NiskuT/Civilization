@@ -6,6 +6,7 @@
 #include <cmath>
 #include <string>
 #include <codecvt>
+#include <variant>
 
 #define MAP_X_OFFSET 175
 #define MAP_Y_OFFSET 50
@@ -39,6 +40,8 @@
 #define RESOURCES_PATH "../resources"
 #endif
 
+typedef std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> variantElement;
+
 const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::Color(251, 76, 255, 160), sf::Color(93, 109, 126, 160), sf::Color(230, 176, 170, 160)};
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
 const sf::Color TEXT_FOR_USER_BUTTON_COLOR = sf::Color(255, 255, 255, 100);
@@ -54,11 +57,7 @@ using namespace client;
 GameWindow::GameWindow()
 {
     firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
-
-    loadMapTexture();
-    loadElementTexture();
-    updateElementTexture();
-    loadHudTexture();
+    chatBox = std::make_unique<Chat>();
 
     validateBoxesWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH);
     validateBoxesWindow->gameWindow = this;
@@ -159,6 +158,10 @@ void GameWindow::startGame()
         return;
     }
 
+    loadMapTexture();
+    loadElementTexture();
+    updateElementTexture();
+    loadHudTexture();
     addPlayer(gameEnginePtr->myself->getName());
 
     std::shared_ptr<bool> moveMode = std::make_shared<bool>(false);
@@ -650,9 +653,6 @@ bool GameWindow::onHexagonClick(sf::Vector2i clickPosition)
  */
 void GameWindow::loadMapTexture()
 {
-
-    mapShared.generateRandomMap(123456789);
-
     std::string hexagonImgPath = RESOURCES_PATH "/map/field/field-";
     std::array<std::string, 12> mapField = {"water", "grassland", "hill", "forest", "desert", "mountain",
                                             "wonder-everest", "wonder-galapagos", "wonder-kilimanjaro",
@@ -664,13 +664,13 @@ void GameWindow::loadMapTexture()
         mapTextureToDisplay.emplace_back(mapElementPath);
     }
 
-    for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
+    for (unsigned i = 0; i < mapShared->getMapHeight(); i++)
     {
-        for (unsigned j = 0; j < mapShared.getMapWidth(); j++)
+        for (unsigned j = 0; j < mapShared->getMapWidth(); j++)
         {
-            int indexSprite = mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).getSize();
-            mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel()).addSprite();
-            mapTextureToDisplay.at((int)mapShared(j, i)->getFieldLevel())
+            int indexSprite = mapTextureToDisplay.at((int)(*mapShared)(j, i)->getFieldLevel()).getSize();
+            mapTextureToDisplay.at((int)(*mapShared)(j, i)->getFieldLevel()).addSprite();
+            mapTextureToDisplay.at((int)(*mapShared)(j, i)->getFieldLevel())
                 .setSpritePosition(indexSprite, j, i, MAP_X_OFFSET, MAP_Y_OFFSET, {0, 0});
         }
     }
@@ -716,26 +716,116 @@ void GameWindow::loadElementTexture()
  */
 void GameWindow::updateElementTexture()
 {
-
     for (auto &kv : elementTextureToDisplay)
     {
         kv.second->clearSprites();
     }
 
+    for (unsigned i = 0; i < mapShared->getMapHeight(); i++)
+    {
+        for (unsigned j = 0; j < mapShared->getMapWidth(); j++)
+        {
+            selectElementToDisplay(j, i);
+        }
+    }
+}
+
+void GameWindow::selectElementToDisplay(int x, int y)
+{
+    const Json::Value &elementData = openJsonFile("/map/elementPath.json");
+    const Json::Value &resourceData = openJsonFile("/map/resourcePath.json");
+    const Json::Value &stateCityData = openJsonFile("/map/stateCityPath.json");
+
     std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
 
-    // Data are temporary loaded with the json file but it will be updated from the server soon
-    const Json::Value &data = openJsonFile("/map/files.json");
-
-    for (unsigned index = 0; index < data.size(); ++index)
+    for (unsigned k = 0; k < (*mapShared)(x, y)->getElements().size(); k++)
     {
+        std::shared_ptr<variantElement> variant = (*mapShared)(x, y)->getElements()[k];
 
-        std::string path = RESOURCES_PATH + data[index]["path"].asString();
+        int index;
+        std::string path;
+        
+        std::visit([&index](auto&& arg){
+            index = (int)arg.getType();
+        }, *variant);
+
+        if(std::holds_alternative<shared::City>(*variant))
+        {
+            shared::City city = std::get<shared::City>(*variant);
+
+            if (city.isStateCity)
+            {
+                path = stateCityData[(int)city.stateCityType]["path"].asString();
+            }
+            else
+            {
+                path = elementData[index]["path"].asString();
+
+                path =  path.substr(0, 20) 
+                        + std::to_string(getPlayerNumber(city.player)) 
+                        +   (city.isMature ? "-mature" : 
+                            (city.isCapital ? "-capital" : "-city")) 
+                        + ".png";
+            }
+        }
+        else if(std::holds_alternative<shared::ControlPawn>(*variant))
+        {
+            shared::ControlPawn pawn = std::get<shared::ControlPawn>(*variant);
+
+            path = elementData[index]["path"].asString();
+
+            path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "" : "-reinforced") + ".png";
+
+        }
+        else if(std::holds_alternative<shared::Caravan>(*variant))
+        {
+            shared::Caravan caravan = std::get<shared::Caravan>(*variant);
+
+            path = elementData[index]["path"].asString();
+
+            path = path.substr(0, 20) + std::to_string(getPlayerNumber(caravan.player)) + path.substr(21);
+        }
+        else
+        {
+            path = elementData[index]["path"].asString();
+
+        }
+
+        path = RESOURCES_PATH + path;
 
         elementTextureToDisplay[path]->addSprite();
 
-        elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, data[index]["y"].asInt(), data[index]["x"].asInt(), firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+        elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, x, y, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+
     }
+
+    if ((*mapShared)(x, y)->hexResource != nullptr)
+    {
+        shared::Resource resource = *(*mapShared)(x, y)->hexResource;
+
+        int index = (int)resource.getType() ;
+
+        std::string path = RESOURCES_PATH + resourceData[index]["path"].asString();
+
+        elementTextureToDisplay[path]->addSprite();
+
+        elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, x, y, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+    }
+}
+
+
+int GameWindow::getPlayerNumber(std::string username)
+{
+    int i = 0;
+    for(auto& button: whoIsPlayingButtons)
+    {
+        i++;
+        if(username.compare(button.buttonText->getString()))
+        {
+            return i + 1;
+        }
+    }
+    return 1;
 }
 
 /*!
@@ -923,6 +1013,26 @@ void GameWindow::addPlayer(std::string username)
         if (!username.compare(button.buttonText->getString()))
         {
             return;
+        }
+    }
+
+    while(1)
+    {
+        unsigned x = rand() % mapShared->getMapWidth();
+        unsigned y = rand() % mapShared->getMapHeight();
+        if ((*mapShared)(x, y)->getElements().empty() 
+            && (*mapShared)(x, y)->hexResource == nullptr 
+            && (*mapShared)(x, y)->getFieldLevel() != shared::FieldLevel::Water )
+        {
+            std::array<unsigned, 2> position = {x, y};
+            std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
+            city->isStateCity = false;
+            city->isMature = false;
+            city->isCapital = true;
+            city->player = username;
+            (*mapShared)(x, y)->addElement(std::make_shared<variantElement>(*city));
+            updateElementTexture();
+            break;
         }
     }
 

@@ -31,3 +31,8 @@ void Hexagon::removeElement(std::shared_ptr<std::variant<Caravan, Barbarian, Bar
 {
     elementsList.erase(std::remove(elementsList.begin(), elementsList.end(), element), elementsList.end());
 }
+
+void Hexagon::clearElement()
+{
+    elementsList.clear();
+}

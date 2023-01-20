@@ -19,3 +19,9 @@ ElementEnum City::getType()
 {
     return ElementEnum::city;
 }
+
+void City::setStateCity(CityStateEnum name)
+{
+    isStateCity = true;
+    stateCityType = name;
+}
