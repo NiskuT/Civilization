@@ -30,13 +30,13 @@ bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
     {
         std::cout << "Tous les joueurs sont connectés\n"
                   << std::endl;
-        std::thread gameThread(&GameEngine::startGame, this);
+        std::thread gameThread(&GameEngine::runGame, this);
         gameThread.detach();
     }
     return true;
 }
 
-void GameEngine::startGame() // rename rungame
+void GameEngine::runGame() // rename rungame
 {
     std::cout << "start game" << std::endl;
     std::cout << "map initialized" << std::endl;
@@ -50,22 +50,27 @@ void GameEngine::startGame() // rename rungame
         for (auto &player : players)
         {
             shared::RuleArgsStruct ruleArgs;
-            // do
-            // {
+            do
+            {
+                player->qAndA.question = "playturn\n";
+                askClient(player);
+                binary.castToObject(player->qAndA.answer, ruleArgs);
+                ruleArgs.gameMap = this->gameMap;
+                ruleArgs.currentPlayer = player;
 
-            player->qAndA.question = "playturn\n";
-            askClient(player);
-            binary.castToObject(player->qAndA.answer, ruleArgs);
-            ruleArgs.gameMap = this->gameMap;
-            ruleArgs.currentPlayer = player;
+                std::cout << "ruleId: " << (int)ruleArgs.ruleId << std::endl;
 
-            std::cout << "ruleId: " << (int) ruleArgs.ruleId << std::endl;
-            
-            // } while (!rules.runTheRule(ruleArgs));
+            } while (!(rules.runTheRule(ruleArgs)));
 
-            // sendToEveryone
-            // TODO: send the coup
+            // ruleArgs.playerName = player->getName();
+            // message = "rulesturn ";
+            // std::string struc;
+            // binary.castToBinary(ruleArgs, struc);
+            // message += struc.size();
+            // message += struc;
+            // sendToEveryone(message);
         }
+        std::cout << "end of turn" << std::endl;
     }
 }
 

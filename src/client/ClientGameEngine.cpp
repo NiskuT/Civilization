@@ -28,6 +28,7 @@ ClientGameEngine::ClientGameEngine()
     clientGame.gameEnginePtr = this;
     myself = std::make_shared<shared::Player>();
     myself->setUsername("PlayerTest");
+    playerTurn.store(false);
 }
 
 /*!
@@ -116,15 +117,20 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
         }
         else if (messageReceived.find("rulesturn") == 0) // binary reception without response
         {
-            shared::RuleArgsStruct ruleArgs;
-            size_t size = std::stoi(messageReceived.substr(10));
-            std::string data = binary.receive(myself, size);
-            binary.castToObject(data, ruleArgs);
-            ruleArgs.currentPlayer = myself;
-            ruleArgs.gameMap = clientMap;
-            std::cout << "rulesturn received" << std::endl;
-            std::cout << "ruleId" << (int)ruleArgs.ruleId << std::endl;
-            // TODO: function to process rules turn
+            // shared::RuleArgsStruct ruleArgs;
+            // std::cout << messageReceived << std::endl;
+            // binary.castToObject(messageReceived.substr(10), ruleArgs);
+            // // for (auto &player : ruleArgs.playerList)
+            // // {
+            // //     if (player->getName() == myself->getName())
+            // //     {
+            // //         myself = player;
+            // //     }
+            // // }
+            // ruleArgs.gameMap = clientMap;
+            
+            // shared::Rules rules;
+            // rules.runTheRule(ruleArgs);
         }
         else
         {
@@ -220,16 +226,7 @@ void ClientGameEngine::processServerRequest(std::string request)
     }
     else if (request.find("playturn") == 0)
     {
-        // TODO : play a turn and send the struc to server
-        // fonction jouer
-
-        // send :
-        shared::RuleArgsStruct ruleArgsStruc;
-        ruleArgsStruc.ruleId = shared::CardsEnum::economy;
-
-        std::string struc;
-        binary.castToBinary(ruleArgsStruc, struc);
-        binary.send(myself, struc);
+        playerTurn.store(true);
     }
     else
     {
@@ -411,8 +408,41 @@ void ClientGameEngine::playGame()
                 turn++;
             }
         }
+        if (playerTurn.load())
+        {
+            playTurn();
+        }
     }
     t.join();
+}
+
+void ClientGameEngine::playTurn()
+{
+    shared::RuleArgsStruct ruleArgsStruct;
+    ruleArgsStruct.ruleId = shared::CardsEnum::science;
+    ruleArgsStruct.numberOfBoxUsed = 0;
+    ruleArgsStruct.caravanMovementPath.push_back({0, 1});
+    ruleArgsStruct.caravanMovementPath.push_back({4, 8});
+    ruleArgsStruct.caravanMovementPath.push_back({5, 6});
+    ruleArgsStruct.resourceToGet = shared::ResourceEnum::oil;
+    ruleArgsStruct.cardToGetABox = shared::CardsEnum::economy;
+    ruleArgsStruct.positionToNuke = {3, 4};
+    ruleArgsStruct.pawnsPositions.push_back({1, 1});
+    ruleArgsStruct.pawnsPositions.push_back({2, 2});
+    ruleArgsStruct.pawnsPositions.push_back({3, 3});
+    ruleArgsStruct.militaryCardAttack = true;
+    ruleArgsStruct.industryCardBuildWonder = true;
+    ruleArgsStruct.positionOfWonder = {4, 5};
+    ruleArgsStruct.positionOfCity = {6, 7};
+    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::economy);
+    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::military);
+
+
+
+    std::string struc;
+    binary.castToBinary(ruleArgsStruct, struc);
+    binary.send(myself, struc);
+    playerTurn.store(false);
 }
 
 /*!
