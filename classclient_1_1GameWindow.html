@@ -121,9 +121,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a1a512249181331aca82091da0bd3c388">updateElementTexture</a> ()</td></tr>
 <tr class="memdesc:a1a512249181331aca82091da0bd3c388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update all the textures of the map. <br /></td></tr>
 <tr class="separator:a1a512249181331aca82091da0bd3c388"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba99a4b7247ae2d707548f35114524a7"><td class="memItemLeft" align="right" valign="top">const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#aba99a4b7247ae2d707548f35114524a7">openJsonFile</a> (std::string path)</td></tr>
-<tr class="memdesc:aba99a4b7247ae2d707548f35114524a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open JSON File.  <a href="classclient_1_1GameWindow.html#aba99a4b7247ae2d707548f35114524a7">More...</a><br /></td></tr>
-<tr class="separator:aba99a4b7247ae2d707548f35114524a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0078616c0fa67797e17480fe9fa74298"><td class="memItemLeft" align="right" valign="top">const Json::Value&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a0078616c0fa67797e17480fe9fa74298">openJsonFile</a> (std::string path)</td></tr>
+<tr class="memdesc:a0078616c0fa67797e17480fe9fa74298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open JSON File.  <a href="classclient_1_1GameWindow.html#a0078616c0fa67797e17480fe9fa74298">More...</a><br /></td></tr>
+<tr class="separator:a0078616c0fa67797e17480fe9fa74298"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7199905c413b7f1d67972c7960bea5e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a7199905c413b7f1d67972c7960bea5e4">setUpText</a> (<a class="el" href="classclient_1_1GraphicCard.html">GraphicCard</a> &amp;card, std::string title, std::string body, sf::Font &amp;titleFont, sf::Font &amp;bodyFont, const Json::Value &amp;dataNumber, float titleTextProportion, float bodyTextProportion)</td></tr>
 <tr class="memdesc:a7199905c413b7f1d67972c7960bea5e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display text on the cards.  <a href="classclient_1_1GameWindow.html#a7199905c413b7f1d67972c7960bea5e4">More...</a><br /></td></tr>
 <tr class="separator:a7199905c413b7f1d67972c7960bea5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +218,12 @@ std::unique_ptr&lt; <a class="el" href="classclient_1_1Chat.html">Chat</a> &gt;&
 <tr class="memitem:a06f9f6814e91b66785e736277793b00c"><td class="memItemLeft" align="right" valign="top"><a id="a06f9f6814e91b66785e736277793b00c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isChatOpen</b> = false</td></tr>
 <tr class="separator:a06f9f6814e91b66785e736277793b00c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc15ca58177afd9d31e06bfc45341347"><td class="memItemLeft" align="right" valign="top"><a id="adc15ca58177afd9d31e06bfc45341347"></a>
+std::unique_ptr&lt; <a class="el" href="classclient_1_1ValidateBoxesButtons.html">ValidateBoxesButtons</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>validateBoxesWindow</b></td></tr>
+<tr class="separator:adc15ca58177afd9d31e06bfc45341347"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7da84b69a465739c9049e67a05c9e369"><td class="memItemLeft" align="right" valign="top"><a id="a7da84b69a465739c9049e67a05c9e369"></a>
+std::array&lt; int, 25 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>techWheelRotation</b></td></tr>
+<tr class="separator:a7da84b69a465739c9049e67a05c9e369"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1GameWindow.html" title="class GameWindow -">GameWindow</a> - </p>
@@ -541,14 +547,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isChatOpen</b> = fals
 
 </div>
 </div>
-<a id="aba99a4b7247ae2d707548f35114524a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba99a4b7247ae2d707548f35114524a7">&#9670;&nbsp;</a></span>openJsonFile()</h2>
+<a id="a0078616c0fa67797e17480fe9fa74298"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0078616c0fa67797e17480fe9fa74298">&#9670;&nbsp;</a></span>openJsonFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const auto GameWindow::openJsonFile </td>
+          <td class="memname">const Json::Value GameWindow::openJsonFile </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>path</em></td><td>)</td>

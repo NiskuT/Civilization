@@ -78,32 +78,39 @@ $(function() {
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>client {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classclient_1_1Button.html">   12</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classclient_1_1Button.html">Button</a> {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="comment">// Attributes</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    std::shared_ptr&lt;sf::RectangleShape&gt; buttonRect;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    std::shared_ptr&lt;sf::Text&gt; buttonText;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">bool</span> redBorder;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordtype">int</span> maxTextSize;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">// Operations</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    std::string <a class="code" href="classclient_1_1Button.html#ada9c03587467d62eaed8801a1a58596f">operator() </a>();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="classclient_1_1Button.html#a75d573ca9423fbe3a5f625414e65b529">Button</a> (sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, <span class="keywordtype">bool</span> border = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#a1d328795dae3c99f6ff0ea600f0aa2ce">setText</a> (<span class="keywordtype">int</span> textSize, sf::Vector2f textOffset, std::string text, sf::Font&amp; font, <span class="keywordtype">int</span> size = 0);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#af6976992291c81e0d1fdb1746cbe10a5">addChar</a> (std::string ch);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#ad0f9aea6304116e11cd292cd4a425f37">delChar</a> ();</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#a3b5c540a112985c60e6e0ad3aaaa4f79">centerText</a> (<span class="keywordtype">bool</span> centerAllAxis = <span class="keyword">true</span>, sf::Vector2f textOffset = {0, 0});</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#a45f5f652fb5d692135fae1418ec37699">setActive</a> ();</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#ab858f6b30bd7b99b2a803fb1287948b5">setInactive</a> ();</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classclient_1_1Button.html#a6446a96c1f5000e8e3cce0ba157d50e9">clickButton</a> ();</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="comment">// Setters and Getters</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  };</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;};</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassclient_1_1Button_html"><div class="ttname"><a href="classclient_1_1Button.html">client::Button</a></div><div class="ttdoc">class Button -</div><div class="ttdef"><b>Definition:</b> Button.hpp:12</div></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keyword">class </span>ValidateBoxesButtons;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;ValidateBoxesButtons.hpp&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>client {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classclient_1_1Button.html">   18</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classclient_1_1Button.html">Button</a> {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">// Associations</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="comment">// Attributes</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    std::shared_ptr&lt;sf::RectangleShape&gt; buttonRect;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    std::shared_ptr&lt;sf::Text&gt; buttonText;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">bool</span> redBorder;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">int</span> maxTextSize;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// Operations</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    std::string <a class="code" href="classclient_1_1Button.html#ada9c03587467d62eaed8801a1a58596f">operator() </a>();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="classclient_1_1Button.html#a75d573ca9423fbe3a5f625414e65b529">Button</a> (sf::Vector2f buttonSize, sf::Vector2f buttonPos, sf::Color buttonColor, <span class="keywordtype">bool</span> border = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#a1d328795dae3c99f6ff0ea600f0aa2ce">setText</a> (<span class="keywordtype">int</span> textSize, sf::Vector2f textOffset, std::string text, sf::Font&amp; font, <span class="keywordtype">int</span> size = 0);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#af6976992291c81e0d1fdb1746cbe10a5">addChar</a> (std::string ch);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#ad0f9aea6304116e11cd292cd4a425f37">delChar</a> ();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#a3b5c540a112985c60e6e0ad3aaaa4f79">centerText</a> (<span class="keywordtype">bool</span> centerAllAxis = <span class="keyword">true</span>, sf::Vector2f textOffset = {0, 0});</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#a45f5f652fb5d692135fae1418ec37699">setActive</a> ();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classclient_1_1Button.html#ab858f6b30bd7b99b2a803fb1287948b5">setInactive</a> ();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classclient_1_1Button.html#a6446a96c1f5000e8e3cce0ba157d50e9">clickButton</a> ();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// Setters and Getters</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  };</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassclient_1_1Button_html"><div class="ttname"><a href="classclient_1_1Button.html">client::Button</a></div><div class="ttdoc">class Button -</div><div class="ttdef"><b>Definition:</b> Button.hpp:18</div></div>
 <div class="ttc" id="aclassclient_1_1Button_html_a1d328795dae3c99f6ff0ea600f0aa2ce"><div class="ttname"><a href="classclient_1_1Button.html#a1d328795dae3c99f6ff0ea600f0aa2ce">client::Button::setText</a></div><div class="ttdeci">void setText(int textSize, sf::Vector2f textOffset, std::string text, sf::Font &amp;font, int size=0)</div><div class="ttdoc">Set the text of the Button.</div><div class="ttdef"><b>Definition:</b> Button.cpp:49</div></div>
 <div class="ttc" id="aclassclient_1_1Button_html_a3b5c540a112985c60e6e0ad3aaaa4f79"><div class="ttname"><a href="classclient_1_1Button.html#a3b5c540a112985c60e6e0ad3aaaa4f79">client::Button::centerText</a></div><div class="ttdeci">void centerText(bool centerAllAxis=true, sf::Vector2f textOffset={0, 0})</div><div class="ttdoc">Center the text.</div><div class="ttdef"><b>Definition:</b> Button.cpp:92</div></div>
 <div class="ttc" id="aclassclient_1_1Button_html_a45f5f652fb5d692135fae1418ec37699"><div class="ttname"><a href="classclient_1_1Button.html#a45f5f652fb5d692135fae1418ec37699">client::Button::setActive</a></div><div class="ttdeci">void setActive()</div><div class="ttdoc">Put the border into red border.</div><div class="ttdef"><b>Definition:</b> Button.cpp:112</div></div>

@@ -1,0 +1,7 @@
+<map id="client::ValidateBoxesButtons" name="client::ValidateBoxesButtons">
+<area shape="rect" id="node1" title="class ValidateBoxesButtons &#45;" alt="" coords="5,184,195,211"/>
+<area shape="rect" id="node2" href="$classclient_1_1GameWindow.html" title="class GameWindow &#45;" alt="" coords="143,95,286,121"/>
+<area shape="rect" id="node3" href="$classclient_1_1ClientGameEngine.html" title="class ClientGameEngine &#45;" alt="" coords="224,184,395,211"/>
+<area shape="rect" id="node4" href="$classclient_1_1MenuWindow.html" title="class MenuWindow &#45;" alt="" coords="238,273,378,300"/>
+<area shape="rect" id="node5" href="$classshared_1_1Map.html" title="class Map &#45;" alt="" coords="167,5,262,32"/>
+</map>
