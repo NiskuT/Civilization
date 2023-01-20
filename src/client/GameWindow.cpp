@@ -659,86 +659,90 @@ void GameWindow::loadElementTexture()
  */
 void GameWindow::updateElementTexture()
 {
-
     for (auto &kv : elementTextureToDisplay)
     {
         kv.second->clearSprites();
     }
 
-    std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
-
-    const Json::Value &elementData = openJsonFile("/map/elementPath.json");
-    const Json::Value &resourceData = openJsonFile("/map/resourcePath.json");
-    const Json::Value &stateCityData = openJsonFile("/map/stateCityPath.json");
-
     for (unsigned i = 0; i < mapShared.getMapHeight(); i++)
     {
         for (unsigned j = 0; j < mapShared.getMapWidth(); j++)
         {
-            for (unsigned k = 0; k < mapShared(j, i)->getElements().size(); k++)
-            {
-                std::shared_ptr<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>> variant = mapShared(j, i)->getElements()[k];
-
-                int index;
-                std::string path;
-                
-                std::visit([&index](auto&& arg){
-                    index = (int)arg.getType();
-                }, *variant);
-
-                if(std::holds_alternative<shared::City>(*variant))
-                {
-                    shared::City stateCity = std::get<shared::City>(*variant);
-
-                    path = stateCityData[(int)stateCity.stateCityType]["path"].asString();
-                }
-                else if(std::holds_alternative<shared::ControlPawn>(*variant))
-                {
-                    shared::ControlPawn pawn = std::get<shared::ControlPawn>(*variant);
-
-                    path = elementData[index]["path"].asString();
-
-                    path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "" : "-reinforced") + ".png";
-
-                }
-                else if(std::holds_alternative<shared::Caravan>(*variant))
-                {
-                    shared::Caravan caravan = std::get<shared::Caravan>(*variant);
-
-                    path = elementData[index]["path"].asString();
-
-                    path = path.substr(0, 20) + std::to_string(getPlayerNumber(caravan.player)) + path.substr(21);
-                }
-                else
-                {
-                    path = elementData[index]["path"].asString();
-
-                }
-
-                path = RESOURCES_PATH + path;
-
-                elementTextureToDisplay[path]->addSprite();
-
-                elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, j, i, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
-        
-            }
-
-
-            if (mapShared(j, i)->hexResource != nullptr)
-            {
-                shared::Resource resource = *mapShared(j, i)->hexResource;
-
-                int index = (int)resource.getType() ;
-
-                std::string path = RESOURCES_PATH + resourceData[index]["path"].asString();
-
-                elementTextureToDisplay[path]->addSprite();
-
-                elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, j, i, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
-            }
+            selectElementToDisplay(j, i);
         }
     }
 }
+
+void GameWindow::selectElementToDisplay(int x, int y)
+{
+    const Json::Value &elementData = openJsonFile("/map/elementPath.json");
+    const Json::Value &resourceData = openJsonFile("/map/resourcePath.json");
+    const Json::Value &stateCityData = openJsonFile("/map/stateCityPath.json");
+
+    std::array<int, 2> hexSize = {mapTextureToDisplay.at(0).getWidth(), mapTextureToDisplay.at(0).getHeight()};
+
+    for (unsigned k = 0; k < mapShared(x, y)->getElements().size(); k++)
+    {
+        std::shared_ptr<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>> variant = mapShared(x, y)->getElements()[k];
+
+        int index;
+        std::string path;
+        
+        std::visit([&index](auto&& arg){
+            index = (int)arg.getType();
+        }, *variant);
+
+        if(std::holds_alternative<shared::City>(*variant))
+        {
+            shared::City stateCity = std::get<shared::City>(*variant);
+
+            path = stateCityData[(int)stateCity.stateCityType]["path"].asString();
+        }
+        else if(std::holds_alternative<shared::ControlPawn>(*variant))
+        {
+            shared::ControlPawn pawn = std::get<shared::ControlPawn>(*variant);
+
+            path = elementData[index]["path"].asString();
+
+            path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "" : "-reinforced") + ".png";
+
+        }
+        else if(std::holds_alternative<shared::Caravan>(*variant))
+        {
+            shared::Caravan caravan = std::get<shared::Caravan>(*variant);
+
+            path = elementData[index]["path"].asString();
+
+            path = path.substr(0, 20) + std::to_string(getPlayerNumber(caravan.player)) + path.substr(21);
+        }
+        else
+        {
+            path = elementData[index]["path"].asString();
+
+        }
+
+        path = RESOURCES_PATH + path;
+
+        elementTextureToDisplay[path]->addSprite();
+
+        elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, x, y, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+
+    }
+
+    if (mapShared(x, y)->hexResource != nullptr)
+    {
+        shared::Resource resource = *mapShared(x, y)->hexResource;
+
+        int index = (int)resource.getType() ;
+
+        std::string path = RESOURCES_PATH + resourceData[index]["path"].asString();
+
+        elementTextureToDisplay[path]->addSprite();
+
+        elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, x, y, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
+    }
+}
+
 
 int GameWindow::getPlayerNumber(std::string username)
 {

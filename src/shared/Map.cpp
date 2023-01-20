@@ -109,67 +109,32 @@ void Map::generateRandomMap(int seed)
             switch (field)
             {
             case 0:
-                mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
+                setWater(i, j);
                 break;
             case 1:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Grassland);
-                // 4% chance to be stone or antiquity
-                if (rand() % 100 < 2)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::stone);
-                }
-                else if (rand() % 100 < 2)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::antiquity);
-                }
+                addResource(i, j, 2, ResourceEnum::stone);
+                addResource(i, j, 2, ResourceEnum::antiquity);
                 break;
             case 2:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Hill);
-                // 4% chance to be stone or antiquity
-                if (rand() % 100 < 2)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::stone);
-                }
-                else if (rand() % 100 < 2)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::antiquity);
-                }
+                addResource(i, j, 2, ResourceEnum::stone);
+                addResource(i, j, 2, ResourceEnum::antiquity);
                 break;
             case 3:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Forest);
-                // 4% chance to be stone or antiquity
-                if (rand() % 100 < 2)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::stone);
-                }
-                else if (rand() % 100 < 2)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::antiquity);
-                }
+                addResource(i, j, 2, ResourceEnum::stone);
+                addResource(i, j, 2, ResourceEnum::antiquity);
                 break;
             case 4:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Desert);
-                // 18% chance to be oil or antiquity
-                if (rand() % 100 < 12)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::oil);
-                }
-                else if (rand() % 100 < 6)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::antiquity);
-                }
+                addResource(i, j, 12, ResourceEnum::oil);
+                addResource(i, j, 6, ResourceEnum::antiquity);
                 break;
             case 5:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Mountain);
-                // 18% chance to be diamond or stone
-                if (rand() % 100 < 12)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::diamond);
-                }
-                else if (rand() % 100 < 6)
-                {
-                    mapOfTheGame[i * this->width + j]->hexResource = std::make_shared<Resource>(ResourceEnum::stone);
-                }
+                addResource(i, j, 12, ResourceEnum::diamond);
+                addResource(i, j, 6, ResourceEnum::stone);
                 break;
             default:
                 mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
@@ -178,23 +143,17 @@ void Map::generateRandomMap(int seed)
 
             if (i == 0 || i == this->height - 1 || j == 0 || j == this->width - 1)
             {
-                mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
-                mapOfTheGame[i * this->width + j]->clearElement();
-                mapOfTheGame[i * this->width + j]->hexResource = nullptr;
+                setWater(i, j);
             }
             // 50% chance to be water
             else if (rand() % 10 < 5 && (i == 1 || i == this->height - 2 || j == 1 || j == this->width - 2))
             {
-                mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
-                mapOfTheGame[i * this->width + j]->clearElement();
-                mapOfTheGame[i * this->width + j]->hexResource = nullptr;
+                setWater(i, j);
             }
             // 10% chance to be water
             else if (rand() % 10 < 1 && (i == 2 || i == this->height - 3 || j == 2 || j == this->width - 3 ))
             {
-                mapOfTheGame[i * this->width + j]->setFieldType(FieldLevel::Water);
-                mapOfTheGame[i * this->width + j]->clearElement();
-                mapOfTheGame[i * this->width + j]->hexResource = nullptr;
+                setWater(i, j);
             }
             
             for (auto &wonder : wonderField)
@@ -233,16 +192,23 @@ void Map::generateRandomMap(int seed)
                 mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*city));
                 continue;
             }
-
-            if( rand() % 100 < 20)
-            {
-                std::shared_ptr<shared::Caravan> pawn = std::make_shared<shared::Caravan>(position);
-                pawn->player = "PlayerTest";
-                mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*pawn));
-                continue;
-            }
         }
     }
+}
+
+void Map::addResource(int x, int y, int procent, ResourceEnum resource)
+{
+    if (rand() % 100 < procent)
+    {
+        mapOfTheGame[x * this->width + y]->hexResource = std::make_shared<Resource>(resource);
+    }
+}
+
+void Map::setWater(int x, int y)
+{
+    mapOfTheGame[x * this->width + y]->setFieldType(FieldLevel::Water);
+    mapOfTheGame[x * this->width + y]->clearElement();
+    mapOfTheGame[x * this->width + y]->hexResource = nullptr;
 }
 
 /*!
