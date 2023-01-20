@@ -229,6 +229,24 @@ void ClientGameEngine::processServerRequest(std::string request)
         playerTurn.store(true);
     }
     else
+    else if (request.find("connected") == 0)
+    {
+        request = request.substr(10);
+        printChat(request);
+    }
+    else if (request.find("newplayer") == 0)
+    {
+        std::string player = request.substr(23);
+        clientGame.addPlayer(player);
+        request = request.substr(10) + " join the game";
+        printChat(request);
+    }
+    else if (request.find("infoplayer") == 0)
+    {
+        std::string player = request.substr(11);
+        clientGame.addPlayer(player);
+    }
+    else 
     {
         std::cout << "Received request: " << request << std::endl;
     }
@@ -279,13 +297,13 @@ void ClientGameEngine::handleInformation(int x, int y)
 }
 
 /*!
- * @brief Print which priority card the user wants to play and its difficulty
- * @param typePlayed type of the priority card played (economy, science, culture, ...)
- * @param difficulty level of difficulty played (0 to 4 for the 5 fields)
- */
-void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty)
+* @brief Print which priority card the user wants to play and its difficulty
+* @param typePlayed type of the priority card played (economy, science, culture, ...)
+* @param difficulty level of difficulty played (0 to 4 for the 5 fields) 
+*/
+void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty, int boxes)
 {
-    std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << std::endl;
+    std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << " and with " << boxes << " boxes" << std::endl;
 }
 
 /*!
@@ -296,8 +314,8 @@ void ClientGameEngine::handleQuitMenu(bool quitDef)
 {
     if (quitDef)
     {
-        myself->disconnectPlayer();
         runningWindow.store(0);
+        //myself->disconnectPlayer();
     }
     else
     {
@@ -323,7 +341,7 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
         return false;
     }
 
-    gameId = id;
+    gameId = id;        
 
     return connect(server, portNumber);
 }

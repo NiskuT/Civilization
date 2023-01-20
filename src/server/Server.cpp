@@ -79,14 +79,23 @@ void Server::handleClient(boost::asio::ip::tcp::socket socket)
         if (!playerConnected)
         {
             std::string response = "Error: game not available\n";
+
+            std::unique_lock<std::mutex> lock(player->socketWriteMutex);
             boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+            lock.unlock();
+
             player->disconnectPlayer();
             return;
         }
     }
 
-    std::string response = "OK " + game->getId() + "\n";
-    boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+    std::string response = "connected " + game->getTime() + " server Game ID: " + game->getId() + "\n";
+    {
+        std::lock_guard<std::mutex> lock(player->socketWriteMutex);
+        boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+    }
+
+    sendGameInfo(game, player);
     
     while (player->connectedToSocket.load())
     {
@@ -122,6 +131,19 @@ void Server::handleClient(boost::asio::ip::tcp::socket socket)
         }
     }
     std::cout << "Player " << player->getName() << " disconnected" << std::endl;
+}
+
+void Server::sendGameInfo(std::shared_ptr<GameEngine> game, std::shared_ptr<shared::Player> player)
+{
+    for (auto &p : game->getPlayers())
+    {
+        if (p->getName() != player->getName())
+        {
+            std::string response = "infoplayer " + p->getName() + "\n";
+            std::lock_guard<std::mutex> lock(p->socketWriteMutex);
+            boost::asio::write(player->getSocket(), boost::asio::buffer(response));
+        }
+    }
 }
 
 void Server::processMessage(boost::asio::streambuf& receiveBuffer, std::shared_ptr<shared::Player> player, std::shared_ptr<GameEngine> game)
@@ -187,6 +209,8 @@ bool Server::connectPlayerToGame(std::shared_ptr<shared::Player> player, std::sh
     else
     {
         std::cout << "Player " << player->getName() << " connected to game " << game->getId() << std::endl;
+        std::string newUserConnected = "newplayer " + game->getTime() + " " + "server" + " " + player->getName() + "\n";
+        game->sendToEveryone(newUserConnected);
         return true;
     }
 }
