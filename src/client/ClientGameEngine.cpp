@@ -29,6 +29,7 @@ ClientGameEngine::ClientGameEngine()
     myself = std::make_shared<shared::Player>();
     myself->setUsername("PlayerTest");
     playerTurn.store(false);
+    endOfTurn.store(false);
 }
 
 /*!
@@ -117,20 +118,34 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
         }
         else if (messageReceived.find("rulesturn") == 0) // binary reception without response
         {
-            // shared::RuleArgsStruct ruleArgs;
-            // std::cout << messageReceived << std::endl;
-            // binary.castToObject(messageReceived.substr(10), ruleArgs);
-            // // for (auto &player : ruleArgs.playerList)
+            shared::RuleArgsStruct ruleArgs;
+
+            size_t size = std::stoi(messageReceived.substr(10));
+            std::string data = binary.receive(myself, size);
+            clientGame.rotateTechWheel(std::stoi(data));
+
+            // size_t size = std::stoi(request.substr(10));
+            // std::cout << "taille de l'elemenbt recupere : " << size << "\n"
+            //           << std::endl;
+            // std::string bin = binary.receive(myself, size);
+            // binary.castToObject(bin, ruleArgs);
+            // std::cout << "ruleArgs.ruleId : " << (int)ruleArgs.ruleId << "\n"
+            //           << std::endl;
+            // // for (auto &player : ruleArgs.playerList) // TODO : add a player list in clientGame
             // // {
             // //     if (player->getName() == myself->getName())
             // //     {
             // //         myself = player;
             // //     }
             // // }
-            // ruleArgs.gameMap = clientMap;
-            
-            // shared::Rules rules;
-            // rules.runTheRule(ruleArgs);
+            // if (ruleArgs.playerName == myself->getName())
+            // {
+            //     ruleArgs.gameMap = clientMap;
+
+            //     shared::Rules rules;
+            //     rules.runTheRule(ruleArgs);
+            //     clientGame.rotateTechWheel(myself->getTechLevel());
+            // }
         }
         else
         {
@@ -245,7 +260,7 @@ void ClientGameEngine::processServerRequest(std::string request)
         std::string player = request.substr(11);
         clientGame.addPlayer(player);
     }
-    else 
+    else
     {
         std::cout << "Received request: " << request << std::endl;
     }
@@ -292,16 +307,43 @@ void ClientGameEngine::askServer()
  */
 void ClientGameEngine::handleInformation(int x, int y)
 {
+    if (x == 0 && y == 0)
+    {
+        endOfTurn.store(true);
+    }
     std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
 }
 
 /*!
-* @brief Print which priority card the user wants to play and its difficulty
-* @param typePlayed type of the priority card played (economy, science, culture, ...)
-* @param difficulty level of difficulty played (0 to 4 for the 5 fields) 
-*/
+ * @brief Print which priority card the user wants to play and its difficulty
+ * @param typePlayed type of the priority card played (economy, science, culture, ...)
+ * @param difficulty level of difficulty played (0 to 4 for the 5 fields)
+ */
 void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty, int boxes)
 {
+    if (typePlayed == "economy")
+    {
+        ruleArgsStruct.ruleId = shared::CardsEnum::economy;
+    }
+    else if (typePlayed == "science")
+    {
+        ruleArgsStruct.ruleId = shared::CardsEnum::science;
+    }
+    else if (typePlayed == "culture")
+    {
+        ruleArgsStruct.ruleId = shared::CardsEnum::culture;
+    }
+    else if (typePlayed == "military")
+    {
+        ruleArgsStruct.ruleId = shared::CardsEnum::military;
+    }
+    else if (typePlayed == "industry")
+    {
+        ruleArgsStruct.ruleId = shared::CardsEnum::industry;
+    }
+
+    ruleArgsStruct.numberOfBoxUsed = boxes;
+
     std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << " and with " << boxes << " boxes" << std::endl;
 }
 
@@ -314,7 +356,7 @@ void ClientGameEngine::handleQuitMenu(bool quitDef)
     if (quitDef)
     {
         runningWindow.store(0);
-        //myself->disconnectPlayer();
+        // myself->disconnectPlayer();
     }
     else
     {
@@ -340,7 +382,7 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
         return false;
     }
 
-    gameId = id;        
+    gameId = id;
 
     return connect(server, portNumber);
 }
@@ -427,6 +469,7 @@ void ClientGameEngine::playGame()
         }
         if (playerTurn.load())
         {
+            clientGame.modifyTextForUser("It's your turn !");
             playTurn();
         }
     }
@@ -435,31 +478,16 @@ void ClientGameEngine::playGame()
 
 void ClientGameEngine::playTurn()
 {
-    shared::RuleArgsStruct ruleArgsStruct;
-    ruleArgsStruct.ruleId = shared::CardsEnum::science;
-    ruleArgsStruct.numberOfBoxUsed = 0;
-    ruleArgsStruct.caravanMovementPath.push_back({0, 1});
-    ruleArgsStruct.caravanMovementPath.push_back({4, 8});
-    ruleArgsStruct.caravanMovementPath.push_back({5, 6});
-    ruleArgsStruct.resourceToGet = shared::ResourceEnum::oil;
-    ruleArgsStruct.cardToGetABox = shared::CardsEnum::economy;
-    ruleArgsStruct.positionToNuke = {3, 4};
-    ruleArgsStruct.pawnsPositions.push_back({1, 1});
-    ruleArgsStruct.pawnsPositions.push_back({2, 2});
-    ruleArgsStruct.pawnsPositions.push_back({3, 3});
-    ruleArgsStruct.militaryCardAttack = true;
-    ruleArgsStruct.industryCardBuildWonder = true;
-    ruleArgsStruct.positionOfWonder = {4, 5};
-    ruleArgsStruct.positionOfCity = {6, 7};
-    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::economy);
-    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::military);
-
-
-
-    std::string struc;
-    binary.castToBinary(ruleArgsStruct, struc);
-    binary.send(myself, struc);
-    playerTurn.store(false);
+    if (endOfTurn.load())
+    {
+        std::cout << "End of turn" << std::endl;
+        clientGame.modifyTextForUser("");
+        std::string struc;
+        binary.castToBinary(ruleArgsStruct, struc);
+        binary.send(myself, struc);
+        playerTurn.store(false);
+        endOfTurn.store(false);
+    }
 }
 
 /*!

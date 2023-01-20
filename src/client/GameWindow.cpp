@@ -893,7 +893,7 @@ void GameWindow::loadHudTexture()
     }
 
     // text for the user
-    std::string textForTheUserString = "Do that";
+    std::string textForTheUserString = "";
     textForTheUser = std::make_shared<Button>(sf::Vector2f(dataNumber["text-for-user-size-x"].asFloat(), dataNumber["text-for-user-size-y"].asFloat()),
                                               sf::Vector2f(dataNumber["text-for-user-pos-x"].asFloat(), dataNumber["text-for-user-pos-y"].asFloat()),
                                               TEXT_FOR_USER_BUTTON_COLOR,

@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-#define MAX_PLAYERS 4
+#define MAX_PLAYERS 2
 
 using namespace server;
 
@@ -49,6 +49,7 @@ void GameEngine::runGame() // rename rungame
     {
         for (auto &player : players)
         {
+            std::cout << "start of turn of player: " << player->getName() << std::endl;
             shared::RuleArgsStruct ruleArgs;
             do
             {
@@ -59,18 +60,26 @@ void GameEngine::runGame() // rename rungame
                 ruleArgs.currentPlayer = player;
 
                 std::cout << "ruleId: " << (int)ruleArgs.ruleId << std::endl;
+                std::cout << "number of box used: " << ruleArgs.numberOfBoxUsed << std::endl;
 
             } while (!(rules.runTheRule(ruleArgs)));
 
             // ruleArgs.playerName = player->getName();
-            // message = "rulesturn ";
+
+            std::string serializedData = std::to_string(player->getTechLevel());
+            binary.send(player, serializedData, false);
+
+            
             // std::string struc;
             // binary.castToBinary(ruleArgs, struc);
-            // message += struc.size();
-            // message += struc;
+            // std::cout << "ruleArgsStruct: " << struc.size() << std::endl;
+
+            // message = "rulesturn ";
+            // message += std::to_string(struc.size());
             // sendToEveryone(message);
+            // sendToEveryone(struc);
+            // std::cout << "end of turn of player" << player->getName() << std::endl;
         }
-        std::cout << "end of turn" << std::endl;
     }
 }
 
@@ -212,7 +221,7 @@ void GameEngine::askClient(std::shared_ptr<shared::Player> player)
 
 void GameEngine::sendToEveryone(std::string message)
 {
-    std::cout << message;
+    std::cout << "send to everyone" << message << std::endl;
     for (auto &player : players)
     {
         if (player->connectedToSocket.load())
