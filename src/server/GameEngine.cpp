@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-#define MAX_PLAYERS 4
+#define MAX_PLAYERS 2
 
 using namespace server;
 
@@ -50,14 +50,18 @@ void GameEngine::startGame() // rename rungame
         for (auto &player : players)
         {
             shared::RuleArgsStruct ruleArgs;
-            do
-            {
-                player->qAndA.question = "playturn\n";
-                askClient(player);
-                binary.castToObject(player->qAndA.answer, ruleArgs);
-                ruleArgs.gameMap = this->gameMap;
-                ruleArgs.currentPlayer = player;
-            } while (!rules.runTheRule(ruleArgs));
+            // do
+            // {
+
+            player->qAndA.question = "playturn\n";
+            askClient(player);
+            binary.castToObject(player->qAndA.answer, ruleArgs);
+            ruleArgs.gameMap = this->gameMap;
+            ruleArgs.currentPlayer = player;
+
+            std::cout << "ruleId: " << (int) ruleArgs.ruleId << std::endl;
+            
+            // } while (!rules.runTheRule(ruleArgs));
 
             // sendToEveryone
             // TODO: send the coup

@@ -122,6 +122,8 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
             binary.castToObject(data, ruleArgs);
             ruleArgs.currentPlayer = myself;
             ruleArgs.gameMap = clientMap;
+            std::cout << "rulesturn received" << std::endl;
+            std::cout << "ruleId" << (int)ruleArgs.ruleId << std::endl;
             // TODO: function to process rules turn
         }
         else
@@ -225,7 +227,7 @@ void ClientGameEngine::processServerRequest(std::string request)
         shared::RuleArgsStruct ruleArgsStruc;
         ruleArgsStruc.ruleId = shared::CardsEnum::economy;
 
-        std::string struc ;
+        std::string struc;
         binary.castToBinary(ruleArgsStruc, struc);
         binary.send(myself, struc);
     }

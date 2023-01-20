@@ -3,7 +3,7 @@
 #include <variant>
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(MapTest)
+BOOST_AUTO_TEST_SUITE( RulesTest)
 
 BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
