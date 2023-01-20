@@ -167,6 +167,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>onHexagonClick</b> (s
 <tr class="memitem:a3e4a4d4939336c167ea6d51e23db4883"><td class="memItemLeft" align="right" valign="top"><a id="a3e4a4d4939336c167ea6d51e23db4883"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addPlayer</b> (std::string username)</td></tr>
 <tr class="separator:a3e4a4d4939336c167ea6d51e23db4883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0173676d1f553827bd7d9039fd2239ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1GameWindow.html#a0173676d1f553827bd7d9039fd2239ad">modifyTextForUser</a> (std::string text)</td></tr>
+<tr class="memdesc:a0173676d1f553827bd7d9039fd2239ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to modify the text that is specified at a player.  <a href="classclient_1_1GameWindow.html#a0173676d1f553827bd7d9039fd2239ad">More...</a><br /></td></tr>
+<tr class="separator:a0173676d1f553827bd7d9039fd2239ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -224,6 +227,9 @@ std::unique_ptr&lt; <a class="el" href="classclient_1_1ValidateBoxesButtons.html
 <tr class="memitem:a7da84b69a465739c9049e67a05c9e369"><td class="memItemLeft" align="right" valign="top"><a id="a7da84b69a465739c9049e67a05c9e369"></a>
 std::array&lt; int, 25 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>techWheelRotation</b></td></tr>
 <tr class="separator:a7da84b69a465739c9049e67a05c9e369"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b83704c003c213da1ab4ee23b8e25ee"><td class="memItemLeft" align="right" valign="top"><a id="a2b83704c003c213da1ab4ee23b8e25ee"></a>
+std::shared_ptr&lt; <a class="el" href="classclient_1_1Button.html">Button</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>textForTheUser</b></td></tr>
+<tr class="separator:a2b83704c003c213da1ab4ee23b8e25ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1GameWindow.html" title="class GameWindow -">GameWindow</a> - </p>
@@ -471,6 +477,32 @@ std::array&lt; int, 25 &gt;&#160;</td><td class="memItemRight" valign="bottom"><
     <tr><td class="paramname">keyEvent</td><td>The event </td></tr>
     <tr><td class="paramname">moveMode</td><td>pointer to know if the map is moving on the screen </td></tr>
     <tr><td class="paramname">clickStartingPoint</td><td>reference used to know where the user start pressing mouse </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0173676d1f553827bd7d9039fd2239ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0173676d1f553827bd7d9039fd2239ad">&#9670;&nbsp;</a></span>modifyTextForUser()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GameWindow::modifyTextForUser </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function to modify the text that is specified at a player. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>string: text we want to set </td></tr>
   </table>
   </dd>
 </dl>
