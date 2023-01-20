@@ -204,17 +204,22 @@ void ClientGameEngine::processServerRequest(std::string request)
         request = request.substr(5);
         printChat(request);
     }
-    else if(request.find("connected") == 0)
+    else if (request.find("connected") == 0)
     {
         request = request.substr(10);
         printChat(request);
     }
-    else if(request.find("player") == 0)
+    else if (request.find("newplayer") == 0)
     {
-        std::string player = request.substr(20);
+        std::string player = request.substr(23);
         clientGame.addPlayer(player);
-        request = request.substr(7) + " join the game";
+        request = request.substr(10) + " join the game";
         printChat(request);
+    }
+    else if (request.find("infoplayer") == 0)
+    {
+        std::string player = request.substr(11);
+        clientGame.addPlayer(player);
     }
     else 
     {

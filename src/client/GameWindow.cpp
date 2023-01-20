@@ -613,7 +613,7 @@ bool GameWindow::onHexagonClick(sf::Vector2i clickPosition)
     {
         for (unsigned j = 0; j < mapTexture.getSize(); j++)
         {
-            if (!gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
+            if (validateBoxesWindow->isWindowActive || !gameEnginePtr->intersectPointRect(clickPosition, mapTexture.getSprite(j).getGlobalBounds()))
             {
                 continue;
             }
