@@ -12,14 +12,8 @@ using namespace shared;
 
 typedef std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City> variantElement;
 
-std::unordered_map<std::string, FieldLevel> wonderField = {
-    {"everest", FieldLevel::WonderEverest},
-    {"galapagos", FieldLevel::WonderGalapagos},
-    {"kilimanjaro", FieldLevel::WonderKilimanjaro},
-    {"messa", FieldLevel::WonderMessa},
-    {"pantanal", FieldLevel::WonderPantanal},
-    {"volcanic", FieldLevel::WonderVolcanic},
-};
+const FieldLevel wonderList[] = {FieldLevel::WonderEverest, FieldLevel::WonderGalapagos, FieldLevel::WonderKilimanjaro,
+                                 FieldLevel::WonderMessa, FieldLevel::WonderPantanal, FieldLevel::WonderVolcanic};
 
 std::vector<CityStateEnum> stateCityField = {
     CityStateEnum::carthage,
@@ -29,8 +23,7 @@ std::vector<CityStateEnum> stateCityField = {
     CityStateEnum::seoul,
     CityStateEnum::geneva,
     CityStateEnum::buenosAires,
-    CityStateEnum::bruxelles
-};
+    CityStateEnum::bruxelles};
 
 /*!
  * @brief Map constructor
@@ -79,6 +72,14 @@ unsigned Map::getMapWidth()
     return this->width;
 }
 
+bool wonderCondition(std::shared_ptr<Hexagon> hex, std::vector<FieldLevel> &remWonder)
+{
+    return hex->getFieldLevel() != FieldLevel::Water &&
+           remWonder.empty() == false &&
+           hex->hexResource == nullptr &&
+           rand() % 1000 < 5;
+}
+
 /*!
  * @brief Function to generate a random map based on Perlin Noise
  * @param seed Seed to use for the random generation
@@ -93,6 +94,8 @@ void Map::generateRandomMap(int seed)
 
     PerlinNoise pn(seed);
     srand(time(NULL));
+
+    std::vector<FieldLevel> remainingWonders(wonderList, wonderList + sizeof(wonderList) / sizeof(wonderList[0]));
 
     for (unsigned i = 0; i < this->height; i++)
     {
@@ -151,30 +154,25 @@ void Map::generateRandomMap(int seed)
                 setWater(i, j);
             }
             // 10% chance to be water
-            else if (rand() % 10 < 1 && (i == 2 || i == this->height - 3 || j == 2 || j == this->width - 3 ))
+            else if (rand() % 10 < 1 && (i == 2 || i == this->height - 3 || j == 2 || j == this->width - 3))
             {
                 setWater(i, j);
             }
-            
-            for (auto &wonder : wonderField)
+
+            if (wonderCondition(mapOfTheGame[i * this->width + j],remainingWonders))
             {
-                if (mapOfTheGame[i * this->width + j]->getFieldLevel() != FieldLevel::Water 
-                    && mapOfTheGame[i * this->width + j]->hexResource == nullptr
-                    && rand() % 1000 < 5)
-                {
-                    mapOfTheGame[i * this->width + j]->setFieldType(wonder.second);
-                    wonderField.erase(wonder.first);
-                    continue;
-                }
+                int wonderIndex = rand() % remainingWonders.size();
+                FieldLevel wonder = remainingWonders[wonderIndex];
+                remainingWonders.erase(remainingWonders.begin() + wonderIndex);
+                mapOfTheGame[i * this->width + j]->setFieldType(wonder);
             }
 
-            if( mapOfTheGame[i * this->width + j]->hexResource != nullptr
-                || mapOfTheGame[i * this->width + j]->getFieldLevel() == FieldLevel::Water )
+            if (mapOfTheGame[i * this->width + j]->hexResource != nullptr || mapOfTheGame[i * this->width + j]->getFieldLevel() == FieldLevel::Water)
             {
                 continue;
-            }   
+            }
 
-            if( rand() % 100 < 5 )
+            if (rand() % 100 < 5)
             {
                 std::shared_ptr<shared::BarbarianVillage> barbareVillage = std::make_shared<shared::BarbarianVillage>();
                 std::shared_ptr<shared::Barbarian> barbare = std::make_shared<shared::Barbarian>();
@@ -183,7 +181,7 @@ void Map::generateRandomMap(int seed)
                 continue;
             }
 
-            if( rand() % 100 < 3 )
+            if (rand() % 100 < 3)
             {
                 int index = rand() % stateCityField.size();
                 std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);

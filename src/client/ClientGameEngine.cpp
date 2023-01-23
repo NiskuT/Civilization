@@ -3,8 +3,6 @@
 #include <sstream>
 #include <sys/stat.h>
 
-#define OFFLINE 1
-
 #define REFRESH_ELEMENT 1
 
 #define WINDOW_LENGTH 1600
@@ -354,14 +352,24 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
  */
 void ClientGameEngine::startGameWindow()
 {
-#ifdef OFFLINE
-    clientMap->generateRandomMap(rand() % 1000000000);
-#else
-    if(gameId == "new") {
+    if (myself->connectedToSocket.load() && gameId == "new")
+    {
         generateMap(11,15,rand() % 1000000000);
+        loadMap();
     }
-    loadMap();
-#endif
+    else if (myself->connectedToSocket.load())
+    {
+        loadMap();
+    }
+    else 
+    {
+        std::cout << "You are not connected to the server" << std::endl;
+        std::cout << "Map has been generated locally." << std::endl;
+        clientMap->generateRandomMap(rand() % 1000000000);
+    }
+    
+    
+
     clientGame.mapShared = clientMap;
     clientGame.startGame();
 }

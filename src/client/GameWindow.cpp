@@ -1016,7 +1016,7 @@ void GameWindow::addPlayer(std::string username)
         }
     }
 
-    while(1)
+    /*while(1)
     {
         unsigned x = rand() % mapShared->getMapWidth();
         unsigned y = rand() % mapShared->getMapHeight();
@@ -1034,7 +1034,7 @@ void GameWindow::addPlayer(std::string username)
             updateElementTexture();
             break;
         }
-    }
+    }*/
 
     whoIsPlayingButtons.emplace_back(
         sf::Vector2f(75, 90 / 2),
