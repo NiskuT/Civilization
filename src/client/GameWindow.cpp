@@ -103,8 +103,7 @@ void GameWindow::displayWindow()
         if (priorityCardTexture.isUp)
         {
             gameEnginePtr->clientWindow->draw(*priorityCardTexture.body);
-            gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonRect);
-            gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonText);
+            priorityCardTexture.validateButton->drawButton(gameEnginePtr->clientWindow);
         }
     }
     boxTexture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
@@ -118,8 +117,7 @@ void GameWindow::displayWindow()
 
     for (auto &whoIsPlayingButton : whoIsPlayingButtons)
     {
-        gameEnginePtr->clientWindow->draw(*whoIsPlayingButton.buttonRect);
-        gameEnginePtr->clientWindow->draw(*whoIsPlayingButton.buttonText);
+        whoIsPlayingButton.drawButton(gameEnginePtr->clientWindow);
     }
 
     gameEnginePtr->clientWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
@@ -139,8 +137,9 @@ void GameWindow::displayWindow()
         chatBox->drawChat(gameEnginePtr->clientWindow);
     }
 
-    gameEnginePtr->clientWindow->draw(*textForTheUser->buttonRect);
-    gameEnginePtr->clientWindow->draw(*textForTheUser->buttonText);
+    textForTheUser->drawButton(gameEnginePtr->clientWindow);
+    endOfRoundButton->drawButton(gameEnginePtr->clientWindow);
+
 
     gameEnginePtr->clientWindow->display();
 }
@@ -994,6 +993,17 @@ void GameWindow::loadHudTexture()
                             bodyFont,
                             dataNumber["text-for-user-max-char"].asInt());
     textForTheUser->buttonText->setFillColor(TEXT_FOR_USER_COLOR);
+
+    // end of round button
+    endOfRoundButton = std::make_unique<Button>(sf::Vector2f(dataNumber["end-of-round-size-x"].asFloat(), dataNumber["end-of-round-size-y"].asFloat()),
+                                              sf::Vector2f(dataNumber["text-for-user-pos-x"].asFloat(), dataNumber["end-of-round-pos-y"].asFloat()),
+                                              TEXT_FOR_USER_BUTTON_COLOR,
+                                              false);
+    endOfRoundButton->setText(dataNumber["end-of-round-text-size"].asInt(),
+                            sf::Vector2f(0, 0),
+                            "End of round",
+                            bodyFont);
+    endOfRoundButton->buttonText->setFillColor(TEXT_FOR_USER_COLOR);
 }
 
 /*!

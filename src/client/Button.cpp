@@ -141,3 +141,8 @@ bool Button::clickButton()
         return true;
     }
 }
+
+void Button::drawButton(std::shared_ptr<sf::RenderWindow> window) {
+    window->draw(*buttonRect);
+    window->draw(*buttonText);
+}
