@@ -2,6 +2,12 @@
 
 using namespace shared;
 
+ControlPawn::ControlPawn()
+{
+    this->reinforced = false;
+    this->position = {0, 0};
+}
+
 ControlPawn::ControlPawn(std::array<unsigned, 2> position)
 {
     this->reinforced = false;

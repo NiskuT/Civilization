@@ -72,7 +72,27 @@ void Binary::castToBinary(T &data, std::string &serializedData)
     serializedData = stream.str();
 }
 
+// We need to instantiate the templates for the types we use in other library than shared
 template void Binary::castToBinary<Map>(Map &data, std::string &serializedData);
 template void Binary::castToObject<Map>(std::string receivedData, Map &data);
+
 template void Binary::castToBinary<RuleArgsStruct>(RuleArgsStruct &data, std::string &serializedData);
 template void Binary::castToObject<RuleArgsStruct>(std::string receivedData, RuleArgsStruct &data);
+
+template void Binary::castToBinary<Barbarian>(Barbarian &data, std::string &serializedData);
+template void Binary::castToObject<Barbarian>(std::string receivedData, Barbarian &data);
+
+template void Binary::castToBinary<BarbarianVillage>(BarbarianVillage &data, std::string &serializedData);
+template void Binary::castToObject<BarbarianVillage>(std::string receivedData, BarbarianVillage &data);
+
+template void Binary::castToBinary<City>(City &data, std::string &serializedData);
+template void Binary::castToObject<City>(std::string receivedData, City &data);
+
+template void Binary::castToBinary<Caravan>(Caravan &data, std::string &serializedData);
+template void Binary::castToObject<Caravan>(std::string receivedData, Caravan &data);
+
+template void Binary::castToBinary<ControlPawn>(ControlPawn &data, std::string &serializedData);
+template void Binary::castToObject<ControlPawn>(std::string receivedData, ControlPawn &data);
+
+template void Binary::castToBinary<Hexagon>(Hexagon &data, std::string &serializedData);
+template void Binary::castToObject<Hexagon>(std::string receivedData, Hexagon &data);
