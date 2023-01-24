@@ -79,21 +79,13 @@ void GameWindow::displayWindow()
         mapTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
+    
+    std::unique_lock<std::mutex> lock(updatePlayerMutex);
     for (auto &elementTexture : elementTextureToDisplay)
     {
         elementTexture.second->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
-
-    for (auto &priorityCardTexture : priorityCards)
-    {
-        priorityCardTexture.texture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
-        gameEnginePtr->clientWindow->draw(*priorityCardTexture.title);
-        gameEnginePtr->clientWindow->draw(*priorityCardTexture.nbOfBoxesText);
-        if (priorityCardTexture.isUp)
-        {
-            gameEnginePtr->clientWindow->draw(*priorityCardTexture.body);
-        }
-    }
+    lock.unlock();
 
     for (auto &priorityCardTexture : priorityCards)
     {
@@ -716,6 +708,7 @@ void GameWindow::loadElementTexture()
  */
 void GameWindow::updateElementTexture()
 {
+    std::lock_guard<std::mutex> lock(updatePlayerMutex);
     for (auto &kv : elementTextureToDisplay)
     {
         kv.second->clearSprites();
@@ -816,15 +809,15 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
 int GameWindow::getPlayerNumber(std::string username)
 {
-    int i = 0;
-    for(auto& button: whoIsPlayingButtons)
+    for(unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
     {
-        i++;
-        if(username.compare(button.buttonText->getString()))
+        std::string buttonText = whoIsPlayingButtons[i].buttonText->getString();
+        if(username.compare(buttonText) == 0)
         {
             return i + 1;
         }
     }
+    std::cout << "Player not found\n";
     return 1;
 }
 
@@ -1010,7 +1003,8 @@ void GameWindow::addPlayer(std::string username)
 {
     for (auto &button : whoIsPlayingButtons)
     {
-        if (!username.compare(button.buttonText->getString()))
+        std::string buttonText = button.buttonText->getString();
+        if (!username.compare(buttonText))
         {
             return;
         }
@@ -1049,7 +1043,7 @@ void GameWindow::addPlayer(std::string username)
         whoIsPlayingButtons[i].buttonRect->setPosition(
             (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2 + 105 * i,
             0);
-        whoIsPlayingButtons[i].centerText(false);
+        whoIsPlayingButtons[i].centerText(true);
     }
 }
 
