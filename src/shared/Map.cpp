@@ -96,6 +96,7 @@ void Map::generateRandomMap(int seed)
     srand(time(NULL));
 
     std::vector<FieldLevel> remainingWonders(wonderList, wonderList + sizeof(wonderList) / sizeof(wonderList[0]));
+    std::vector<bool> remainingCity(stateCityField.size(), true);
 
     for (unsigned i = 0; i < this->height; i++)
     {
@@ -159,9 +160,9 @@ void Map::generateRandomMap(int seed)
                 setWater(i, j);
             }
 
-            if (wonderCondition(mapOfTheGame[i * this->width + j],remainingWonders))
+            if (wonderCondition(mapOfTheGame[i * this->width + j], remainingWonders))
             {
-                int wonderIndex = rand() % remainingWonders.size();
+                int wonderIndex = rand() % remainingWonders.size(); // remainingWonders is not empty here
                 FieldLevel wonder = remainingWonders[wonderIndex];
                 remainingWonders.erase(remainingWonders.begin() + wonderIndex);
                 mapOfTheGame[i * this->width + j]->setFieldType(wonder);
@@ -183,12 +184,22 @@ void Map::generateRandomMap(int seed)
 
             if (rand() % 100 < 3)
             {
-                int index = rand() % stateCityField.size();
-                std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
-                city->setStateCity(stateCityField[index]);
-                stateCityField.erase(stateCityField.begin() + index);
-                mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*city));
-                continue;
+                std::vector<int> remainingIndex;
+                for (unsigned k = 0; k < stateCityField.size(); k++)
+                {
+                    if (remainingCity[k])
+                    {
+                        remainingIndex.push_back(k);
+                    }
+                }
+                if (remainingIndex.empty() == false)
+                {
+                    int index = remainingIndex[rand() % remainingIndex.size()]; // remainingIndex is not empty
+                    std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
+                    city->setStateCity(stateCityField[index]);
+                    remainingCity[index] = false;
+                    mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*city));
+                }
             }
         }
     }
