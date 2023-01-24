@@ -30,6 +30,7 @@ ClientGameEngine::ClientGameEngine()
     myself->setUsername("PlayerTest");
     clientMap = std::make_shared<shared::Map>();
     playerTurn.store(false);
+    clientConnectedAndReady.store(false);
 }
 
 /*!
@@ -113,7 +114,7 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
         else if (messageReceived.find("binary") == 0) // binary reception
         {
             size_t size = std::stoi(messageReceived.substr(7));
-            std::string data = binary.receive(myself, size);
+            std::string data = binary.receive(myself, receiveStream, size);
             registerServerAnswer(data);
         }
         else if (messageReceived.find("rulesturn") == 0) // binary reception without response
@@ -129,7 +130,7 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
             // //     }
             // // }
             // ruleArgs.gameMap = clientMap;
-            
+
             // shared::Rules rules;
             // rules.runTheRule(ruleArgs);
         }
@@ -156,6 +157,11 @@ void ClientGameEngine::generateMap(const unsigned height, const unsigned width, 
     if (myself->connectedToSocket.load() == false)
     {
         std::cout << "You are not connected to the server" << std::endl;
+        exit(1);
+    }
+    else if (clientConnectedAndReady.load() == false)
+    {
+        std::cout << "Server is not ready" << std::endl;
         exit(1);
     }
 
@@ -187,6 +193,11 @@ void ClientGameEngine::loadMap()
     if (myself->connectedToSocket.load() == false)
     {
         std::cout << "You are not connected to the server" << std::endl;
+        exit(1);
+    }
+    else if (clientConnectedAndReady.load() == false)
+    {
+        std::cout << "Server is not ready" << std::endl;
         exit(1);
     }
     std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
@@ -233,6 +244,7 @@ void ClientGameEngine::processServerRequest(std::string request)
     else if (request.find("connected") == 0)
     {
         request = request.substr(10);
+        clientConnectedAndReady.store(true);
         printChat(request);
     }
     else if (request.find("newplayer") == 0)
@@ -247,7 +259,7 @@ void ClientGameEngine::processServerRequest(std::string request)
         std::string player = request.substr(11);
         clientGame.addPlayer(player);
     }
-    else 
+    else
     {
         std::cout << "Received request: " << request << std::endl;
     }
@@ -298,10 +310,10 @@ void ClientGameEngine::handleInformation(int x, int y)
 }
 
 /*!
-* @brief Print which priority card the user wants to play and its difficulty
-* @param typePlayed type of the priority card played (economy, science, culture, ...)
-* @param difficulty level of difficulty played (0 to 4 for the 5 fields) 
-*/
+ * @brief Print which priority card the user wants to play and its difficulty
+ * @param typePlayed type of the priority card played (economy, science, culture, ...)
+ * @param difficulty level of difficulty played (0 to 4 for the 5 fields)
+ */
 void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty, int boxes)
 {
     std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << " and with " << boxes << " boxes" << std::endl;
@@ -316,7 +328,7 @@ void ClientGameEngine::handleQuitMenu(bool quitDef)
     if (quitDef)
     {
         runningWindow.store(0);
-        //myself->disconnectPlayer();
+        // myself->disconnectPlayer();
     }
     else
     {
@@ -342,9 +354,17 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
         return false;
     }
 
-    gameId = id;        
+    gameId = id;
 
     return connect(server, portNumber);
+}
+
+void ClientGameEngine::waitToBeReady()
+{
+    while (clientConnectedAndReady.load() == false)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
 }
 
 /*!
@@ -354,21 +374,21 @@ void ClientGameEngine::startGameWindow()
 {
     if (myself->connectedToSocket.load() && gameId == "new")
     {
-        generateMap(11,15,rand() % 1000000000);
+        waitToBeReady();
+        generateMap(11, 15, rand() % 1000000000);
         loadMap();
     }
     else if (myself->connectedToSocket.load())
     {
+        waitToBeReady();
         loadMap();
     }
-    else 
+    else
     {
         std::cout << "You are not connected to the server" << std::endl;
         std::cout << "Map has been generated locally." << std::endl;
         clientMap->generateRandomMap(rand() % 1000000000);
     }
-    
-    
 
     clientGame.mapShared = clientMap;
     clientGame.startGame();
@@ -474,8 +494,6 @@ void ClientGameEngine::playTurn()
     ruleArgsStruct.positionOfCity = {6, 7};
     ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::economy);
     ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::military);
-
-
 
     std::string struc;
     binary.castToBinary(ruleArgsStruct, struc);

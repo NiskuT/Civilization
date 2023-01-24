@@ -11,72 +11,45 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
     BOOST_CHECK(1);
 }
-
-BOOST_AUTO_TEST_CASE(connectionTest)
+struct ServerFixture
 {
-    client::ClientGameEngine client, client2;
     server::Server server;
 
-    /*std::thread serv(&server::Server::start, &server);
-    serv.detach();
-    usleep(200000);
+    ServerFixture()
+    {
+        std::thread serv([&](){server.start();});
+        serv.detach();
+        usleep(200000);
+    }
+
+    ~ServerFixture()
+    {
+        server.running.store(false);
+    }
+};
+
+
+BOOST_FIXTURE_TEST_CASE(connectionTest, ServerFixture)
+{
+    client::ClientGameEngine client, client2;
     client.gameId = "new";
     client.connect("127.0.0.1", 8080);
 
-    client.generateMap(50, 50,273884);
-    client.loadMap();*/
+    client.waitToBeReady();
+    client.generateMap(10, 10,273884);
+    client.loadMap();
+    client.handleQuitMenu(true);
 
-    server.running.store(false);
-}
-
-
-/*BOOST_AUTO_TEST_CASE(connectionTest)
-{
-    client::ClientGameEngine client, client2;
-    server::Server server;
-
-    std::thread serv(&server::Server::start, &server);
-    serv.detach();
-    usleep(10000);
-    client.gameId = "new";
-    client.connect("127.0.0.1", 8080);
-
-    usleep(10000);
-    BOOST_CHECK(server.games.size() == 1);
-    BOOST_CHECK(server.games[0]->getPlayers().size() == 1);
-
+    while(server.games.size() == 0){
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
     client2.gameId = server.games[0]->getId();
     client2.myself->setUsername("testPlayer2");
     client2.connect("127.0.0.1", 8080);
+    client2.waitToBeReady();
+    client2.loadMap();
+    client2.handleQuitMenu(true);
+}
 
-    usleep(10000);
-    BOOST_CHECK(server.games.size() == 1);
-    BOOST_CHECK(server.games[0]->getPlayers().size() == 2);
-
-    {
-        std::unique_lock<std::mutex> responseLock(client.myself->qAndA.sharedDataMutex);
-        client.myself->qAndA.question = "getstate\n";
-    }
-    client.askServer();
-    BOOST_CHECK(client.myself->qAndA.answer.size() > 0);
-
-    {
-        std::unique_lock<std::mutex> responseLock(client.myself->qAndA.sharedDataMutex);
-        client.myself->qAndA.question = "setmapparam width 18\n";
-    }
-    client.askServer();
-    BOOST_CHECK(client.myself->qAndA.answer.find("ok") != std::string::npos);
-    BOOST_CHECK(server.games[0]->gameMap->getMapWidth() == 18);
-
-    client2.myself->qAndA.question = "setmapparam height 24\n";
-    client2.askServer();
-    BOOST_CHECK(client2.myself->qAndA.answer.find("ok") != std::string::npos);
-    BOOST_CHECK(server.games[0]->gameMap->getMapHeight() == 24);
-
-    client2.generateMap(15, 15,273884);
-    client.loadMap();
-    
-    server.running.store(false);
-}*/
 
 BOOST_AUTO_TEST_SUITE_END()

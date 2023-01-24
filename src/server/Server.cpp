@@ -163,7 +163,7 @@ void Server::processMessage(boost::asio::streambuf& receiveBuffer, std::shared_p
         else if (messageReceived.find("binary") == 0) // binary reception
         {
             size_t size = std::stoi(messageReceived.substr(7));
-            std::string data = binary.receive(player, size);
+            std::string data = binary.receive(player, receiveStream, size);
             registerClientAnswer(data, player);
         }
         else

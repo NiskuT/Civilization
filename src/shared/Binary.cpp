@@ -1,5 +1,6 @@
 #include <shared.hpp>
 #include <iostream>
+#include <sstream>
 
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -25,10 +26,16 @@ void Binary::send(std::shared_ptr<shared::Player> player, std::string serialized
     boost::asio::write(player->getSocket(), boost::asio::buffer(serializedData));
 }
 
-std::string Binary::receive(std::shared_ptr<shared::Player> player, size_t size)
+std::string Binary::receive(std::shared_ptr<shared::Player> player, std::istream &alreadyReceived, size_t totalSize)
 {
+    std::stringstream buffer;
+    buffer << alreadyReceived.rdbuf();
+    std::string fullMessage = buffer.str();
+
     boost::system::error_code error;
     boost::asio::streambuf receiveBuffer;
+
+    size_t size = totalSize - fullMessage.size();
     try
     {
         std::lock_guard<std::mutex> lock(player->socketReadMutex);
@@ -52,7 +59,17 @@ std::string Binary::receive(std::shared_ptr<shared::Player> player, size_t size)
     std::string messageReceived(
         boost::asio::buffers_begin(receiveBuffer.data()),
         boost::asio::buffers_end(receiveBuffer.data()));
-    return messageReceived;
+
+    if (fullMessage.size() == 0)
+    {
+        return messageReceived;
+    }
+    else
+    {
+        fullMessage += messageReceived;
+        return fullMessage;
+    }
+    
 }
 
 template <typename T>
