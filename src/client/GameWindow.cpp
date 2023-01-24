@@ -816,15 +816,15 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
 int GameWindow::getPlayerNumber(std::string username)
 {
-    int i = 0;
-    for(auto& button: whoIsPlayingButtons)
+    for(unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
     {
-        i++;
-        if(username.compare(button.buttonText->getString()))
+        std::string buttonText = whoIsPlayingButtons[i].buttonText->getString();
+        if(username.compare(buttonText) == 0)
         {
             return i + 1;
         }
     }
+    std::cout << "Player not found\n";
     return 1;
 }
 
@@ -1010,7 +1010,8 @@ void GameWindow::addPlayer(std::string username)
 {
     for (auto &button : whoIsPlayingButtons)
     {
-        if (!username.compare(button.buttonText->getString()))
+        std::string buttonText = button.buttonText->getString();
+        if (!username.compare(buttonText))
         {
             return;
         }
@@ -1049,7 +1050,7 @@ void GameWindow::addPlayer(std::string username)
         whoIsPlayingButtons[i].buttonRect->setPosition(
             (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2 + 105 * i,
             0);
-        whoIsPlayingButtons[i].centerText(false);
+        whoIsPlayingButtons[i].centerText(true);
     }
 }
 
