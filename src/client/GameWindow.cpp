@@ -79,21 +79,13 @@ void GameWindow::displayWindow()
         mapTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
+    
+    std::unique_lock<std::mutex> lock(updatePlayerMutex);
     for (auto &elementTexture : elementTextureToDisplay)
     {
         elementTexture.second->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
-
-    for (auto &priorityCardTexture : priorityCards)
-    {
-        priorityCardTexture.texture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
-        gameEnginePtr->clientWindow->draw(*priorityCardTexture.title);
-        gameEnginePtr->clientWindow->draw(*priorityCardTexture.nbOfBoxesText);
-        if (priorityCardTexture.isUp)
-        {
-            gameEnginePtr->clientWindow->draw(*priorityCardTexture.body);
-        }
-    }
+    lock.unlock();
 
     for (auto &priorityCardTexture : priorityCards)
     {
@@ -716,6 +708,7 @@ void GameWindow::loadElementTexture()
  */
 void GameWindow::updateElementTexture()
 {
+    std::lock_guard<std::mutex> lock(updatePlayerMutex);
     for (auto &kv : elementTextureToDisplay)
     {
         kv.second->clearSprites();
