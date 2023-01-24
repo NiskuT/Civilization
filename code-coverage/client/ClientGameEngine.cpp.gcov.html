@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">240</td>
+            <td class="headerCovTableEntry">230</td>
             <td class="headerCovTableEntryLo">0.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-20 11:15:17</td>
+            <td class="headerValue">2023-01-24 15:26:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -470,94 +470,72 @@
 <a name="408"><span class="lineNum">     408 </span><span class="lineNoCov">          0 :     std::thread t(&amp;ClientGameEngine::startGameWindow, this);</span></a>
 <a name="409"><span class="lineNum">     409 </span>            : </a>
 <a name="410"><span class="lineNum">     410 </span><span class="lineNoCov">          0 :     long lastUpdateTimer = clientGame.getCurrentTime();</span></a>
-<a name="411"><span class="lineNum">     411 </span>            :     struct stat file_stat;</a>
-<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :     std::string file_path = RESOURCES_PATH &quot;/map/files.json&quot;;</span></a>
-<a name="413"><span class="lineNum">     413 </span>            : </a>
-<a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 :     if (stat(file_path.c_str(), &amp;file_stat) == -1)</span></a>
-<a name="415"><span class="lineNum">     415 </span>            :     {</a>
-<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Erreur lors de l'obtention des informations sur le fichier &quot; &lt;&lt; file_path &lt;&lt; '\n';</span></a>
-<a name="417"><span class="lineNum">     417 </span>            :     }</a>
-<a name="418"><span class="lineNum">     418 </span>            : </a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :     time_t last_modified = file_stat.st_mtime;</span></a>
-<a name="420"><span class="lineNum">     420 </span>            : </a>
-<a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 :     while (runningWindow.load() == GAME)</span></a>
-<a name="422"><span class="lineNum">     422 </span>            :     {</a>
-<a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :         if (clientGame.getCurrentTime() - lastUpdateTimer &gt; REFRESH_ELEMENT)</span></a>
-<a name="424"><span class="lineNum">     424 </span>            :         {</a>
-<a name="425"><span class="lineNum">     425 </span>            : </a>
-<a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :             if (stat(file_path.c_str(), &amp;file_stat) == -1)</span></a>
-<a name="427"><span class="lineNum">     427 </span>            :             {</a>
-<a name="428"><span class="lineNum">     428 </span><span class="lineNoCov">          0 :                 std::cerr &lt;&lt; &quot;Erreur lors de l'obtention des informations sur le fichier &quot; &lt;&lt; file_path &lt;&lt; '\n';</span></a>
-<a name="429"><span class="lineNum">     429 </span>            :             }</a>
-<a name="430"><span class="lineNum">     430 </span>            : </a>
-<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :             time_t modified = file_stat.st_mtime;</span></a>
-<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :             lastUpdateTimer = clientGame.getCurrentTime();</span></a>
-<a name="433"><span class="lineNum">     433 </span>            : </a>
-<a name="434"><span class="lineNum">     434 </span><span class="lineNoCov">          0 :             if (modified != last_modified)</span></a>
-<a name="435"><span class="lineNum">     435 </span>            :             {</a>
-<a name="436"><span class="lineNum">     436 </span><span class="lineNoCov">          0 :                 last_modified = modified;</span></a>
-<a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 :                 clientGame.updateElementTexture();</span></a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :                 turn++;</span></a>
-<a name="439"><span class="lineNum">     439 </span>            :             }</a>
-<a name="440"><span class="lineNum">     440 </span>            :         }</a>
-<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :         if (playerTurn.load())</span></a>
-<a name="442"><span class="lineNum">     442 </span>            :         {</a>
-<a name="443"><span class="lineNum">     443 </span><span class="lineNoCov">          0 :             playTurn();</span></a>
-<a name="444"><span class="lineNum">     444 </span>            :         }</a>
-<a name="445"><span class="lineNum">     445 </span>            :     }</a>
-<a name="446"><span class="lineNum">     446 </span><span class="lineNoCov">          0 :     t.join();</span></a>
-<a name="447"><span class="lineNum">     447 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="411"><span class="lineNum">     411 </span>            : </a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :     while (runningWindow.load() == GAME)</span></a>
+<a name="413"><span class="lineNum">     413 </span>            :     {</a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 :         if (clientGame.getCurrentTime() - lastUpdateTimer &gt; REFRESH_ELEMENT)</span></a>
+<a name="415"><span class="lineNum">     415 </span>            :         {</a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :             lastUpdateTimer = clientGame.getCurrentTime();</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 :             clientGame.updateElementTexture();</span></a>
+<a name="418"><span class="lineNum">     418 </span>            :         }</a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :         if (playerTurn.load())</span></a>
+<a name="420"><span class="lineNum">     420 </span>            :         {</a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 :             playTurn();</span></a>
+<a name="422"><span class="lineNum">     422 </span>            :         }</a>
+<a name="423"><span class="lineNum">     423 </span>            :     }</a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineNoCov">          0 :     t.join();</span></a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="426"><span class="lineNum">     426 </span>            : </a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 : void ClientGameEngine::playTurn()</span></a>
+<a name="428"><span class="lineNum">     428 </span>            : {</a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :     shared::RuleArgsStruct ruleArgsStruct;</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineNoCov">          0 :     ruleArgsStruct.ruleId = shared::CardsEnum::science;</span></a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :     ruleArgsStruct.numberOfBoxUsed = 0;</span></a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :     ruleArgsStruct.caravanMovementPath.push_back({0, 1});</span></a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 :     ruleArgsStruct.caravanMovementPath.push_back({4, 8});</span></a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineNoCov">          0 :     ruleArgsStruct.caravanMovementPath.push_back({5, 6});</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :     ruleArgsStruct.resourceToGet = shared::ResourceEnum::oil;</span></a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineNoCov">          0 :     ruleArgsStruct.cardToGetABox = shared::CardsEnum::economy;</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 :     ruleArgsStruct.positionToNuke = {3, 4};</span></a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :     ruleArgsStruct.pawnsPositions.push_back({1, 1});</span></a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 :     ruleArgsStruct.pawnsPositions.push_back({2, 2});</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :     ruleArgsStruct.pawnsPositions.push_back({3, 3});</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :     ruleArgsStruct.militaryCardAttack = true;</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :     ruleArgsStruct.industryCardBuildWonder = true;</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineNoCov">          0 :     ruleArgsStruct.positionOfWonder = {4, 5};</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineNoCov">          0 :     ruleArgsStruct.positionOfCity = {6, 7};</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :     ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::economy);</span></a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineNoCov">          0 :     ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::military);</span></a>
+<a name="447"><span class="lineNum">     447 </span>            : </a>
 <a name="448"><span class="lineNum">     448 </span>            : </a>
-<a name="449"><span class="lineNum">     449 </span><span class="lineNoCov">          0 : void ClientGameEngine::playTurn()</span></a>
-<a name="450"><span class="lineNum">     450 </span>            : {</a>
-<a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 :     shared::RuleArgsStruct ruleArgsStruct;</span></a>
-<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :     ruleArgsStruct.ruleId = shared::CardsEnum::science;</span></a>
-<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 :     ruleArgsStruct.numberOfBoxUsed = 0;</span></a>
-<a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 :     ruleArgsStruct.caravanMovementPath.push_back({0, 1});</span></a>
-<a name="455"><span class="lineNum">     455 </span><span class="lineNoCov">          0 :     ruleArgsStruct.caravanMovementPath.push_back({4, 8});</span></a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :     ruleArgsStruct.caravanMovementPath.push_back({5, 6});</span></a>
-<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 :     ruleArgsStruct.resourceToGet = shared::ResourceEnum::oil;</span></a>
-<a name="458"><span class="lineNum">     458 </span><span class="lineNoCov">          0 :     ruleArgsStruct.cardToGetABox = shared::CardsEnum::economy;</span></a>
-<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :     ruleArgsStruct.positionToNuke = {3, 4};</span></a>
-<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :     ruleArgsStruct.pawnsPositions.push_back({1, 1});</span></a>
-<a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 :     ruleArgsStruct.pawnsPositions.push_back({2, 2});</span></a>
-<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 :     ruleArgsStruct.pawnsPositions.push_back({3, 3});</span></a>
-<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :     ruleArgsStruct.militaryCardAttack = true;</span></a>
-<a name="464"><span class="lineNum">     464 </span><span class="lineNoCov">          0 :     ruleArgsStruct.industryCardBuildWonder = true;</span></a>
-<a name="465"><span class="lineNum">     465 </span><span class="lineNoCov">          0 :     ruleArgsStruct.positionOfWonder = {4, 5};</span></a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineNoCov">          0 :     ruleArgsStruct.positionOfCity = {6, 7};</span></a>
-<a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :     ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::economy);</span></a>
-<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 :     ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::military);</span></a>
-<a name="469"><span class="lineNum">     469 </span>            : </a>
-<a name="470"><span class="lineNum">     470 </span>            : </a>
-<a name="471"><span class="lineNum">     471 </span>            : </a>
-<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :     std::string struc;</span></a>
-<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :     binary.castToBinary(ruleArgsStruct, struc);</span></a>
-<a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 :     binary.send(myself, struc);</span></a>
-<a name="475"><span class="lineNum">     475 </span><span class="lineNoCov">          0 :     playerTurn.store(false);</span></a>
-<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="477"><span class="lineNum">     477 </span>            : </a>
-<a name="478"><span class="lineNum">     478 </span>            : /*!</a>
-<a name="479"><span class="lineNum">     479 </span>            :  * @brief Loop that is used when the client is in MenuMode</a>
-<a name="480"><span class="lineNum">     480 </span>            :  */</a>
-<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 : void ClientGameEngine::playMenu()</span></a>
-<a name="482"><span class="lineNum">     482 </span>            : {</a>
-<a name="483"><span class="lineNum">     483 </span><span class="lineNoCov">          0 :     std::thread t(&amp;ClientGameEngine::startMenuWindow, this);</span></a>
-<a name="484"><span class="lineNum">     484 </span><span class="lineNoCov">          0 :     t.join();</span></a>
-<a name="485"><span class="lineNum">     485 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="486"><span class="lineNum">     486 </span>            : </a>
-<a name="487"><span class="lineNum">     487 </span>            : /*!</a>
-<a name="488"><span class="lineNum">     488 </span>            :  * @brief Detect an intersection between a point and a rect</a>
-<a name="489"><span class="lineNum">     489 </span>            :  * @param point the point</a>
-<a name="490"><span class="lineNum">     490 </span>            :  * @param rectangle the rectangle</a>
-<a name="491"><span class="lineNum">     491 </span>            :  */</a>
-<a name="492"><span class="lineNum">     492 </span><span class="lineNoCov">          0 : bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rectangle)</span></a>
-<a name="493"><span class="lineNum">     493 </span>            : {</a>
-<a name="494"><span class="lineNum">     494 </span><span class="lineNoCov">          0 :     return (point.x &gt;= rectangle.left &amp;&amp;</span></a>
-<a name="495"><span class="lineNum">     495 </span><span class="lineNoCov">          0 :             point.x &lt;= rectangle.left + rectangle.width &amp;&amp;</span></a>
-<a name="496"><span class="lineNum">     496 </span><span class="lineNoCov">          0 :             point.y &gt;= rectangle.top &amp;&amp;</span></a>
-<a name="497"><span class="lineNum">     497 </span><span class="lineNoCov">          0 :             point.y &lt;= rectangle.top + rectangle.height);</span></a>
-<a name="498"><span class="lineNum">     498 </span>            : }</a>
+<a name="449"><span class="lineNum">     449 </span>            : </a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineNoCov">          0 :     std::string struc;</span></a>
+<a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 :     binary.castToBinary(ruleArgsStruct, struc);</span></a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :     binary.send(myself, struc);</span></a>
+<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 :     playerTurn.store(false);</span></a>
+<a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="455"><span class="lineNum">     455 </span>            : </a>
+<a name="456"><span class="lineNum">     456 </span>            : /*!</a>
+<a name="457"><span class="lineNum">     457 </span>            :  * @brief Loop that is used when the client is in MenuMode</a>
+<a name="458"><span class="lineNum">     458 </span>            :  */</a>
+<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 : void ClientGameEngine::playMenu()</span></a>
+<a name="460"><span class="lineNum">     460 </span>            : {</a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 :     std::thread t(&amp;ClientGameEngine::startMenuWindow, this);</span></a>
+<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 :     t.join();</span></a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="464"><span class="lineNum">     464 </span>            : </a>
+<a name="465"><span class="lineNum">     465 </span>            : /*!</a>
+<a name="466"><span class="lineNum">     466 </span>            :  * @brief Detect an intersection between a point and a rect</a>
+<a name="467"><span class="lineNum">     467 </span>            :  * @param point the point</a>
+<a name="468"><span class="lineNum">     468 </span>            :  * @param rectangle the rectangle</a>
+<a name="469"><span class="lineNum">     469 </span>            :  */</a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineNoCov">          0 : bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rectangle)</span></a>
+<a name="471"><span class="lineNum">     471 </span>            : {</a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :     return (point.x &gt;= rectangle.left &amp;&amp;</span></a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :             point.x &lt;= rectangle.left + rectangle.width &amp;&amp;</span></a>
+<a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 :             point.y &gt;= rectangle.top &amp;&amp;</span></a>
+<a name="475"><span class="lineNum">     475 </span><span class="lineNoCov">          0 :             point.y &lt;= rectangle.top + rectangle.height);</span></a>
+<a name="476"><span class="lineNum">     476 </span>            : }</a>
 </pre>
       </td>
     </tr>
