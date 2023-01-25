@@ -1,0 +1,29 @@
+{
+    "data" : 
+    [
+        {
+            "path": "/map/element/state-city-army.png"
+        },
+        {
+            "path": "/map/element/state-city-army.png"
+        },
+        {
+            "path": "/map/element/state-city-culture.png"
+        },
+        {
+            "path": "/map/element/state-city-culture.png"
+        },
+        {
+            "path": "/map/element/state-city-science.png"
+        },
+        {
+            "path": "/map/element/state-city-science.png"
+        },
+        {
+            "path": "/map/element/state-city-industry.png"
+        },
+        {
+            "path": "/map/element/state-city-industry.png"
+        }
+    ]
+}

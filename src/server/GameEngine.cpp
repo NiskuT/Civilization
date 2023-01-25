@@ -11,6 +11,7 @@ using namespace server;
 GameEngine::GameEngine(std::vector<std::shared_ptr<GameEngine>> &games, std::shared_ptr<shared::Player> player)
 {
     gameId = GameEngine::generateRandomId(games);
+    gameMap = std::make_shared<shared::Map>();
     players.push_back(player);
 }
 
@@ -19,7 +20,6 @@ bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
     if (isPublic && (players.size() < MAX_PLAYERS))
     {
         players.push_back(player);
-        gameMap = std::make_unique<shared::Map>();
     }
     else
     {

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <sys/stat.h>
+#include <thread>
 
 #define REFRESH_ELEMENT 1
 
@@ -24,12 +25,12 @@ using namespace client;
  */
 ClientGameEngine::ClientGameEngine()
 {
-    clientMenu.gameEnginePtr = this;
-    clientGame.gameEnginePtr = this;
     myself = std::make_shared<shared::Player>();
     myself->setUsername("PlayerTest");
+    clientMap = std::make_shared<shared::Map>();
     playerTurn.store(false);
     endOfTurn.store(false);
+    clientConnectedAndReady.store(false);
 }
 
 /*!
@@ -114,7 +115,7 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
         else if (messageReceived.find("binary") == 0) // binary reception
         {
             size_t size = std::stoi(messageReceived.substr(7));
-            std::string data = binary.receive(myself, size);
+            std::string data = binary.receive(myself, receiveStream, size);
             registerServerAnswer(data);
         }
         else if (messageReceived.find("rulesturn") == 0) // binary reception without response
@@ -123,7 +124,7 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
 
             size_t size = std::stoi(messageReceived.substr(10));
             std::cout << "taille de l'element recupere : " << size << std::endl;
-            std::string bin = binary.receive(myself, size);
+            std::string bin = binary.receive(myself,receiveStream, size);
             std::cout << "element recupere : " << bin << std::endl;
             binary.castToObject(bin, ruleArgs);
 
@@ -170,6 +171,12 @@ void ClientGameEngine::generateMap(const unsigned height, const unsigned width, 
         std::cout << "You are not connected to the server" << std::endl;
         exit(1);
     }
+    else if (clientConnectedAndReady.load() == false)
+    {
+        std::cout << "Server is not ready" << std::endl;
+        exit(1);
+    }
+
     if (height > 0)
     {
         lock.lock();
@@ -198,6 +205,11 @@ void ClientGameEngine::loadMap()
     if (myself->connectedToSocket.load() == false)
     {
         std::cout << "You are not connected to the server" << std::endl;
+        exit(1);
+    }
+    else if (clientConnectedAndReady.load() == false)
+    {
+        std::cout << "Server is not ready" << std::endl;
         exit(1);
     }
     std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
@@ -244,12 +256,18 @@ void ClientGameEngine::processServerRequest(std::string request)
     else if (request.find("connected") == 0)
     {
         request = request.substr(10);
+        clientConnectedAndReady.store(true);
+
+        serverGameId = request.substr(request.length()-6);
         printChat(request);
     }
     else if (request.find("newplayer") == 0)
     {
         std::string player = request.substr(23);
-        clientGame.addPlayer(player);
+        if (clientGame != nullptr)
+        {
+            clientGame->addPlayer(player);
+        }
         request = request.substr(10) + " join the game";
         printChat(request);
 
@@ -258,7 +276,10 @@ void ClientGameEngine::processServerRequest(std::string request)
     else if (request.find("infoplayer") == 0)
     {
         std::string player = request.substr(11);
-        clientGame.addPlayer(player);
+        if (clientGame != nullptr)
+        {
+            clientGame->addPlayer(player);
+        }
     }
     else
     {
@@ -268,8 +289,11 @@ void ClientGameEngine::processServerRequest(std::string request)
 
 void ClientGameEngine::printChat(const std::string &message)
 {
-
-    if (clientGame.chatBox != nullptr)
+    if (clientGame == nullptr)
+    {
+        return;
+    }
+    if (clientGame->chatBox != nullptr)
     {
         size_t firstSpace = message.find(" ");
         std::string chatTime = message.substr(0, firstSpace);
@@ -277,7 +301,7 @@ void ClientGameEngine::printChat(const std::string &message)
         std::string chatUsername = message.substr(firstSpace + 1, secondSpace - firstSpace - 1);
         std::string chatMessage = message.substr(secondSpace + 1);
 
-        clientGame.chatBox->updateChat(chatTime, chatUsername, chatMessage);
+        clientGame->chatBox->updateChat(chatTime, chatUsername, chatMessage);
     }
 }
 
@@ -387,12 +411,39 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
     return connect(server, portNumber);
 }
 
+void ClientGameEngine::waitToBeReady()
+{
+    while (clientConnectedAndReady.load() == false)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+}
+
 /*!
  * @brief Start the loop that manage the GameWindow
  */
 void ClientGameEngine::startGameWindow()
 {
-    clientGame.startGame();
+    if (myself->connectedToSocket.load() && gameId == "new")
+    {
+        waitToBeReady();
+        generateMap(11, 15, rand() % 1000000000);
+        loadMap();
+    }
+    else if (myself->connectedToSocket.load())
+    {
+        waitToBeReady();
+        loadMap();
+    }
+    else
+    {
+        std::cout << "You are not connected to the server" << std::endl;
+        std::cout << "Map has been generated locally." << std::endl;
+        clientMap->generateRandomMap(rand() % 1000000000);
+    }
+
+    clientGame->mapShared = clientMap;
+    clientGame->startGame();
 }
 
 /*!
@@ -400,7 +451,7 @@ void ClientGameEngine::startGameWindow()
  */
 void ClientGameEngine::startMenuWindow()
 {
-    clientMenu.startMenu();
+    clientMenu->startMenu();
 }
 
 /*!
@@ -414,6 +465,12 @@ void ClientGameEngine::renderGame()
                          sf::Style::Close);
 
     clientWindow->setPosition(sf::Vector2i(0, 0));
+
+    clientGame = std::make_unique<GameWindow>();
+    clientMenu = std::make_unique<MenuWindow>();
+
+    clientMenu->gameEnginePtr = this;
+    clientGame->gameEnginePtr = this;
 
     while (runningWindow.load())
     {
@@ -436,40 +493,18 @@ void ClientGameEngine::playGame()
 {
     std::thread t(&ClientGameEngine::startGameWindow, this);
 
-    long lastUpdateTimer = clientGame.getCurrentTime();
-    struct stat file_stat;
-    std::string file_path = RESOURCES_PATH "/map/files.json";
-
-    if (stat(file_path.c_str(), &file_stat) == -1)
-    {
-        std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
-    }
-
-    time_t last_modified = file_stat.st_mtime;
+    long lastUpdateTimer = clientGame->getCurrentTime();
 
     while (runningWindow.load() == GAME)
     {
-        if (clientGame.getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
+        if (clientGame->getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
         {
-
-            if (stat(file_path.c_str(), &file_stat) == -1)
-            {
-                std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
-            }
-
-            time_t modified = file_stat.st_mtime;
-            lastUpdateTimer = clientGame.getCurrentTime();
-
-            if (modified != last_modified)
-            {
-                last_modified = modified;
-                clientGame.updateElementTexture();
-                turn++;
-            }
+            lastUpdateTimer = clientGame->getCurrentTime();
+            clientGame->updateElementTexture();
         }
         if (playerTurn.load())
         {
-            clientGame.modifyTextForUser("It's your turn !");
+            clientGame->modifyTextForUser("It's your turn !");
             playTurn();
         }
     }
@@ -481,7 +516,7 @@ void ClientGameEngine::playTurn()
     if (endOfTurn.load())
     {
         std::cout << "End of turn" << std::endl;
-        clientGame.modifyTextForUser("");
+        clientGame->modifyTextForUser("");
         std::string struc;
         binary.castToBinary(ruleArgsStruct, struc);
         binary.send(myself, struc);
