@@ -72,12 +72,7 @@ void GameEngine::runGame() // rename rungame
 
             std::string struc;
             binary.castToBinary(ruleArgs, struc);
-
-            message = "rulesturn ";
-            message += std::to_string(struc.size());
-            message += "\n";
-            sendToEveryone(message);
-            sendToEveryone(struc);
+            sendToEveryone(struc, true);
             std::cout << "end of turn of player" << player->getName() << std::endl;
         }
     }
@@ -219,18 +214,22 @@ void GameEngine::askClient(std::shared_ptr<shared::Player> player)
     player->qAndA.answerReady = false;
 }
 
-void GameEngine::sendToEveryone(std::string message)
+void GameEngine::sendToEveryone(std::string message, bool isBinary)
 {
     std::cout << "send to everyone" << message << std::endl;
     for (auto &player : players)
     {
-        if (player->connectedToSocket.load())
+        if (!isBinary && player->connectedToSocket.load())
         {
             std::lock_guard<std::mutex> lock(player->socketWriteMutex);
             boost::asio::write(player->getSocket(), boost::asio::buffer(message));
         }
+        else if (player->connectedToSocket.load())
+        {
+            binary.send(player, message, false);
+        }
     }
-}
+}   
 
 /*!
  * @brief This function return the time under a string format

@@ -102,6 +102,7 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
     std::string messageReceived;
     while (std::getline(receiveStream, messageReceived))
     {
+        std::cout << "Message received: " << messageReceived << std::endl;
         if (messageReceived.size() == 0)
         {
             continue;
@@ -121,11 +122,9 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
             shared::RuleArgsStruct ruleArgs;
 
             size_t size = std::stoi(messageReceived.substr(10));
-            std::cout << "taille de l'elemenbt recupere : " << size << "\n"
-                      << std::endl;
+            std::cout << "taille de l'element recupere : " << size << std::endl;
             std::string bin = binary.receive(myself, size);
-            std::cout << "element recupere : " << bin << "\n"
-                      << std::endl;
+            std::cout << "element recupere : " << bin << std::endl;
             binary.castToObject(bin, ruleArgs);
 
             std::cout << "ruleArgs.playerName : " << ruleArgs.playerName << std::endl;
@@ -137,25 +136,14 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
             else
             {
                 std::cout << "not this player" << std::endl;
+                // for (auto &player : otherPlayers)
+                // {
+                //     if (player->getName() == ruleArgs.playerName)
+                //     {
+                //         // TODO
+                //     }
+                // }
             }
-
-            // std::cout << "ruleArgs.ruleId : " << (int)ruleArgs.ruleId << "\n"
-            //           << std::endl;
-            // // for (auto &player : ruleArgs.playerList) // TODO : add a player list in clientGame
-            // // {
-            // //     if (player->getName() == myself->getName())
-            // //     {
-            // //         myself = player;
-            // //     }
-            // // }
-            // if (ruleArgs.playerName == myself->getName())
-            // {
-            //     ruleArgs.gameMap = clientMap;
-
-            //     shared::Rules rules;
-            //     rules.runTheRule(ruleArgs);
-            //     clientGame.rotateTechWheel(myself->getTechLevel());
-            // }
         }
         else
         {
