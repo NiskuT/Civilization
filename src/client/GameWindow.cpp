@@ -60,7 +60,10 @@ GameWindow::GameWindow()
     chatBox = std::make_unique<Chat>();
 
     validateBoxesWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH);
+    winnerWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH, "player 1");
     validateBoxesWindow->gameWindow = this;
+
+
     chatBox = std::make_unique<Chat>();
 }
 
@@ -140,6 +143,10 @@ void GameWindow::displayWindow()
     textForTheUser->drawButton(gameEnginePtr->clientWindow);
     endOfRoundButton->drawButton(gameEnginePtr->clientWindow);
 
+    if(winnerWindow->isWindowActive) 
+    {
+        winnerWindow->drawWinnerWindow(gameEnginePtr->clientWindow);
+    }
 
     gameEnginePtr->clientWindow->display();
 }
@@ -439,6 +446,9 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
             validateBoxesWindow->priorityCardPlayedType,
             validateBoxesWindow->priorityCardPlayed,
             validateBoxesWindow->nbOfBoxesChosen);
+        
+        // to be deleted after
+        setWinnerWindow("Lasso", " bla");
         return true;
     }
 
@@ -1077,4 +1087,9 @@ long GameWindow::getCurrentTime(bool timeSecond)
     {
         return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     }
+}
+
+void GameWindow::setWinnerWindow(std::string winner, std::string causes) {
+    winnerWindow->question->setString(winner + " is the winner !!");
+    winnerWindow->isWindowActive = true;
 }

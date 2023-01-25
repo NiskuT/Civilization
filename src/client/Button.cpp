@@ -142,6 +142,10 @@ bool Button::clickButton()
     }
 }
 
+/*!
+ * @brief Draw a button with its text on a window
+ * @param window Window on which the button is drawn
+ */
 void Button::drawButton(std::shared_ptr<sf::RenderWindow> window) {
     window->draw(*buttonRect);
     window->draw(*buttonText);

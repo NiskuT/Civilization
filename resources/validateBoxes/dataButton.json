@@ -5,6 +5,14 @@
         "little-background-pos-x": 580,
         "little-background-pos-y": 340,
 
+        "winner-little-background-pos-x": 575,
+        "winner-little-background-pos-y": 277,
+        "winner-text-size": 38,
+        "winner-scale": 1.5,
+        "winner-text-offset-y": 30,
+        "winner-body-offset-y": 135,
+
+
         "boxes-button-size": 50,
         "boxes-button-pos-x": 775,
         "boxes-button-pos-y": 455,

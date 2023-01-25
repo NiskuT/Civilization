@@ -72,6 +72,46 @@ ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
              sf::Vector2f(1, 1));
 }
 
+ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth, std::string winner) {
+
+    const Json::Value &data = gameWindow->openJsonFile("/validateBoxes/dataButton.json");
+
+    blackBackground = std::make_unique<Button>(sf::Vector2f(windowLength, windowWidth), sf::Vector2f(0, 0), BACKGROUND_COLOR, false);
+
+    if (!font.loadFromFile(RESOURCES_PATH "/font/MorrisRomanBlack.otf"))
+    {
+        std::cerr << "Font not loaded" << std::endl;
+    }
+
+    setImage(littleBackground,
+             "/validateBoxes/little-background.png",
+             sf::Vector2f(data["winner-little-background-pos-x"].asFloat(), data["winner-little-background-pos-y"].asFloat()),
+             sf::Vector2f(data["winner-scale"].asFloat(), data["winner-scale"].asFloat()));
+
+    std::string winnerString = "Player X is the winner !!";
+    question = std::make_unique<sf::Text>(winnerString, font, data["winner-text-size"].asInt());
+    question->setFillColor(sf::Color::Black);
+    question->setPosition(
+        windowLength / 2 - question->getGlobalBounds().width / 2,
+        littleBackground->getSprite().getPosition().y + data["winner-text-offset-y"].asInt());
+    
+    std::string winnerCausesString = "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best";
+    body = std::make_unique<sf::Text>(winnerCausesString, font, data["text-size"].asInt());
+    body->setFillColor(sf::Color::Black);
+    body->setPosition(
+        windowLength / 2 - question->getGlobalBounds().width / 2,
+        littleBackground->getSprite().getPosition().y + data["winner-body-offset-y"].asInt());
+
+}
+
+void ValidateBoxesButtons::drawWinnerWindow(std::shared_ptr<sf::RenderWindow> window){
+    window->draw(*blackBackground->buttonRect);
+    window->draw(littleBackground->getSprite());
+    window->draw(*question);
+    window->draw(*body);
+
+}
+
 void ValidateBoxesButtons::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWindow> window)
 {
     window->draw(*blackBackground->buttonRect);
