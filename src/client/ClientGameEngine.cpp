@@ -2,8 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <sys/stat.h>
-
-#define OFFLINE 1
+#include <thread>
 
 #define REFRESH_ELEMENT 1
 
@@ -26,12 +25,11 @@ using namespace client;
  */
 ClientGameEngine::ClientGameEngine()
 {
-    clientMenu.gameEnginePtr = this;
-    clientGame.gameEnginePtr = this;
     myself = std::make_shared<shared::Player>();
     myself->setUsername("PlayerTest");
     clientMap = std::make_shared<shared::Map>();
     playerTurn.store(false);
+    clientConnectedAndReady.store(false);
 }
 
 /*!
@@ -115,7 +113,7 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
         else if (messageReceived.find("binary") == 0) // binary reception
         {
             size_t size = std::stoi(messageReceived.substr(7));
-            std::string data = binary.receive(myself, size);
+            std::string data = binary.receive(myself, receiveStream, size);
             registerServerAnswer(data);
         }
         else if (messageReceived.find("rulesturn") == 0) // binary reception without response
@@ -131,7 +129,7 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
             // //     }
             // // }
             // ruleArgs.gameMap = clientMap;
-            
+
             // shared::Rules rules;
             // rules.runTheRule(ruleArgs);
         }
@@ -158,6 +156,11 @@ void ClientGameEngine::generateMap(const unsigned height, const unsigned width, 
     if (myself->connectedToSocket.load() == false)
     {
         std::cout << "You are not connected to the server" << std::endl;
+        exit(1);
+    }
+    else if (clientConnectedAndReady.load() == false)
+    {
+        std::cout << "Server is not ready" << std::endl;
         exit(1);
     }
 
@@ -189,6 +192,11 @@ void ClientGameEngine::loadMap()
     if (myself->connectedToSocket.load() == false)
     {
         std::cout << "You are not connected to the server" << std::endl;
+        exit(1);
+    }
+    else if (clientConnectedAndReady.load() == false)
+    {
+        std::cout << "Server is not ready" << std::endl;
         exit(1);
     }
     std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
@@ -235,21 +243,30 @@ void ClientGameEngine::processServerRequest(std::string request)
     else if (request.find("connected") == 0)
     {
         request = request.substr(10);
+        clientConnectedAndReady.store(true);
+
+        serverGameId = request.substr(request.length()-6);
         printChat(request);
     }
     else if (request.find("newplayer") == 0)
     {
         std::string player = request.substr(23);
-        clientGame.addPlayer(player);
+        if (clientGame != nullptr)
+        {
+            clientGame->addPlayer(player);
+        }
         request = request.substr(10) + " join the game";
         printChat(request);
     }
     else if (request.find("infoplayer") == 0)
     {
         std::string player = request.substr(11);
-        clientGame.addPlayer(player);
+        if (clientGame != nullptr)
+        {
+            clientGame->addPlayer(player);
+        }
     }
-    else 
+    else
     {
         std::cout << "Received request: " << request << std::endl;
     }
@@ -257,8 +274,11 @@ void ClientGameEngine::processServerRequest(std::string request)
 
 void ClientGameEngine::printChat(const std::string &message)
 {
-
-    if (clientGame.chatBox != nullptr)
+    if (clientGame == nullptr)
+    {
+        return;
+    }
+    if (clientGame->chatBox != nullptr)
     {
         size_t firstSpace = message.find(" ");
         std::string chatTime = message.substr(0, firstSpace);
@@ -266,7 +286,7 @@ void ClientGameEngine::printChat(const std::string &message)
         std::string chatUsername = message.substr(firstSpace + 1, secondSpace - firstSpace - 1);
         std::string chatMessage = message.substr(secondSpace + 1);
 
-        clientGame.chatBox->updateChat(chatTime, chatUsername, chatMessage);
+        clientGame->chatBox->updateChat(chatTime, chatUsername, chatMessage);
     }
 }
 
@@ -300,10 +320,10 @@ void ClientGameEngine::handleInformation(int x, int y)
 }
 
 /*!
-* @brief Print which priority card the user wants to play and its difficulty
-* @param typePlayed type of the priority card played (economy, science, culture, ...)
-* @param difficulty level of difficulty played (0 to 4 for the 5 fields) 
-*/
+ * @brief Print which priority card the user wants to play and its difficulty
+ * @param typePlayed type of the priority card played (economy, science, culture, ...)
+ * @param difficulty level of difficulty played (0 to 4 for the 5 fields)
+ */
 void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty, int boxes)
 {
     std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << " and with " << boxes << " boxes" << std::endl;
@@ -318,7 +338,7 @@ void ClientGameEngine::handleQuitMenu(bool quitDef)
     if (quitDef)
     {
         runningWindow.store(0);
-        //myself->disconnectPlayer();
+        // myself->disconnectPlayer();
     }
     else
     {
@@ -344,9 +364,17 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
         return false;
     }
 
-    gameId = id;        
+    gameId = id;
 
     return connect(server, portNumber);
+}
+
+void ClientGameEngine::waitToBeReady()
+{
+    while (clientConnectedAndReady.load() == false)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
 }
 
 /*!
@@ -354,16 +382,26 @@ bool ClientGameEngine::tryConnection(std::string id, std::string username, std::
  */
 void ClientGameEngine::startGameWindow()
 {
-#ifdef OFFLINE
-    clientMap->generateRandomMap(rand() % 1000000000);
-#else
-    if(gameId == "new") {
-        generateMap(11,15,rand() % 1000000000);
+    if (myself->connectedToSocket.load() && gameId == "new")
+    {
+        waitToBeReady();
+        generateMap(11, 15, rand() % 1000000000);
+        loadMap();
     }
-    loadMap();
-#endif
-    clientGame.mapShared = clientMap;
-    clientGame.startGame();
+    else if (myself->connectedToSocket.load())
+    {
+        waitToBeReady();
+        loadMap();
+    }
+    else
+    {
+        std::cout << "You are not connected to the server" << std::endl;
+        std::cout << "Map has been generated locally." << std::endl;
+        clientMap->generateRandomMap(rand() % 1000000000);
+    }
+
+    clientGame->mapShared = clientMap;
+    clientGame->startGame();
 }
 
 /*!
@@ -371,7 +409,7 @@ void ClientGameEngine::startGameWindow()
  */
 void ClientGameEngine::startMenuWindow()
 {
-    clientMenu.startMenu();
+    clientMenu->startMenu();
 }
 
 /*!
@@ -385,6 +423,12 @@ void ClientGameEngine::renderGame()
                          sf::Style::Close);
 
     clientWindow->setPosition(sf::Vector2i(0, 0));
+
+    clientGame = std::make_unique<GameWindow>();
+    clientMenu = std::make_unique<MenuWindow>();
+
+    clientMenu->gameEnginePtr = this;
+    clientGame->gameEnginePtr = this;
 
     while (runningWindow.load())
     {
@@ -407,14 +451,14 @@ void ClientGameEngine::playGame()
 {
     std::thread t(&ClientGameEngine::startGameWindow, this);
 
-    long lastUpdateTimer = clientGame.getCurrentTime();
+    long lastUpdateTimer = clientGame->getCurrentTime();
 
     while (runningWindow.load() == GAME)
     {
-        if (clientGame.getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
+        if (clientGame->getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
         {
-            lastUpdateTimer = clientGame.getCurrentTime();
-            clientGame.updateElementTexture();
+            lastUpdateTimer = clientGame->getCurrentTime();
+            clientGame->updateElementTexture();
         }
         if (playerTurn.load())
         {
@@ -444,8 +488,6 @@ void ClientGameEngine::playTurn()
     ruleArgsStruct.positionOfCity = {6, 7};
     ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::economy);
     ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::military);
-
-
 
     std::string struc;
     binary.castToBinary(ruleArgsStruct, struc);
