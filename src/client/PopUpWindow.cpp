@@ -19,7 +19,7 @@ void setImage(std::unique_ptr<TextureDisplayer> &texture, std::string path, sf::
     texture->getSprite().setScale(scale);
 }
 
-void setText(std::unique_ptr<sf::Text>& text, sf::Font& font, int size) 
+void setText(std::unique_ptr<sf::Text> &text, sf::Font &font, int size)
 {
     text = std::make_unique<sf::Text>("", font, size);
     text->setFillColor(sf::Color::Black);
@@ -50,7 +50,6 @@ PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &d
              sf::Vector2f(data["little-background-pos-x"].asFloat(), data["little-background-pos-y"].asFloat()),
              sf::Vector2f(data["little-background-scale-x"].asFloat(), 1));
 
-  
     std::string questionString = "You have X boxes, \nHow many boxes do you want to play?";
     title = std::make_unique<sf::Text>(questionString, font, data["text-size"].asInt());
     title->setFillColor(sf::Color::Black);
@@ -81,7 +80,8 @@ PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &d
              sf::Vector2f(1, 1));
 }
 
-PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &data, bool isActive) {
+PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &data, bool isActive)
+{
 
     this->data = data;
     this->windowLength = windowLength;
@@ -102,20 +102,21 @@ PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &d
     setText(title, font, data["winner-text-size"].asInt());
 
     setText(body, font, data["text-size"].asInt());
-    
+
     centerText();
 }
 
-void drawGeneral(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<sf::RectangleShape>& blackBackgroundButton, sf::Sprite littleBackground, std::unique_ptr<sf::Text>& title) {
+void drawGeneral(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<sf::RectangleShape> &blackBackgroundButton, sf::Sprite littleBackground, std::unique_ptr<sf::Text> &title)
+{
     window->draw(*blackBackgroundButton);
     window->draw(littleBackground);
     window->draw(*title);
 }
 
-void PopUpWindow::drawWinnerWindow(std::shared_ptr<sf::RenderWindow> window){
+void PopUpWindow::drawWinnerWindow(std::shared_ptr<sf::RenderWindow> window)
+{
     drawGeneral(window, blackBackground->buttonRect, littleBackground->getSprite(), title);
     window->draw(*body);
-
 }
 
 void PopUpWindow::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWindow> window)
@@ -128,7 +129,8 @@ void PopUpWindow::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWindow> win
     window->draw(doneTexture->getSprite());
 }
 
-void PopUpWindow::centerText() {
+void PopUpWindow::centerText()
+{
 
     body->setPosition(
         windowLength / 2 - body->getGlobalBounds().width / 2,
@@ -137,5 +139,4 @@ void PopUpWindow::centerText() {
     title->setPosition(
         windowLength / 2 - title->getGlobalBounds().width / 2,
         littleBackground->getSprite().getPosition().y + data["winner-text-offset-y"].asInt());
-
-} 
+}

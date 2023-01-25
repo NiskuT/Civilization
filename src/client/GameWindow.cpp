@@ -64,7 +64,6 @@ GameWindow::GameWindow()
     winnerWindow = std::make_unique<PopUpWindow>(WINDOW_LENGTH, WINDOW_WIDTH, data, false);
     validateBoxesWindow->gameWindow = this;
 
-
     chatBox = std::make_unique<Chat>();
 }
 
@@ -83,7 +82,6 @@ void GameWindow::displayWindow()
         mapTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
-    
     std::unique_lock<std::mutex> lock(updatePlayerMutex);
     for (auto &elementTexture : elementTextureToDisplay)
     {
@@ -136,7 +134,7 @@ void GameWindow::displayWindow()
         chatBox->drawChat(gameEnginePtr->clientWindow);
     }
 
-    if(winnerWindow->isWindowActive) 
+    if (winnerWindow->isWindowActive)
     {
         winnerWindow->drawWinnerWindow(gameEnginePtr->clientWindow);
     }
@@ -439,9 +437,9 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
             validateBoxesWindow->priorityCardPlayedType,
             validateBoxesWindow->priorityCardPlayed,
             validateBoxesWindow->nbOfBoxesChosen);
-        
+
         // Exemple to use the winner window
-        //setWinnerWindow("Lasso", "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best");
+        // setWinnerWindow("Lasso", "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best");
         return true;
     }
 
@@ -747,12 +745,12 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
         int index;
         std::string path;
-        
-        std::visit([&index](auto&& arg){
-            index = (int)arg.getType();
-        }, *variant);
 
-        if(std::holds_alternative<shared::City>(*variant))
+        std::visit([&index](auto &&arg)
+                   { index = (int)arg.getType(); },
+                   *variant);
+
+        if (std::holds_alternative<shared::City>(*variant))
         {
             shared::City city = std::get<shared::City>(*variant);
 
@@ -764,23 +762,18 @@ void GameWindow::selectElementToDisplay(int x, int y)
             {
                 path = elementData[index]["path"].asString();
 
-                path =  path.substr(0, 20) 
-                        + std::to_string(getPlayerNumber(city.player)) 
-                        +   (city.isMature ? "-mature" : 
-                            (city.isCapital ? "-capital" : "-city")) 
-                        + ".png";
+                path = path.substr(0, 20) + std::to_string(getPlayerNumber(city.player)) + (city.isMature ? "-mature" : (city.isCapital ? "-capital" : "-city")) + ".png";
             }
         }
-        else if(std::holds_alternative<shared::ControlPawn>(*variant))
+        else if (std::holds_alternative<shared::ControlPawn>(*variant))
         {
             shared::ControlPawn pawn = std::get<shared::ControlPawn>(*variant);
 
             path = elementData[index]["path"].asString();
 
             path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "" : "-reinforced") + ".png";
-
         }
-        else if(std::holds_alternative<shared::Caravan>(*variant))
+        else if (std::holds_alternative<shared::Caravan>(*variant))
         {
             shared::Caravan caravan = std::get<shared::Caravan>(*variant);
 
@@ -791,7 +784,6 @@ void GameWindow::selectElementToDisplay(int x, int y)
         else
         {
             path = elementData[index]["path"].asString();
-
         }
 
         path = RESOURCES_PATH + path;
@@ -799,14 +791,13 @@ void GameWindow::selectElementToDisplay(int x, int y)
         elementTextureToDisplay[path]->addSprite();
 
         elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, x, y, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
-
     }
 
     if ((*mapShared)(x, y)->hexResource != nullptr)
     {
         shared::Resource resource = *(*mapShared)(x, y)->hexResource;
 
-        int index = (int)resource.getType() ;
+        int index = (int)resource.getType();
 
         std::string path = RESOURCES_PATH + resourceData[index]["path"].asString();
 
@@ -816,13 +807,12 @@ void GameWindow::selectElementToDisplay(int x, int y)
     }
 }
 
-
 int GameWindow::getPlayerNumber(std::string username)
 {
-    for(unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
+    for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
     {
         std::string buttonText = whoIsPlayingButtons[i].buttonText->getString();
-        if(username.compare(buttonText) == 0)
+        if (username.compare(buttonText) == 0)
         {
             return i + 1;
         }
@@ -999,13 +989,13 @@ void GameWindow::loadHudTexture()
 
     // end of round button
     endOfRoundButton = std::make_unique<Button>(sf::Vector2f(dataNumber["end-of-round-size-x"].asFloat(), dataNumber["end-of-round-size-y"].asFloat()),
-                                              sf::Vector2f(dataNumber["text-for-user-pos-x"].asFloat(), dataNumber["end-of-round-pos-y"].asFloat()),
-                                              TEXT_FOR_USER_BUTTON_COLOR,
-                                              false);
+                                                sf::Vector2f(dataNumber["text-for-user-pos-x"].asFloat(), dataNumber["end-of-round-pos-y"].asFloat()),
+                                                TEXT_FOR_USER_BUTTON_COLOR,
+                                                false);
     endOfRoundButton->setText(dataNumber["end-of-round-text-size"].asInt(),
-                            sf::Vector2f(0, 0),
-                            "End of round",
-                            bodyFont);
+                              sf::Vector2f(0, 0),
+                              "End of round",
+                              bodyFont);
     endOfRoundButton->buttonText->setFillColor(TEXT_FOR_USER_COLOR);
 }
 
@@ -1034,8 +1024,8 @@ void GameWindow::addPlayer(std::string username)
     {
         unsigned x = rand() % mapShared->getMapWidth();
         unsigned y = rand() % mapShared->getMapHeight();
-        if ((*mapShared)(x, y)->getElements().empty() 
-            && (*mapShared)(x, y)->hexResource == nullptr 
+        if ((*mapShared)(x, y)->getElements().empty()
+            && (*mapShared)(x, y)->hexResource == nullptr
             && (*mapShared)(x, y)->getFieldLevel() != shared::FieldLevel::Water )
         {
             std::array<unsigned, 2> position = {x, y};
@@ -1083,7 +1073,8 @@ long GameWindow::getCurrentTime(bool timeSecond)
     }
 }
 
-void GameWindow::setWinnerWindow(std::string winner, std::string causes) {
+void GameWindow::setWinnerWindow(std::string winner, std::string causes)
+{
 
     winnerWindow->title->setString(winner + " is the winner !!!");
     winnerWindow->body->setString(causes);
