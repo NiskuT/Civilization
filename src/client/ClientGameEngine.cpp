@@ -24,8 +24,6 @@ using namespace client;
  */
 ClientGameEngine::ClientGameEngine()
 {
-    clientMenu.gameEnginePtr = this;
-    clientGame.gameEnginePtr = this;
     myself = std::make_shared<shared::Player>();
     myself->setUsername("PlayerTest");
     clientMap = std::make_shared<shared::Map>();
@@ -245,19 +243,27 @@ void ClientGameEngine::processServerRequest(std::string request)
     {
         request = request.substr(10);
         clientConnectedAndReady.store(true);
+
+        serverGameId = request.substr(request.length()-6);
         printChat(request);
     }
     else if (request.find("newplayer") == 0)
     {
         std::string player = request.substr(23);
-        clientGame.addPlayer(player);
+        if (clientGame != nullptr)
+        {
+            clientGame->addPlayer(player);
+        }
         request = request.substr(10) + " join the game";
         printChat(request);
     }
     else if (request.find("infoplayer") == 0)
     {
         std::string player = request.substr(11);
-        clientGame.addPlayer(player);
+        if (clientGame != nullptr)
+        {
+            clientGame->addPlayer(player);
+        }
     }
     else
     {
@@ -267,8 +273,11 @@ void ClientGameEngine::processServerRequest(std::string request)
 
 void ClientGameEngine::printChat(const std::string &message)
 {
-
-    if (clientGame.chatBox != nullptr)
+    if (clientGame == nullptr)
+    {
+        return;
+    }
+    if (clientGame->chatBox != nullptr)
     {
         size_t firstSpace = message.find(" ");
         std::string chatTime = message.substr(0, firstSpace);
@@ -276,7 +285,7 @@ void ClientGameEngine::printChat(const std::string &message)
         std::string chatUsername = message.substr(firstSpace + 1, secondSpace - firstSpace - 1);
         std::string chatMessage = message.substr(secondSpace + 1);
 
-        clientGame.chatBox->updateChat(chatTime, chatUsername, chatMessage);
+        clientGame->chatBox->updateChat(chatTime, chatUsername, chatMessage);
     }
 }
 
@@ -390,8 +399,8 @@ void ClientGameEngine::startGameWindow()
         clientMap->generateRandomMap(rand() % 1000000000);
     }
 
-    clientGame.mapShared = clientMap;
-    clientGame.startGame();
+    clientGame->mapShared = clientMap;
+    clientGame->startGame();
 }
 
 /*!
@@ -399,7 +408,7 @@ void ClientGameEngine::startGameWindow()
  */
 void ClientGameEngine::startMenuWindow()
 {
-    clientMenu.startMenu();
+    clientMenu->startMenu();
 }
 
 /*!
@@ -413,6 +422,12 @@ void ClientGameEngine::renderGame()
                          sf::Style::Close);
 
     clientWindow->setPosition(sf::Vector2i(0, 0));
+
+    clientGame = std::make_unique<GameWindow>();
+    clientMenu = std::make_unique<MenuWindow>();
+
+    clientMenu->gameEnginePtr = this;
+    clientGame->gameEnginePtr = this;
 
     while (runningWindow.load())
     {
@@ -435,7 +450,7 @@ void ClientGameEngine::playGame()
 {
     std::thread t(&ClientGameEngine::startGameWindow, this);
 
-    long lastUpdateTimer = clientGame.getCurrentTime();
+    long lastUpdateTimer = clientGame->getCurrentTime();
     struct stat file_stat;
     std::string file_path = RESOURCES_PATH "/map/files.json";
 
@@ -448,7 +463,7 @@ void ClientGameEngine::playGame()
 
     while (runningWindow.load() == GAME)
     {
-        if (clientGame.getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
+        if (clientGame->getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
         {
 
             if (stat(file_path.c_str(), &file_stat) == -1)
@@ -457,12 +472,12 @@ void ClientGameEngine::playGame()
             }
 
             time_t modified = file_stat.st_mtime;
-            lastUpdateTimer = clientGame.getCurrentTime();
+            lastUpdateTimer = clientGame->getCurrentTime();
 
             if (modified != last_modified)
             {
                 last_modified = modified;
-                clientGame.updateElementTexture();
+                clientGame->updateElementTexture();
                 turn++;
             }
         }
