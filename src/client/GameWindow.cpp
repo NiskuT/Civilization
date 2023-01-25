@@ -83,21 +83,13 @@ void GameWindow::displayWindow()
         mapTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
+    
+    std::unique_lock<std::mutex> lock(updatePlayerMutex);
     for (auto &elementTexture : elementTextureToDisplay)
     {
         elementTexture.second->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
-
-    for (auto &priorityCardTexture : priorityCards)
-    {
-        priorityCardTexture.texture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
-        gameEnginePtr->clientWindow->draw(*priorityCardTexture.title);
-        gameEnginePtr->clientWindow->draw(*priorityCardTexture.nbOfBoxesText);
-        if (priorityCardTexture.isUp)
-        {
-            gameEnginePtr->clientWindow->draw(*priorityCardTexture.body);
-        }
-    }
+    lock.unlock();
 
     for (auto &priorityCardTexture : priorityCards)
     {
@@ -448,8 +440,8 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
             validateBoxesWindow->priorityCardPlayed,
             validateBoxesWindow->nbOfBoxesChosen);
         
-        // to be deleted after
-        setWinnerWindow("Lasso", "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best");
+        // Exemple to use the winner window
+        //setWinnerWindow("Lasso", "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best");
         return true;
     }
 
@@ -726,6 +718,7 @@ void GameWindow::loadElementTexture()
  */
 void GameWindow::updateElementTexture()
 {
+    std::lock_guard<std::mutex> lock(updatePlayerMutex);
     for (auto &kv : elementTextureToDisplay)
     {
         kv.second->clearSprites();
@@ -826,11 +819,10 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
 int GameWindow::getPlayerNumber(std::string username)
 {
-    int i = 0;
-    for(auto& button: whoIsPlayingButtons)
+    for(unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
     {
-        i++;
-        if(username.compare(button.buttonText->getString()))
+        std::string buttonText = whoIsPlayingButtons[i].buttonText->getString();
+        if(username.compare(buttonText) == 0)
         {
             return i + 1;
         }
@@ -1031,13 +1023,14 @@ void GameWindow::addPlayer(std::string username)
 {
     for (auto &button : whoIsPlayingButtons)
     {
-        if (!username.compare(button.buttonText->getString()))
+        std::string buttonText = button.buttonText->getString();
+        if (!username.compare(buttonText))
         {
             return;
         }
     }
 
-    while(1)
+    /*while(1)
     {
         unsigned x = rand() % mapShared->getMapWidth();
         unsigned y = rand() % mapShared->getMapHeight();
@@ -1055,7 +1048,7 @@ void GameWindow::addPlayer(std::string username)
             updateElementTexture();
             break;
         }
-    }
+    }*/
 
     whoIsPlayingButtons.emplace_back(
         sf::Vector2f(75, 90 / 2),
@@ -1070,7 +1063,7 @@ void GameWindow::addPlayer(std::string username)
         whoIsPlayingButtons[i].buttonRect->setPosition(
             (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2 + 105 * i,
             0);
-        whoIsPlayingButtons[i].centerText(false);
+        whoIsPlayingButtons[i].centerText(true);
     }
 }
 

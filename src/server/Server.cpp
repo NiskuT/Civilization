@@ -4,14 +4,12 @@
 #include <iostream>
 
 
-#define PORT 8080
-
 using namespace server;
 
-void Server::start()
+void Server::start(unsigned short port)
 {
     boost::asio::io_context io_context;
-    boost::asio::ip::tcp::acceptor acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT));
+    boost::asio::ip::tcp::acceptor acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port));
 
     while (running.load())
     {
@@ -163,7 +161,7 @@ void Server::processMessage(boost::asio::streambuf& receiveBuffer, std::shared_p
         else if (messageReceived.find("binary") == 0) // binary reception
         {
             size_t size = std::stoi(messageReceived.substr(7));
-            std::string data = binary.receive(player, size);
+            std::string data = binary.receive(player, receiveStream, size);
             registerClientAnswer(data, player);
         }
         else

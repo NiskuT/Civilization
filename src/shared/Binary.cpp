@@ -1,5 +1,6 @@
 #include <shared.hpp>
 #include <iostream>
+#include <sstream>
 
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -25,10 +26,16 @@ void Binary::send(std::shared_ptr<shared::Player> player, std::string serialized
     boost::asio::write(player->getSocket(), boost::asio::buffer(serializedData));
 }
 
-std::string Binary::receive(std::shared_ptr<shared::Player> player, size_t size)
+std::string Binary::receive(std::shared_ptr<shared::Player> player, std::istream &alreadyReceived, size_t totalSize)
 {
+    std::stringstream buffer;
+    buffer << alreadyReceived.rdbuf();
+    std::string fullMessage = buffer.str();
+
     boost::system::error_code error;
     boost::asio::streambuf receiveBuffer;
+
+    size_t size = totalSize - fullMessage.size();
     try
     {
         std::lock_guard<std::mutex> lock(player->socketReadMutex);
@@ -52,7 +59,17 @@ std::string Binary::receive(std::shared_ptr<shared::Player> player, size_t size)
     std::string messageReceived(
         boost::asio::buffers_begin(receiveBuffer.data()),
         boost::asio::buffers_end(receiveBuffer.data()));
-    return messageReceived;
+
+    if (fullMessage.size() == 0)
+    {
+        return messageReceived;
+    }
+    else
+    {
+        fullMessage += messageReceived;
+        return fullMessage;
+    }
+    
 }
 
 template <typename T>
@@ -72,7 +89,27 @@ void Binary::castToBinary(T &data, std::string &serializedData)
     serializedData = stream.str();
 }
 
+// We need to instantiate the templates for the types we use in other library than shared
 template void Binary::castToBinary<Map>(Map &data, std::string &serializedData);
 template void Binary::castToObject<Map>(std::string receivedData, Map &data);
+
 template void Binary::castToBinary<RuleArgsStruct>(RuleArgsStruct &data, std::string &serializedData);
 template void Binary::castToObject<RuleArgsStruct>(std::string receivedData, RuleArgsStruct &data);
+
+template void Binary::castToBinary<Barbarian>(Barbarian &data, std::string &serializedData);
+template void Binary::castToObject<Barbarian>(std::string receivedData, Barbarian &data);
+
+template void Binary::castToBinary<BarbarianVillage>(BarbarianVillage &data, std::string &serializedData);
+template void Binary::castToObject<BarbarianVillage>(std::string receivedData, BarbarianVillage &data);
+
+template void Binary::castToBinary<City>(City &data, std::string &serializedData);
+template void Binary::castToObject<City>(std::string receivedData, City &data);
+
+template void Binary::castToBinary<Caravan>(Caravan &data, std::string &serializedData);
+template void Binary::castToObject<Caravan>(std::string receivedData, Caravan &data);
+
+template void Binary::castToBinary<ControlPawn>(ControlPawn &data, std::string &serializedData);
+template void Binary::castToObject<ControlPawn>(std::string receivedData, ControlPawn &data);
+
+template void Binary::castToBinary<Hexagon>(Hexagon &data, std::string &serializedData);
+template void Binary::castToObject<Hexagon>(std::string receivedData, Hexagon &data);

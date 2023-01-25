@@ -19,6 +19,12 @@ void setImage(std::unique_ptr<TextureDisplayer> &texture, std::string path, sf::
     texture->getSprite().setScale(scale);
 }
 
+void setText(std::unique_ptr<sf::Text>& text, sf::Font& font, int size) 
+{
+    text = std::make_unique<sf::Text>("", font, size);
+    text->setFillColor(sf::Color::Black);
+}
+
 /*!
  * @brief Constructor
  * Constructor of PopUpWindow class
@@ -93,11 +99,9 @@ PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &d
              sf::Vector2f(data["winner-little-background-pos-x"].asFloat(), data["winner-little-background-pos-y"].asFloat()),
              sf::Vector2f(data["winner-scale"].asFloat(), data["winner-scale"].asFloat()));
 
-    title = std::make_unique<sf::Text>("", font, data["winner-text-size"].asInt());
-    title->setFillColor(sf::Color::Black);
+    setText(title, font, data["winner-text-size"].asInt());
 
-    body = std::make_unique<sf::Text>("", font, data["text-size"].asInt());
-    body->setFillColor(sf::Color::Black);
+    setText(body, font, data["text-size"].asInt());
     
     centerText();
 }
