@@ -21,14 +21,16 @@ void setImage(std::unique_ptr<TextureDisplayer> &texture, std::string path, sf::
 
 /*!
  * @brief Constructor
- * Constructor of ValidateBoxesButtons class
+ * Constructor of PopUpWindow class
  * @param windowLength length of the window
  * @param windowWidth width of the window
  */
 
-ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
+PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &data)
 {
-    const Json::Value &data = gameWindow->openJsonFile("/validateBoxes/dataButton.json");
+    this->data = data;
+    this->windowLength = windowLength;
+    this->windowWidth = windowWidth;
 
     blackBackground = std::make_unique<Button>(sf::Vector2f(windowLength, windowWidth), sf::Vector2f(0, 0), BACKGROUND_COLOR, false);
 
@@ -38,15 +40,16 @@ ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
     }
 
     setImage(littleBackground,
-             "/validateBoxes/little-background.png",
+             "/pop-up/little-background.png",
              sf::Vector2f(data["little-background-pos-x"].asFloat(), data["little-background-pos-y"].asFloat()),
              sf::Vector2f(data["little-background-scale-x"].asFloat(), 1));
 
+  
     std::string questionString = "You have X boxes, \nHow many boxes do you want to play?";
-    question = std::make_unique<sf::Text>(questionString, font, data["text-size"].asInt());
-    question->setFillColor(sf::Color::Black);
-    question->setPosition(
-        windowLength / 2 - question->getGlobalBounds().width / 2,
+    title = std::make_unique<sf::Text>(questionString, font, data["text-size"].asInt());
+    title->setFillColor(sf::Color::Black);
+    title->setPosition(
+        windowLength / 2 - title->getGlobalBounds().width / 2,
         littleBackground->getSprite().getPosition().y + data["text-offset-y"].asInt());
 
     chooseNumberOfBoxesButton = std::make_unique<Button>(
@@ -57,24 +60,26 @@ ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth)
     chooseNumberOfBoxesButton->setText(data["boxes-button-text-size"].asInt(), sf::Vector2f(0, 0), "X", font);
 
     setImage(arrowLessTexture,
-             "/validateBoxes/arrow-less.png",
+             "/pop-up/arrow-less.png",
              sf::Vector2f(data["arrow-less-pos-x"].asFloat(), data["arrow-less-pos-y"].asFloat()),
              sf::Vector2f(1, 1));
 
     setImage(arrowMoreTexture,
-             "/validateBoxes/arrow-more.png",
+             "/pop-up/arrow-more.png",
              sf::Vector2f(data["arrow-more-pos-x"].asFloat(), data["arrow-more-pos-y"].asFloat()),
              sf::Vector2f(1, 1));
 
     setImage(doneTexture,
-             "/validateBoxes/done.png",
+             "/pop-up/done.png",
              sf::Vector2f(data["done-pos-x"].asFloat(), data["done-pos-y"].asFloat()),
              sf::Vector2f(1, 1));
 }
 
-ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth, std::string winner) {
+PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &data, bool isActive) {
 
-    const Json::Value &data = gameWindow->openJsonFile("/validateBoxes/dataButton.json");
+    this->data = data;
+    this->windowLength = windowLength;
+    this->windowWidth = windowWidth;
 
     blackBackground = std::make_unique<Button>(sf::Vector2f(windowLength, windowWidth), sf::Vector2f(0, 0), BACKGROUND_COLOR, false);
 
@@ -84,42 +89,49 @@ ValidateBoxesButtons::ValidateBoxesButtons(int windowLength, int windowWidth, st
     }
 
     setImage(littleBackground,
-             "/validateBoxes/little-background.png",
+             "/pop-up/little-background.png",
              sf::Vector2f(data["winner-little-background-pos-x"].asFloat(), data["winner-little-background-pos-y"].asFloat()),
              sf::Vector2f(data["winner-scale"].asFloat(), data["winner-scale"].asFloat()));
 
-    std::string winnerString = "Player X is the winner !!";
-    question = std::make_unique<sf::Text>(winnerString, font, data["winner-text-size"].asInt());
-    question->setFillColor(sf::Color::Black);
-    question->setPosition(
-        windowLength / 2 - question->getGlobalBounds().width / 2,
-        littleBackground->getSprite().getPosition().y + data["winner-text-offset-y"].asInt());
-    
-    std::string winnerCausesString = "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best";
-    body = std::make_unique<sf::Text>(winnerCausesString, font, data["text-size"].asInt());
-    body->setFillColor(sf::Color::Black);
-    body->setPosition(
-        windowLength / 2 - question->getGlobalBounds().width / 2,
-        littleBackground->getSprite().getPosition().y + data["winner-body-offset-y"].asInt());
+    title = std::make_unique<sf::Text>("", font, data["winner-text-size"].asInt());
+    title->setFillColor(sf::Color::Black);
 
+    body = std::make_unique<sf::Text>("", font, data["text-size"].asInt());
+    body->setFillColor(sf::Color::Black);
+    
+    centerText();
 }
 
-void ValidateBoxesButtons::drawWinnerWindow(std::shared_ptr<sf::RenderWindow> window){
-    window->draw(*blackBackground->buttonRect);
-    window->draw(littleBackground->getSprite());
-    window->draw(*question);
+void drawGeneral(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<sf::RectangleShape>& blackBackgroundButton, sf::Sprite littleBackground, std::unique_ptr<sf::Text>& title) {
+    window->draw(*blackBackgroundButton);
+    window->draw(littleBackground);
+    window->draw(*title);
+}
+
+void PopUpWindow::drawWinnerWindow(std::shared_ptr<sf::RenderWindow> window){
+    drawGeneral(window, blackBackground->buttonRect, littleBackground->getSprite(), title);
     window->draw(*body);
 
 }
 
-void ValidateBoxesButtons::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWindow> window)
+void PopUpWindow::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWindow> window)
 {
-    window->draw(*blackBackground->buttonRect);
-    window->draw(littleBackground->getSprite());
-    window->draw(*question);
+    drawGeneral(window, blackBackground->buttonRect, littleBackground->getSprite(), title);
     window->draw(*chooseNumberOfBoxesButton->buttonRect);
     window->draw(*chooseNumberOfBoxesButton->buttonText);
     window->draw(arrowLessTexture->getSprite());
     window->draw(arrowMoreTexture->getSprite());
     window->draw(doneTexture->getSprite());
 }
+
+void PopUpWindow::centerText() {
+
+    body->setPosition(
+        windowLength / 2 - body->getGlobalBounds().width / 2,
+        littleBackground->getSprite().getPosition().y + data["winner-body-offset-y"].asInt());
+
+    title->setPosition(
+        windowLength / 2 - title->getGlobalBounds().width / 2,
+        littleBackground->getSprite().getPosition().y + data["winner-text-offset-y"].asInt());
+
+} 

@@ -59,8 +59,9 @@ GameWindow::GameWindow()
     firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
     chatBox = std::make_unique<Chat>();
 
-    validateBoxesWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH);
-    winnerWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH, "player 1");
+    const Json::Value &data = openJsonFile("/pop-up/dataButton.json");
+    validateBoxesWindow = std::make_unique<PopUpWindow>(WINDOW_LENGTH, WINDOW_WIDTH, data);
+    winnerWindow = std::make_unique<PopUpWindow>(WINDOW_LENGTH, WINDOW_WIDTH, data, false);
     validateBoxesWindow->gameWindow = this;
 
 
@@ -130,6 +131,9 @@ void GameWindow::displayWindow()
         hudTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
+    textForTheUser->drawButton(gameEnginePtr->clientWindow);
+    endOfRoundButton->drawButton(gameEnginePtr->clientWindow);
+
     if (validateBoxesWindow->isWindowActive)
     {
         validateBoxesWindow->drawValidateBoxesButtons(gameEnginePtr->clientWindow);
@@ -139,9 +143,6 @@ void GameWindow::displayWindow()
     {
         chatBox->drawChat(gameEnginePtr->clientWindow);
     }
-
-    textForTheUser->drawButton(gameEnginePtr->clientWindow);
-    endOfRoundButton->drawButton(gameEnginePtr->clientWindow);
 
     if(winnerWindow->isWindowActive) 
     {
@@ -448,7 +449,7 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
             validateBoxesWindow->nbOfBoxesChosen);
         
         // to be deleted after
-        setWinnerWindow("Lasso", " bla");
+        setWinnerWindow("Lasso", "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best");
         return true;
     }
 
@@ -490,7 +491,7 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
 
             validateBoxesWindow->chooseNumberOfBoxesButton->buttonText->setString(nbOfBoxesOnPriorityCard); // sent by the server
             questionString = "You have " + nbOfBoxesOnPriorityCard + " boxes \nHow many boxes do you want to play?";
-            validateBoxesWindow->question->setString(questionString);
+            validateBoxesWindow->title->setString(questionString);
             return true;
         }
 
@@ -1090,6 +1091,9 @@ long GameWindow::getCurrentTime(bool timeSecond)
 }
 
 void GameWindow::setWinnerWindow(std::string winner, std::string causes) {
-    winnerWindow->question->setString(winner + " is the winner !!");
+
+    winnerWindow->title->setString(winner + " is the winner !!!");
+    winnerWindow->body->setString(causes);
+    winnerWindow->centerText();
     winnerWindow->isWindowActive = true;
 }
