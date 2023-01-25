@@ -148,10 +148,6 @@ bool MenuWindow::menuEventHappened(sf::Event &event)
 
         switch (event.key.code)
         {
-        case sf::Keyboard::K:
-            gameEnginePtr->handleQuitMenu(false);
-            return true;
-
         case sf::Keyboard::BackSpace:
             deleteChar();
             break;
