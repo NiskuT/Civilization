@@ -83,17 +83,17 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a030106bbf05f910deb3b6b1961192d8f"><td class="memItemLeft" align="right" valign="top"><a id="a030106bbf05f910deb3b6b1961192d8f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>send</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">Player</a> &gt; player, std::string serializedData, bool answerRequired=true)</td></tr>
 <tr class="separator:a030106bbf05f910deb3b6b1961192d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab48334504a58aabdb94222f1dd6a5312"><td class="memItemLeft" align="right" valign="top"><a id="ab48334504a58aabdb94222f1dd6a5312"></a>
-static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>receive</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">Player</a> &gt; player, size_t size)</td></tr>
-<tr class="separator:ab48334504a58aabdb94222f1dd6a5312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f5732b5b7af961bbc7edd9808236cff"><td class="memTemplParams" colspan="2"><a id="a1f5732b5b7af961bbc7edd9808236cff"></a>
+<tr class="memitem:a3ff74c1c000988931f9e6e436f5a4b74"><td class="memItemLeft" align="right" valign="top"><a id="a3ff74c1c000988931f9e6e436f5a4b74"></a>
+static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>receive</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">Player</a> &gt; player, std::istream &amp;alreadyReceived, size_t totalSize)</td></tr>
+<tr class="separator:a3ff74c1c000988931f9e6e436f5a4b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af192f2c8d24f93d90a7a092a4eda8c6c"><td class="memTemplParams" colspan="2"><a id="af192f2c8d24f93d90a7a092a4eda8c6c"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a1f5732b5b7af961bbc7edd9808236cff"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>castToBinary</b> (T &amp;data, std::string &amp;serializedData)</td></tr>
-<tr class="separator:a1f5732b5b7af961bbc7edd9808236cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6778d79b68312de68ccf21d9bd628e8e"><td class="memTemplParams" colspan="2"><a id="a6778d79b68312de68ccf21d9bd628e8e"></a>
+<tr class="memitem:af192f2c8d24f93d90a7a092a4eda8c6c"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>castToBinary</b> (T &amp;data, std::string &amp;serializedData)</td></tr>
+<tr class="separator:af192f2c8d24f93d90a7a092a4eda8c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5196c43ca2c2225c049b57822325eaf9"><td class="memTemplParams" colspan="2"><a id="a5196c43ca2c2225c049b57822325eaf9"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a6778d79b68312de68ccf21d9bd628e8e"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>castToObject</b> (std::string receivedData, T &amp;data)</td></tr>
-<tr class="separator:a6778d79b68312de68ccf21d9bd628e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5196c43ca2c2225c049b57822325eaf9"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>castToObject</b> (std::string receivedData, T &amp;data)</td></tr>
+<tr class="separator:a5196c43ca2c2225c049b57822325eaf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classshared_1_1Binary.html" title="class Binary -">Binary</a> - </p>

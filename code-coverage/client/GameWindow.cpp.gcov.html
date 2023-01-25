@@ -31,18 +31,18 @@
             <td class="headerValue">code-coverage.info.cleaned</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">511</td>
-            <td class="headerCovTableEntryLo">0.2 %</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">495</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-25 17:36:30</td>
+            <td class="headerValue">2023-01-25 20:31:49</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">30</td>
-            <td class="headerCovTableEntryLo">3.3 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -116,7 +116,7 @@
 <a name="54"><span class="lineNum">      54 </span>            :  *</a>
 <a name="55"><span class="lineNum">      55 </span>            :  * Constructor of GameWindow class</a>
 <a name="56"><span class="lineNum">      56 </span>            :  */</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          1 : GameWindow::GameWindow()</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 : GameWindow::GameWindow()</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : {</a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :     firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};</span></a>
 <a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :     chatBox = std::make_unique&lt;Chat&gt;();</span></a>
@@ -1072,25 +1072,25 @@
 <a name="1010"><span class="lineNum">    1010 </span>            :         }</a>
 <a name="1011"><span class="lineNum">    1011 </span><span class="lineNoCov">          0 :     }</span></a>
 <a name="1012"><span class="lineNum">    1012 </span>            : </a>
-<a name="1013"><span class="lineNum">    1013 </span>            :     while(1)</a>
+<a name="1013"><span class="lineNum">    1013 </span>            :     /*while(1)</a>
 <a name="1014"><span class="lineNum">    1014 </span>            :     {</a>
-<a name="1015"><span class="lineNum">    1015 </span><span class="lineNoCov">          0 :         unsigned x = rand() % mapShared-&gt;getMapWidth();</span></a>
-<a name="1016"><span class="lineNum">    1016 </span><span class="lineNoCov">          0 :         unsigned y = rand() % mapShared-&gt;getMapHeight();</span></a>
-<a name="1017"><span class="lineNum">    1017 </span><span class="lineNoCov">          0 :         if ((*mapShared)(x, y)-&gt;getElements().empty() </span></a>
-<a name="1018"><span class="lineNum">    1018 </span><span class="lineNoCov">          0 :             &amp;&amp; (*mapShared)(x, y)-&gt;hexResource == nullptr </span></a>
-<a name="1019"><span class="lineNum">    1019 </span><span class="lineNoCov">          0 :             &amp;&amp; (*mapShared)(x, y)-&gt;getFieldLevel() != shared::FieldLevel::Water )</span></a>
+<a name="1015"><span class="lineNum">    1015 </span>            :         unsigned x = rand() % mapShared-&gt;getMapWidth();</a>
+<a name="1016"><span class="lineNum">    1016 </span>            :         unsigned y = rand() % mapShared-&gt;getMapHeight();</a>
+<a name="1017"><span class="lineNum">    1017 </span>            :         if ((*mapShared)(x, y)-&gt;getElements().empty() </a>
+<a name="1018"><span class="lineNum">    1018 </span>            :             &amp;&amp; (*mapShared)(x, y)-&gt;hexResource == nullptr </a>
+<a name="1019"><span class="lineNum">    1019 </span>            :             &amp;&amp; (*mapShared)(x, y)-&gt;getFieldLevel() != shared::FieldLevel::Water )</a>
 <a name="1020"><span class="lineNum">    1020 </span>            :         {</a>
-<a name="1021"><span class="lineNum">    1021 </span><span class="lineNoCov">          0 :             std::array&lt;unsigned, 2&gt; position = {x, y};</span></a>
-<a name="1022"><span class="lineNum">    1022 </span><span class="lineNoCov">          0 :             std::shared_ptr&lt;shared::City&gt; city = std::make_shared&lt;shared::City&gt;(position);</span></a>
-<a name="1023"><span class="lineNum">    1023 </span><span class="lineNoCov">          0 :             city-&gt;isStateCity = false;</span></a>
-<a name="1024"><span class="lineNum">    1024 </span><span class="lineNoCov">          0 :             city-&gt;isMature = false;</span></a>
-<a name="1025"><span class="lineNum">    1025 </span><span class="lineNoCov">          0 :             city-&gt;isCapital = true;</span></a>
-<a name="1026"><span class="lineNum">    1026 </span><span class="lineNoCov">          0 :             city-&gt;player = username;</span></a>
-<a name="1027"><span class="lineNum">    1027 </span><span class="lineNoCov">          0 :             (*mapShared)(x, y)-&gt;addElement(std::make_shared&lt;variantElement&gt;(*city));</span></a>
-<a name="1028"><span class="lineNum">    1028 </span><span class="lineNoCov">          0 :             updateElementTexture();</span></a>
-<a name="1029"><span class="lineNum">    1029 </span><span class="lineNoCov">          0 :             break;</span></a>
-<a name="1030"><span class="lineNum">    1030 </span><span class="lineNoCov">          0 :         }</span></a>
-<a name="1031"><span class="lineNum">    1031 </span><span class="lineNoCov">          0 :     }</span></a>
+<a name="1021"><span class="lineNum">    1021 </span>            :             std::array&lt;unsigned, 2&gt; position = {x, y};</a>
+<a name="1022"><span class="lineNum">    1022 </span>            :             std::shared_ptr&lt;shared::City&gt; city = std::make_shared&lt;shared::City&gt;(position);</a>
+<a name="1023"><span class="lineNum">    1023 </span>            :             city-&gt;isStateCity = false;</a>
+<a name="1024"><span class="lineNum">    1024 </span>            :             city-&gt;isMature = false;</a>
+<a name="1025"><span class="lineNum">    1025 </span>            :             city-&gt;isCapital = true;</a>
+<a name="1026"><span class="lineNum">    1026 </span>            :             city-&gt;player = username;</a>
+<a name="1027"><span class="lineNum">    1027 </span>            :             (*mapShared)(x, y)-&gt;addElement(std::make_shared&lt;variantElement&gt;(*city));</a>
+<a name="1028"><span class="lineNum">    1028 </span>            :             updateElementTexture();</a>
+<a name="1029"><span class="lineNum">    1029 </span>            :             break;</a>
+<a name="1030"><span class="lineNum">    1030 </span>            :         }</a>
+<a name="1031"><span class="lineNum">    1031 </span>            :     }*/</a>
 <a name="1032"><span class="lineNum">    1032 </span>            : </a>
 <a name="1033"><span class="lineNum">    1033 </span><span class="lineNoCov">          0 :     whoIsPlayingButtons.emplace_back(</span></a>
 <a name="1034"><span class="lineNum">    1034 </span><span class="lineNoCov">          0 :         sf::Vector2f(75, 90 / 2),</span></a>

@@ -1,5 +1,4 @@
 <map id="client::GameWindow" name="client::GameWindow">
-<area shape="rect" id="node1" title="class GameWindow &#45;" alt="" coords="19,5,162,32"/>
-<area shape="rect" id="node2" href="$classclient_1_1ClientGameEngine.html" title="class ClientGameEngine &#45;" alt="" coords="5,95,176,121"/>
-<area shape="rect" id="node3" href="$classclient_1_1MenuWindow.html" title="class MenuWindow &#45;" alt="" coords="21,184,161,211"/>
+<area shape="rect" id="node1" title="class GameWindow &#45;" alt="" coords="19,95,162,121"/>
+<area shape="rect" id="node2" href="$classclient_1_1ClientGameEngine.html" title="class ClientGameEngine &#45;" alt="" coords="5,5,176,32"/>
 </map>

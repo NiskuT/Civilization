@@ -78,16 +78,6 @@ $(function() {
  <a href="classclient_1_1ClientGameEngine.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ClientGameEngine_8hpp_source.html">ClientGameEngine.hpp</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for client::ClientGameEngine:</div>
-<div class="dyncontent">
-<div class="center"><img src="classclient_1_1ClientGameEngine__coll__graph.png" border="0" usemap="#aclient_1_1ClientGameEngine_coll__map" alt="Collaboration graph"/></div>
-<map name="aclient_1_1ClientGameEngine_coll__map" id="aclient_1_1ClientGameEngine_coll__map">
-<area shape="rect" title="class ClientGameEngine &#45;" alt="" coords="135,5,306,32"/>
-<area shape="rect" href="classclient_1_1MenuWindow.html" title="class MenuWindow &#45;" alt="" coords="5,95,145,121"/>
-<area shape="rect" href="classclient_1_1GameWindow.html" title="class GameWindow &#45;" alt="" coords="260,95,403,121"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -161,6 +151,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>loadMap</b> ()</td></
 <tr class="memitem:ab51abd2e7a524b398c48de255084888c"><td class="memItemLeft" align="right" valign="top"><a id="ab51abd2e7a524b398c48de255084888c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>playTurn</b> ()</td></tr>
 <tr class="separator:ab51abd2e7a524b398c48de255084888c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c018809ff16fdc97defcc5fdbfc7b0c"><td class="memItemLeft" align="right" valign="top"><a id="a9c018809ff16fdc97defcc5fdbfc7b0c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>waitToBeReady</b> ()</td></tr>
+<tr class="separator:a9c018809ff16fdc97defcc5fdbfc7b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -170,12 +163,12 @@ std::shared_ptr&lt; sf::RenderWindow &gt;&#160;</td><td class="memItemRight" val
 <tr class="memitem:ac0ff5540f7c450592149fe8662eadb1a"><td class="memItemLeft" align="right" valign="top"><a id="ac0ff5540f7c450592149fe8662eadb1a"></a>
 std::atomic&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>runningWindow</b> = 1</td></tr>
 <tr class="separator:ac0ff5540f7c450592149fe8662eadb1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97ad34082dad8cc2596e36b655958be2"><td class="memItemLeft" align="right" valign="top"><a id="a97ad34082dad8cc2596e36b655958be2"></a>
-<a class="el" href="classclient_1_1GameWindow.html">GameWindow</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clientGame</b></td></tr>
-<tr class="separator:a97ad34082dad8cc2596e36b655958be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ffc8bbeb65d9ab92d18b7540f38348b"><td class="memItemLeft" align="right" valign="top"><a id="a1ffc8bbeb65d9ab92d18b7540f38348b"></a>
-<a class="el" href="classclient_1_1MenuWindow.html">MenuWindow</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clientMenu</b></td></tr>
-<tr class="separator:a1ffc8bbeb65d9ab92d18b7540f38348b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefb7a6d6ab333d7a81d1d0e33f73b79f"><td class="memItemLeft" align="right" valign="top"><a id="aefb7a6d6ab333d7a81d1d0e33f73b79f"></a>
+std::unique_ptr&lt; <a class="el" href="classclient_1_1GameWindow.html">GameWindow</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>clientGame</b> = nullptr</td></tr>
+<tr class="separator:aefb7a6d6ab333d7a81d1d0e33f73b79f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2f7830b943ef3d9f201d63a7f7b14dc"><td class="memItemLeft" align="right" valign="top"><a id="ac2f7830b943ef3d9f201d63a7f7b14dc"></a>
+std::unique_ptr&lt; <a class="el" href="classclient_1_1MenuWindow.html">MenuWindow</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>clientMenu</b> = nullptr</td></tr>
+<tr class="separator:ac2f7830b943ef3d9f201d63a7f7b14dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0551f5727c745bf9f1cee47f64586798"><td class="memItemLeft" align="right" valign="top"><a id="a0551f5727c745bf9f1cee47f64586798"></a>
 std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map</b></td></tr>
 <tr class="separator:a0551f5727c745bf9f1cee47f64586798"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,6 +181,12 @@ std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Play
 <tr class="memitem:ae206c8ea1685207e9d7a3bf9db95c155"><td class="memItemLeft" align="right" valign="top"><a id="ae206c8ea1685207e9d7a3bf9db95c155"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>gameId</b> = &quot;new&quot;</td></tr>
 <tr class="separator:ae206c8ea1685207e9d7a3bf9db95c155"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f016258b4f3ebf00ed6a20779cebfa0"><td class="memItemLeft" align="right" valign="top"><a id="a8f016258b4f3ebf00ed6a20779cebfa0"></a>
+std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>clientConnectedAndReady</b></td></tr>
+<tr class="separator:a8f016258b4f3ebf00ed6a20779cebfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa045bd4064c13c02eb59317e11462cb"><td class="memItemLeft" align="right" valign="top"><a id="afa045bd4064c13c02eb59317e11462cb"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>serverGameId</b></td></tr>
+<tr class="separator:afa045bd4064c13c02eb59317e11462cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1ClientGameEngine.html" title="class ClientGameEngine -">ClientGameEngine</a> - </p>
