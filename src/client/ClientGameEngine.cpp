@@ -451,35 +451,13 @@ void ClientGameEngine::playGame()
     std::thread t(&ClientGameEngine::startGameWindow, this);
 
     long lastUpdateTimer = clientGame->getCurrentTime();
-    struct stat file_stat;
-    std::string file_path = RESOURCES_PATH "/map/files.json";
-
-    if (stat(file_path.c_str(), &file_stat) == -1)
-    {
-        std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
-    }
-
-    time_t last_modified = file_stat.st_mtime;
 
     while (runningWindow.load() == GAME)
     {
         if (clientGame->getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
         {
-
-            if (stat(file_path.c_str(), &file_stat) == -1)
-            {
-                std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
-            }
-
-            time_t modified = file_stat.st_mtime;
             lastUpdateTimer = clientGame->getCurrentTime();
-
-            if (modified != last_modified)
-            {
-                last_modified = modified;
-                clientGame->updateElementTexture();
-                turn++;
-            }
+            clientGame->updateElementTexture();
         }
         if (playerTurn.load())
         {
