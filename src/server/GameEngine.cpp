@@ -45,16 +45,19 @@ void GameEngine::runGame() // rename rungame
     message += "Game started\n";
     sendToEveryone(message);
     shared::Rules rules;
-    while (true) // TODO: add condition to stop the game
+    while (true) // TODO: add condition to stop the game (victory of a player)
     {
-        for (auto &player : players)
+        std::cout << "size of players: " << players.size() << std::endl;
+        for (auto player : players)
         {
             std::cout << "start of turn of player: " << player->getName() << std::endl;
             shared::RuleArgsStruct ruleArgs;
             do
             {
                 player->qAndA.question = "playturn\n";
+                std::cout << "question sent" << std::endl;
                 askClient(player);
+                std::cout << "answer received" << std::endl;
                 binary.castToObject(player->qAndA.answer, ruleArgs);
                 ruleArgs.gameMap = this->gameMap;
                 ruleArgs.currentPlayer = player;
@@ -64,21 +67,18 @@ void GameEngine::runGame() // rename rungame
 
             } while (!(rules.runTheRule(ruleArgs)));
 
-            // ruleArgs.playerName = player->getName();
+            ruleArgs.playerName = player->getName();
+            std::cout << "ruleArgs.playerName: " << ruleArgs.playerName << std::endl;
 
-            std::string serializedData = std::to_string(player->getTechLevel());
-            binary.send(player, serializedData, false);
+            std::string struc;
+            binary.castToBinary(ruleArgs, struc);
 
-            
-            // std::string struc;
-            // binary.castToBinary(ruleArgs, struc);
-            // std::cout << "ruleArgsStruct: " << struc.size() << std::endl;
-
-            // message = "rulesturn ";
-            // message += std::to_string(struc.size());
-            // sendToEveryone(message);
-            // sendToEveryone(struc);
-            // std::cout << "end of turn of player" << player->getName() << std::endl;
+            message = "rulesturn ";
+            message += std::to_string(struc.size());
+            message += "\n";
+            sendToEveryone(message);
+            sendToEveryone(struc);
+            std::cout << "end of turn of player" << player->getName() << std::endl;
         }
     }
 }

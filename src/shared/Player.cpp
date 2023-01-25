@@ -22,6 +22,19 @@ Player::Player()
     this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture);
 }
 
+Player::Player(std::string username)
+{
+    connectedToSocket.store(false);
+    std::fill(resources.begin(), resources.end(), 0);
+    this->techLevel = 0;
+    this->username = username;
+    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military);
+    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::economy);
+    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science);
+    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry);
+    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture);
+}
+
 void Player::setUsername(std::string username)
 {
     this->username = username;

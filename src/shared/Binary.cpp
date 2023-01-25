@@ -52,6 +52,7 @@ std::string Binary::receive(std::shared_ptr<shared::Player> player, size_t size)
     std::string messageReceived(
         boost::asio::buffers_begin(receiveBuffer.data()),
         boost::asio::buffers_end(receiveBuffer.data()));
+
     return messageReceived;
 }
 

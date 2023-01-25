@@ -121,14 +121,24 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
             shared::RuleArgsStruct ruleArgs;
 
             size_t size = std::stoi(messageReceived.substr(10));
-            std::string data = binary.receive(myself, size);
-            clientGame.rotateTechWheel(std::stoi(data));
+            std::cout << "taille de l'elemenbt recupere : " << size << "\n"
+                      << std::endl;
+            std::string bin = binary.receive(myself, size);
+            std::cout << "element recupere : " << bin << "\n"
+                      << std::endl;
+            binary.castToObject(bin, ruleArgs);
 
-            // size_t size = std::stoi(request.substr(10));
-            // std::cout << "taille de l'elemenbt recupere : " << size << "\n"
-            //           << std::endl;
-            // std::string bin = binary.receive(myself, size);
-            // binary.castToObject(bin, ruleArgs);
+            std::cout << "ruleArgs.playerName : " << ruleArgs.playerName << std::endl;
+            std::cout << "myself->getName() : " << myself->getName() << std::endl;
+            if (myself->getName() == ruleArgs.playerName)
+            {
+                std::cout << "this player" << std::endl;
+            }
+            else
+            {
+                std::cout << "not this player" << std::endl;
+            }
+
             // std::cout << "ruleArgs.ruleId : " << (int)ruleArgs.ruleId << "\n"
             //           << std::endl;
             // // for (auto &player : ruleArgs.playerList) // TODO : add a player list in clientGame
@@ -254,6 +264,8 @@ void ClientGameEngine::processServerRequest(std::string request)
         clientGame.addPlayer(player);
         request = request.substr(10) + " join the game";
         printChat(request);
+
+        otherPlayers.push_back(std::make_shared<shared::Player>(player));
     }
     else if (request.find("infoplayer") == 0)
     {

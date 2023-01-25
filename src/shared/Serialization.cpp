@@ -73,6 +73,7 @@ void RuleArgsStruct::serialize(Archive &ar, const unsigned int version)
     ar &positionOfWonder;
     ar &positionOfCity;
     ar &cardsToImprove;
+    ar &playerName;
 }
 
 template <class Archive>
