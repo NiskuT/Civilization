@@ -36,12 +36,11 @@
             "text-for-user-pos-x": 90,
             "text-for-user-pos-y": 7,
             "text-for-user-string-size": 30,
-            "text-for-user-max-char": 36
+            "text-for-user-max-char": 36,
 
-
-
-
- 
-        
+            "end-of-round-size-x": 120,
+            "end-of-round-size-y": 35,
+            "end-of-round-pos-y": 58,
+            "end-of-round-text-size": 22
     }
 }

@@ -27,13 +27,11 @@ void Map::save(Archive &ar, const unsigned int version) const
 template <class Archive>
 void Map::load(Archive &ar, const unsigned int version)
 {
-    std::cout << "Loading map" << std::endl;
     ar >> height;
     ar >> width;
     isInizialize = false;
     this->init();
     ar >> mapOfTheGame;
-    std::cout << "Map loaded" << std::endl;
 }
 
 template <class Archive>
@@ -85,6 +83,7 @@ void City::serialize(Archive &ar, const unsigned int version)
     ar &isCapital;
     ar &isMature;
     ar &position;
+    ar &player;
 }
 
 template <class Archive>
@@ -92,6 +91,7 @@ void ControlPawn::serialize(Archive &ar, const unsigned int version)
 {
     ar &position;
     ar &reinforced;
+    ar &player;
 }
 
 template <class Archive>
@@ -111,20 +111,39 @@ void Caravan::serialize(Archive &ar, const unsigned int version)
 {
     ar &position;
     ar &used;
+    ar &player;
 }
 
 namespace boost
 {
     namespace serialization
     {
-
         template <class Archive, typename... Ts>
-        void serialize(Archive &ar, std::variant<Ts...> &var, const unsigned int version)
+        void save(Archive &ar, const std::variant<Ts...> &obj, const unsigned int version)
         {
-            std::visit([&](auto &&value)
-                       { ar &value; },
-                       var);
+            boost::variant<Ts...> v;
+            std::visit([&](const auto &arg)
+                       { v = arg; },
+                       obj);
+
+            ar &v;
         }
 
+        template <class Archive, typename... Ts>
+        void load(Archive &ar, std::variant<Ts...> &obj, const unsigned int version)
+        {
+            boost::variant<Ts...> v;
+            ar &v;
+
+            boost::apply_visitor([&](auto &arg)
+                                 { obj = arg; },
+                                 v);
+        }
+
+        template <class Archive, typename... Ts>
+        void serialize(Archive &ar, std::variant<Ts...> &t, const unsigned int file_version)
+        {
+            split_free(ar, t, file_version);
+        }
     }
 }

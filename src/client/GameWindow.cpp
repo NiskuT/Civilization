@@ -59,8 +59,11 @@ GameWindow::GameWindow()
     firstHexagonPosition = {MAP_X_OFFSET, MAP_Y_OFFSET};
     chatBox = std::make_unique<Chat>();
 
-    validateBoxesWindow = std::make_unique<ValidateBoxesButtons>(WINDOW_LENGTH, WINDOW_WIDTH);
+    const Json::Value &data = openJsonFile("/pop-up/dataButton.json");
+    validateBoxesWindow = std::make_unique<PopUpWindow>(WINDOW_LENGTH, WINDOW_WIDTH, data, true);
+    winnerWindow = std::make_unique<PopUpWindow>(WINDOW_LENGTH, WINDOW_WIDTH, data, false);
     validateBoxesWindow->gameWindow = this;
+
     chatBox = std::make_unique<Chat>();
 }
 
@@ -79,7 +82,6 @@ void GameWindow::displayWindow()
         mapTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
 
-    
     std::unique_lock<std::mutex> lock(updatePlayerMutex);
     for (auto &elementTexture : elementTextureToDisplay)
     {
@@ -95,8 +97,7 @@ void GameWindow::displayWindow()
         if (priorityCardTexture.isUp)
         {
             gameEnginePtr->clientWindow->draw(*priorityCardTexture.body);
-            gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonRect);
-            gameEnginePtr->clientWindow->draw(*priorityCardTexture.validateButton->buttonText);
+            priorityCardTexture.validateButton->drawButton(gameEnginePtr->clientWindow);
         }
     }
     boxTexture->drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
@@ -110,8 +111,7 @@ void GameWindow::displayWindow()
 
     for (auto &whoIsPlayingButton : whoIsPlayingButtons)
     {
-        gameEnginePtr->clientWindow->draw(*whoIsPlayingButton.buttonRect);
-        gameEnginePtr->clientWindow->draw(*whoIsPlayingButton.buttonText);
+        whoIsPlayingButton.drawButton(gameEnginePtr->clientWindow);
     }
 
     gameEnginePtr->clientWindow->draw(hudTextureToDisplay.at(TURN_NUMBER % 5).getSprite());
@@ -120,6 +120,9 @@ void GameWindow::displayWindow()
     {
         hudTexture.drawTextureDisplayerSprite(gameEnginePtr->clientWindow);
     }
+
+    textForTheUser->drawButton(gameEnginePtr->clientWindow);
+    endOfRoundButton->drawButton(gameEnginePtr->clientWindow);
 
     if (validateBoxesWindow->isWindowActive)
     {
@@ -131,8 +134,10 @@ void GameWindow::displayWindow()
         chatBox->drawChat(gameEnginePtr->clientWindow);
     }
 
-    gameEnginePtr->clientWindow->draw(*textForTheUser->buttonRect);
-    gameEnginePtr->clientWindow->draw(*textForTheUser->buttonText);
+    if (winnerWindow->isWindowActive)
+    {
+        winnerWindow->drawWinnerWindow(gameEnginePtr->clientWindow);
+    }
 
     gameEnginePtr->clientWindow->display();
 }
@@ -408,6 +413,8 @@ void GameWindow::moveToRightPriorityCards(int difficulty)
 /*!
  * @brief Detect when we click on a priority card or on the play button on priorityCard and make the action associated
  * @param cursorRect emplacement of the mouse
+ * Example to use the winner window in this function:
+ * setWinnerWindow("Lasso", "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best");
  */
 bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
 {
@@ -432,7 +439,8 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
             validateBoxesWindow->priorityCardPlayedType,
             validateBoxesWindow->priorityCardPlayed,
             validateBoxesWindow->nbOfBoxesChosen);
-        return true;
+    
+            return true;
     }
 
     // if we click on the little arrow to add boxes
@@ -473,7 +481,7 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
 
             validateBoxesWindow->chooseNumberOfBoxesButton->buttonText->setString(nbOfBoxesOnPriorityCard); // sent by the server
             questionString = "You have " + nbOfBoxesOnPriorityCard + " boxes \nHow many boxes do you want to play?";
-            validateBoxesWindow->question->setString(questionString);
+            validateBoxesWindow->title->setString(questionString);
             return true;
         }
 
@@ -737,12 +745,12 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
         int index;
         std::string path;
-        
-        std::visit([&index](auto&& arg){
-            index = (int)arg.getType();
-        }, *variant);
 
-        if(std::holds_alternative<shared::City>(*variant))
+        std::visit([&index](auto &&arg)
+                   { index = (int)arg.getType(); },
+                   *variant);
+
+        if (std::holds_alternative<shared::City>(*variant))
         {
             shared::City city = std::get<shared::City>(*variant);
 
@@ -754,23 +762,18 @@ void GameWindow::selectElementToDisplay(int x, int y)
             {
                 path = elementData[index]["path"].asString();
 
-                path =  path.substr(0, 20) 
-                        + std::to_string(getPlayerNumber(city.player)) 
-                        +   (city.isMature ? "-mature" : 
-                            (city.isCapital ? "-capital" : "-city")) 
-                        + ".png";
+                path = path.substr(0, 20) + std::to_string(getPlayerNumber(city.player)) + (city.isMature ? "-mature" : (city.isCapital ? "-capital" : "-city")) + ".png";
             }
         }
-        else if(std::holds_alternative<shared::ControlPawn>(*variant))
+        else if (std::holds_alternative<shared::ControlPawn>(*variant))
         {
             shared::ControlPawn pawn = std::get<shared::ControlPawn>(*variant);
 
             path = elementData[index]["path"].asString();
 
             path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "" : "-reinforced") + ".png";
-
         }
-        else if(std::holds_alternative<shared::Caravan>(*variant))
+        else if (std::holds_alternative<shared::Caravan>(*variant))
         {
             shared::Caravan caravan = std::get<shared::Caravan>(*variant);
 
@@ -781,7 +784,6 @@ void GameWindow::selectElementToDisplay(int x, int y)
         else
         {
             path = elementData[index]["path"].asString();
-
         }
 
         path = RESOURCES_PATH + path;
@@ -789,14 +791,13 @@ void GameWindow::selectElementToDisplay(int x, int y)
         elementTextureToDisplay[path]->addSprite();
 
         elementTextureToDisplay[path]->setSpritePosition(elementTextureToDisplay[path]->getSize() - 1, x, y, firstHexagonPosition[0], firstHexagonPosition[1], hexSize);
-
     }
 
     if ((*mapShared)(x, y)->hexResource != nullptr)
     {
         shared::Resource resource = *(*mapShared)(x, y)->hexResource;
 
-        int index = (int)resource.getType() ;
+        int index = (int)resource.getType();
 
         std::string path = RESOURCES_PATH + resourceData[index]["path"].asString();
 
@@ -806,18 +807,16 @@ void GameWindow::selectElementToDisplay(int x, int y)
     }
 }
 
-
 int GameWindow::getPlayerNumber(std::string username)
 {
-    for(unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
+    for (unsigned i = 0; i < whoIsPlayingButtons.size(); i++)
     {
         std::string buttonText = whoIsPlayingButtons[i].buttonText->getString();
-        if(username.compare(buttonText) == 0)
+        if (username.compare(buttonText) == 0)
         {
             return i + 1;
         }
     }
-    std::cout << "Player not found\n";
     return 1;
 }
 
@@ -987,6 +986,17 @@ void GameWindow::loadHudTexture()
                             bodyFont,
                             dataNumber["text-for-user-max-char"].asInt());
     textForTheUser->buttonText->setFillColor(TEXT_FOR_USER_COLOR);
+
+    // end of round button
+    endOfRoundButton = std::make_unique<Button>(sf::Vector2f(dataNumber["end-of-round-size-x"].asFloat(), dataNumber["end-of-round-size-y"].asFloat()),
+                                                sf::Vector2f(dataNumber["text-for-user-pos-x"].asFloat(), dataNumber["end-of-round-pos-y"].asFloat()),
+                                                TEXT_FOR_USER_BUTTON_COLOR,
+                                                false);
+    endOfRoundButton->setText(dataNumber["end-of-round-text-size"].asInt(),
+                              sf::Vector2f(0, 0),
+                              "End of round",
+                              bodyFont);
+    endOfRoundButton->buttonText->setFillColor(TEXT_FOR_USER_COLOR);
 }
 
 /*!
@@ -1010,12 +1020,12 @@ void GameWindow::addPlayer(std::string username)
         }
     }
 
-    while(1)
+    /*while(1)
     {
         unsigned x = rand() % mapShared->getMapWidth();
         unsigned y = rand() % mapShared->getMapHeight();
-        if ((*mapShared)(x, y)->getElements().empty() 
-            && (*mapShared)(x, y)->hexResource == nullptr 
+        if ((*mapShared)(x, y)->getElements().empty()
+            && (*mapShared)(x, y)->hexResource == nullptr
             && (*mapShared)(x, y)->getFieldLevel() != shared::FieldLevel::Water )
         {
             std::array<unsigned, 2> position = {x, y};
@@ -1028,7 +1038,7 @@ void GameWindow::addPlayer(std::string username)
             updateElementTexture();
             break;
         }
-    }
+    }*/
 
     whoIsPlayingButtons.emplace_back(
         sf::Vector2f(75, 90 / 2),
@@ -1061,4 +1071,13 @@ long GameWindow::getCurrentTime(bool timeSecond)
     {
         return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     }
+}
+
+void GameWindow::setWinnerWindow(std::string winner, std::string causes)
+{
+
+    winnerWindow->title->setString(winner + " is the winner !!!");
+    winnerWindow->body->setString(causes);
+    winnerWindow->centerText();
+    winnerWindow->isWindowActive = true;
 }
