@@ -1,6 +1,4 @@
 #include <shared.hpp>
-#include <ctime>
-#include <iostream>
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE( MapTest )
@@ -46,7 +44,7 @@ BOOST_AUTO_TEST_CASE( operatorParenthesesOutOfRange )
     BOOST_CHECK(map(0,-1) == nullptr);
 }
 
-/*BOOST_AUTO_TEST_CASE( RadomMap )
+BOOST_AUTO_TEST_CASE( RadomMap )
 {
     shared::Map map(20,15);
     
@@ -58,6 +56,6 @@ BOOST_AUTO_TEST_CASE( operatorParenthesesOutOfRange )
     {
         for (int j = 0; j < 20; j++) BOOST_CHECK(int(map(j,i)->getFieldLevel()) >= 0 && int(map(j,i)->getFieldLevel()) <= 11);
     }
-}*/
+}
 
 BOOST_AUTO_TEST_SUITE_END()
