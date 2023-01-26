@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-26 11:41:34</td>
+            <td class="headerValue">2023-01-26 12:13:23</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -135,34 +135,34 @@
 <a name="73"><span class="lineNum">      73 </span>            : {</a>
 <a name="74"><span class="lineNum">      74 </span><span class="lineCov">          2 :     std::cout &lt;&lt; &quot;Starting receiving&quot; &lt;&lt; std::endl;</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         11 :     while (myself-&gt;connectedToSocket.load())</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         10 :     while (myself-&gt;connectedToSocket.load())</span></a>
 <a name="77"><span class="lineNum">      77 </span>            :     {</a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         11 :         boost::asio::streambuf receiveBuffer;</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         11 :         boost::system::error_code error;</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         10 :         boost::asio::streambuf receiveBuffer;</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         10 :         boost::system::error_code error;</span></a>
 <a name="81"><span class="lineNum">      81 </span>            :         {</a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         11 :             std::lock_guard&lt;std::mutex&gt; lock(myself-&gt;socketReadMutex);</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         11 :             boost::asio::read_until(myself-&gt;getSocket(), receiveBuffer, '\n', error);</span></a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">          9 :         }</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         10 :             std::lock_guard&lt;std::mutex&gt; lock(myself-&gt;socketReadMutex);</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         10 :             boost::asio::read_until(myself-&gt;getSocket(), receiveBuffer, '\n', error);</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">          8 :         }</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : </a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">          9 :         if (error == boost::asio::error::operation_aborted)</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">          8 :         if (error == boost::asio::error::operation_aborted)</span></a>
 <a name="87"><span class="lineNum">      87 </span>            :         {</a>
 <a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :             myself-&gt;disconnectPlayer();</span></a>
 <a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :             continue;</span></a>
 <a name="90"><span class="lineNum">      90 </span>            :         }</a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          9 :         if (receiveBuffer.size() &gt; 0)</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          8 :         if (receiveBuffer.size() &gt; 0)</span></a>
 <a name="92"><span class="lineNum">      92 </span>            :         {</a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          9 :             processMessage(receiveBuffer);</span></a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">          9 :             receiveBuffer.consume(receiveBuffer.size());</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          8 :             processMessage(receiveBuffer);</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">          8 :             receiveBuffer.consume(receiveBuffer.size());</span></a>
 <a name="95"><span class="lineNum">      95 </span>            :         }</a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineCov">          9 :     }</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">          8 :     }</span></a>
 <a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : </a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">          9 : void ClientGameEngine::processMessage(boost::asio::streambuf &amp;receiveBuffer)</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">          8 : void ClientGameEngine::processMessage(boost::asio::streambuf &amp;receiveBuffer)</span></a>
 <a name="100"><span class="lineNum">     100 </span>            : {</a>
-<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          9 :     std::istream receiveStream(&amp;receiveBuffer);</span></a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          9 :     std::string messageReceived;</span></a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">         19 :     while (std::getline(receiveStream, messageReceived))</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          8 :     std::istream receiveStream(&amp;receiveBuffer);</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          8 :     std::string messageReceived;</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">         18 :     while (std::getline(receiveStream, messageReceived))</span></a>
 <a name="104"><span class="lineNum">     104 </span>            :     {</a>
 <a name="105"><span class="lineNum">     105 </span><span class="lineCov">         10 :         if (messageReceived.size() == 0)</span></a>
 <a name="106"><span class="lineNum">     106 </span>            :         {</a>
@@ -200,7 +200,7 @@
 <a name="138"><span class="lineNum">     138 </span><span class="lineCov">          5 :             processServerRequest(messageReceived);</span></a>
 <a name="139"><span class="lineNum">     139 </span>            :         }</a>
 <a name="140"><span class="lineNum">     140 </span>            :     }</a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          9 : }</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          8 : }</span></a>
 <a name="142"><span class="lineNum">     142 </span>            : </a>
 <a name="143"><span class="lineNum">     143 </span><span class="lineCov">          3 : void checkOk(std::string &amp;response)</span></a>
 <a name="144"><span class="lineNum">     144 </span>            : {</a>
