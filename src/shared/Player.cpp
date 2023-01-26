@@ -15,11 +15,11 @@ Player::Player()
     connectedToSocket.store(false);
     std::fill(resources.begin(), resources.end(), 0);
     this->techLevel = 0;
-    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military);
-    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::economy);
-    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science);
-    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry);
-    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture);
+    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military, 1);
+    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::economy, 2);
+    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science, 3);
+    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry, 4);
+    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture, 5);
 }
 
 Player::Player(std::string username)
@@ -28,11 +28,11 @@ Player::Player(std::string username)
     std::fill(resources.begin(), resources.end(), 0);
     this->techLevel = 0;
     this->username = username;
-    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military);
-    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::economy);
-    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science);
-    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry);
-    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture);
+    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military, 1);
+    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::economy, 2);
+    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science, 3);
+    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry, 4);
+    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture, 5);
 }
 
 void Player::setUsername(std::string username)
@@ -244,4 +244,9 @@ unsigned Player::getDificultyOfCard(CardsEnum cardType)
         }
     }
     return 0;
+}
+
+std::array<std::shared_ptr<Card>, 5> Player::getListOfPriorityCards()
+{
+    return this->listOfPriorityCard;
 }

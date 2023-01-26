@@ -1,11 +1,11 @@
 #include <shared.hpp>
 
 using namespace shared;
-Card::Card(CardsEnum type)
+Card::Card(CardsEnum type, unsigned difficulty)
 {
     this->type = type;
     this->level = 1;
-    this->dificulty = 1;
+    this->dificulty = difficulty;
     this->numberOfBox = 0;
 }
 

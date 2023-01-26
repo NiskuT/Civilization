@@ -69,7 +69,7 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
 
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::economy))
     {
-        exit(EXIT_FAILURE);
+        return false;
     }
 
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::economy);
@@ -77,13 +77,13 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     elementList barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
     if (barbarianList.size() > 0 && cardLevel != 2)
     {
-        exit(EXIT_FAILURE);
+        return false;
     }
 
     bool isWaterOnThePath = checkIfWaterIsOnThePath(caravanMovementPath, map);
     if (isWaterOnThePath && cardLevel < 3)
     {
-        exit(EXIT_FAILURE);
+        return false;
     }
 
     unsigned maxLevelReachable = args.currentPlayer->getDificultyOfCard(CardsEnum::economy); // TODO: check if the player can reach a higher level depending on his caracteristics
@@ -91,7 +91,7 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     {
         if ((*map)(element[0], element[1])->getFieldLevel() > (FieldLevel)maxLevelReachable)
         {
-            exit(EXIT_FAILURE);
+            return false;
         }
     }
 
@@ -150,6 +150,8 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     default:
         return false;
     }
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
 }
 
@@ -338,6 +340,8 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
             args.currentPlayer->upgradeCard(cardtoImprove);
         }
     }
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
 }
 
@@ -490,6 +494,8 @@ bool Rules::playCultureCard(RuleArgsStruct &args)
     default:
         return false;
     }
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
 }
 
@@ -637,6 +643,8 @@ bool Rules::reinforce(RuleArgsStruct &args)
             }
         }
     }
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
 }
 
@@ -688,8 +696,8 @@ bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
     std::shared_ptr<Map> gameMap = args.gameMap;
     std::array<unsigned, 2> position = args.positionOfCity;
 
-    unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::industry);
-    if (cardLevel + numberOfBoxUsed < (unsigned)(*gameMap)(position[0], position[1])->getFieldLevel())
+    unsigned cardDifficulty = args.currentPlayer->getDificultyOfCard(CardsEnum::industry);
+    if (cardDifficulty + numberOfBoxUsed < (unsigned)(*gameMap)(position[0], position[1])->getFieldLevel())
     {
         return false;
     }
@@ -704,5 +712,23 @@ bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
     std::shared_ptr<City> city = std::make_shared<City>(position);
     args.currentPlayer->addCity(city);
     (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*city));
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
+}
+
+void Rules::roundCards(std::shared_ptr<Player> currentPlayer, CardsEnum cardPlayed)
+{
+    unsigned initialDificulty = currentPlayer->getDificultyOfCard(cardPlayed);
+    for (auto card : currentPlayer->getListOfPriorityCards())
+    {
+        if (card->getType() == cardPlayed)
+        {
+            card->setDificulty(1);
+        }
+        else if (card->getDificulty() < initialDificulty)
+        {
+            card->setDificulty(card->getDificulty() + 1);
+        }
+    }
 }

@@ -336,6 +336,11 @@ void ClientGameEngine::handleInformation(int x, int y)
     {
         endOfTurn.store(true);
     }
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::economy)
+    {
+        std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
+        ruleArgsStruct.caravanMovementPath.push_back(position);
+    }
 }
 
 /*!
