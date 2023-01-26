@@ -25,20 +25,8 @@ void setText(std::unique_ptr<sf::Text> &text, sf::Font &font, int size)
     text->setFillColor(sf::Color::Black);
 }
 
-/*!
- * @brief Constructor
- * Constructor of PopUpWindow class
- * @param windowLength length of the window
- * @param windowWidth width of the window
- */
-
-PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &data)
+void PopUpWindow::setUpValidateBoxesWindow()
 {
-    this->data = data;
-    this->windowLength = windowLength;
-    this->windowWidth = windowWidth;
-
-    blackBackground = std::make_unique<Button>(sf::Vector2f(windowLength, windowWidth), sf::Vector2f(0, 0), BACKGROUND_COLOR, false);
 
     if (!font.loadFromFile(RESOURCES_PATH "/font/Calibri.ttf"))
     {
@@ -80,31 +68,45 @@ PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &d
              sf::Vector2f(1, 1));
 }
 
+/*!
+ * @brief Constructor
+ * Constructor of PopUpWindow class
+ * @param windowLength length of the window
+ * @param windowWidth width of the window
+ */
 PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &data, bool isActive)
 {
-
     this->data = data;
     this->windowLength = windowLength;
     this->windowWidth = windowWidth;
 
     blackBackground = std::make_unique<Button>(sf::Vector2f(windowLength, windowWidth), sf::Vector2f(0, 0), BACKGROUND_COLOR, false);
 
-    if (!font.loadFromFile(RESOURCES_PATH "/font/MorrisRomanBlack.otf"))
+    if (isActive)
     {
-        std::cerr << "Font not loaded" << std::endl;
+        setUpValidateBoxesWindow();
     }
 
-    setImage(littleBackground,
-             "/pop-up/little-background.png",
-             sf::Vector2f(data["winner-little-background-pos-x"].asFloat(), data["winner-little-background-pos-y"].asFloat()),
-             sf::Vector2f(data["winner-scale"].asFloat(), data["winner-scale"].asFloat()));
+    else
+    {
+        if (!font.loadFromFile(RESOURCES_PATH "/font/MorrisRomanBlack.otf"))
+        {
+            std::cerr << "Font not loaded" << std::endl;
+        }
 
-    setText(title, font, data["winner-text-size"].asInt());
+        setImage(littleBackground,
+                 "/pop-up/little-background.png",
+                 sf::Vector2f(data["winner-little-background-pos-x"].asFloat(), data["winner-little-background-pos-y"].asFloat()),
+                 sf::Vector2f(data["winner-scale"].asFloat(), data["winner-scale"].asFloat()));
 
-    setText(body, font, data["text-size"].asInt());
+        setText(title, font, data["winner-text-size"].asInt());
 
-    centerText();
+        setText(body, font, data["text-size"].asInt());
+
+        centerText();
+    }
 }
+
 
 void drawGeneral(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<sf::RectangleShape> &blackBackgroundButton, sf::Sprite littleBackground, std::unique_ptr<sf::Text> &title)
 {
@@ -131,7 +133,6 @@ void PopUpWindow::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWindow> win
 
 void PopUpWindow::centerText()
 {
-
     body->setPosition(
         windowLength / 2 - body->getGlobalBounds().width / 2,
         littleBackground->getSprite().getPosition().y + data["winner-body-offset-y"].asInt());

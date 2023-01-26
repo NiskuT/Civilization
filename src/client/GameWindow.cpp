@@ -60,7 +60,7 @@ GameWindow::GameWindow()
     chatBox = std::make_unique<Chat>();
 
     const Json::Value &data = openJsonFile("/pop-up/dataButton.json");
-    validateBoxesWindow = std::make_unique<PopUpWindow>(WINDOW_LENGTH, WINDOW_WIDTH, data);
+    validateBoxesWindow = std::make_unique<PopUpWindow>(WINDOW_LENGTH, WINDOW_WIDTH, data, true);
     winnerWindow = std::make_unique<PopUpWindow>(WINDOW_LENGTH, WINDOW_WIDTH, data, false);
     validateBoxesWindow->gameWindow = this;
 
@@ -413,6 +413,8 @@ void GameWindow::moveToRightPriorityCards(int difficulty)
 /*!
  * @brief Detect when we click on a priority card or on the play button on priorityCard and make the action associated
  * @param cursorRect emplacement of the mouse
+ * Example to use the winner window in this function:
+ * setWinnerWindow("Lasso", "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best");
  */
 bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
 {
@@ -437,10 +439,8 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
             validateBoxesWindow->priorityCardPlayedType,
             validateBoxesWindow->priorityCardPlayed,
             validateBoxesWindow->nbOfBoxesChosen);
-
-        // Exemple to use the winner window
-        // setWinnerWindow("Lasso", "1. Tech-Wheel level >=24 \n2. More than 15 control pawns \n3. You are the best");
-        return true;
+    
+            return true;
     }
 
     // if we click on the little arrow to add boxes
