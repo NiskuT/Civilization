@@ -36,6 +36,27 @@ bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
     return true;
 }
 
+void GameEngine::askClientToPlayARule(std::shared_ptr<shared::Player> player, shared::RuleArgsStruct &ruleArgs)
+{
+
+    shared::Rules rules;
+    do
+    {
+        std::unique_lock<std::mutex> lock(player->qAndA.sharedDataMutex);
+        player->qAndA.question = "playturn\n";
+        lock.unlock();
+        askClient(player);
+
+        lock.lock();
+        binary.castToObject(player->qAndA.answer, ruleArgs);
+        lock.unlock();
+
+        ruleArgs.gameMap = this->gameMap;
+        ruleArgs.currentPlayer = player;
+
+    } while (!(rules.runTheRule(ruleArgs)));
+}
+
 void GameEngine::runGame() // rename rungame
 {
     std::cout << "start game" << std::endl;
@@ -44,29 +65,13 @@ void GameEngine::runGame() // rename rungame
     message += getTime() + " ";
     message += "Game started\n";
     sendToEveryone(message);
-    shared::Rules rules;
     while (true) // TODO: add condition to stop the game (victory of a player)
     {
-        std::cout << "size of players: " << players.size() << std::endl;
         for (auto player : players)
         {
             std::cout << "start of turn of player: " << player->getName() << std::endl;
             shared::RuleArgsStruct ruleArgs;
-            do
-            {
-                std::unique_lock<std::mutex> lock(player->qAndA.sharedDataMutex);
-                player->qAndA.question = "playturn\n";
-                lock.unlock();
-                askClient(player);
-
-                lock.lock();
-                binary.castToObject(player->qAndA.answer, ruleArgs);
-                lock.unlock();
-
-                ruleArgs.gameMap = this->gameMap;
-                ruleArgs.currentPlayer = player;
-
-            } while (!(rules.runTheRule(ruleArgs)));
+            askClientToPlayARule(player, ruleArgs);
 
             ruleArgs.playerName = player->getName();
 

@@ -518,7 +518,7 @@ bool Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, st
                 return false;
             }
         }
-        if (isThereACityAround(position, gameMap))
+        if (isThereACityAround(position, gameMap) || true) // TODO : delete this true, it is for testing
         {
             std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position);
             currentPlayer->addControlPawn(controlPawn);

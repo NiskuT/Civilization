@@ -72,7 +72,6 @@ bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
  */
 void ClientGameEngine::startReceiving()
 {
-    std::cout << "Starting receiving" << std::endl;
 
     while (myself->connectedToSocket.load())
     {
@@ -125,31 +124,35 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
             std::string bin = binary.receive(myself, receiveStream, size);
             binary.castToObject(bin, ruleArgs);
 
-            shared::Rules rules;
-            ruleArgs.gameMap = clientMap;
-            if (myself->getName() == ruleArgs.playerName)
-            {
-                std::cout << "this player" << std::endl;
-                ruleArgs.currentPlayer = myself;
-                rules.runTheRule(ruleArgs);
-                clientGame->rotateTechWheel(myself->getTechLevel());
-            }
-            else
-            {
-                std::cout << "not this player" << std::endl;
-                // for (auto &player : otherPlayers)
-                // {
-                //     if (player->getName() == ruleArgs.playerName)
-                //     {
-                //         // TODO
-                //     }
-                // }
-            }
+            runRule(ruleArgs);
         }
         else
         {
-            std::cout << "Message received: " << messageReceived << std::endl;
             processServerRequest(messageReceived);
+        }
+    }
+}
+
+void ClientGameEngine::runRule(shared::RuleArgsStruct ruleArgs)
+{
+    shared::Rules rules;
+    ruleArgs.gameMap = clientMap;
+    if (myself->getName() == ruleArgs.playerName)
+    {
+        ruleArgs.currentPlayer = myself;
+        rules.runTheRule(ruleArgs);
+        clientGame->rotateTechWheel(myself->getTechLevel());
+    }
+    else
+    {
+        for (auto &player : otherPlayers)
+        {
+            if (player->getName() == ruleArgs.playerName)
+            {
+
+                ruleArgs.currentPlayer = player;
+                rules.runTheRule(ruleArgs);
+            }
         }
     }
 }
@@ -335,11 +338,17 @@ void ClientGameEngine::handleInformation(int x, int y)
     if (x == 0 && y == 0)
     {
         endOfTurn.store(true);
+        return;
     }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::economy)
     {
         std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.caravanMovementPath.push_back(position);
+    }
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::culture)
+    {
+        std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
+        ruleArgsStruct.pawnsPositions.push_back(position);
     }
 }
 
@@ -522,9 +531,9 @@ void ClientGameEngine::playTurn()
         std::string struc;
         binary.castToBinary(ruleArgsStruct, struc);
         binary.send(myself, struc);
+        ruleArgsStruct = shared::RuleArgsStruct();
         playerTurn.store(false);
         endOfTurn.store(false);
-        std::cout << "End of turn" << std::endl;
     }
 }
 
