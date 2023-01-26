@@ -449,9 +449,12 @@ void ClientGameEngine::renderGame()
  */
 void ClientGameEngine::playGame()
 {
+
     std::thread t(&ClientGameEngine::startGameWindow, this);
 
     long lastUpdateTimer = clientGame->getCurrentTime();
+
+    while (!areLoadingTexture);
 
     while (runningWindow.load() == GAME)
     {
