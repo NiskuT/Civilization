@@ -125,10 +125,14 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
             std::string bin = binary.receive(myself, receiveStream, size);
             binary.castToObject(bin, ruleArgs);
 
+            shared::Rules rules;
+            ruleArgs.gameMap = clientMap;
             if (myself->getName() == ruleArgs.playerName)
             {
                 std::cout << "this player" << std::endl;
-                
+                ruleArgs.currentPlayer = myself;
+                rules.runTheRule(ruleArgs);
+                clientGame->rotateTechWheel(myself->getTechLevel());
             }
             else
             {
