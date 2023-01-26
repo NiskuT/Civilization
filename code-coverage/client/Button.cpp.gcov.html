@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">56</td>
+            <td class="headerCovTableEntry">60</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-25 20:31:49</td>
+            <td class="headerValue">2023-01-26 11:41:34</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">10</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -203,6 +203,15 @@
 <a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :         return true;</span></a>
 <a name="142"><span class="lineNum">     142 </span>            :     }</a>
 <a name="143"><span class="lineNum">     143 </span>            : }</a>
+<a name="144"><span class="lineNum">     144 </span>            : </a>
+<a name="145"><span class="lineNum">     145 </span>            : /*!</a>
+<a name="146"><span class="lineNum">     146 </span>            :  * @brief Draw a button with its text on a window</a>
+<a name="147"><span class="lineNum">     147 </span>            :  * @param window Window on which the button is drawn</a>
+<a name="148"><span class="lineNum">     148 </span>            :  */</a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 : void Button::drawButton(std::shared_ptr&lt;sf::RenderWindow&gt; window) {</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :     window-&gt;draw(*buttonRect);</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :     window-&gt;draw(*buttonText);</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 : }</span></a>
 </pre>
       </td>
     </tr>
