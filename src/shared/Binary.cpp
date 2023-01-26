@@ -28,6 +28,7 @@ void Binary::send(std::shared_ptr<shared::Player> player, std::string serialized
 
 std::string Binary::receive(std::shared_ptr<shared::Player> player, std::istream &alreadyReceived, size_t totalSize)
 {
+    std::cout << "Receiving " << totalSize << " bytes" << std::endl;
     std::stringstream buffer;
     buffer << alreadyReceived.rdbuf();
     std::string fullMessage = buffer.str();
@@ -35,7 +36,23 @@ std::string Binary::receive(std::shared_ptr<shared::Player> player, std::istream
     boost::system::error_code error;
     boost::asio::streambuf receiveBuffer;
 
+    if (fullMessage.size() > totalSize)
+    {
+        for (size_t i = fullMessage.size(); i > totalSize; i--)
+        {
+            alreadyReceived.unget();
+        }
+        std::cout << "fullMessage.sbstr(totalsize) = " << fullMessage.substr(totalSize) << std::endl;
+
+        return fullMessage.substr(0, totalSize);
+    }
+    else if (fullMessage.size() == totalSize)
+    {
+        return fullMessage;
+    }
     size_t size = totalSize - fullMessage.size();
+    std::cout << "Receiving " << size << " byteson " << totalSize << std::endl;
+
     try
     {
         std::lock_guard<std::mutex> lock(player->socketReadMutex);
@@ -69,7 +86,6 @@ std::string Binary::receive(std::shared_ptr<shared::Player> player, std::istream
         fullMessage += messageReceived;
         return fullMessage;
     }
-    
 }
 
 template <typename T>

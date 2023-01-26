@@ -817,7 +817,6 @@ int GameWindow::getPlayerNumber(std::string username)
             return i + 1;
         }
     }
-    std::cout << "Player not found\n";
     return 1;
 }
 

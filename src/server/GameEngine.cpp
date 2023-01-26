@@ -54,26 +54,25 @@ void GameEngine::runGame() // rename rungame
             shared::RuleArgsStruct ruleArgs;
             do
             {
+                std::unique_lock<std::mutex> lock(player->qAndA.sharedDataMutex);
                 player->qAndA.question = "playturn\n";
-                std::cout << "question sent" << std::endl;
+                lock.unlock();
                 askClient(player);
-                std::cout << "answer received" << std::endl;
+
+                lock.lock();
                 binary.castToObject(player->qAndA.answer, ruleArgs);
+                lock.unlock();
+
                 ruleArgs.gameMap = this->gameMap;
                 ruleArgs.currentPlayer = player;
-
-                std::cout << "ruleId: " << (int)ruleArgs.ruleId << std::endl;
-                std::cout << "number of box used: " << ruleArgs.numberOfBoxUsed << std::endl;
 
             } while (!(rules.runTheRule(ruleArgs)));
 
             ruleArgs.playerName = player->getName();
-            std::cout << "ruleArgs.playerName: " << ruleArgs.playerName << std::endl;
 
             std::string struc;
             binary.castToBinary(ruleArgs, struc);
             sendToEveryone(struc, true);
-            std::cout << "end of turn of player" << player->getName() << std::endl;
         }
     }
 }
@@ -216,7 +215,6 @@ void GameEngine::askClient(std::shared_ptr<shared::Player> player)
 
 void GameEngine::sendToEveryone(std::string message, bool isBinary)
 {
-    std::cout << "send to everyone" << message << std::endl;
     for (auto &player : players)
     {
         if (!isBinary && player->connectedToSocket.load())
@@ -229,7 +227,7 @@ void GameEngine::sendToEveryone(std::string message, bool isBinary)
             binary.send(player, message, false);
         }
     }
-}   
+}
 
 /*!
  * @brief This function return the time under a string format

@@ -103,7 +103,6 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
     std::string messageReceived;
     while (std::getline(receiveStream, messageReceived))
     {
-        std::cout << "Message received: " << messageReceived << std::endl;
         if (messageReceived.size() == 0)
         {
             continue;
@@ -123,16 +122,13 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
             shared::RuleArgsStruct ruleArgs;
 
             size_t size = std::stoi(messageReceived.substr(10));
-            std::cout << "taille de l'element recupere : " << size << std::endl;
-            std::string bin = binary.receive(myself,receiveStream, size);
-            std::cout << "element recupere : " << bin << std::endl;
+            std::string bin = binary.receive(myself, receiveStream, size);
             binary.castToObject(bin, ruleArgs);
 
-            std::cout << "ruleArgs.playerName : " << ruleArgs.playerName << std::endl;
-            std::cout << "myself->getName() : " << myself->getName() << std::endl;
             if (myself->getName() == ruleArgs.playerName)
             {
                 std::cout << "this player" << std::endl;
+                
             }
             else
             {
@@ -148,6 +144,7 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
         }
         else
         {
+            std::cout << "Message received: " << messageReceived << std::endl;
             processServerRequest(messageReceived);
         }
     }
@@ -258,7 +255,7 @@ void ClientGameEngine::processServerRequest(std::string request)
         request = request.substr(10);
         clientConnectedAndReady.store(true);
 
-        serverGameId = request.substr(request.length()-6);
+        serverGameId = request.substr(request.length() - 6);
         printChat(request);
     }
     else if (request.find("newplayer") == 0)
@@ -335,7 +332,6 @@ void ClientGameEngine::handleInformation(int x, int y)
     {
         endOfTurn.store(true);
     }
-    std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
 }
 
 /*!
@@ -367,8 +363,6 @@ void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int diffic
     }
 
     ruleArgsStruct.numberOfBoxUsed = boxes;
-
-    std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << " and with " << boxes << " boxes" << std::endl;
 }
 
 /*!
@@ -515,13 +509,13 @@ void ClientGameEngine::playTurn()
 {
     if (endOfTurn.load())
     {
-        std::cout << "End of turn" << std::endl;
         clientGame->modifyTextForUser("");
         std::string struc;
         binary.castToBinary(ruleArgsStruct, struc);
         binary.send(myself, struc);
         playerTurn.store(false);
         endOfTurn.store(false);
+        std::cout << "End of turn" << std::endl;
     }
 }
 
