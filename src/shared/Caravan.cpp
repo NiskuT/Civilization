@@ -8,9 +8,10 @@ Caravan::Caravan()
     this->used = false;
 }
 
-Caravan::Caravan(std::array<unsigned, 2> position)
+Caravan::Caravan(std::array<unsigned, 2> position, std::string player)
 {
     this->position = position;
+    this->player = player;
 }
 
 std::array<unsigned, 2> Caravan::getPosition()

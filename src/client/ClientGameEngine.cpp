@@ -145,11 +145,12 @@ void ClientGameEngine::runRule(shared::RuleArgsStruct ruleArgs)
     }
     else
     {
-        for (auto &player : otherPlayers)
+        for (auto player : otherPlayers)
         {
+            std::cout << "player name: " << player->getName() << std::endl;
+            std::cout << "ruleArgs.playerName: " << ruleArgs.playerName << std::endl;
             if (player->getName() == ruleArgs.playerName)
             {
-
                 ruleArgs.currentPlayer = player;
                 rules.runTheRule(ruleArgs);
             }
@@ -275,7 +276,10 @@ void ClientGameEngine::processServerRequest(std::string request)
         request = request.substr(10) + " join the game";
         printChat(request);
 
-        otherPlayers.push_back(std::make_shared<shared::Player>(player));
+        if (player != myself->getName())
+        {
+            otherPlayers.push_back(std::make_shared<shared::Player>(player));
+        }
     }
     else if (request.find("infoplayer") == 0)
     {
@@ -283,6 +287,11 @@ void ClientGameEngine::processServerRequest(std::string request)
         if (clientGame != nullptr)
         {
             clientGame->addPlayer(player);
+        }
+
+        if (player != myself->getName())
+        {
+            otherPlayers.push_back(std::make_shared<shared::Player>(player));
         }
     }
     else
@@ -342,13 +351,29 @@ void ClientGameEngine::handleInformation(int x, int y)
     }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::economy)
     {
+        clientGame->modifyTextForUser("Click on the hexagons of the path");
         std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.caravanMovementPath.push_back(position);
     }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::culture)
     {
+        clientGame->modifyTextForUser("place pawns on the hexagons");
         std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.pawnsPositions.push_back(position);
+    }
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::industry)// TODO : add the posibility to build wonder
+    {
+        clientGame->modifyTextForUser("place a city");
+        std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
+        ruleArgsStruct.positionOfCity = position;
+        ruleArgsStruct.industryCardBuildWonder = false;
+    }
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::military)
+    {
+        clientGame->modifyTextForUser("choose pawns to reinforce");
+        std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
+        ruleArgsStruct.pawnsPositions.push_back(position);
+        ruleArgsStruct.militaryCardAttack = false;
     }
 }
 
@@ -371,7 +396,7 @@ void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int diffic
     {
         ruleArgsStruct.ruleId = shared::CardsEnum::culture;
     }
-    else if (typePlayed == "military")
+    else if (typePlayed == "army")
     {
         ruleArgsStruct.ruleId = shared::CardsEnum::military;
     }

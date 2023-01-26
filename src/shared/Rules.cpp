@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <array>
+#include <iostream>
 
 #define RULESLENGTH 16
 #define CARAVAN_STEPS_AT_LEVEL_1 3
@@ -37,6 +38,7 @@ Rules::Rules()
  */
 bool Rules::runTheRule(RuleArgsStruct &args)
 {
+    std::cout << "runTheRule" << std::endl;
     switch (args.ruleId)
     {
     case CardsEnum::economy:
@@ -184,7 +186,7 @@ void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>
     while (caravans.size() < (std::size_t)numberOfCaravans)
     {
         std::array<unsigned, 2> pos = {0, 0};
-        std::shared_ptr<Caravan> caravan = std::make_shared<Caravan>(pos);
+        std::shared_ptr<Caravan> caravan = std::make_shared<Caravan>(pos, currentPlayer->getName());
         currentPlayer->addCaravan(caravan);
         caravans.push_back(caravan);
     }
@@ -518,9 +520,9 @@ bool Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, st
                 return false;
             }
         }
-        if (isThereACityAround(position, gameMap) || true) // TODO : delete this true, it is for testing
+        if (isThereACityAround(position, gameMap))
         {
-            std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position);
+            std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position, currentPlayer->getName());
             currentPlayer->addControlPawn(controlPawn);
             std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *controlPawn;
             (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
@@ -586,6 +588,7 @@ bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::sha
  */
 bool Rules::playMilitaryCard(RuleArgsStruct &args)
 {
+    std::cout << "playMilitaryCard" << std::endl;
     if (args.militaryCardAttack == true)
     {
         return attack(args);
@@ -617,6 +620,7 @@ bool Rules::attack(RuleArgsStruct &args)
  */
 bool Rules::reinforce(RuleArgsStruct &args)
 {
+    std::cout << "reinforce" << std::endl;
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::military))
     {
@@ -709,7 +713,7 @@ bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
             return false;
         }
     }
-    std::shared_ptr<City> city = std::make_shared<City>(position);
+    std::shared_ptr<City> city = std::make_shared<City>(position, args.currentPlayer->getName());
     args.currentPlayer->addCity(city);
     (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*city));
 

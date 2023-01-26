@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(BarbarianVillage)
 
 BOOST_AUTO_TEST_CASE(Caravan)
 {
-    shared::Caravan caravan({2, 4});
+    shared::Caravan caravan({2, 4}, "not defined");
     caravan.setUsed(true);
     caravan.player = "player";
     shared::Binary binary;
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(Caravan)
 
 BOOST_AUTO_TEST_CASE(City)
 {
-    shared::City city({2, 4});
+    shared::City city({2, 4}, "not defined");
     city.setStateCity(shared::CityStateEnum::seoul);
     city.player = "player";
     shared::Binary binary;
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(City)
 
 BOOST_AUTO_TEST_CASE(ControlPawn)
 {
-    shared::ControlPawn controlPawn({2, 4});
+    shared::ControlPawn controlPawn({2, 4}, "not defined");
     controlPawn.setReinforced();
     controlPawn.player = "player";
     shared::Binary binary;
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(Hexagon)
 {
     shared::Hexagon hexagon;
     hexagon.setFieldType(shared::FieldLevel::Mountain);
-    shared::ControlPawn controlPawn({2, 4});
+    shared::ControlPawn controlPawn({2, 4}, "not defined");
     controlPawn.setReinforced();
     controlPawn.player = "player";
     std::shared_ptr<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>> elem;

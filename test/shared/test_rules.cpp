@@ -88,19 +88,19 @@ BOOST_AUTO_TEST_CASE(TestRulesScienceCardLevel4)
     map->init();
 
     std::array<unsigned, 2> position = {5, 5};
-    std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position);
+    std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position, player->getName());
     player->addControlPawn(controlPawn);
     std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *controlPawn;
     (*map)(5, 5)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
 
     position = {4, 4};
-    controlPawn = std::make_shared<shared::ControlPawn>(position);
+    controlPawn = std::make_shared<shared::ControlPawn>(position, player->getName());
     player->addControlPawn(controlPawn);
     element = *controlPawn;
     (*map)(4, 4)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
 
     position = {6, 6};
-    controlPawn = std::make_shared<shared::ControlPawn>(position);
+    controlPawn = std::make_shared<shared::ControlPawn>(position, player->getName());
     player->addControlPawn(controlPawn);
     element = *controlPawn;
     (*map)(6, 6)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(TestRulesEconomyCardLevel1)
     map->init();
 
     std::array<unsigned, 2> position = {0, 1};
-    std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
+    std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position, player->getName());
     player->addCity(city);
     std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *city;
     (*map)(0, 1)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
@@ -167,19 +167,19 @@ BOOST_AUTO_TEST_CASE(TestRulesMilitaryReinforceAllLevels)
     args.pawnsPositions.push_back({3, 4});
 
     std::array<unsigned, 2> position = {2, 2};
-    std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position);
+    std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position, player->getName());
     player->addControlPawn(controlPawn);
     std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *controlPawn;
     (*map)(2, 2)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
 
     position = {3, 4};
-    controlPawn = std::make_shared<shared::ControlPawn>(position);
+    controlPawn = std::make_shared<shared::ControlPawn>(position, player->getName());
     player->addControlPawn(controlPawn);
     element = *controlPawn;
     (*map)(3, 4)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
 
     position = {5, 5};
-    controlPawn = std::make_shared<shared::ControlPawn>(position);
+    controlPawn = std::make_shared<shared::ControlPawn>(position, player->getName());
     player->addControlPawn(controlPawn);
     element = *controlPawn;
     (*map)(5, 5)->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(TestRulesCultureCardLevel1)
     map->init();
 
     std::array<unsigned, 2> position = {4, 3};
-    std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
+    std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position, player->getName());
     player->addCity(city);
     std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *city;
     (*map)(position[0], position[1])->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
