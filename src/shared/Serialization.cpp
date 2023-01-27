@@ -44,30 +44,44 @@ template <class Archive>
 void Hexagon::save(Archive &ar, const unsigned int version) const
 {
     ar << level;
-    ar << elementsList.size();
 
-    for (auto &element : elementsList)
+    std::vector<Caravan> caravans;
+    std::vector<Barbarian> barbarians;
+    std::vector<BarbarianVillage> barbarianVillages;
+    std::vector<ControlPawn> controlPawns;
+    std::vector<City> cities;
+
+    for (const auto &element : elementsList)
     {
-        ar << element->index();
         switch (element->index())
         {
         case 0:
-            ar << std::get<Caravan>(*element);
+            caravans.push_back(std::get<Caravan>(*element));
             break;
         case 1:
-            ar << std::get<Barbarian>(*element);
+            barbarians.push_back(std::get<Barbarian>(*element));
             break;
         case 2:
-            ar << std::get<BarbarianVillage>(*element);
+            barbarianVillages.push_back(std::get<BarbarianVillage>(*element));
             break;
         case 3:
-            ar << std::get<ControlPawn>(*element);
+            controlPawns.push_back(std::get<ControlPawn>(*element));
             break;
         case 4:
-            ar << std::get<City>(*element);
+            cities.push_back(std::get<City>(*element));
             break;
         }
     }
+    ar << caravans.size();
+    ar << barbarians.size();
+    ar << barbarianVillages.size();
+    ar << controlPawns.size();
+    ar << cities.size();
+    ar << caravans;
+    ar << barbarians;
+    ar << barbarianVillages;
+    ar << controlPawns;
+    ar << cities;
 }
 
 template <class Archive>
@@ -75,45 +89,54 @@ void Hexagon::load(Archive &ar, const unsigned int version)
 {
     ar >> level;
     size_t size = 0;
+
+    std::vector<Caravan> caravans;
+    std::vector<Barbarian> barbarians;
+    std::vector<BarbarianVillage> barbarianVillages;
+    std::vector<ControlPawn> controlPawns;
+    std::vector<City> cities;
+
     ar >> size;
-    /*
-    std::generate_n(std::back_inserter(elementsList), size, []()
-                    { return std::make_shared<elementVariant>(); });
-    ar >> elementsList;*/
-    for (size_t i = 0; i < size; i++)
+    std::generate_n(std::back_inserter(caravans), size, []()
+                    { return Caravan(); });
+    ar >> size;
+    std::generate_n(std::back_inserter(barbarians), size, []()
+                    { return Barbarian(); });
+    ar >> size;
+    std::generate_n(std::back_inserter(barbarianVillages), size, []()
+                    { return BarbarianVillage(); });
+    ar >> size;
+    std::generate_n(std::back_inserter(controlPawns), size, []()
+                    { return ControlPawn(); });
+    ar >> size;
+    std::generate_n(std::back_inserter(cities), size, []()
+                    { return City(); });
+
+    ar >> caravans;
+    ar >> barbarians;
+    ar >> barbarianVillages;
+    ar >> controlPawns;
+    ar >> cities;
+
+    for (auto &caravan : caravans)
     {
-        int index = 0;
-        ar >> index;
-        if (index == 0)
-        {
-            Caravan caravan;
-            ar >> caravan;
-            elementsList.push_back(std::make_shared<elementVariant>(caravan));
-        }
-        else if (index == 1)
-        {
-            Barbarian barbarian;
-            ar >> barbarian;
-            elementsList.push_back(std::make_shared<elementVariant>(barbarian));
-        }
-        else if (index == 2)
-        {
-            BarbarianVillage barbarianVillage;
-            ar >> barbarianVillage;
-            elementsList.push_back(std::make_shared<elementVariant>(barbarianVillage));
-        }
-        else if (index == 3)
-        {
-            ControlPawn controlPawn;
-            ar >> controlPawn;
-            elementsList.push_back(std::make_shared<elementVariant>(controlPawn));
-        }
-        else if (index == 4)
-        {
-            City city;
-            ar >> city;
-            elementsList.push_back(std::make_shared<elementVariant>(city));
-        }
+        elementsList.push_back(std::make_shared<elementVariant>(caravan));
+    }
+    for (auto &barbarian : barbarians)
+    {
+        elementsList.push_back(std::make_shared<elementVariant>(barbarian));
+    }
+    for (auto &barbarianVillage : barbarianVillages)
+    {
+        elementsList.push_back(std::make_shared<elementVariant>(barbarianVillage));
+    }
+    for (auto &controlPawn : controlPawns)
+    {
+        elementsList.push_back(std::make_shared<elementVariant>(controlPawn));
+    }
+    for (auto &city : cities)
+    {
+        elementsList.push_back(std::make_shared<elementVariant>(city));
     }
 }
 
