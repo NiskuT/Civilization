@@ -30,6 +30,7 @@ ClientGameEngine::ClientGameEngine()
     clientMap = std::make_shared<shared::Map>();
     playerTurn.store(false);
     clientConnectedAndReady.store(false);
+    areTextureLoaded.store(false);
 }
 
 /*!
@@ -449,9 +450,12 @@ void ClientGameEngine::renderGame()
  */
 void ClientGameEngine::playGame()
 {
+
     std::thread t(&ClientGameEngine::startGameWindow, this);
 
     long lastUpdateTimer = clientGame->getCurrentTime();
+
+    while (areTextureLoaded.load() == false);
 
     while (runningWindow.load() == GAME)
     {

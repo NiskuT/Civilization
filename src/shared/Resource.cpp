@@ -15,4 +15,5 @@ ResourceEnum Resource::getType()
 Resource::Resource(ResourceEnum resource)
 {
     type = resource;
+    isAlive = true;
 }
