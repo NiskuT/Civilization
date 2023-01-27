@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-#define MAX_PLAYERS 2
+#define MAX_PLAYERS 4
 
 using namespace server;
 
