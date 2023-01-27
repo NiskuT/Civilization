@@ -82,6 +82,16 @@ void Hexagon::save(Archive &ar, const unsigned int version) const
     ar << barbarianVillages;
     ar << controlPawns;
     ar << cities;
+    
+    bool haveResource = (hexResource != nullptr);
+    ar << haveResource;
+    if (haveResource)
+    {
+        bool alive = hexResource->isAlive;
+        int type = (int) hexResource->type;
+        ar << alive;
+        ar << type;
+    }
 }
 
 template <class Archive>
@@ -138,6 +148,18 @@ void Hexagon::load(Archive &ar, const unsigned int version)
     {
         elementsList.push_back(std::make_shared<elementVariant>(city));
     }
+
+    bool haveResource = false;
+    ar >> haveResource;
+    if (haveResource)
+    {
+        bool alive = false;
+        int type = 0;
+        ar >> alive;
+        ar >> type;
+        hexResource = std::make_shared<Resource>((shared::ResourceEnum) type);
+        hexResource->isAlive = alive;
+    }
 }
 
 template <class Archive>
@@ -165,6 +187,9 @@ void City::serialize(Archive &ar, const unsigned int version)
     ar &isMature;
     ar &position;
     ar &player;
+    int type = (int) stateCityType;
+    ar &type;
+    stateCityType = (shared::CityStateEnum) type;
 }
 
 template <class Archive>
