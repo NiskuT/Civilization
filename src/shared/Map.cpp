@@ -195,7 +195,7 @@ void Map::generateRandomMap(int seed)
                 if (remainingIndex.empty() == false)
                 {
                     int index = remainingIndex[rand() % remainingIndex.size()]; // remainingIndex is not empty
-                    std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
+                    std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position, "not defined"); // TODO: check if we place random cities
                     city->setStateCity(stateCityField[index]);
                     remainingCity[index] = false;
                     mapOfTheGame[i * this->width + j]->addElement(std::make_shared<variantElement>(*city));

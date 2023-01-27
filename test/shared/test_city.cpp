@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 
 BOOST_AUTO_TEST_CASE( constructorAndGetters )
 {
-    shared::City city({20, 15});
+    shared::City city({20, 15}, "not defined");
 
     BOOST_CHECK(city.getPosition()[0] == 20);
     BOOST_CHECK(city.getPosition()[1] == 15);
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE( constructorAndGetters )
 
 BOOST_AUTO_TEST_CASE( setStateCity )
 {
-    shared::City city({0, 0});
+    shared::City city({0, 0}, "not defined");
     city.setStateCity(shared::CityStateEnum::mohenjoDaro);
 
     BOOST_CHECK(city.stateCityType == shared::CityStateEnum::mohenjoDaro);

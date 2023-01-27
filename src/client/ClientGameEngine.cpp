@@ -29,6 +29,7 @@ ClientGameEngine::ClientGameEngine()
     myself->setUsername("PlayerTest");
     clientMap = std::make_shared<shared::Map>();
     playerTurn.store(false);
+    endOfTurn.store(false);
     clientConnectedAndReady.store(false);
     areTextureLoaded.store(false);
 }
@@ -64,7 +65,6 @@ bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
 
 void ClientGameEngine::startReceiving()
 {
-    std::cout << "Starting receiving" << std::endl;
 
     while (myself->connectedToSocket.load())
     {
@@ -111,24 +111,40 @@ void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
         }
         else if (messageReceived.find("rulesturn") == 0) // binary reception without response
         {
-            // shared::RuleArgsStruct ruleArgs;
-            // std::cout << messageReceived << std::endl;
-            // binary.castToObject(messageReceived.substr(10), ruleArgs);
-            // // for (auto &player : ruleArgs.playerList)
-            // // {
-            // //     if (player->getName() == myself->getName())
-            // //     {
-            // //         myself = player;
-            // //     }
-            // // }
-            // ruleArgs.gameMap = clientMap;
+            shared::RuleArgsStruct ruleArgs;
 
-            // shared::Rules rules;
-            // rules.runTheRule(ruleArgs);
+            size_t size = std::stoi(messageReceived.substr(10));
+            std::string bin = binary.receive(myself, receiveStream, size);
+            binary.castToObject(bin, ruleArgs);
+
+            runRule(ruleArgs);
         }
         else
         {
             processServerRequest(messageReceived);
+        }
+    }
+}
+
+void ClientGameEngine::runRule(shared::RuleArgsStruct ruleArgs)
+{
+    shared::Rules rules;
+    ruleArgs.gameMap = clientMap;
+    if (myself->getName() == ruleArgs.playerName)
+    {
+        ruleArgs.currentPlayer = myself;
+        rules.runTheRule(ruleArgs);
+        clientGame->rotateTechWheel(myself->getTechLevel());
+    }
+    else
+    {
+        for (auto player : otherPlayers)
+        {
+            if (player->getName() == ruleArgs.playerName)
+            {
+                ruleArgs.currentPlayer = player;
+                rules.runTheRule(ruleArgs);
+            }
         }
     }
 }
@@ -230,7 +246,7 @@ void ClientGameEngine::processServerRequest(std::string request)
         request = request.substr(10);
         clientConnectedAndReady.store(true);
 
-        serverGameId = request.substr(request.length()-6);
+        serverGameId = request.substr(request.length() - 6);
         printChat(request);
     }
     else if (request.find("newplayer") == 0)
@@ -242,6 +258,11 @@ void ClientGameEngine::processServerRequest(std::string request)
         }
         request = request.substr(10) + " join the game";
         printChat(request);
+
+        if (player != myself->getName())
+        {
+            otherPlayers.push_back(std::make_shared<shared::Player>(player));
+        }
     }
     else if (request.find("infoplayer") == 0)
     {
@@ -249,6 +270,11 @@ void ClientGameEngine::processServerRequest(std::string request)
         if (clientGame != nullptr)
         {
             clientGame->addPlayer(player);
+        }
+
+        if (player != myself->getName())
+        {
+            otherPlayers.push_back(std::make_shared<shared::Player>(player));
         }
     }
     else
@@ -298,7 +324,33 @@ void ClientGameEngine::askServer()
  */
 void ClientGameEngine::handleInformation(int x, int y)
 {
-    std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
+    if (playerTurn.load() == false)
+    {
+        return;
+    }
+    std::array<unsigned, 2> position;
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::economy)
+    {
+        position = {(unsigned)x, (unsigned)y};
+        ruleArgsStruct.caravanMovementPath.push_back(position);
+    }
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::culture)
+    {
+        position = {(unsigned)x, (unsigned)y};
+        ruleArgsStruct.pawnsPositions.push_back(position);
+    }
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::industry) // TODO : add the posibility to build wonder
+    {
+        position = {(unsigned)x, (unsigned)y};
+        ruleArgsStruct.positionOfCity = position;
+        ruleArgsStruct.industryCardBuildWonder = false;
+    }
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::military)
+    {
+        position = {(unsigned)x, (unsigned)y};
+        ruleArgsStruct.pawnsPositions.push_back(position);
+        ruleArgsStruct.militaryCardAttack = false;
+    }
 }
 
 /*!
@@ -308,7 +360,37 @@ void ClientGameEngine::handleInformation(int x, int y)
  */
 void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty, int boxes)
 {
-    std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << " and with " << boxes << " boxes" << std::endl;
+    if (playerTurn.load() == false)
+    {
+        return;
+    }
+    if (typePlayed == "economy")
+    {
+        clientGame->modifyTextForUser("Click on the hexagons of the path");
+        ruleArgsStruct.ruleId = shared::CardsEnum::economy;
+    }
+    else if (typePlayed == "science")
+    {
+        clientGame->modifyTextForUser("you can finish your turn");
+        ruleArgsStruct.ruleId = shared::CardsEnum::science;
+    }
+    else if (typePlayed == "culture")
+    {
+        clientGame->modifyTextForUser("place pawns on the hexagons");
+        ruleArgsStruct.ruleId = shared::CardsEnum::culture;
+    }
+    else if (typePlayed == "army")
+    {
+        clientGame->modifyTextForUser("choose pawns to reinforce");
+        ruleArgsStruct.ruleId = shared::CardsEnum::military;
+    }
+    else if (typePlayed == "industry")
+    {
+        clientGame->modifyTextForUser("place a city");
+        ruleArgsStruct.ruleId = shared::CardsEnum::industry;
+    }
+
+    ruleArgsStruct.numberOfBoxUsed = boxes;
 }
 
 /*!
@@ -436,7 +518,8 @@ void ClientGameEngine::playGame()
 
     long lastUpdateTimer = clientGame->getCurrentTime();
 
-    while (areTextureLoaded.load() == false);
+    while (areTextureLoaded.load() == false)
+        ;
 
     while (runningWindow.load() == GAME)
     {
@@ -447,6 +530,7 @@ void ClientGameEngine::playGame()
         }
         if (playerTurn.load())
         {
+            clientGame->modifyTextForUser("It's your turn !");
             playTurn();
         }
     }
@@ -455,29 +539,16 @@ void ClientGameEngine::playGame()
 
 void ClientGameEngine::playTurn()
 {
-    shared::RuleArgsStruct ruleArgsStruct;
-    ruleArgsStruct.ruleId = shared::CardsEnum::science;
-    ruleArgsStruct.numberOfBoxUsed = 0;
-    ruleArgsStruct.caravanMovementPath.push_back({0, 1});
-    ruleArgsStruct.caravanMovementPath.push_back({4, 8});
-    ruleArgsStruct.caravanMovementPath.push_back({5, 6});
-    ruleArgsStruct.resourceToGet = shared::ResourceEnum::oil;
-    ruleArgsStruct.cardToGetABox = shared::CardsEnum::economy;
-    ruleArgsStruct.positionToNuke = {3, 4};
-    ruleArgsStruct.pawnsPositions.push_back({1, 1});
-    ruleArgsStruct.pawnsPositions.push_back({2, 2});
-    ruleArgsStruct.pawnsPositions.push_back({3, 3});
-    ruleArgsStruct.militaryCardAttack = true;
-    ruleArgsStruct.industryCardBuildWonder = true;
-    ruleArgsStruct.positionOfWonder = {4, 5};
-    ruleArgsStruct.positionOfCity = {6, 7};
-    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::economy);
-    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::military);
-
-    std::string struc;
-    binary.castToBinary(ruleArgsStruct, struc);
-    binary.send(myself, struc);
-    playerTurn.store(false);
+    if (endOfTurn.load())
+    {
+        clientGame->modifyTextForUser("");
+        std::string struc;
+        binary.castToBinary(ruleArgsStruct, struc);
+        binary.send(myself, struc);
+        ruleArgsStruct = shared::RuleArgsStruct();
+        playerTurn.store(false);
+        endOfTurn.store(false);
+    }
 }
 
 /*!
@@ -500,4 +571,12 @@ bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rect
             point.x <= rectangle.left + rectangle.width &&
             point.y >= rectangle.top &&
             point.y <= rectangle.top + rectangle.height);
+}
+
+void ClientGameEngine::handleEndTurnButton()
+{
+    if (playerTurn.load())
+    {
+        endOfTurn.store(true);
+    }
 }

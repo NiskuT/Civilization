@@ -2,12 +2,13 @@
 #include <algorithm>
 #include <vector>
 #include <array>
+#include <iostream>
 
 #define RULESLENGTH 16
-#define CARAVAN_STEPS_AT_LEVEL_1 3
-#define CARAVAN_STEPS_AT_LEVEL_2 4
-#define CARAVAN_STEPS_AT_LEVEL_3 6
-#define CARAVAN_STEPS_AT_LEVEL_4 6
+#define CARAVAN_STEPS_AT_LEVEL_1 4
+#define CARAVAN_STEPS_AT_LEVEL_2 5
+#define CARAVAN_STEPS_AT_LEVEL_3 7
+#define CARAVAN_STEPS_AT_LEVEL_4 7
 
 #define CARVAN_NUMBER_AT_LEVEL_1 1
 #define CARVAN_NUMBER_AT_LEVEL_2 2
@@ -69,7 +70,7 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
 
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::economy))
     {
-        exit(EXIT_FAILURE);
+        return false;
     }
 
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::economy);
@@ -77,13 +78,13 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     elementList barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
     if (barbarianList.size() > 0 && cardLevel != 2)
     {
-        exit(EXIT_FAILURE);
+        return false;
     }
 
     bool isWaterOnThePath = checkIfWaterIsOnThePath(caravanMovementPath, map);
     if (isWaterOnThePath && cardLevel < 3)
     {
-        exit(EXIT_FAILURE);
+        return false;
     }
 
     unsigned maxLevelReachable = args.currentPlayer->getDificultyOfCard(CardsEnum::economy); // TODO: check if the player can reach a higher level depending on his caracteristics
@@ -91,7 +92,7 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     {
         if ((*map)(element[0], element[1])->getFieldLevel() > (FieldLevel)maxLevelReachable)
         {
-            exit(EXIT_FAILURE);
+            return false;
         }
     }
 
@@ -150,6 +151,8 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     default:
         return false;
     }
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
 }
 
@@ -182,7 +185,7 @@ void Rules::addCaravanAfterCardAmelioration(std::vector<std::shared_ptr<Caravan>
     while (caravans.size() < (std::size_t)numberOfCaravans)
     {
         std::array<unsigned, 2> pos = {0, 0};
-        std::shared_ptr<Caravan> caravan = std::make_shared<Caravan>(pos);
+        std::shared_ptr<Caravan> caravan = std::make_shared<Caravan>(pos, currentPlayer->getName());
         currentPlayer->addCaravan(caravan);
         caravans.push_back(caravan);
     }
@@ -211,7 +214,7 @@ bool Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
         }
     }
 
-    if (!(isThereACityAround(pos1, map) || isThereAControlPawnAround(pos1, map)))
+    if (!(isThereACity(pos1, map) || isThereAControlPawn(pos1, map)))
     {
         return false;
     }
@@ -338,7 +341,29 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
             args.currentPlayer->upgradeCard(cardtoImprove);
         }
     }
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
+}
+
+void Rules::killControlPawn(std::shared_ptr<Map> gameMap, std::array<unsigned, 2> position, std::shared_ptr<Player> currentPlayer)
+{
+    elementList elements = (*gameMap)(position[0], position[1])->getElements();
+    for (auto element : elements)
+    {
+        if (std::holds_alternative<ControlPawn>(*element))
+        {
+            if (std::get<ControlPawn>(*element).isReinforced())
+            {
+                std::get<ControlPawn>(*element).setNotReinforced();
+            }
+            else
+            {
+                (*gameMap)(position[0], position[1])->removeElement(element);
+                currentPlayer->removeControlPawn(std::make_shared<ControlPawn>(std::get<ControlPawn>(*element)));
+            }
+        }
+    }
 }
 
 /**
@@ -355,21 +380,7 @@ void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_pt
     for (auto neightbor : neightbors)
     {
         elements = (*gameMap)(neightbor[0], neightbor[1])->getElements();
-        for (auto element : elements)
-        {
-            if (std::holds_alternative<ControlPawn>(*element))
-            {
-                if (std::get<ControlPawn>(*element).isReinforced())
-                {
-                    std::get<ControlPawn>(*element).setReinforced();
-                }
-                else
-                {
-                    (*gameMap)(neightbor[0], neightbor[1])->removeElement(element);
-                    currentPlayer->removeControlPawn(std::make_shared<ControlPawn>(std::get<ControlPawn>(*element)));
-                }
-            }
-        }
+        killControlPawn(gameMap, neightbor, currentPlayer);
     }
 }
 
@@ -490,6 +501,8 @@ bool Rules::playCultureCard(RuleArgsStruct &args)
     default:
         return false;
     }
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
 }
 
@@ -514,7 +527,7 @@ bool Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, st
         }
         if (isThereACityAround(position, gameMap))
         {
-            std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position);
+            std::shared_ptr<shared::ControlPawn> controlPawn = std::make_shared<shared::ControlPawn>(position, currentPlayer->getName());
             currentPlayer->addControlPawn(controlPawn);
             std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City> element = *controlPawn;
             (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<shared::Caravan, shared::Barbarian, shared::BarbarianVillage, shared::ControlPawn, shared::City>>(element));
@@ -547,6 +560,18 @@ bool Rules::isThereACityAround(std::array<unsigned, 2> position, std::shared_ptr
     return false;
 }
 
+bool Rules::isThereACity(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
+{
+    for (auto element : (*gameMap)(position[0], position[1])->getElements())
+    {
+        if (std::holds_alternative<City>(*element))
+        {
+            return true; // TODO : check if the city is owned by the player
+        }
+    }
+    return false;
+}
+
 /**
  * @file Rules.cpp
  * @fn bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
@@ -555,19 +580,16 @@ bool Rules::isThereACityAround(std::array<unsigned, 2> position, std::shared_ptr
  * @param gameMap the map of the game
  * @return true if there is a control pawn around, false otherwise
  */
-bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
+bool Rules::isThereAControlPawn(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
 {
-    std::vector<std::array<unsigned, 2>> neighbors = getNeighbors(position[0], position[1], gameMap);
-    for (auto neighbor : neighbors)
+    for (auto element : (*gameMap)(position[0], position[1])->getElements())
     {
-        for (auto element : (*gameMap)(neighbor[0], neighbor[1])->getElements())
+        if (std::holds_alternative<ControlPawn>(*element))
         {
-            if (std::holds_alternative<ControlPawn>(*element))
-            {
-                return true; // TODO : check if the city is owned by the player
-            }
+            return true; // TODO : check if the controlpawn is owned by the player
         }
     }
+
     return false;
 }
 
@@ -619,8 +641,8 @@ bool Rules::reinforce(RuleArgsStruct &args)
 
     std::shared_ptr<Map> gameMap = args.gameMap;
     std::vector<std::array<unsigned, 2>> pawnsPositions = args.pawnsPositions;
-    unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::military);
-    if (pawnsPositions.size() != cardLevel + numberOfBoxUsed)
+    unsigned cardDifficulty = args.currentPlayer->getDificultyOfCard(CardsEnum::military);
+    if (pawnsPositions.size() > cardDifficulty + numberOfBoxUsed)
     {
         return false;
     }
@@ -637,6 +659,8 @@ bool Rules::reinforce(RuleArgsStruct &args)
             }
         }
     }
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
 }
 
@@ -688,8 +712,8 @@ bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
     std::shared_ptr<Map> gameMap = args.gameMap;
     std::array<unsigned, 2> position = args.positionOfCity;
 
-    unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::industry);
-    if (cardLevel + numberOfBoxUsed < (unsigned)(*gameMap)(position[0], position[1])->getFieldLevel())
+    unsigned cardDifficulty = args.currentPlayer->getDificultyOfCard(CardsEnum::industry);
+    if (cardDifficulty + numberOfBoxUsed < (unsigned)(*gameMap)(position[0], position[1])->getFieldLevel())
     {
         return false;
     }
@@ -701,8 +725,26 @@ bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
             return false;
         }
     }
-    std::shared_ptr<City> city = std::make_shared<City>(position);
+    std::shared_ptr<City> city = std::make_shared<City>(position, args.currentPlayer->getName());
     args.currentPlayer->addCity(city);
     (*gameMap)(position[0], position[1])->addElement(std::make_shared<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>(*city));
+
+    roundCards(args.currentPlayer, args.ruleId);
     return true;
+}
+
+void Rules::roundCards(std::shared_ptr<Player> currentPlayer, CardsEnum cardPlayed)
+{
+    unsigned initialDificulty = currentPlayer->getDificultyOfCard(cardPlayed);
+    for (auto card : currentPlayer->getListOfPriorityCards())
+    {
+        if (card->getType() == cardPlayed)
+        {
+            card->setDificulty(1);
+        }
+        else if (card->getDificulty() < initialDificulty)
+        {
+            card->setDificulty(card->getDificulty() + 1);
+        }
+    }
 }

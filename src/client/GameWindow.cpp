@@ -518,6 +518,12 @@ bool GameWindow::clickAction(sf::Event &event, sf::Vector2i clickPosition, std::
         }
     }
 
+    if (gameEnginePtr->intersectPointRect(clickPosition, endOfRoundButton->buttonRect->getGlobalBounds()))
+    {
+        gameEnginePtr->handleEndTurnButton();
+        return false;
+    }
+
     // Check if the click position is inside the move map button
     if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_MAP_BUTTON].getSprite().getGlobalBounds()))
     {
@@ -773,7 +779,8 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
             path = elementData[index]["path"].asString();
 
-            path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "" : "-reinforced") + ".png";
+            path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "-reinforced" : "") + ".png";
+
         }
         else if (std::holds_alternative<shared::Caravan>(*variant))
         {
@@ -976,7 +983,7 @@ void GameWindow::loadHudTexture()
     }
 
     // text for the user
-    std::string textForTheUserString = "Do that";
+    std::string textForTheUserString = "";
     textForTheUser = std::make_shared<Button>(sf::Vector2f(dataNumber["text-for-user-size-x"].asFloat(), dataNumber["text-for-user-size-y"].asFloat()),
                                               sf::Vector2f(dataNumber["text-for-user-pos-x"].asFloat(), dataNumber["text-for-user-pos-y"].asFloat()),
                                               TEXT_FOR_USER_BUTTON_COLOR,

@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 
 BOOST_AUTO_TEST_CASE( constructorAndGetters )
 {
-    shared::ControlPawn pawn({20, 15});
+    shared::ControlPawn pawn({20, 15}, "not defined");
 
     BOOST_CHECK(pawn.getPosition()[0] == 20);
     BOOST_CHECK(pawn.getPosition()[1] == 15);
@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE( constructorAndGetters )
 
 BOOST_AUTO_TEST_CASE( setReinforced )
 {
-    shared::ControlPawn pawn({0, 0});
+    shared::ControlPawn pawn({0, 0}, "not defined");
     pawn.setReinforced();
     BOOST_CHECK(pawn.isReinforced() == true);
 }

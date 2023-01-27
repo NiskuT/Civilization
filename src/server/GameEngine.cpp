@@ -36,6 +36,27 @@ bool GameEngine::addPlayer(std::shared_ptr<shared::Player> player)
     return true;
 }
 
+void GameEngine::askClientToPlayARule(std::shared_ptr<shared::Player> player, shared::RuleArgsStruct &ruleArgs)
+{
+
+    shared::Rules rules;
+    do
+    {
+        std::unique_lock<std::mutex> lock(player->qAndA.sharedDataMutex);
+        player->qAndA.question = "playturn\n";
+        lock.unlock();
+        askClient(player);
+
+        lock.lock();
+        binary.castToObject(player->qAndA.answer, ruleArgs);
+        lock.unlock();
+
+        ruleArgs.gameMap = this->gameMap;
+        ruleArgs.currentPlayer = player;
+
+    } while (!(rules.runTheRule(ruleArgs)));
+}
+
 void GameEngine::runGame() // rename rungame
 {
     std::cout << "start game" << std::endl;
@@ -44,33 +65,20 @@ void GameEngine::runGame() // rename rungame
     message += getTime() + " ";
     message += "Game started\n";
     sendToEveryone(message);
-    shared::Rules rules;
-    while (true) // TODO: add condition to stop the game
+    while (true) // TODO: add condition to stop the game (victory of a player)
     {
-        for (auto &player : players)
+        for (auto player : players)
         {
+            std::cout << "start of turn of player: " << player->getName() << std::endl;
             shared::RuleArgsStruct ruleArgs;
-            do
-            {
-                player->qAndA.question = "playturn\n";
-                askClient(player);
-                binary.castToObject(player->qAndA.answer, ruleArgs);
-                ruleArgs.gameMap = this->gameMap;
-                ruleArgs.currentPlayer = player;
+            askClientToPlayARule(player, ruleArgs);
 
-                std::cout << "ruleId: " << (int)ruleArgs.ruleId << std::endl;
+            ruleArgs.playerName = player->getName();
 
-            } while (!(rules.runTheRule(ruleArgs)));
-
-            // ruleArgs.playerName = player->getName();
-            // message = "rulesturn ";
-            // std::string struc;
-            // binary.castToBinary(ruleArgs, struc);
-            // message += struc.size();
-            // message += struc;
-            // sendToEveryone(message);
+            std::string struc;
+            binary.castToBinary(ruleArgs, struc);
+            sendToEveryone(struc, true);
         }
-        std::cout << "end of turn" << std::endl;
     }
 }
 
@@ -210,15 +218,18 @@ void GameEngine::askClient(std::shared_ptr<shared::Player> player)
     player->qAndA.answerReady = false;
 }
 
-void GameEngine::sendToEveryone(std::string message)
+void GameEngine::sendToEveryone(std::string message, bool isBinary)
 {
-    std::cout << message;
     for (auto &player : players)
     {
-        if (player->connectedToSocket.load())
+        if (!isBinary && player->connectedToSocket.load())
         {
             std::lock_guard<std::mutex> lock(player->socketWriteMutex);
             boost::asio::write(player->getSocket(), boost::asio::buffer(message));
+        }
+        else if (player->connectedToSocket.load())
+        {
+            binary.send(player, message, false);
         }
     }
 }

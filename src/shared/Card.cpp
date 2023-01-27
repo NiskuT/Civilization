@@ -1,12 +1,12 @@
 #include <shared.hpp>
 
 using namespace shared;
-Card::Card(CardsEnum type)
+Card::Card(CardsEnum type, unsigned difficulty, unsigned numberOfBox)
 {
     this->type = type;
     this->level = 1;
-    this->dificulty = 1;
-    this->numberOfBox = 0;
+    this->dificulty = difficulty;
+    this->numberOfBox = numberOfBox;
 }
 
 CardsEnum Card::getType()
@@ -32,11 +32,6 @@ unsigned Card::getNumberOfBox()
 void Card::addBox(unsigned numberOfBoxToAdd)
 {
     this->numberOfBox += numberOfBoxToAdd;
-}
-
-void Card::removeBox(unsigned numberOfBoxToRemove)
-{
-    this->numberOfBox -= numberOfBoxToRemove;
 }
 
 void Card::deleteBox(unsigned numberOfBoxToDelete)

@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 
 BOOST_AUTO_TEST_CASE( constructorAndGetters )
 {
-    shared::Card card(shared::CardsEnum::science);
+    shared::Card card(shared::CardsEnum::science,0,0);
 
     shared::CardsEnum type = card.getType();
     BOOST_CHECK(type == shared::CardsEnum::science);
@@ -19,12 +19,12 @@ BOOST_AUTO_TEST_CASE( constructorAndGetters )
 
 BOOST_AUTO_TEST_CASE( boxAndDifficulty )
 {
-    shared::Card card(shared::CardsEnum::science);
+    shared::Card card(shared::CardsEnum::science,0,0);
 
     BOOST_CHECK(card.getNumberOfBox() == 0);
     card.addBox(2);
     BOOST_CHECK(card.getNumberOfBox() == 2);
-    card.removeBox(1);
+    card.deleteBox(1);
     BOOST_CHECK(card.getNumberOfBox() == 1);
 
     card.setDificulty(3);
