@@ -342,6 +342,10 @@ void ClientGameEngine::askServer()
  */
 void ClientGameEngine::handleInformation(int x, int y)
 {
+    if (playerTurn.load() == false)
+    {
+        return;
+    }
     if (x == 0 && y == 0)
     {
         endOfTurn.store(true);
@@ -382,6 +386,10 @@ void ClientGameEngine::handleInformation(int x, int y)
  */
 void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty, int boxes)
 {
+    if (playerTurn.load() == false)
+    {
+        return;
+    }
     if (typePlayed == "economy")
     {
         ruleArgsStruct.ruleId = shared::CardsEnum::economy;
