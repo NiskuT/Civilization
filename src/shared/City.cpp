@@ -8,6 +8,7 @@ City::City()
     this->isCapital = false;
     this->isStateCity = false;
     this->position = {0, 0};
+    this->stateCityType = CityStateEnum::bruxelles;
 }
 
 City::City(std::array<unsigned, 2> position,std::string player)

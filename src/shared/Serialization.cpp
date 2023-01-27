@@ -44,8 +44,54 @@ template <class Archive>
 void Hexagon::save(Archive &ar, const unsigned int version) const
 {
     ar << level;
-    ar << elementsList.size();
-    ar << elementsList;
+
+    std::vector<Caravan> caravans;
+    std::vector<Barbarian> barbarians;
+    std::vector<BarbarianVillage> barbarianVillages;
+    std::vector<ControlPawn> controlPawns;
+    std::vector<City> cities;
+
+    for (const auto &element : elementsList)
+    {
+        switch (element->index())
+        {
+        case 0:
+            caravans.push_back(std::get<Caravan>(*element));
+            break;
+        case 1:
+            barbarians.push_back(std::get<Barbarian>(*element));
+            break;
+        case 2:
+            barbarianVillages.push_back(std::get<BarbarianVillage>(*element));
+            break;
+        case 3:
+            controlPawns.push_back(std::get<ControlPawn>(*element));
+            break;
+        case 4:
+            cities.push_back(std::get<City>(*element));
+            break;
+        }
+    }
+    ar << caravans.size();
+    ar << barbarians.size();
+    ar << barbarianVillages.size();
+    ar << controlPawns.size();
+    ar << cities.size();
+    ar << caravans;
+    ar << barbarians;
+    ar << barbarianVillages;
+    ar << controlPawns;
+    ar << cities;
+    
+    bool haveResource = (hexResource != nullptr);
+    ar << haveResource;
+    if (haveResource)
+    {
+        bool alive = hexResource->isAlive;
+        int type = (int) hexResource->type;
+        ar << alive;
+        ar << type;
+    }
 }
 
 template <class Archive>
@@ -53,10 +99,67 @@ void Hexagon::load(Archive &ar, const unsigned int version)
 {
     ar >> level;
     size_t size = 0;
+
+    std::vector<Caravan> caravans;
+    std::vector<Barbarian> barbarians;
+    std::vector<BarbarianVillage> barbarianVillages;
+    std::vector<ControlPawn> controlPawns;
+    std::vector<City> cities;
+
     ar >> size;
-    std::generate_n(std::back_inserter(elementsList), size, []()
-                    { return std::make_shared<elementVariant>(); });
-    ar >> elementsList;
+    std::generate_n(std::back_inserter(caravans), size, []()
+                    { return Caravan(); });
+    ar >> size;
+    std::generate_n(std::back_inserter(barbarians), size, []()
+                    { return Barbarian(); });
+    ar >> size;
+    std::generate_n(std::back_inserter(barbarianVillages), size, []()
+                    { return BarbarianVillage(); });
+    ar >> size;
+    std::generate_n(std::back_inserter(controlPawns), size, []()
+                    { return ControlPawn(); });
+    ar >> size;
+    std::generate_n(std::back_inserter(cities), size, []()
+                    { return City(); });
+
+    ar >> caravans;
+    ar >> barbarians;
+    ar >> barbarianVillages;
+    ar >> controlPawns;
+    ar >> cities;
+
+    for (auto &caravan : caravans)
+    {
+        elementsList.push_back(std::make_shared<elementVariant>(caravan));
+    }
+    for (auto &barbarian : barbarians)
+    {
+        elementsList.push_back(std::make_shared<elementVariant>(barbarian));
+    }
+    for (auto &barbarianVillage : barbarianVillages)
+    {
+        elementsList.push_back(std::make_shared<elementVariant>(barbarianVillage));
+    }
+    for (auto &controlPawn : controlPawns)
+    {
+        elementsList.push_back(std::make_shared<elementVariant>(controlPawn));
+    }
+    for (auto &city : cities)
+    {
+        elementsList.push_back(std::make_shared<elementVariant>(city));
+    }
+
+    bool haveResource = false;
+    ar >> haveResource;
+    if (haveResource)
+    {
+        bool alive = false;
+        int type = 0;
+        ar >> alive;
+        ar >> type;
+        hexResource = std::make_shared<Resource>((shared::ResourceEnum) type);
+        hexResource->isAlive = alive;
+    }
 }
 
 template <class Archive>
@@ -85,6 +188,9 @@ void City::serialize(Archive &ar, const unsigned int version)
     ar &isMature;
     ar &position;
     ar &player;
+    int type = (int) stateCityType;
+    ar &type;
+    stateCityType = (shared::CityStateEnum) type;
 }
 
 template <class Archive>
@@ -113,38 +219,4 @@ void Caravan::serialize(Archive &ar, const unsigned int version)
     ar &position;
     ar &used;
     ar &player;
-}
-
-namespace boost
-{
-    namespace serialization
-    {
-        template <class Archive, typename... Ts>
-        void save(Archive &ar, const std::variant<Ts...> &obj, const unsigned int version)
-        {
-            boost::variant<Ts...> v;
-            std::visit([&](const auto &arg)
-                       { v = arg; },
-                       obj);
-
-            ar &v;
-        }
-
-        template <class Archive, typename... Ts>
-        void load(Archive &ar, std::variant<Ts...> &obj, const unsigned int version)
-        {
-            boost::variant<Ts...> v;
-            ar &v;
-
-            boost::apply_visitor([&](auto &arg)
-                                 { obj = arg; },
-                                 v);
-        }
-
-        template <class Archive, typename... Ts>
-        void serialize(Archive &ar, std::variant<Ts...> &t, const unsigned int file_version)
-        {
-            split_free(ar, t, file_version);
-        }
-    }
 }
