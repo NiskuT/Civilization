@@ -46,6 +46,7 @@ const std::vector<sf::Color> PLAYER_COLOR = {sf::Color(119, 238, 217, 160), sf::
 const sf::Color TEXT_COLOR = sf::Color(240, 230, 230);
 const sf::Color TEXT_FOR_USER_BUTTON_COLOR = sf::Color(255, 255, 255, 100);
 const sf::Color TEXT_FOR_USER_COLOR = sf::Color(204, 0, 102);
+const sf::Color END_OF_TURN_BUTTON_COLOR = sf::Color(247, 200, 195);
 
 using namespace client;
 
@@ -439,7 +440,7 @@ bool GameWindow::priorityCardClickAction(sf::Vector2i clickPosition)
             validateBoxesWindow->priorityCardPlayedType,
             validateBoxesWindow->priorityCardPlayed,
             validateBoxesWindow->nbOfBoxesChosen);
-    
+            
             return true;
     }
 
@@ -990,13 +991,13 @@ void GameWindow::loadHudTexture()
     // end of round button
     endOfRoundButton = std::make_unique<Button>(sf::Vector2f(dataNumber["end-of-round-size-x"].asFloat(), dataNumber["end-of-round-size-y"].asFloat()),
                                                 sf::Vector2f(dataNumber["text-for-user-pos-x"].asFloat(), dataNumber["end-of-round-pos-y"].asFloat()),
-                                                TEXT_FOR_USER_BUTTON_COLOR,
+                                                END_OF_TURN_BUTTON_COLOR,
                                                 false);
     endOfRoundButton->setText(dataNumber["end-of-round-text-size"].asInt(),
                               sf::Vector2f(0, 0),
-                              "End of round",
+                              "End of turn",
                               bodyFont);
-    endOfRoundButton->buttonText->setFillColor(TEXT_FOR_USER_COLOR);
+    endOfRoundButton->buttonRect->setOutlineThickness(2.0f);
 }
 
 /*!
@@ -1073,6 +1074,11 @@ long GameWindow::getCurrentTime(bool timeSecond)
     }
 }
 
+/*!
+ * @brief Function to set the winnee window at the end of the party
+ * @param winner string: who is the winner
+ * @param causes string: why the winner have won
+ */
 void GameWindow::setWinnerWindow(std::string winner, std::string causes)
 {
 
@@ -1080,4 +1086,15 @@ void GameWindow::setWinnerWindow(std::string winner, std::string causes)
     winnerWindow->body->setString(causes);
     winnerWindow->centerText();
     winnerWindow->isWindowActive = true;
+}
+
+void GameWindow::changePriorityCardTextLevel(int numberOfTheCard, int newLevel) 
+{
+    /*  To finish later
+    const Json::Value &data = openJsonFile("/hud/priority-card.json");
+
+    if (!priorityCards[numberOfTheCard].type.compare("economy")) {
+        priorityCards[numberOfTheCard].body->setString(data[0]["body"][newLevel].asString());
+    }
+    */
 }
