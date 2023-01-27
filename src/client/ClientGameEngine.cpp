@@ -147,8 +147,6 @@ void ClientGameEngine::runRule(shared::RuleArgsStruct ruleArgs)
     {
         for (auto player : otherPlayers)
         {
-            std::cout << "player name: " << player->getName() << std::endl;
-            std::cout << "ruleArgs.playerName: " << ruleArgs.playerName << std::endl;
             if (player->getName() == ruleArgs.playerName)
             {
                 ruleArgs.currentPlayer = player;

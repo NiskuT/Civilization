@@ -38,3 +38,8 @@ ElementEnum Caravan::getType()
 {
     return ElementEnum::caravan;
 }
+
+std::string Caravan::getPlayerName()
+{
+    return this->player;
+}

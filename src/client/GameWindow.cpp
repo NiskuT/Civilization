@@ -767,7 +767,7 @@ void GameWindow::selectElementToDisplay(int x, int y)
 
             path = elementData[index]["path"].asString();
 
-            path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "" : "-reinforced") + ".png";
+            path = path.substr(0, 20) + std::to_string(getPlayerNumber(pawn.player)) + (pawn.isReinforced() ? "-reinforced" : "") + ".png";
 
         }
         else if(std::holds_alternative<shared::Caravan>(*variant))

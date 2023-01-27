@@ -2,13 +2,12 @@
 #include <algorithm>
 #include <vector>
 #include <array>
-#include <iostream>
 
 #define RULESLENGTH 16
-#define CARAVAN_STEPS_AT_LEVEL_1 3
-#define CARAVAN_STEPS_AT_LEVEL_2 4
-#define CARAVAN_STEPS_AT_LEVEL_3 6
-#define CARAVAN_STEPS_AT_LEVEL_4 6
+#define CARAVAN_STEPS_AT_LEVEL_1 4
+#define CARAVAN_STEPS_AT_LEVEL_2 5
+#define CARAVAN_STEPS_AT_LEVEL_3 7
+#define CARAVAN_STEPS_AT_LEVEL_4 7
 
 #define CARVAN_NUMBER_AT_LEVEL_1 1
 #define CARVAN_NUMBER_AT_LEVEL_2 2
@@ -38,7 +37,6 @@ Rules::Rules()
  */
 bool Rules::runTheRule(RuleArgsStruct &args)
 {
-    std::cout << "runTheRule" << std::endl;
     switch (args.ruleId)
     {
     case CardsEnum::economy:
@@ -215,7 +213,7 @@ bool Rules::moveCaravan(std::vector<std::shared_ptr<Caravan>> caravans, std::arr
         }
     }
 
-    if (!(isThereACityAround(pos1, map) || isThereAControlPawnAround(pos1, map)))
+    if (!(isThereACity(pos1, map) || isThereAControlPawn(pos1, map)))
     {
         return false;
     }
@@ -555,6 +553,18 @@ bool Rules::isThereACityAround(std::array<unsigned, 2> position, std::shared_ptr
     return false;
 }
 
+bool Rules::isThereACity(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
+{
+    for (auto element : (*gameMap)(position[0], position[1])->getElements())
+    {
+        if (std::holds_alternative<City>(*element))
+        {
+            return true; // TODO : check if the city is owned by the player
+        }
+    }
+    return false;
+}
+
 /**
  * @file Rules.cpp
  * @fn bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
@@ -563,19 +573,16 @@ bool Rules::isThereACityAround(std::array<unsigned, 2> position, std::shared_ptr
  * @param gameMap the map of the game
  * @return true if there is a control pawn around, false otherwise
  */
-bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
+bool Rules::isThereAControlPawn(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
 {
-    std::vector<std::array<unsigned, 2>> neighbors = getNeighbors(position[0], position[1], gameMap);
-    for (auto neighbor : neighbors)
+    for (auto element : (*gameMap)(position[0], position[1])->getElements())
     {
-        for (auto element : (*gameMap)(neighbor[0], neighbor[1])->getElements())
+        if (std::holds_alternative<ControlPawn>(*element))
         {
-            if (std::holds_alternative<ControlPawn>(*element))
-            {
-                return true; // TODO : check if the city is owned by the player
-            }
+            return true; // TODO : check if the controlpawn is owned by the player
         }
     }
+
     return false;
 }
 
@@ -588,7 +595,6 @@ bool Rules::isThereAControlPawnAround(std::array<unsigned, 2> position, std::sha
  */
 bool Rules::playMilitaryCard(RuleArgsStruct &args)
 {
-    std::cout << "playMilitaryCard" << std::endl;
     if (args.militaryCardAttack == true)
     {
         return attack(args);
@@ -620,7 +626,6 @@ bool Rules::attack(RuleArgsStruct &args)
  */
 bool Rules::reinforce(RuleArgsStruct &args)
 {
-    std::cout << "reinforce" << std::endl;
     unsigned numberOfBoxUsed = args.numberOfBoxUsed;
     if (numberOfBoxUsed > args.currentPlayer->getNumberOfBox(CardsEnum::military))
     {
@@ -629,8 +634,8 @@ bool Rules::reinforce(RuleArgsStruct &args)
 
     std::shared_ptr<Map> gameMap = args.gameMap;
     std::vector<std::array<unsigned, 2>> pawnsPositions = args.pawnsPositions;
-    unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::military);
-    if (pawnsPositions.size() != cardLevel + numberOfBoxUsed)
+    unsigned cardDifficulty = args.currentPlayer->getDificultyOfCard(CardsEnum::military);
+    if (pawnsPositions.size() != cardDifficulty + numberOfBoxUsed)
     {
         return false;
     }

@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(TestRulesEconomyCardLevel1)
     args.gameMap = map;
     args.numberOfBoxUsed = 0;
     args.currentPlayer = player;
-    args.caravanMovementPath.push_back({0, 0});
+    args.caravanMovementPath.push_back({0, 1});
     args.caravanMovementPath.push_back({1, 1});
     args.caravanMovementPath.push_back({2, 1});
     rules.runTheRule(args);

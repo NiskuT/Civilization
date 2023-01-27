@@ -34,3 +34,8 @@ ElementEnum ControlPawn::getType()
 {
     return ElementEnum::controlPawn;
 }
+
+std::string ControlPawn::getPlayerName()
+{
+    return this->player;
+}

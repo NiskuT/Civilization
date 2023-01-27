@@ -15,11 +15,11 @@ Player::Player()
     connectedToSocket.store(false);
     std::fill(resources.begin(), resources.end(), 0);
     this->techLevel = 0;
-    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military, 1);
-    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::economy, 2);
-    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science, 3);
-    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry, 4);
-    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture, 5);
+    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::economy, 1, 2);
+    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::military, 2, 4);
+    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science, 3, 2);
+    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::culture, 4, 1);
+    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::industry, 5, 0);
 }
 
 Player::Player(std::string username)
@@ -28,11 +28,11 @@ Player::Player(std::string username)
     std::fill(resources.begin(), resources.end(), 0);
     this->techLevel = 0;
     this->username = username;
-    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::military, 1);
-    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::economy, 2);
-    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science, 3);
-    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::industry, 4);
-    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::culture, 5);
+    this->listOfPriorityCard[0] = std::make_shared<Card>(CardsEnum::economy, 1, 2);
+    this->listOfPriorityCard[1] = std::make_shared<Card>(CardsEnum::military, 2, 4);
+    this->listOfPriorityCard[2] = std::make_shared<Card>(CardsEnum::science, 3, 2);
+    this->listOfPriorityCard[3] = std::make_shared<Card>(CardsEnum::culture, 4, 1);
+    this->listOfPriorityCard[4] = std::make_shared<Card>(CardsEnum::industry, 5, 0);
 }
 
 void Player::setUsername(std::string username)
@@ -74,7 +74,7 @@ std::array<int, 3> Player::incrementTechWheel(unsigned toIncrement)
         {
             result[2]++;
         }
-        if(this->techLevel == TECH_LEVEL_END)
+        if (this->techLevel == TECH_LEVEL_END)
         {
             this->techLevel = TECH_LEVEL_RESET;
         }

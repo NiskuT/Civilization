@@ -34,3 +34,8 @@ void City::setStateCity(CityStateEnum name)
     isStateCity = true;
     stateCityType = name;
 }
+
+std::string City::getPlayerName()
+{
+    return this->player;
+}
