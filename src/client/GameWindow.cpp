@@ -518,6 +518,12 @@ bool GameWindow::clickAction(sf::Event &event, sf::Vector2i clickPosition, std::
         }
     }
 
+    if (gameEnginePtr->intersectPointRect(clickPosition, endOfRoundButton->buttonRect->getGlobalBounds()))
+    {
+        gameEnginePtr->handleEndTurnButton();
+        return false;
+    }
+
     // Check if the click position is inside the move map button
     if (gameEnginePtr->intersectPointRect(clickPosition, hudTextureToDisplay[INDEX_MAP_BUTTON].getSprite().getGlobalBounds()))
     {

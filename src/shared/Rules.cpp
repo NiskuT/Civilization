@@ -345,6 +345,26 @@ bool Rules::playScienceCard(RuleArgsStruct &args)
     return true;
 }
 
+void Rules::killControlPawn(std::shared_ptr<Map> gameMap, std::array<unsigned, 2> position, std::shared_ptr<Player> currentPlayer)
+{
+    elementList elements = (*gameMap)(position[0], position[1])->getElements();
+    for (auto element : elements)
+    {
+        if (std::holds_alternative<ControlPawn>(*element))
+        {
+            if (std::get<ControlPawn>(*element).isReinforced())
+            {
+                std::get<ControlPawn>(*element).setNotReinforced();
+            }
+            else
+            {
+                (*gameMap)(position[0], position[1])->removeElement(element);
+                currentPlayer->removeControlPawn(std::make_shared<ControlPawn>(std::get<ControlPawn>(*element)));
+            }
+        }
+    }
+}
+
 /**
  * @file Rules.cpp
  * @fn void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_ptr<Map> gameMap, std::shared_ptr<Player> currentPlayer)
@@ -359,21 +379,7 @@ void Rules::nuke(std::vector<std::array<unsigned, 2>> neightbors, std::shared_pt
     for (auto neightbor : neightbors)
     {
         elements = (*gameMap)(neightbor[0], neightbor[1])->getElements();
-        for (auto element : elements)
-        {
-            if (std::holds_alternative<ControlPawn>(*element))
-            {
-                if (std::get<ControlPawn>(*element).isReinforced())
-                {
-                    std::get<ControlPawn>(*element).setReinforced();
-                }
-                else
-                {
-                    (*gameMap)(neightbor[0], neightbor[1])->removeElement(element);
-                    currentPlayer->removeControlPawn(std::make_shared<ControlPawn>(std::get<ControlPawn>(*element)));
-                }
-            }
-        }
+        killControlPawn(gameMap, neightbor, currentPlayer);
     }
 }
 

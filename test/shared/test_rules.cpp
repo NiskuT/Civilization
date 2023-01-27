@@ -13,7 +13,6 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 BOOST_AUTO_TEST_CASE(TestRulesScienceCardLevel1)
 {
     std::shared_ptr<shared::Player> player = std::make_shared<shared::Player>();
-    int initialDifficulty = player->getDificultyOfCard(shared::CardsEnum::science);
     player->addBox(shared::CardsEnum::science, 50);
     shared::Rules rules;
     shared::RuleArgsStruct args;

@@ -328,11 +328,6 @@ void ClientGameEngine::handleInformation(int x, int y)
     {
         return;
     }
-    if (x == 0 && y == 0)
-    {
-        endOfTurn.store(true);
-        return;
-    }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::economy)
     {
         clientGame->modifyTextForUser("Click on the hexagons of the path");
@@ -577,4 +572,12 @@ bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rect
             point.x <= rectangle.left + rectangle.width &&
             point.y >= rectangle.top &&
             point.y <= rectangle.top + rectangle.height);
+}
+
+void ClientGameEngine::handleEndTurnButton()
+{
+    if (playerTurn.load())
+    {
+        endOfTurn.store(true);
+    }
 }

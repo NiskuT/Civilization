@@ -25,6 +25,11 @@ void ControlPawn::setReinforced()
     this->reinforced = true;
 }
 
+void ControlPawn::setNotReinforced()
+{
+    this->reinforced = false;
+}
+
 std::array<unsigned, 2> ControlPawn::getPosition()
 {
     return this->position;

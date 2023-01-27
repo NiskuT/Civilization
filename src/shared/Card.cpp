@@ -34,11 +34,6 @@ void Card::addBox(unsigned numberOfBoxToAdd)
     this->numberOfBox += numberOfBoxToAdd;
 }
 
-void Card::removeBox(unsigned numberOfBoxToRemove)
-{
-    this->numberOfBox -= numberOfBoxToRemove;
-}
-
 void Card::deleteBox(unsigned numberOfBoxToDelete)
 {
     this->numberOfBox -= numberOfBoxToDelete;

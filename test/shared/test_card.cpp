@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE( boxAndDifficulty )
     BOOST_CHECK(card.getNumberOfBox() == 0);
     card.addBox(2);
     BOOST_CHECK(card.getNumberOfBox() == 2);
-    card.removeBox(1);
+    card.deleteBox(1);
     BOOST_CHECK(card.getNumberOfBox() == 1);
 
     card.setDificulty(3);
