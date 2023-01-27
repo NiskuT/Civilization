@@ -7,8 +7,9 @@
     <tab type="usergroup" url="./md_docs_rules_rules.html" title="The game">
       <tab type="user" url="./md_docs_rules_rules.html" title="Rules"/>
       <tab type="user" url="./md_docs_rules_recap_of_specific_actions.html" title="Specific actions"/>
-      <tab type="user" url="./md_docs_rules_graphic_elements.html" title="Graphic s"/>
+      <tab type="user" url="./md_docs_rules_graphic_elements.html" title="Graphics"/>
       <tab type="user" url="./md_docs_rendering.html" title="Rendering"/>
+      <tab type="user" url="./md_docs_multithreading_network.html" title="multithreading and network"/>
     </tab>
     <tab type="usergroup" url="./md_docs_development_process.html" title="Development">
       <tab type="user" url="./md_docs_development_process.html" title="Our development process "/>
