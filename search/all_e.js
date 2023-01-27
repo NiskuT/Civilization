@@ -1,13 +1,23 @@
 var searchData=
 [
-  ['recap_20of_20specific_20actions_94',['Recap of Specific Actions',['../md_docs_rules_recap_of_specific_actions.html',1,'']]],
-  ['reinforce_95',['reinforce',['../classshared_1_1Rules.html#a89f7bc6a56c66d3296edb3ca49804efb',1,'shared::Rules']]],
-  ['rendergame_96',['renderGame',['../classclient_1_1ClientGameEngine.html#adc01a37a2d275c34d6fbaebc3c89ea9a',1,'client::ClientGameEngine']]],
-  ['rendering_3a_20strategy_20and_20design_97',['Rendering: Strategy and Design',['../md_docs_rendering.html',1,'']]],
-  ['resource_98',['Resource',['../classshared_1_1Resource.html',1,'shared']]],
-  ['ruleargsstruct_99',['RuleArgsStruct',['../classshared_1_1RuleArgsStruct.html',1,'shared']]],
-  ['rules_100',['Rules',['../md_docs_rules_rules.html',1,'(Global Namespace)'],['../classshared_1_1Rules.html#a2596e7b00b111219744a2afff0eb0dd4',1,'shared::Rules::Rules()'],['../classshared_1_1Rules.html',1,'shared::Rules']]],
-  ['rules_2ecpp_101',['Rules.cpp',['../Rules_8cpp.html',1,'']]],
-  ['rungame_102',['runGame',['../classserver_1_1GameEngine.html#a1d548d96b4c9ed49192dcea02190c860',1,'server::GameEngine']]],
-  ['runtherule_103',['runTheRule',['../classshared_1_1Rules.html#ac2bdafe1f96ccc62c0a84fa5b3859d69',1,'shared::Rules']]]
+  ['sendmessage_89',['sendMessage',['../classclient_1_1GameWindow.html#aebf944ed2de42cfe8c9881593ab3f156',1,'client::GameWindow']]],
+  ['server_90',['Server',['../classserver_1_1Server.html',1,'server']]],
+  ['setactive_91',['setActive',['../classclient_1_1Button.html#a45f5f652fb5d692135fae1418ec37699',1,'client::Button']]],
+  ['setbuttonposition_92',['setButtonPosition',['../classclient_1_1MenuWindow.html#a6c8595fbdcbdb37e5b1d19c9c3c8114b',1,'client::MenuWindow']]],
+  ['setbuttonsize_93',['setButtonSize',['../classclient_1_1MenuWindow.html#a3ee5153836d7b1c608edc51ee4edd6e3',1,'client::MenuWindow']]],
+  ['sethudspriteposition_94',['setHudSpritePosition',['../classclient_1_1TextureDisplayer.html#a04327113409c3432b7222fc5c82c8720',1,'client::TextureDisplayer']]],
+  ['setinactive_95',['setInactive',['../classclient_1_1Button.html#ab858f6b30bd7b99b2a803fb1287948b5',1,'client::Button']]],
+  ['setpositionprioritycardtexts_96',['setPositionPriorityCardTexts',['../classclient_1_1GraphicCard.html#a799da1829a758907245b8c6256f81359',1,'client::GraphicCard']]],
+  ['setspriteposition_97',['setSpritePosition',['../classclient_1_1TextureDisplayer.html#a9f78c323db40fb2652ec1d99ea74a512',1,'client::TextureDisplayer']]],
+  ['settext_98',['setText',['../classclient_1_1Button.html#a1d328795dae3c99f6ff0ea600f0aa2ce',1,'client::Button']]],
+  ['setupconfig_99',['setUpConfig',['../classclient_1_1ClientManager.html#ad85aa689c09ac046fa3926f1b1964409',1,'client::ClientManager']]],
+  ['setuptext_100',['setUpText',['../classclient_1_1GameWindow.html#a7199905c413b7f1d67972c7960bea5e4',1,'client::GameWindow']]],
+  ['setupvalidateboxeswindow_101',['setUpValidateBoxesWindow',['../classclient_1_1PopUpWindow.html#a98e7383b496c783b9459f91bddaf340b',1,'client::PopUpWindow']]],
+  ['setwinnerwindow_102',['setWinnerWindow',['../classclient_1_1GameWindow.html#ae89284326d544a6ce980ab0ff26164e3',1,'client::GameWindow']]],
+  ['setxaxisbuttontextposition_103',['setXAxisButtonTextPosition',['../classclient_1_1MenuWindow.html#a18869a86a921373c292477b6104aceaa',1,'client::MenuWindow']]],
+  ['setyaxisbuttontextposition_104',['setYAxisButtonTextPosition',['../classclient_1_1MenuWindow.html#a239eba400c815686b43c69801113b43e',1,'client::MenuWindow']]],
+  ['startgame_105',['startGame',['../classclient_1_1GameWindow.html#a83a3d0e1582abedffd4dcef92f9f97e2',1,'client::GameWindow']]],
+  ['startgamewindow_106',['startGameWindow',['../classclient_1_1ClientGameEngine.html#a4477d3d3510000f7459a304e6735ddd4',1,'client::ClientGameEngine']]],
+  ['startmenu_107',['startMenu',['../classclient_1_1MenuWindow.html#a61d839bb0d0a296667afbfe081709ec4',1,'client::MenuWindow']]],
+  ['startmenuwindow_108',['startMenuWindow',['../classclient_1_1ClientGameEngine.html#a1483ff3e24887b94007d834c78eb0ef0',1,'client::ClientGameEngine']]]
 ];

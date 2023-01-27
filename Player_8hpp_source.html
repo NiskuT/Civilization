@@ -123,38 +123,40 @@ $(function() {
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    std::vector&lt;std::shared_ptr&lt;City&gt;&gt; listOfCity;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// Operations</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    std::string getName ();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="classshared_1_1Player.html">Player</a> ();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    boost::asio::ip::tcp::socket &amp; getSocket ();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span> setUsername (std::string username);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> disconnectPlayer ();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">bool</span> operator== (<a class="code" href="classshared_1_1Player.html">Player</a> &amp; otherPlayer);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> setSocket (boost::asio::ip::tcp::socket&amp; clientSocket);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">unsigned</span> getLevelOfCard (CardsEnum cardId);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> upgradeCard (CardsEnum cardId);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">unsigned</span> getNumberOfBox (CardsEnum cardId);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    std::array&lt;int,3&gt; incrementTechWheel (<span class="keywordtype">unsigned</span> toIncrement);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">bool</span> haveResource (ResourceEnum resource);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> addResource (ResourceEnum resourceToAdd);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> addBox (CardsEnum cardType, <span class="keywordtype">unsigned</span> numberOfBox);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    std::vector&lt;std::shared_ptr&lt;ControlPawn&gt;&gt; getControlPawns ();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> addControlPawn (std::shared_ptr&lt;ControlPawn&gt; controlPawnPtr);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span> removeControlPawn (std::shared_ptr&lt;ControlPawn&gt; controlPawnPtr);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    std::vector&lt;std::shared_ptr&lt;Caravan&gt;&gt; getCaravans ();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span> addCaravan (std::shared_ptr&lt;Caravan&gt; caravanPtr);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">unsigned</span> getTechLevel ();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">unsigned</span> getNumberOfResource (ResourceEnum resourceType);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> deleteBox (CardsEnum cardType, <span class="keywordtype">unsigned</span> numberOfBox);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    std::vector&lt;std::shared_ptr&lt;City&gt;&gt; getCityList ();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> addCity (std::shared_ptr&lt;City&gt; cityPtr);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">unsigned</span> getDificultyOfCard (CardsEnum cardType);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> setDificultyOfCard (CardsEnum cardType, <span class="keywordtype">unsigned</span> newDificulty);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Setters and Getters</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  };</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="classshared_1_1Player.html">Player</a> ();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="classshared_1_1Player.html">Player</a> (std::string username);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">bool</span> operator== (<a class="code" href="classshared_1_1Player.html">Player</a> &amp; otherPlayer);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    std::string getName ();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">unsigned</span> getLevelOfCard (CardsEnum cardId);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    boost::asio::ip::tcp::socket &amp; getSocket ();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">unsigned</span> getNumberOfBox (CardsEnum cardId);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::vector&lt;std::shared_ptr&lt;ControlPawn&gt;&gt; getControlPawns ();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">unsigned</span> getDificultyOfCard (CardsEnum cardType);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::vector&lt;std::shared_ptr&lt;Caravan&gt;&gt; getCaravans ();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    std::vector&lt;std::shared_ptr&lt;City&gt;&gt; getCityList ();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">unsigned</span> getTechLevel ();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">unsigned</span> getNumberOfResource (ResourceEnum resourceType);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    std::array&lt;std::shared_ptr&lt;Card&gt;,5&gt; getListOfPriorityCards ();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> setSocket (boost::asio::ip::tcp::socket&amp; clientSocket);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> setUsername (std::string username);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span> setDificultyOfCard (CardsEnum cardType, <span class="keywordtype">unsigned</span> newDificulty);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> upgradeCard (CardsEnum cardId);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    std::array&lt;int,3&gt; incrementTechWheel (<span class="keywordtype">unsigned</span> toIncrement);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">bool</span> haveResource (ResourceEnum resource);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> addResource (ResourceEnum resourceToAdd);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> addBox (CardsEnum cardType, <span class="keywordtype">unsigned</span> numberOfBox);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span> deleteBox (CardsEnum cardType, <span class="keywordtype">unsigned</span> numberOfBox);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> addControlPawn (std::shared_ptr&lt;ControlPawn&gt; controlPawnPtr);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> removeControlPawn (std::shared_ptr&lt;ControlPawn&gt; controlPawnPtr);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> addCaravan (std::shared_ptr&lt;Caravan&gt; caravanPtr);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span> addCity (std::shared_ptr&lt;City&gt; cityPtr);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> disconnectPlayer ();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// Setters and Getters</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  };</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassshared_1_1Player_html"><div class="ttname"><a href="classshared_1_1Player.html">shared::Player</a></div><div class="ttdoc">class Player -</div><div class="ttdef"><b>Definition:</b> Player.hpp:36</div></div>
 <div class="ttc" id="astructshared_1_1questionAndAnswer_html"><div class="ttname"><a href="structshared_1_1questionAndAnswer.html">shared::questionAndAnswer</a></div><div class="ttdef"><b>Definition:</b> questionAndAnswer.hpp:11</div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -78,6 +78,15 @@ $(function() {
  <a href="classclient_1_1ClientGameEngine.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ClientGameEngine_8hpp_source.html">ClientGameEngine.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for client::ClientGameEngine:</div>
+<div class="dyncontent">
+<div class="center"><img src="classclient_1_1ClientGameEngine__coll__graph.png" border="0" usemap="#aclient_1_1ClientGameEngine_coll__map" alt="Collaboration graph"/></div>
+<map name="aclient_1_1ClientGameEngine_coll__map" id="aclient_1_1ClientGameEngine_coll__map">
+<area shape="rect" title="class ClientGameEngine &#45;" alt="" coords="5,95,176,121"/>
+<area shape="rect" href="classshared_1_1RuleArgsStruct.html" title="class RuleArgsStruct &#45;" alt="" coords="11,5,170,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -152,6 +161,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>playTurn</b> ()</td><
 <tr class="memitem:a9c018809ff16fdc97defcc5fdbfc7b0c"><td class="memItemLeft" align="right" valign="top"><a id="a9c018809ff16fdc97defcc5fdbfc7b0c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>waitToBeReady</b> ()</td></tr>
 <tr class="separator:a9c018809ff16fdc97defcc5fdbfc7b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a023f8f2fab96f947270c35872664195c"><td class="memItemLeft" align="right" valign="top"><a id="a023f8f2fab96f947270c35872664195c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>runRule</b> (<a class="el" href="classshared_1_1RuleArgsStruct.html">shared::RuleArgsStruct</a> ruleArgs)</td></tr>
+<tr class="separator:a023f8f2fab96f947270c35872664195c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad46eba1543439bbdd677f4f792b728ca"><td class="memItemLeft" align="right" valign="top"><a id="ad46eba1543439bbdd677f4f792b728ca"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>handleEndTurnButton</b> ()</td></tr>
+<tr class="separator:ad46eba1543439bbdd677f4f792b728ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -188,6 +203,15 @@ std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="memitem:afa045bd4064c13c02eb59317e11462cb"><td class="memItemLeft" align="right" valign="top"><a id="afa045bd4064c13c02eb59317e11462cb"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>serverGameId</b></td></tr>
 <tr class="separator:afa045bd4064c13c02eb59317e11462cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57740c307ed9fb8fb1730cbd46a87277"><td class="memItemLeft" align="right" valign="top"><a id="a57740c307ed9fb8fb1730cbd46a87277"></a>
+<a class="el" href="classshared_1_1RuleArgsStruct.html">shared::RuleArgsStruct</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ruleArgsStruct</b></td></tr>
+<tr class="separator:a57740c307ed9fb8fb1730cbd46a87277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb7c42470c4e4df0a86cd233da306eaa"><td class="memItemLeft" align="right" valign="top"><a id="aeb7c42470c4e4df0a86cd233da306eaa"></a>
+std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>endOfTurn</b></td></tr>
+<tr class="separator:aeb7c42470c4e4df0a86cd233da306eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf988feb11916c919fb59da2d333fccb"><td class="memItemLeft" align="right" valign="top"><a id="aaf988feb11916c919fb59da2d333fccb"></a>
+std::vector&lt; std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>otherPlayers</b></td></tr>
+<tr class="separator:aaf988feb11916c919fb59da2d333fccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>class <a class="el" href="classclient_1_1ClientGameEngine.html" title="class ClientGameEngine -">ClientGameEngine</a> - </p>

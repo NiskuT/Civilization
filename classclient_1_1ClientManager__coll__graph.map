@@ -1,5 +1,6 @@
 <map id="client::ClientManager" name="client::ClientManager">
-<area shape="rect" id="node1" title="class ClientManager &#45;" alt="" coords="18,184,163,211"/>
-<area shape="rect" id="node2" href="$classclient_1_1ClientGameEngine.html" title="class ClientGameEngine &#45;" alt="" coords="5,5,176,32"/>
-<area shape="rect" id="node3" href="$classclient_1_1GameWindow.html" title="class GameWindow &#45;" alt="" coords="171,95,314,121"/>
+<area shape="rect" id="node1" title="class ClientManager &#45;" alt="" coords="18,273,163,300"/>
+<area shape="rect" id="node2" href="$classclient_1_1ClientGameEngine.html" title="class ClientGameEngine &#45;" alt="" coords="5,95,176,121"/>
+<area shape="rect" id="node4" href="$classclient_1_1GameWindow.html" title="class GameWindow &#45;" alt="" coords="171,184,314,211"/>
+<area shape="rect" id="node3" href="$classshared_1_1RuleArgsStruct.html" title="class RuleArgsStruct &#45;" alt="" coords="11,5,170,32"/>
 </map>

@@ -82,6 +82,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ab49118c1a19cc8df5c79eed50af575df"><td class="memItemLeft" align="right" valign="top"><a id="ab49118c1a19cc8df5c79eed50af575df"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>GameEngine</b> (std::vector&lt; std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt;&gt; &amp;games, std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player)</td></tr>
+<tr class="separator:ab49118c1a19cc8df5c79eed50af575df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb0941fc87bb66ea23dfc71d103c2efa"><td class="memItemLeft" align="right" valign="top"><a id="aeb0941fc87bb66ea23dfc71d103c2efa"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>handleConnect</b> ()</td></tr>
 <tr class="separator:aeb0941fc87bb66ea23dfc71d103c2efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -97,9 +100,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1GameEngine.html#ad76c416c983f85f1c7a8448212ef46c0">endOfRoundActions</a> ()</td></tr>
 <tr class="memdesc:ad76c416c983f85f1c7a8448212ef46c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function handling all the actions at the end of a round (ex: check for end of game, move barabarian wheel...) <br /></td></tr>
 <tr class="separator:ad76c416c983f85f1c7a8448212ef46c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab49118c1a19cc8df5c79eed50af575df"><td class="memItemLeft" align="right" valign="top"><a id="ab49118c1a19cc8df5c79eed50af575df"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>GameEngine</b> (std::vector&lt; std::shared_ptr&lt; <a class="el" href="classserver_1_1GameEngine.html">GameEngine</a> &gt;&gt; &amp;games, std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player)</td></tr>
-<tr class="separator:ab49118c1a19cc8df5c79eed50af575df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab614ed20577a6625f354d12dfb625ffa"><td class="memItemLeft" align="right" valign="top"><a id="ab614ed20577a6625f354d12dfb625ffa"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getId</b> ()</td></tr>
 <tr class="separator:ab614ed20577a6625f354d12dfb625ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,15 +118,18 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>askClient</b> 
 <tr class="memitem:a8dfb023670615f885de4a771e4ad5ece"><td class="memItemLeft" align="right" valign="top"><a id="a8dfb023670615f885de4a771e4ad5ece"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>askClient</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player)</td></tr>
 <tr class="separator:a8dfb023670615f885de4a771e4ad5ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d7429a002a24c7a93a1b104828fa702"><td class="memItemLeft" align="right" valign="top"><a id="a3d7429a002a24c7a93a1b104828fa702"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sendToEveryone</b> (std::string message)</td></tr>
-<tr class="separator:a3d7429a002a24c7a93a1b104828fa702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6449eaf4630ff1fcfd1ba5a0b9633755"><td class="memItemLeft" align="right" valign="top"><a id="a6449eaf4630ff1fcfd1ba5a0b9633755"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>sendToEveryone</b> (std::string message, bool isBinary=false)</td></tr>
+<tr class="separator:a6449eaf4630ff1fcfd1ba5a0b9633755"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a6f3668e246f06622f01a20520d72f8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1GameEngine.html#a6a6f3668e246f06622f01a20520d72f8">getTime</a> ()</td></tr>
 <tr class="memdesc:a6a6f3668e246f06622f01a20520d72f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function return the time under a string format For example, if the time is 1:34pm, the function will return "13:34".  <a href="classserver_1_1GameEngine.html#a6a6f3668e246f06622f01a20520d72f8">More...</a><br /></td></tr>
 <tr class="separator:a6a6f3668e246f06622f01a20520d72f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c2e8a14325f58c99c06bfe8ed37da19"><td class="memItemLeft" align="right" valign="top"><a id="a5c2e8a14325f58c99c06bfe8ed37da19"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>setMapParam</b> (std::string &amp;param, std::string &amp;value)</td></tr>
 <tr class="separator:a5c2e8a14325f58c99c06bfe8ed37da19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17f22debd15ee507e5cf6aeba053bda3"><td class="memItemLeft" align="right" valign="top"><a id="a17f22debd15ee507e5cf6aeba053bda3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>askClientToPlayARule</b> (std::shared_ptr&lt; <a class="el" href="classshared_1_1Player.html">shared::Player</a> &gt; player, <a class="el" href="classshared_1_1RuleArgsStruct.html">shared::RuleArgsStruct</a> &amp;RuleArgs)</td></tr>
+<tr class="separator:a17f22debd15ee507e5cf6aeba053bda3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
