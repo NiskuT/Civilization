@@ -160,6 +160,7 @@ void GameWindow::startGame()
     loadElementTexture();
     updateElementTexture();
     loadHudTexture();
+    gameEnginePtr->areTextureLoaded.store(true);
     addPlayer(gameEnginePtr->myself->getName());
 
     std::shared_ptr<bool> moveMode = std::make_shared<bool>(false);
