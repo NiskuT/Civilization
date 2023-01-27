@@ -828,7 +828,6 @@ int GameWindow::getPlayerNumber(std::string username)
  * @param boxYProportion proportion of the box on y axis
  * @param priorityCard pointer to the card you want to setUp the text
  */
-
 sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, GraphicCard &priorityCard)
 {
     int xBoxPos;

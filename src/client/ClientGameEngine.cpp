@@ -33,11 +33,6 @@ ClientGameEngine::ClientGameEngine()
     areTextureLoaded.store(false);
 }
 
-/*!
- * @brief Quentin
- * @param serverAddress
- * @param serverPort
- */
 bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
 {
     boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(serverAddress), serverPort);
@@ -67,9 +62,6 @@ bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
     return true;
 }
 
-/*!
- * @brief Quentin
- */
 void ClientGameEngine::startReceiving()
 {
     std::cout << "Starting receiving" << std::endl;
@@ -214,10 +206,6 @@ void ClientGameEngine::loadMap()
     lock.unlock();
 }
 
-/*!
- * @brief Quentin
- * @param
- */
 void ClientGameEngine::registerServerAnswer(const std::string &response)
 {
     std::lock_guard<std::mutex> lock(myself->qAndA.sharedDataMutex);
@@ -226,10 +214,6 @@ void ClientGameEngine::registerServerAnswer(const std::string &response)
     myself->qAndA.condition.notify_one();
 }
 
-/*!
- * @brief Quentin
- * @param request
- */
 void ClientGameEngine::processServerRequest(std::string request)
 {
     if (request.find("chat") == 0)
@@ -291,9 +275,6 @@ void ClientGameEngine::printChat(const std::string &message)
     }
 }
 
-/*!
- * @brief Quentin
- */
 void ClientGameEngine::askServer()
 {
     std::unique_lock<std::mutex> responseLock(myself->qAndA.sharedDataMutex);

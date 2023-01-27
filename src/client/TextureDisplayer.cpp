@@ -103,12 +103,12 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
 }
 
 /*!
- * @brief Violaine
- * @param scale
- * @param windowLength
- * @param windowWidth
- * @param rotation
- * @param index
+ * @brief Set the position of all the HUD (barbareWheel, ladder, techWheel, priorityCard, actionCard) considering the type of the HUD
+ * @param scale scale to set the size of the hud image(1 by default if the windowLength is 1600)
+ * @param windowLength window length (1600 by default)
+ * @param windowWidth window width (900 by default)
+ * @param rotation rotation of the image (0 by default), usefull for the techWheel
+ * @param index index of the priorityCard to set the x position of each priorityCard
  */
 void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int windowWidth, int rotation, int index)
 {
