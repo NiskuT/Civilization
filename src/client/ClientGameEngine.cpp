@@ -614,36 +614,21 @@ void ClientGameEngine::randomIA()
     std::array<unsigned, 2> position;
     std::vector<std::array<unsigned, 2>> neighbors;
     shared::Rules rules;
-    switch (cardPlayed) // cette IA considere que toute les cartes sont de niveau 1
+    switch (cardPlayed)
     {
     case shared::CardsEnum::economy:
         std::cout << "economy" << std::endl;
-        // do
-        // {
         position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
         position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
-        //     exitLoop++;
-        // } while (!rules.isThereACaravan(position, clientMap) && !rules.isThereACity(position, clientMap) && !rules.isThereAControlPawn(position, clientMap) && exitLoop < 1000);
-
-        // if (exitLoop > 1000)
-        // {
         ruleArgsStruct.caravanMovementPath.push_back(position);
-        // }
 
         randomNumber = std::rand() % (numberOfBoxUsed + difficulty);
         for (int i = 0; i < randomNumber; i++)
         {
-            // do
-            // {
             position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
             position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
             neighbors = rules.getNeighbors(position[0], position[1], clientMap);
-            //     exitLoop++;
-            // } while (!(std::count(neighbors.begin(), neighbors.end(), ruleArgsStruct.caravanMovementPath.back())) != 0 && exitLoop < 1000);
-            // if (exitLoop > 1000)
-            // {
             ruleArgsStruct.caravanMovementPath.push_back(position);
-            // }
         }
         break;
     case shared::CardsEnum::science:
@@ -655,16 +640,9 @@ void ClientGameEngine::randomIA()
         randomNumber = std::rand() % (numberOfBoxUsed + difficulty);
         for (int i = 0; i < randomNumber; i++)
         {
-            // do
-            // {
             position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
             position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
-            // exitLoop++;
-            // } while (!rules.isThereAControlPawn(position, clientMap) && exitLoop < 1000);
-            // if (exitLoop > 1000)
-            // {
             ruleArgsStruct.pawnsPositions.push_back(position);
-            // }
         }
         break;
     case shared::CardsEnum::culture:
@@ -672,32 +650,17 @@ void ClientGameEngine::randomIA()
         randomNumber = std::rand() % (numberOfBoxUsed + 2); // 2=number of pawns for card level 1
         for (int i = 0; i < randomNumber; i++)
         {
-            // do
-            // {
             position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
             position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
-            // exitLoop++;
-            // } while (!rules.isThereACityAround(position, clientMap) && rules.isThereAControlPawn(position, clientMap) && rules.isThereACity(position, clientMap) && exitLoop < 1000);
-
-            // if (exitLoop > 1000)
-            // {
             ruleArgsStruct.pawnsPositions.push_back(position);
-            // }
         }
         break;
     case shared::CardsEnum::industry:
         std::cout << "industry" << std::endl;
         ruleArgsStruct.industryCardBuildWonder = false;
-        // do
-        // {
         position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
         position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
-        // exitLoop++;
-        // } while ((!rules.isThereACity(position, clientMap) && !rules.isThereAControlPawn(position, clientMap)) && exitLoop > 1000);
-        // if (exitLoop > 1000)
-        // {
         ruleArgsStruct.positionOfCity = position;
-        // }
 
         break;
     default:
