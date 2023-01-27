@@ -1021,26 +1021,6 @@ void GameWindow::addPlayer(std::string username)
         }
     }
 
-    /*while(1)
-    {
-        unsigned x = rand() % mapShared->getMapWidth();
-        unsigned y = rand() % mapShared->getMapHeight();
-        if ((*mapShared)(x, y)->getElements().empty()
-            && (*mapShared)(x, y)->hexResource == nullptr
-            && (*mapShared)(x, y)->getFieldLevel() != shared::FieldLevel::Water )
-        {
-            std::array<unsigned, 2> position = {x, y};
-            std::shared_ptr<shared::City> city = std::make_shared<shared::City>(position);
-            city->isStateCity = false;
-            city->isMature = false;
-            city->isCapital = true;
-            city->player = username;
-            (*mapShared)(x, y)->addElement(std::make_shared<variantElement>(*city));
-            updateElementTexture();
-            break;
-        }
-    }*/
-
     whoIsPlayingButtons.emplace_back(
         sf::Vector2f(75, 90 / 2),
         sf::Vector2f(0, 0),
@@ -1086,15 +1066,4 @@ void GameWindow::setWinnerWindow(std::string winner, std::string causes)
     winnerWindow->body->setString(causes);
     winnerWindow->centerText();
     winnerWindow->isWindowActive = true;
-}
-
-void GameWindow::changePriorityCardTextLevel(int numberOfTheCard, int newLevel) 
-{
-    /*  To finish later
-    const Json::Value &data = openJsonFile("/hud/priority-card.json");
-
-    if (!priorityCards[numberOfTheCard].type.compare("economy")) {
-        priorityCards[numberOfTheCard].body->setString(data[0]["body"][newLevel].asString());
-    }
-    */
 }
