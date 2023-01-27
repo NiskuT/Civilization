@@ -377,6 +377,10 @@ void ClientGameEngine::handleInformation(int x, int y)
         ruleArgsStruct.pawnsPositions.push_back(position);
         ruleArgsStruct.militaryCardAttack = false;
     }
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::science)
+    {
+        clientGame->modifyTextForUser("you can finish your turn");
+    }
 }
 
 /*!
