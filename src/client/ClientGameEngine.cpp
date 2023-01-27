@@ -328,25 +328,26 @@ void ClientGameEngine::handleInformation(int x, int y)
     {
         return;
     }
+    std::array<unsigned, 2> position;
     if (ruleArgsStruct.ruleId == shared::CardsEnum::economy)
     {
-        std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
+        position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.caravanMovementPath.push_back(position);
     }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::culture)
     {
-        std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
+        position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.pawnsPositions.push_back(position);
     }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::industry) // TODO : add the posibility to build wonder
     {
-        std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
+        position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.positionOfCity = position;
         ruleArgsStruct.industryCardBuildWonder = false;
     }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::military)
     {
-        std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
+        position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.pawnsPositions.push_back(position);
         ruleArgsStruct.militaryCardAttack = false;
     }
