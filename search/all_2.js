@@ -2,7 +2,7 @@ var searchData=
 [
   ['caravan_11',['Caravan',['../classshared_1_1Caravan.html',1,'shared']]],
   ['card_12',['Card',['../classshared_1_1Card.html',1,'shared']]],
-  ['centertext_13',['centerText',['../classclient_1_1Button.html#a3b5c540a112985c60e6e0ad3aaaa4f79',1,'client::Button']]],
+  ['centertext_13',['centerText',['../classclient_1_1PopUpWindow.html#a2bedc81eaa6a97ea59cd1eb479355be0',1,'client::PopUpWindow::centerText()'],['../classclient_1_1Button.html#a3b5c540a112985c60e6e0ad3aaaa4f79',1,'client::Button::centerText()']]],
   ['changemousecursor_14',['changeMouseCursor',['../classclient_1_1GameWindow.html#a8790647660837d9224571b2a0b155e37',1,'client::GameWindow']]],
   ['chat_15',['Chat',['../classclient_1_1Chat.html#a4427e061b727c06cccca9626cc0cf9c8',1,'client::Chat::Chat()'],['../classclient_1_1Chat.html',1,'client::Chat']]],
   ['checkifbarbarianisonthepath_16',['checkIfBarbarianIsOnThePath',['../classshared_1_1Rules.html#a0cb50360dd9a694d6d7b4adbe704b7aa',1,'shared::Rules']]],
