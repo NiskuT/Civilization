@@ -1479,7 +1479,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#areLoadingTexture#</dia:string>
+            <dia:string>#areTextureLoaded#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#std::atomic&lt;bool&gt;#</dia:string>
@@ -24909,19 +24909,17 @@
         <dia:point val="264.242,35.6281"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="263.492,26.66;274.663,36.4281"/>
+        <dia:rectangle val="263.492,26.66;274.663,36.4831"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="264.242,35.6281"/>
-        <dia:point val="264.242,30.8191"/>
-        <dia:point val="274.463,30.8191"/>
+        <dia:point val="274.463,35.6281"/>
         <dia:point val="274.463,26.71"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
-        <dia:enum val="1"/>
         <dia:enum val="0"/>
         <dia:enum val="1"/>
       </dia:attribute>
