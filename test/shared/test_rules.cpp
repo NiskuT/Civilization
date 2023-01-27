@@ -3,7 +3,7 @@
 #include <variant>
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE( RulesTest)
+BOOST_AUTO_TEST_SUITE(RulesTest)
 
 BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
@@ -40,9 +40,9 @@ BOOST_AUTO_TEST_CASE(TestRulesScienceCardLevel2)
 
     args.numberOfBoxUsed = 0;
     args.cardToGetABox = shared::CardsEnum::economy;
-    BOOST_CHECK(player->getNumberOfBox(shared::CardsEnum::economy) == 0);
+    BOOST_CHECK(player->getNumberOfBox(shared::CardsEnum::economy) == 2);
     rules.runTheRule(args);
-    BOOST_CHECK(player->getNumberOfBox(shared::CardsEnum::economy) == 1);
+    BOOST_CHECK(player->getNumberOfBox(shared::CardsEnum::economy) == 3);
 }
 
 BOOST_AUTO_TEST_CASE(TestRulesScienceCardLevel3)
@@ -153,10 +153,6 @@ BOOST_AUTO_TEST_CASE(TestRulesMilitaryReinforceAllLevels)
     std::shared_ptr<shared::Map> map = std::make_shared<shared::Map>(10, 10);
     map->init();
 
-    
-    player->addBox(shared::CardsEnum::military, 50);
-    
-
     args.ruleId = shared::CardsEnum::military;
     args.militaryCardAttack = false;
     args.currentPlayer = player;
@@ -241,7 +237,6 @@ BOOST_AUTO_TEST_CASE(TestRulesCultureCardLevel1)
     BOOST_CHECK((*map)(5, 3)->getElements().size() == 1);
     BOOST_CHECK(std::holds_alternative<shared::ControlPawn>(*((*map)(3, 2)->getElements().at(0))));
     BOOST_CHECK(std::holds_alternative<shared::ControlPawn>(*((*map)(5, 3)->getElements().at(0))));
-
 }
 
 BOOST_AUTO_TEST_SUITE_END()

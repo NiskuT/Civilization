@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <array>
+#include <iostream>
 
 #define RULESLENGTH 16
 #define CARAVAN_STEPS_AT_LEVEL_1 4
@@ -641,7 +642,7 @@ bool Rules::reinforce(RuleArgsStruct &args)
     std::shared_ptr<Map> gameMap = args.gameMap;
     std::vector<std::array<unsigned, 2>> pawnsPositions = args.pawnsPositions;
     unsigned cardDifficulty = args.currentPlayer->getDificultyOfCard(CardsEnum::military);
-    if (pawnsPositions.size() != cardDifficulty + numberOfBoxUsed)
+    if (pawnsPositions.size() > cardDifficulty + numberOfBoxUsed)
     {
         return false;
     }
