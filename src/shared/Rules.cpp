@@ -408,15 +408,15 @@ std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned
         {
             neighbors.push_back({posX - 1, posY - 1}); // faux
         }
-        if (posX < mapSizeX - 1)
+        if (posX < mapSizeX - 2)
         {
             neighbors.push_back({posX + 1, posY});
         }
-        if (posY < mapSizeY - 1)
+        if (posY < mapSizeY - 2)
         {
             neighbors.push_back({posX, posY + 1});
         }
-        if (posY < mapSizeY - 1 && posX > 0)
+        if (posY < mapSizeY - 2 && posX > 0)
         {
             neighbors.push_back({posX - 1, posY + 1});
         }
@@ -431,7 +431,7 @@ std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned
         {
             neighbors.push_back({posX, posY - 1});
         }
-        if (posY > 0 && posX < mapSizeX - 1)
+        if (posY > 0 && posX < mapSizeX - 2)
         {
             neighbors.push_back({posX + 1, posY - 1});
         }
@@ -439,15 +439,15 @@ std::vector<std::array<unsigned, 2>> Rules::getNeighbors(unsigned posX, unsigned
         {
             neighbors.push_back({posX - 1, posY});
         }
-        if (posY < mapSizeY - 1)
+        if (posY < mapSizeY - 2)
         {
             neighbors.push_back({posX, posY + 1});
         }
-        if (posY < mapSizeY - 1 && posX < mapSizeX - 1)
+        if (posY < mapSizeY - 2 && posX < mapSizeX - 2)
         {
             neighbors.push_back({posX + 1, posY + 1});
         }
-        if (posX < mapSizeX - 1)
+        if (posX < mapSizeX - 2)
         {
             neighbors.push_back({posX + 1, posY});
         }
@@ -518,6 +518,10 @@ bool Rules::placeControlPawns(std::vector<std::array<unsigned, 2>> positions, st
 {
     for (auto position : positions)
     {
+        if ((*gameMap)(position[0], position[1])->getFieldLevel() == FieldLevel::Water)
+        {
+            return false;
+        }
         for (auto element : (*gameMap)(position[0], position[1])->getElements())
         {
             if (!std::holds_alternative<Caravan>(*element))
@@ -717,6 +721,10 @@ bool Rules::buildCity(RuleArgsStruct &args) // TODO : Check the distance to cont
     {
         return false;
     }
+    if ((*gameMap)(position[0], position[1])->getFieldLevel() == FieldLevel::Water)
+    {
+        return false;
+    }
 
     for (auto element : (*gameMap)(position[0], position[1])->getElements())
     {
@@ -747,4 +755,17 @@ void Rules::roundCards(std::shared_ptr<Player> currentPlayer, CardsEnum cardPlay
             card->setDificulty(card->getDificulty() + 1);
         }
     }
+}
+
+bool Rules::isThereACaravan(std::array<unsigned, 2> position, std::shared_ptr<Map> gameMap)
+{
+    for (auto element : (*gameMap)(position[0], position[1])->getElements())
+    {
+        if (std::holds_alternative<Caravan>(*element))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -30,6 +30,7 @@ ClientGameEngine::ClientGameEngine()
     clientMap = std::make_shared<shared::Map>();
     playerTurn.store(false);
     endOfTurn.store(false);
+    IATurn.store(false);
     clientConnectedAndReady.store(false);
     areTextureLoaded.store(false);
 }
@@ -239,7 +240,14 @@ void ClientGameEngine::processServerRequest(std::string request)
     }
     else if (request.find("playturn") == 0)
     {
-        playerTurn.store(true);
+        if (myself->getName() == "IA" || myself->getName() == "random")
+        {
+            IATurn.store(true);
+        }
+        else
+        {
+            playerTurn.store(true);
+        }
     }
     else if (request.find("connected") == 0)
     {
@@ -533,6 +541,10 @@ void ClientGameEngine::playGame()
             clientGame->modifyTextForUser("It's your turn !");
             playTurn();
         }
+        if (IATurn.load())
+        {
+            randomIA();
+        }
     }
     t.join();
 }
@@ -579,4 +591,123 @@ void ClientGameEngine::handleEndTurnButton()
     {
         endOfTurn.store(true);
     }
+}
+
+void ClientGameEngine::randomIA()
+{
+    std::cout << "randomIA" << std::endl;
+    std::array<shared::CardsEnum, 5> ruleIDList = {shared::CardsEnum::economy, shared::CardsEnum::science, shared::CardsEnum::military, shared::CardsEnum::culture, shared::CardsEnum::industry};
+    shared::CardsEnum cardPlayed = ruleIDList[std::rand() % 5];
+    std::cout << "cardPlayed: " << (int)cardPlayed << std::endl;
+
+    ruleArgsStruct.playerName = myself->getName();
+    ruleArgsStruct.ruleId = cardPlayed;
+    unsigned numberOfBox = myself->getNumberOfBox(cardPlayed);
+    std::cout << "numberOfBox: " << numberOfBox << std::endl;
+    unsigned numberOfBoxUsed = std::rand() % (numberOfBox + 1);
+    ruleArgsStruct.numberOfBoxUsed = numberOfBoxUsed;
+    std::cout << "numberOfBoxUsed: " << ruleArgsStruct.numberOfBoxUsed << std::endl;
+
+    int difficulty = myself->getDificultyOfCard(cardPlayed);
+    int randomNumber = 0;
+    int exitLoop = 0;
+    std::array<unsigned, 2> position;
+    std::vector<std::array<unsigned, 2>> neighbors;
+    shared::Rules rules;
+    switch (cardPlayed) // cette IA considere que toute les cartes sont de niveau 1
+    {
+    case shared::CardsEnum::economy:
+        std::cout << "economy" << std::endl;
+        // do
+        // {
+        position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
+        position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
+        //     exitLoop++;
+        // } while (!rules.isThereACaravan(position, clientMap) && !rules.isThereACity(position, clientMap) && !rules.isThereAControlPawn(position, clientMap) && exitLoop < 1000);
+
+        // if (exitLoop > 1000)
+        // {
+        ruleArgsStruct.caravanMovementPath.push_back(position);
+        // }
+
+        randomNumber = std::rand() % (numberOfBoxUsed + difficulty);
+        for (int i = 0; i < randomNumber; i++)
+        {
+            // do
+            // {
+            position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
+            position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
+            neighbors = rules.getNeighbors(position[0], position[1], clientMap);
+            //     exitLoop++;
+            // } while (!(std::count(neighbors.begin(), neighbors.end(), ruleArgsStruct.caravanMovementPath.back())) != 0 && exitLoop < 1000);
+            // if (exitLoop > 1000)
+            // {
+            ruleArgsStruct.caravanMovementPath.push_back(position);
+            // }
+        }
+        break;
+    case shared::CardsEnum::science:
+        std::cout << "science" << std::endl;
+        break;
+    case shared::CardsEnum::military:
+        std::cout << "military" << std::endl;
+        ruleArgsStruct.militaryCardAttack = false;
+        randomNumber = std::rand() % (numberOfBoxUsed + difficulty);
+        for (int i = 0; i < randomNumber; i++)
+        {
+            // do
+            // {
+            position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
+            position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
+            // exitLoop++;
+            // } while (!rules.isThereAControlPawn(position, clientMap) && exitLoop < 1000);
+            // if (exitLoop > 1000)
+            // {
+            ruleArgsStruct.pawnsPositions.push_back(position);
+            // }
+        }
+        break;
+    case shared::CardsEnum::culture:
+        std::cout << "culture" << std::endl;
+        randomNumber = std::rand() % (numberOfBoxUsed + 2); // 2=number of pawns for card level 1
+        for (int i = 0; i < randomNumber; i++)
+        {
+            // do
+            // {
+            position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
+            position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
+            // exitLoop++;
+            // } while (!rules.isThereACityAround(position, clientMap) && rules.isThereAControlPawn(position, clientMap) && rules.isThereACity(position, clientMap) && exitLoop < 1000);
+
+            // if (exitLoop > 1000)
+            // {
+            ruleArgsStruct.pawnsPositions.push_back(position);
+            // }
+        }
+        break;
+    case shared::CardsEnum::industry:
+        std::cout << "industry" << std::endl;
+        ruleArgsStruct.industryCardBuildWonder = false;
+        // do
+        // {
+        position[0] = (unsigned)(std::rand() % clientMap->getMapWidth());
+        position[1] = (unsigned)(std::rand() % clientMap->getMapHeight());
+        // exitLoop++;
+        // } while ((!rules.isThereACity(position, clientMap) && !rules.isThereAControlPawn(position, clientMap)) && exitLoop > 1000);
+        // if (exitLoop > 1000)
+        // {
+        ruleArgsStruct.positionOfCity = position;
+        // }
+
+        break;
+    default:
+        break;
+    }
+    std::string struc;
+    binary.castToBinary(ruleArgsStruct, struc);
+    binary.send(myself, struc);
+    ruleArgsStruct = shared::RuleArgsStruct();
+    std::cout << "randomIA end" << std::endl;
+    IATurn.store(false);
+
 }
