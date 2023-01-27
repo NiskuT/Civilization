@@ -73,20 +73,20 @@ $(function() {
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#ifndef SHARED__RULES__H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#define SHARED__RULES__H</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;variant&gt;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>shared {</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="keyword">class </span>RuleArgsStruct;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <span class="keyword">class </span>Caravan;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="keyword">class </span>Map;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <span class="keyword">class </span>Map;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="keyword">class </span>Caravan;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">class </span>Player;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;Caravan.hpp&quot;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;Map.hpp&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;Map.hpp&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;Caravan.hpp&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;Player.hpp&quot;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;CardsEnum.hpp&quot;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;RuleArgsStruct.hpp&quot;</span></div>
@@ -98,42 +98,44 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="classshared_1_1Rules.html#a2596e7b00b111219744a2afff0eb0dd4">Rules</a> ();</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classshared_1_1Rules.html#ac2bdafe1f96ccc62c0a84fa5b3859d69">runTheRule</a> (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">bool</span> moveCaravan (std::vector&lt;std::shared_ptr&lt;Caravan&gt;&gt; caravans, std::array&lt;unsigned,2&gt;  pos1, std::array&lt;unsigned,2&gt;  pos2, std::shared_ptr&lt;Map&gt; map, std::shared_ptr&lt;Player&gt; currentPlayer);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> exchangeRessourceWithOtherPlayer ();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">void</span> playAnotherCard ();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">void</span> reinforcePawn ();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">bool</span> playEconomyCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">bool</span> playScienceCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">bool</span> playMilitaryCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">bool</span> playCultureCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">bool</span> playIndustryCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">bool</span> verifyIfPathIsValid (std::vector&lt;<span class="keywordtype">int</span>[2]&gt; caravanMovementPath, <span class="keywordtype">int</span> maxLevelReachable);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    std::vector&lt;std::shared_ptr&lt;std::variant&lt;Caravan,Barbarian,BarbarianVillage,ControlPawn,City&gt;&gt;&gt; checkIfBarbarianIsOnThePath (std::vector&lt;std::array&lt;unsigned,2&gt;&gt; caravanMovementPath, std::shared_ptr&lt;Map&gt; map);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">bool</span> checkIfWaterIsOnThePath (std::vector&lt;std::array&lt;unsigned,2&gt;&gt; caravanMovementPath, std::shared_ptr&lt;Map&gt; map);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    std::vector&lt;std::array&lt;unsigned, 2&gt;&gt; getNeighbors (<span class="keywordtype">unsigned</span> posX, <span class="keywordtype">unsigned</span> posY, std::shared_ptr&lt;Map&gt; gameMap);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">void</span> nuke (std::vector&lt;std::array&lt;unsigned, 2&gt;&gt; neighbors, std::shared_ptr&lt;Map&gt; gameMap, std::shared_ptr&lt;Player&gt; currentPlayer);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">bool</span> placeControlPawns (std::vector&lt;std::array&lt;unsigned, 2&gt;&gt; positions, std::shared_ptr&lt;Map&gt; gameMap, std::shared_ptr&lt;Player&gt; currentPlayer);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">bool</span> attack (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">bool</span> reinforce (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">bool</span> buildWonder (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">bool</span> buildCity (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">bool</span> verifyIfPathSizeIsCorrect (<span class="keywordtype">int</span> pathSize, <span class="keywordtype">int</span> maxSize);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> addCaravanAfterCardAmelioration (std::vector&lt;std::shared_ptr&lt;Caravan&gt;&gt; &amp; caravans, std::shared_ptr&lt;shared::Player&gt; currentPlayer, <span class="keywordtype">int</span> numberOfCaravans);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">bool</span> isThereACityAround (std::array&lt;unsigned, 2&gt; position, std::shared_ptr&lt;Map&gt; gameMap);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">bool</span> isThereACity (std::array&lt;unsigned,2&gt; position, std::shared_ptr&lt;Map&gt; gameMap);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">bool</span> isThereAControlPawn (std::array&lt;unsigned, 2&gt; position, std::shared_ptr&lt;Map&gt; gameMap);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> roundCards (std::shared_ptr&lt;Player&gt; currentPlayer, CardsEnum cardPlayed);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> killControlPawn (std::shared_ptr&lt;Map&gt; gameMap, std::array&lt;unsigned, 2&gt; position, std::shared_ptr&lt;Player&gt; currentPlayer);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">// Setters and Getters</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  };</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    std::vector&lt;std::array&lt;unsigned, 2&gt;&gt; getNeighbors (<span class="keywordtype">unsigned</span> posX, <span class="keywordtype">unsigned</span> posY, std::shared_ptr&lt;Map&gt; gameMap);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classshared_1_1Rules.html#a6dff255b39cbefdfa3bd23fcea40901b">isThereACityAround</a> (std::array&lt;unsigned, 2&gt; position, std::shared_ptr&lt;Map&gt; gameMap);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">bool</span> isThereACity (std::array&lt;unsigned,2&gt; position, std::shared_ptr&lt;Map&gt; gameMap);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">bool</span> isThereAControlPawn (std::array&lt;unsigned, 2&gt; position, std::shared_ptr&lt;Map&gt; gameMap);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">bool</span> isThereACaravan (std::array&lt;unsigned,2&gt; position, std::shared_ptr&lt;Map&gt; gameMap);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">bool</span> moveCaravan (std::vector&lt;std::shared_ptr&lt;Caravan&gt;&gt; caravans, std::array&lt;unsigned,2&gt;  pos1, std::array&lt;unsigned,2&gt;  pos2, std::shared_ptr&lt;Map&gt; map, std::shared_ptr&lt;Player&gt; currentPlayer);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">void</span> exchangeRessourceWithOtherPlayer ();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">void</span> playAnotherCard ();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">void</span> reinforcePawn ();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">bool</span> playEconomyCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">bool</span> playScienceCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">bool</span> playMilitaryCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">bool</span> playCultureCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">bool</span> playIndustryCard (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">bool</span> verifyIfPathIsValid (std::vector&lt;<span class="keywordtype">int</span>[2]&gt; caravanMovementPath, <span class="keywordtype">int</span> maxLevelReachable);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    std::vector&lt;std::shared_ptr&lt;std::variant&lt;Caravan,Barbarian,BarbarianVillage,ControlPawn,City&gt;&gt;&gt; checkIfBarbarianIsOnThePath (std::vector&lt;std::array&lt;unsigned,2&gt;&gt; caravanMovementPath, std::shared_ptr&lt;Map&gt; map);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">bool</span> checkIfWaterIsOnThePath (std::vector&lt;std::array&lt;unsigned,2&gt;&gt; caravanMovementPath, std::shared_ptr&lt;Map&gt; map);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> nuke (std::vector&lt;std::array&lt;unsigned, 2&gt;&gt; neighbors, std::shared_ptr&lt;Map&gt; gameMap, std::shared_ptr&lt;Player&gt; currentPlayer);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">bool</span> placeControlPawns (std::vector&lt;std::array&lt;unsigned, 2&gt;&gt; positions, std::shared_ptr&lt;Map&gt; gameMap, std::shared_ptr&lt;Player&gt; currentPlayer);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">bool</span> attack (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">bool</span> reinforce (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">bool</span> buildWonder (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">bool</span> buildCity (<a class="code" href="classshared_1_1RuleArgsStruct.html">RuleArgsStruct</a> &amp; args);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">bool</span> verifyIfPathSizeIsCorrect (<span class="keywordtype">int</span> pathSize, <span class="keywordtype">int</span> maxSize);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> addCaravanAfterCardAmelioration (std::vector&lt;std::shared_ptr&lt;Caravan&gt;&gt; &amp; caravans, std::shared_ptr&lt;shared::Player&gt; currentPlayer, <span class="keywordtype">int</span> numberOfCaravans);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> roundCards (std::shared_ptr&lt;Player&gt; currentPlayer, CardsEnum cardPlayed);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> killControlPawn (std::shared_ptr&lt;Map&gt; gameMap, std::array&lt;unsigned, 2&gt; position, std::shared_ptr&lt;Player&gt; currentPlayer);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// Setters and Getters</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  };</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassshared_1_1RuleArgsStruct_html"><div class="ttname"><a href="classshared_1_1RuleArgsStruct.html">shared::RuleArgsStruct</a></div><div class="ttdoc">class RuleArgsStruct -</div><div class="ttdef"><b>Definition:</b> RuleArgsStruct.hpp:25</div></div>
 <div class="ttc" id="aclassshared_1_1Rules_html"><div class="ttname"><a href="classshared_1_1Rules.html">shared::Rules</a></div><div class="ttdoc">class Rules -</div><div class="ttdef"><b>Definition:</b> Rules.hpp:26</div></div>
 <div class="ttc" id="aclassshared_1_1Rules_html_a2596e7b00b111219744a2afff0eb0dd4"><div class="ttname"><a href="classshared_1_1Rules.html#a2596e7b00b111219744a2afff0eb0dd4">shared::Rules::Rules</a></div><div class="ttdeci">Rules()</div><div class="ttdoc">constructor of Rules, define the ruleId of created rule.</div><div class="ttdef"><b>Definition:</b> Rules.cpp:29</div></div>
+<div class="ttc" id="aclassshared_1_1Rules_html_a6dff255b39cbefdfa3bd23fcea40901b"><div class="ttname"><a href="classshared_1_1Rules.html#a6dff255b39cbefdfa3bd23fcea40901b">shared::Rules::isThereACityAround</a></div><div class="ttdeci">bool isThereACityAround(std::array&lt; unsigned, 2 &gt; position, std::shared_ptr&lt; Map &gt; gameMap)</div><div class="ttdoc">This function aim to check if there is a city around a position.</div><div class="ttdef"><b>Definition:</b> Rules.cpp:551</div></div>
 <div class="ttc" id="aclassshared_1_1Rules_html_ac2bdafe1f96ccc62c0a84fa5b3859d69"><div class="ttname"><a href="classshared_1_1Rules.html#ac2bdafe1f96ccc62c0a84fa5b3859d69">shared::Rules::runTheRule</a></div><div class="ttdeci">bool runTheRule(RuleArgsStruct &amp;args)</div><div class="ttdoc">This function aim to run the rule of the card.</div><div class="ttdef"><b>Definition:</b> Rules.cpp:39</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

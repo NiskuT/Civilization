@@ -31,18 +31,18 @@
             <td class="headerValue">code-coverage.info.cleaned</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">143</td>
+            <td class="headerCovTableEntry">138</td>
             <td class="headerCovTableEntry">148</td>
-            <td class="headerCovTableEntryHi">96.6 %</td>
+            <td class="headerCovTableEntryHi">93.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-27 20:01:12</td>
+            <td class="headerValue">2023-01-27 23:42:33</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntry">23</td>
             <td class="headerCovTableEntry">25</td>
-            <td class="headerCovTableEntryHi">96.0 %</td>
+            <td class="headerCovTableEntryHi">92.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -113,25 +113,25 @@
 <a name="51"><span class="lineNum">      51 </span><span class="lineCov">        301 :     std::vector&lt;ControlPawn&gt; controlPawns;</span></a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">        301 :     std::vector&lt;City&gt; cities;</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        323 :     for (const auto &amp;element : elementsList)</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        338 :     for (const auto &amp;element : elementsList)</span></a>
 <a name="55"><span class="lineNum">      55 </span>            :     {</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         22 :         switch (element-&gt;index())</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         37 :         switch (element-&gt;index())</span></a>
 <a name="57"><span class="lineNum">      57 </span>            :         {</a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :         case 0:</span></a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :             caravans.push_back(std::get&lt;Caravan&gt;(*element));</span></a>
 <a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :             break;</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          5 :         case 1:</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          5 :             barbarians.push_back(std::get&lt;Barbarian&gt;(*element));</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          5 :             break;</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          5 :         case 2:</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          5 :             barbarianVillages.push_back(std::get&lt;BarbarianVillage&gt;(*element));</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          5 :             break;</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         18 :         case 1:</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         18 :             barbarians.push_back(std::get&lt;Barbarian&gt;(*element));</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         18 :             break;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         18 :         case 2:</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         18 :             barbarianVillages.push_back(std::get&lt;BarbarianVillage&gt;(*element));</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         18 :             break;</span></a>
 <a name="67"><span class="lineNum">      67 </span><span class="lineCov">          1 :         case 3:</span></a>
 <a name="68"><span class="lineNum">      68 </span><span class="lineCov">          1 :             controlPawns.push_back(std::get&lt;ControlPawn&gt;(*element));</span></a>
 <a name="69"><span class="lineNum">      69 </span><span class="lineCov">          1 :             break;</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         11 :         case 4:</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         11 :             cities.push_back(std::get&lt;City&gt;(*element));</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         11 :             break;</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :         case 4:</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :             cities.push_back(std::get&lt;City&gt;(*element));</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :             break;</span></a>
 <a name="73"><span class="lineNum">      73 </span>            :         }</a>
 <a name="74"><span class="lineNum">      74 </span>            :     }</a>
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">        301 :     ar &lt;&lt; caravans.size();</span></a>
@@ -149,10 +149,10 @@
 <a name="87"><span class="lineNum">      87 </span><span class="lineCov">        301 :     ar &lt;&lt; haveResource;</span></a>
 <a name="88"><span class="lineNum">      88 </span><span class="lineCov">        301 :     if (haveResource)</span></a>
 <a name="89"><span class="lineNum">      89 </span>            :     {</a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          8 :         bool alive = hexResource-&gt;isAlive;</span></a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          8 :         int type = (int) hexResource-&gt;type;</span></a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          8 :         ar &lt;&lt; alive;</span></a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          8 :         ar &lt;&lt; type;</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          4 :         bool alive = hexResource-&gt;isAlive;</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          4 :         int type = (int) hexResource-&gt;type;</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          4 :         ar &lt;&lt; alive;</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          4 :         ar &lt;&lt; type;</span></a>
 <a name="94"><span class="lineNum">      94 </span>            :     }</a>
 <a name="95"><span class="lineNum">      95 </span><span class="lineCov">        301 : }</span></a>
 <a name="96"><span class="lineNum">      96 </span>            : </a>
@@ -173,16 +173,16 @@
 <a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :                     { return Caravan(); });</span></a>
 <a name="112"><span class="lineNum">     112 </span><span class="lineCov">        301 :     ar &gt;&gt; size;</span></a>
 <a name="113"><span class="lineNum">     113 </span><span class="lineCov">        301 :     std::generate_n(std::back_inserter(barbarians), size, []()</span></a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">          5 :                     { return Barbarian(); });</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">         18 :                     { return Barbarian(); });</span></a>
 <a name="115"><span class="lineNum">     115 </span><span class="lineCov">        301 :     ar &gt;&gt; size;</span></a>
 <a name="116"><span class="lineNum">     116 </span><span class="lineCov">        301 :     std::generate_n(std::back_inserter(barbarianVillages), size, []()</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          5 :                     { return BarbarianVillage(); });</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         18 :                     { return BarbarianVillage(); });</span></a>
 <a name="118"><span class="lineNum">     118 </span><span class="lineCov">        301 :     ar &gt;&gt; size;</span></a>
 <a name="119"><span class="lineNum">     119 </span><span class="lineCov">        301 :     std::generate_n(std::back_inserter(controlPawns), size, []()</span></a>
 <a name="120"><span class="lineNum">     120 </span><span class="lineCov">          1 :                     { return ControlPawn(); });</span></a>
 <a name="121"><span class="lineNum">     121 </span><span class="lineCov">        301 :     ar &gt;&gt; size;</span></a>
 <a name="122"><span class="lineNum">     122 </span><span class="lineCov">        301 :     std::generate_n(std::back_inserter(cities), size, []()</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         11 :                     { return City(); });</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :                     { return City(); });</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span><span class="lineCov">        301 :     ar &gt;&gt; caravans;</span></a>
 <a name="126"><span class="lineNum">     126 </span><span class="lineCov">        301 :     ar &gt;&gt; barbarians;</span></a>
@@ -194,33 +194,33 @@
 <a name="132"><span class="lineNum">     132 </span>            :     {</a>
 <a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :         elementsList.push_back(std::make_shared&lt;elementVariant&gt;(caravan));</span></a>
 <a name="134"><span class="lineNum">     134 </span>            :     }</a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">        306 :     for (auto &amp;barbarian : barbarians)</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">        319 :     for (auto &amp;barbarian : barbarians)</span></a>
 <a name="136"><span class="lineNum">     136 </span>            :     {</a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          5 :         elementsList.push_back(std::make_shared&lt;elementVariant&gt;(barbarian));</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">         18 :         elementsList.push_back(std::make_shared&lt;elementVariant&gt;(barbarian));</span></a>
 <a name="138"><span class="lineNum">     138 </span>            :     }</a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">        306 :     for (auto &amp;barbarianVillage : barbarianVillages)</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">        319 :     for (auto &amp;barbarianVillage : barbarianVillages)</span></a>
 <a name="140"><span class="lineNum">     140 </span>            :     {</a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          5 :         elementsList.push_back(std::make_shared&lt;elementVariant&gt;(barbarianVillage));</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">         18 :         elementsList.push_back(std::make_shared&lt;elementVariant&gt;(barbarianVillage));</span></a>
 <a name="142"><span class="lineNum">     142 </span>            :     }</a>
 <a name="143"><span class="lineNum">     143 </span><span class="lineCov">        302 :     for (auto &amp;controlPawn : controlPawns)</span></a>
 <a name="144"><span class="lineNum">     144 </span>            :     {</a>
 <a name="145"><span class="lineNum">     145 </span><span class="lineCov">          1 :         elementsList.push_back(std::make_shared&lt;elementVariant&gt;(controlPawn));</span></a>
 <a name="146"><span class="lineNum">     146 </span>            :     }</a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">        312 :     for (auto &amp;city : cities)</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">        301 :     for (auto &amp;city : cities)</span></a>
 <a name="148"><span class="lineNum">     148 </span>            :     {</a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineCov">         11 :         elementsList.push_back(std::make_shared&lt;elementVariant&gt;(city));</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :         elementsList.push_back(std::make_shared&lt;elementVariant&gt;(city));</span></a>
 <a name="150"><span class="lineNum">     150 </span>            :     }</a>
 <a name="151"><span class="lineNum">     151 </span>            : </a>
 <a name="152"><span class="lineNum">     152 </span><span class="lineCov">        301 :     bool haveResource = false;</span></a>
 <a name="153"><span class="lineNum">     153 </span><span class="lineCov">        301 :     ar &gt;&gt; haveResource;</span></a>
 <a name="154"><span class="lineNum">     154 </span><span class="lineCov">        301 :     if (haveResource)</span></a>
 <a name="155"><span class="lineNum">     155 </span>            :     {</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          8 :         bool alive = false;</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">          8 :         int type = 0;</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          8 :         ar &gt;&gt; alive;</span></a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          8 :         ar &gt;&gt; type;</span></a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          8 :         hexResource = std::make_shared&lt;Resource&gt;((shared::ResourceEnum) type);</span></a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          8 :         hexResource-&gt;isAlive = alive;</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          4 :         bool alive = false;</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">          4 :         int type = 0;</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          4 :         ar &gt;&gt; alive;</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          4 :         ar &gt;&gt; type;</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          4 :         hexResource = std::make_shared&lt;Resource&gt;((shared::ResourceEnum) type);</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          4 :         hexResource-&gt;isAlive = alive;</span></a>
 <a name="162"><span class="lineNum">     162 </span>            :     }</a>
 <a name="163"><span class="lineNum">     163 </span><span class="lineCov">        301 : }</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
@@ -243,17 +243,17 @@
 <a name="181"><span class="lineNum">     181 </span><span class="lineCov">          2 : }</span></a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
 <a name="183"><span class="lineNum">     183 </span>            : template &lt;class Archive&gt;</a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">         24 : void City::serialize(Archive &amp;ar, const unsigned int version)</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          2 : void City::serialize(Archive &amp;ar, const unsigned int version)</span></a>
 <a name="185"><span class="lineNum">     185 </span>            : {</a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         24 :     ar &amp;isStateCity;</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">         24 :     ar &amp;isCapital;</span></a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">         24 :     ar &amp;isMature;</span></a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineCov">         24 :     ar &amp;position;</span></a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">         24 :     ar &amp;player;</span></a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">         24 :     int type = (int) stateCityType;</span></a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">         24 :     ar &amp;type;</span></a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">         24 :     stateCityType = (shared::CityStateEnum) type;</span></a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">         24 : }</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          2 :     ar &amp;isStateCity;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          2 :     ar &amp;isCapital;</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          2 :     ar &amp;isMature;</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          2 :     ar &amp;position;</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">          2 :     ar &amp;player;</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          2 :     int type = (int) stateCityType;</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          2 :     ar &amp;type;</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">          2 :     stateCityType = (shared::CityStateEnum) type;</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          2 : }</span></a>
 <a name="195"><span class="lineNum">     195 </span>            : </a>
 <a name="196"><span class="lineNum">     196 </span>            : template &lt;class Archive&gt;</a>
 <a name="197"><span class="lineNum">     197 </span><span class="lineCov">          4 : void ControlPawn::serialize(Archive &amp;ar, const unsigned int version)</span></a>
@@ -264,16 +264,16 @@
 <a name="202"><span class="lineNum">     202 </span><span class="lineCov">          4 : }</span></a>
 <a name="203"><span class="lineNum">     203 </span>            : </a>
 <a name="204"><span class="lineNum">     204 </span>            : template &lt;class Archive&gt;</a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineCov">         12 : void BarbarianVillage::serialize(Archive &amp;ar, const unsigned int version)</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">         38 : void BarbarianVillage::serialize(Archive &amp;ar, const unsigned int version)</span></a>
 <a name="206"><span class="lineNum">     206 </span>            : {</a>
 <a name="207"><span class="lineNum">     207 </span>            :     // serialize the related barbarian</a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">         12 : }</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">         38 : }</span></a>
 <a name="209"><span class="lineNum">     209 </span>            : </a>
 <a name="210"><span class="lineNum">     210 </span>            : template &lt;class Archive&gt;</a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">         12 : void Barbarian::serialize(Archive &amp;ar, const unsigned int version)</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">         38 : void Barbarian::serialize(Archive &amp;ar, const unsigned int version)</span></a>
 <a name="212"><span class="lineNum">     212 </span>            : {</a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">         12 :     ar &amp;isAlive;</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         12 : }</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">         38 :     ar &amp;isAlive;</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         38 : }</span></a>
 <a name="215"><span class="lineNum">     215 </span>            : </a>
 <a name="216"><span class="lineNum">     216 </span>            : template &lt;class Archive&gt;</a>
 <a name="217"><span class="lineNum">     217 </span><span class="lineCov">          2 : void Caravan::serialize(Archive &amp;ar, const unsigned int version)</span></a>
