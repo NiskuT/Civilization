@@ -106,7 +106,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a9f78c323db40fb2652ec1d99ea74a512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a particular Sprite Position.  <a href="classclient_1_1TextureDisplayer.html#a9f78c323db40fb2652ec1d99ea74a512">More...</a><br /></td></tr>
 <tr class="separator:a9f78c323db40fb2652ec1d99ea74a512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04327113409c3432b7222fc5c82c8720"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1TextureDisplayer.html#a04327113409c3432b7222fc5c82c8720">setHudSpritePosition</a> (float scale, int windowLength, int windowWidth, int rotation=0, int priorityCardIndex=0)</td></tr>
-<tr class="memdesc:a04327113409c3432b7222fc5c82c8720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Violaine.  <a href="classclient_1_1TextureDisplayer.html#a04327113409c3432b7222fc5c82c8720">More...</a><br /></td></tr>
+<tr class="memdesc:a04327113409c3432b7222fc5c82c8720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the position of all the HUD (barbareWheel, ladder, techWheel, priorityCard, actionCard) considering the type of the HUD.  <a href="classclient_1_1TextureDisplayer.html#a04327113409c3432b7222fc5c82c8720">More...</a><br /></td></tr>
 <tr class="separator:a04327113409c3432b7222fc5c82c8720"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abce83717e1c7559d9e113d45db4ec171"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classclient_1_1TextureDisplayer.html#abce83717e1c7559d9e113d45db4ec171">moveSpritePosition</a> (int xOffset, int yOffset)</td></tr>
 <tr class="memdesc:abce83717e1c7559d9e113d45db4ec171"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the sprite Position.  <a href="classclient_1_1TextureDisplayer.html#abce83717e1c7559d9e113d45db4ec171">More...</a><br /></td></tr>
@@ -286,14 +286,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Violaine. </p>
+<p>Set the position of all the HUD (barbareWheel, ladder, techWheel, priorityCard, actionCard) considering the type of the HUD. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">scale</td><td></td></tr>
-    <tr><td class="paramname">windowLength</td><td></td></tr>
-    <tr><td class="paramname">windowWidth</td><td></td></tr>
-    <tr><td class="paramname">rotation</td><td></td></tr>
-    <tr><td class="paramname">index</td><td></td></tr>
+    <tr><td class="paramname">scale</td><td>scale to set the size of the hud image(1 by default if the windowLength is 1600) </td></tr>
+    <tr><td class="paramname">windowLength</td><td>window length (1600 by default) </td></tr>
+    <tr><td class="paramname">windowWidth</td><td>window width (900 by default) </td></tr>
+    <tr><td class="paramname">rotation</td><td>rotation of the image (0 by default), usefull for the techWheel </td></tr>
+    <tr><td class="paramname">index</td><td>index of the priorityCard to set the x position of each priorityCard </td></tr>
   </table>
   </dd>
 </dl>

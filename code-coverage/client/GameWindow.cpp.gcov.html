@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-27 15:45:41</td>
+            <td class="headerValue">2023-01-27 15:52:39</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -890,246 +890,245 @@
 <a name="828"><span class="lineNum">     828 </span>            :  * @param boxYProportion proportion of the box on y axis</a>
 <a name="829"><span class="lineNum">     829 </span>            :  * @param priorityCard pointer to the card you want to setUp the text</a>
 <a name="830"><span class="lineNum">     830 </span>            :  */</a>
-<a name="831"><span class="lineNum">     831 </span>            : </a>
-<a name="832"><span class="lineNum">     832 </span><span class="lineNoCov">          0 : sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, GraphicCard &amp;priorityCard)</span></a>
-<a name="833"><span class="lineNum">     833 </span>            : {</a>
-<a name="834"><span class="lineNum">     834 </span>            :     int xBoxPos;</a>
-<a name="835"><span class="lineNum">     835 </span>            :     int yBoxPos;</a>
-<a name="836"><span class="lineNum">     836 </span>            :     int xBoxOffset;</a>
-<a name="837"><span class="lineNum">     837 </span>            :     int yBoxOffset;</a>
-<a name="838"><span class="lineNum">     838 </span>            : </a>
-<a name="839"><span class="lineNum">     839 </span><span class="lineNoCov">          0 :     xBoxOffset = boxXProportion * WINDOW_LENGTH;</span></a>
-<a name="840"><span class="lineNum">     840 </span><span class="lineNoCov">          0 :     yBoxOffset = boxYProportion * WINDOW_WIDTH;</span></a>
-<a name="841"><span class="lineNum">     841 </span>            : </a>
-<a name="842"><span class="lineNum">     842 </span><span class="lineNoCov">          0 :     xBoxPos = priorityCard.texture-&gt;getSprite().getPosition().x + xBoxOffset;</span></a>
-<a name="843"><span class="lineNum">     843 </span><span class="lineNoCov">          0 :     yBoxPos = priorityCard.texture-&gt;getSprite().getPosition().y + yBoxOffset;</span></a>
-<a name="844"><span class="lineNum">     844 </span>            : </a>
-<a name="845"><span class="lineNum">     845 </span><span class="lineNoCov">          0 :     return (sf::Vector2i(xBoxPos, yBoxPos));</span></a>
-<a name="846"><span class="lineNum">     846 </span>            : }</a>
-<a name="847"><span class="lineNum">     847 </span>            : </a>
-<a name="848"><span class="lineNum">     848 </span>            : /*!</a>
-<a name="849"><span class="lineNum">     849 </span>            :  * @brief Load all the HUD textures</a>
-<a name="850"><span class="lineNum">     850 </span>            :  */</a>
-<a name="851"><span class="lineNum">     851 </span><span class="lineNoCov">          0 : void GameWindow::loadHudTexture()</span></a>
-<a name="852"><span class="lineNum">     852 </span>            : {</a>
-<a name="853"><span class="lineNum">     853 </span>            : </a>
-<a name="854"><span class="lineNum">     854 </span><span class="lineNoCov">          0 :     int rotation = 0;</span></a>
-<a name="855"><span class="lineNum">     855 </span><span class="lineNoCov">          0 :     int priorityCardIndex = 0;</span></a>
-<a name="856"><span class="lineNum">     856 </span>            : </a>
-<a name="857"><span class="lineNum">     857 </span><span class="lineNoCov">          0 :     const Json::Value &amp;dataNumber = openJsonFile(&quot;/hud/data-number.json&quot;);</span></a>
-<a name="858"><span class="lineNum">     858 </span>            : </a>
-<a name="859"><span class="lineNum">     859 </span><span class="lineNoCov">          0 :     backgroundTexture = std::make_unique&lt;TextureDisplayer&gt;(RESOURCES_PATH &quot;/hud/background.png&quot;);</span></a>
-<a name="860"><span class="lineNum">     860 </span><span class="lineNoCov">          0 :     backgroundTexture-&gt;addSprite();</span></a>
-<a name="861"><span class="lineNum">     861 </span><span class="lineNoCov">          0 :     float backgroundScale = 1 / (float(backgroundTexture-&gt;getWidth()) / float(WINDOW_LENGTH));</span></a>
-<a name="862"><span class="lineNum">     862 </span><span class="lineNoCov">          0 :     backgroundTexture-&gt;setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);</span></a>
-<a name="863"><span class="lineNum">     863 </span>            : </a>
-<a name="864"><span class="lineNum">     864 </span><span class="lineNoCov">          0 :     const Json::Value &amp;data = openJsonFile(&quot;/hud/files.json&quot;);</span></a>
-<a name="865"><span class="lineNum">     865 </span>            : </a>
-<a name="866"><span class="lineNum">     866 </span><span class="lineNoCov">          0 :     for (unsigned index = 0; index &lt; data.size(); ++index)</span></a>
-<a name="867"><span class="lineNum">     867 </span>            :     {</a>
-<a name="868"><span class="lineNum">     868 </span><span class="lineNoCov">          0 :         hudTextureToDisplay.emplace_back(RESOURCES_PATH + data[index][&quot;path&quot;].asString());</span></a>
-<a name="869"><span class="lineNum">     869 </span><span class="lineNoCov">          0 :         hudTextureToDisplay.back().addSprite();</span></a>
-<a name="870"><span class="lineNum">     870 </span><span class="lineNoCov">          0 :         float scale = data[index][&quot;scale&quot;].asFloat() / (float(hudTextureToDisplay.back().getWidth()) / float(WINDOW_LENGTH));</span></a>
-<a name="871"><span class="lineNum">     871 </span><span class="lineNoCov">          0 :         hudTextureToDisplay.back().setImageType((HudTextureType)index);</span></a>
-<a name="872"><span class="lineNum">     872 </span><span class="lineNoCov">          0 :         hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index][&quot;rotation&quot;].asInt(), priorityCardIndex);</span></a>
-<a name="873"><span class="lineNum">     873 </span>            :     }</a>
-<a name="874"><span class="lineNum">     874 </span>            : </a>
-<a name="875"><span class="lineNum">     875 </span>            :     // load the priorityCard</a>
-<a name="876"><span class="lineNum">     876 </span><span class="lineNoCov">          0 :     boxTexture = std::make_unique&lt;TextureDisplayer&gt;(RESOURCES_PATH &quot;/hud/box.png&quot;);</span></a>
-<a name="877"><span class="lineNum">     877 </span><span class="lineNoCov">          0 :     std::vector&lt;int&gt; numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server</span></a>
-<a name="878"><span class="lineNum">     878 </span><span class="lineNoCov">          0 :     std::string boxString = &quot;0&quot;;</span></a>
-<a name="879"><span class="lineNum">     879 </span>            : </a>
-<a name="880"><span class="lineNum">     880 </span><span class="lineNoCov">          0 :     if (!titleFont.loadFromFile(RESOURCES_PATH &quot;/font/EnchantedLand.otf&quot;))</span></a>
-<a name="881"><span class="lineNum">     881 </span>            :     {</a>
-<a name="882"><span class="lineNum">     882 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Font not loaded&quot; &lt;&lt; std::endl;</span></a>
-<a name="883"><span class="lineNum">     883 </span>            :     }</a>
-<a name="884"><span class="lineNum">     884 </span>            : </a>
-<a name="885"><span class="lineNum">     885 </span><span class="lineNoCov">          0 :     if (!bodyFont.loadFromFile(RESOURCES_PATH &quot;/font/MorrisRomanBlack.otf&quot;))</span></a>
-<a name="886"><span class="lineNum">     886 </span>            :     {</a>
-<a name="887"><span class="lineNum">     887 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Font not loaded&quot; &lt;&lt; std::endl;</span></a>
-<a name="888"><span class="lineNum">     888 </span>            :     }</a>
-<a name="889"><span class="lineNum">     889 </span>            : </a>
-<a name="890"><span class="lineNum">     890 </span><span class="lineNoCov">          0 :     const Json::Value &amp;priorityData = openJsonFile(&quot;/hud/priority-card.json&quot;);</span></a>
-<a name="891"><span class="lineNum">     891 </span>            : </a>
-<a name="892"><span class="lineNum">     892 </span><span class="lineNoCov">          0 :     float priorityTitleTextProportion = dataNumber[&quot;priority-card-title-proportion&quot;].asFloat();</span></a>
-<a name="893"><span class="lineNum">     893 </span><span class="lineNoCov">          0 :     float priorityBodyTextProportion = dataNumber[&quot;priority-card-body-proportion&quot;].asFloat();</span></a>
-<a name="894"><span class="lineNum">     894 </span>            : </a>
-<a name="895"><span class="lineNum">     895 </span><span class="lineNoCov">          0 :     for (unsigned index = 0; index &lt; priorityData.size(); ++index)</span></a>
-<a name="896"><span class="lineNum">     896 </span>            :     {</a>
-<a name="897"><span class="lineNum">     897 </span><span class="lineNoCov">          0 :         priorityCards.emplace_back(</span></a>
-<a name="898"><span class="lineNum">     898 </span><span class="lineNoCov">          0 :             RESOURCES_PATH + priorityData[index][&quot;path&quot;].asString(),</span></a>
-<a name="899"><span class="lineNum">     899 </span>            :             dataNumber,</a>
-<a name="900"><span class="lineNum">     900 </span><span class="lineNoCov">          0 :             WINDOW_LENGTH,</span></a>
-<a name="901"><span class="lineNum">     901 </span><span class="lineNoCov">          0 :             WINDOW_WIDTH,</span></a>
-<a name="902"><span class="lineNum">     902 </span>            :             index,</a>
-<a name="903"><span class="lineNum">     903 </span><span class="lineNoCov">          0 :             bodyFont);</span></a>
-<a name="904"><span class="lineNum">     904 </span>            : </a>
-<a name="905"><span class="lineNum">     905 </span>            :         // title and body</a>
-<a name="906"><span class="lineNum">     906 </span>            : </a>
-<a name="907"><span class="lineNum">     907 </span><span class="lineNoCov">          0 :         setUpText(</span></a>
-<a name="908"><span class="lineNum">     908 </span><span class="lineNoCov">          0 :             priorityCards.back(),</span></a>
-<a name="909"><span class="lineNum">     909 </span><span class="lineNoCov">          0 :             priorityData[index][&quot;title&quot;].asString(),</span></a>
-<a name="910"><span class="lineNum">     910 </span><span class="lineNoCov">          0 :             priorityData[index][&quot;body&quot;][priorityCards.back().level].asString(),</span></a>
-<a name="911"><span class="lineNum">     911 </span><span class="lineNoCov">          0 :             titleFont,</span></a>
-<a name="912"><span class="lineNum">     912 </span><span class="lineNoCov">          0 :             bodyFont,</span></a>
-<a name="913"><span class="lineNum">     913 </span>            :             dataNumber,</a>
-<a name="914"><span class="lineNum">     914 </span>            :             priorityTitleTextProportion,</a>
-<a name="915"><span class="lineNum">     915 </span>            :             priorityBodyTextProportion);</a>
-<a name="916"><span class="lineNum">     916 </span>            : </a>
-<a name="917"><span class="lineNum">     917 </span>            :         // boxes</a>
-<a name="918"><span class="lineNum">     918 </span>            : </a>
-<a name="919"><span class="lineNum">     919 </span><span class="lineNoCov">          0 :         boxString = std::to_string(numberOfBoxesPerCard[index]) + &quot; x&quot;;</span></a>
-<a name="920"><span class="lineNum">     920 </span>            : </a>
-<a name="921"><span class="lineNum">     921 </span><span class="lineNoCov">          0 :         priorityCards.back().nbOfBoxesText = std::make_unique&lt;sf::Text&gt;(</span></a>
-<a name="922"><span class="lineNum">     922 </span>            :             boxString,</a>
-<a name="923"><span class="lineNum">     923 </span><span class="lineNoCov">          0 :             titleFont,</span></a>
-<a name="924"><span class="lineNum">     924 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-number-text-size&quot;].asInt());</span></a>
-<a name="925"><span class="lineNum">     925 </span>            : </a>
-<a name="926"><span class="lineNum">     926 </span><span class="lineNoCov">          0 :         sf::Vector2i boxNumberPosition = getBoxesElementsPosition(</span></a>
-<a name="927"><span class="lineNum">     927 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-x-number-offset-proportion&quot;].asFloat(),</span></a>
-<a name="928"><span class="lineNum">     928 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-y-number-offset-proportion&quot;].asFloat(),</span></a>
-<a name="929"><span class="lineNum">     929 </span><span class="lineNoCov">          0 :             priorityCards.back());</span></a>
-<a name="930"><span class="lineNum">     930 </span>            : </a>
-<a name="931"><span class="lineNum">     931 </span><span class="lineNoCov">          0 :         priorityCards.back().nbOfBoxesText-&gt;setPosition(boxNumberPosition.x, boxNumberPosition.y);</span></a>
-<a name="932"><span class="lineNum">     932 </span>            : </a>
-<a name="933"><span class="lineNum">     933 </span><span class="lineNoCov">          0 :         boxTexture-&gt;addSprite();</span></a>
-<a name="934"><span class="lineNum">     934 </span><span class="lineNoCov">          0 :         sf::Vector2i boxPosition = getBoxesElementsPosition(</span></a>
-<a name="935"><span class="lineNum">     935 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-x-offset-proportion&quot;].asFloat(),</span></a>
-<a name="936"><span class="lineNum">     936 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-y-offset-proportion&quot;].asFloat(),</span></a>
-<a name="937"><span class="lineNum">     937 </span><span class="lineNoCov">          0 :             priorityCards.back());</span></a>
-<a name="938"><span class="lineNum">     938 </span><span class="lineNoCov">          0 :         boxTexture-&gt;getSprite(index).setPosition(boxPosition.x, boxPosition.y);</span></a>
-<a name="939"><span class="lineNum">     939 </span>            :     }</a>
-<a name="940"><span class="lineNum">     940 </span>            : </a>
-<a name="941"><span class="lineNum">     941 </span>            :     // actionCard</a>
-<a name="942"><span class="lineNum">     942 </span><span class="lineNoCov">          0 :     const Json::Value &amp;actionCardData = openJsonFile(&quot;/hud/action-card.json&quot;);</span></a>
-<a name="943"><span class="lineNum">     943 </span><span class="lineNoCov">          0 :     float actionTitleTextProportion = dataNumber[&quot;action-card-title-proportion&quot;].asFloat();</span></a>
-<a name="944"><span class="lineNum">     944 </span><span class="lineNoCov">          0 :     float actionBodyTextProportion = dataNumber[&quot;action-card-body-proportion&quot;].asFloat();</span></a>
-<a name="945"><span class="lineNum">     945 </span>            : </a>
-<a name="946"><span class="lineNum">     946 </span><span class="lineNoCov">          0 :     std::vector&lt;int&gt; actionCardOwned = {1, 3, 7}; // array that will be sent by shared</span></a>
-<a name="947"><span class="lineNum">     947 </span>            : </a>
-<a name="948"><span class="lineNum">     948 </span><span class="lineNoCov">          0 :     for (unsigned index = 0; index &lt; actionCardOwned.size(); ++index)</span></a>
-<a name="949"><span class="lineNum">     949 </span>            :     {</a>
-<a name="950"><span class="lineNum">     950 </span><span class="lineNoCov">          0 :         actionCardsToDisplay.emplace_back(</span></a>
-<a name="951"><span class="lineNum">     951 </span><span class="lineNoCov">          0 :             RESOURCES_PATH + actionCardData[actionCardOwned[index]][&quot;path&quot;].asString(),</span></a>
-<a name="952"><span class="lineNum">     952 </span><span class="lineNoCov">          0 :             ACTION_CARD_PROPORTION,</span></a>
-<a name="953"><span class="lineNum">     953 </span><span class="lineNoCov">          0 :             WINDOW_LENGTH,</span></a>
-<a name="954"><span class="lineNum">     954 </span><span class="lineNoCov">          0 :             WINDOW_WIDTH,</span></a>
-<a name="955"><span class="lineNum">     955 </span><span class="lineNoCov">          0 :             actionCardOwned[index],</span></a>
-<a name="956"><span class="lineNum">     956 </span>            :             index);</a>
-<a name="957"><span class="lineNum">     957 </span>            : </a>
-<a name="958"><span class="lineNum">     958 </span><span class="lineNoCov">          0 :         std::string titleCardAction = actionCardData[actionCardOwned[index]][&quot;type&quot;].asString();</span></a>
-<a name="959"><span class="lineNum">     959 </span><span class="lineNoCov">          0 :         std::string bodyCardAction = actionCardData[actionCardOwned[index]][&quot;body&quot;].asString();</span></a>
-<a name="960"><span class="lineNum">     960 </span>            : </a>
-<a name="961"><span class="lineNum">     961 </span><span class="lineNoCov">          0 :         setUpText(</span></a>
-<a name="962"><span class="lineNum">     962 </span><span class="lineNoCov">          0 :             actionCardsToDisplay.back(),</span></a>
-<a name="963"><span class="lineNum">     963 </span>            :             titleCardAction,</a>
-<a name="964"><span class="lineNum">     964 </span>            :             bodyCardAction,</a>
-<a name="965"><span class="lineNum">     965 </span><span class="lineNoCov">          0 :             titleFont,</span></a>
-<a name="966"><span class="lineNum">     966 </span><span class="lineNoCov">          0 :             bodyFont,</span></a>
-<a name="967"><span class="lineNum">     967 </span>            :             dataNumber,</a>
-<a name="968"><span class="lineNum">     968 </span>            :             actionTitleTextProportion,</a>
-<a name="969"><span class="lineNum">     969 </span>            :             actionBodyTextProportion);</a>
-<a name="970"><span class="lineNum">     970 </span><span class="lineNoCov">          0 :     }</span></a>
-<a name="971"><span class="lineNum">     971 </span>            : </a>
-<a name="972"><span class="lineNum">     972 </span>            :     // rotation of the techWheel</a>
-<a name="973"><span class="lineNum">     973 </span><span class="lineNoCov">          0 :     const Json::Value &amp;dataRotation = openJsonFile(&quot;/hud/tech-wheel-rotation.json&quot;);</span></a>
-<a name="974"><span class="lineNum">     974 </span><span class="lineNoCov">          0 :     for (unsigned index = 0; index &lt; dataRotation.size(); ++index)</span></a>
-<a name="975"><span class="lineNum">     975 </span>            :     {</a>
-<a name="976"><span class="lineNum">     976 </span><span class="lineNoCov">          0 :         techWheelRotation[index] = dataRotation[index][&quot;rotation&quot;].asInt();</span></a>
-<a name="977"><span class="lineNum">     977 </span>            :     }</a>
-<a name="978"><span class="lineNum">     978 </span>            : </a>
-<a name="979"><span class="lineNum">     979 </span>            :     // text for the user</a>
-<a name="980"><span class="lineNum">     980 </span><span class="lineNoCov">          0 :     std::string textForTheUserString = &quot;Do that&quot;;</span></a>
-<a name="981"><span class="lineNum">     981 </span><span class="lineNoCov">          0 :     textForTheUser = std::make_shared&lt;Button&gt;(sf::Vector2f(dataNumber[&quot;text-for-user-size-x&quot;].asFloat(), dataNumber[&quot;text-for-user-size-y&quot;].asFloat()),</span></a>
-<a name="982"><span class="lineNum">     982 </span><span class="lineNoCov">          0 :                                               sf::Vector2f(dataNumber[&quot;text-for-user-pos-x&quot;].asFloat(), dataNumber[&quot;text-for-user-pos-y&quot;].asFloat()),</span></a>
-<a name="983"><span class="lineNum">     983 </span>            :                                               TEXT_FOR_USER_BUTTON_COLOR,</a>
-<a name="984"><span class="lineNum">     984 </span><span class="lineNoCov">          0 :                                               false);</span></a>
-<a name="985"><span class="lineNum">     985 </span><span class="lineNoCov">          0 :     textForTheUser-&gt;setText(dataNumber[&quot;text-for-user-string-size&quot;].asInt(),</span></a>
-<a name="986"><span class="lineNum">     986 </span>            :                             sf::Vector2f(0, 0),</a>
-<a name="987"><span class="lineNum">     987 </span>            :                             textForTheUserString,</a>
-<a name="988"><span class="lineNum">     988 </span><span class="lineNoCov">          0 :                             bodyFont,</span></a>
-<a name="989"><span class="lineNum">     989 </span><span class="lineNoCov">          0 :                             dataNumber[&quot;text-for-user-max-char&quot;].asInt());</span></a>
-<a name="990"><span class="lineNum">     990 </span><span class="lineNoCov">          0 :     textForTheUser-&gt;buttonText-&gt;setFillColor(TEXT_FOR_USER_COLOR);</span></a>
-<a name="991"><span class="lineNum">     991 </span>            : </a>
-<a name="992"><span class="lineNum">     992 </span>            :     // end of round button</a>
-<a name="993"><span class="lineNum">     993 </span><span class="lineNoCov">          0 :     endOfRoundButton = std::make_unique&lt;Button&gt;(sf::Vector2f(dataNumber[&quot;end-of-round-size-x&quot;].asFloat(), dataNumber[&quot;end-of-round-size-y&quot;].asFloat()),</span></a>
-<a name="994"><span class="lineNum">     994 </span><span class="lineNoCov">          0 :                                                 sf::Vector2f(dataNumber[&quot;text-for-user-pos-x&quot;].asFloat(), dataNumber[&quot;end-of-round-pos-y&quot;].asFloat()),</span></a>
-<a name="995"><span class="lineNum">     995 </span>            :                                                 END_OF_TURN_BUTTON_COLOR,</a>
-<a name="996"><span class="lineNum">     996 </span><span class="lineNoCov">          0 :                                                 false);</span></a>
-<a name="997"><span class="lineNum">     997 </span><span class="lineNoCov">          0 :     endOfRoundButton-&gt;setText(dataNumber[&quot;end-of-round-text-size&quot;].asInt(),</span></a>
-<a name="998"><span class="lineNum">     998 </span>            :                               sf::Vector2f(0, 0),</a>
-<a name="999"><span class="lineNum">     999 </span>            :                               &quot;End of turn&quot;,</a>
-<a name="1000"><span class="lineNum">    1000 </span><span class="lineNoCov">          0 :                               bodyFont);</span></a>
-<a name="1001"><span class="lineNum">    1001 </span><span class="lineNoCov">          0 :     endOfRoundButton-&gt;buttonRect-&gt;setOutlineThickness(2.0f);</span></a>
-<a name="1002"><span class="lineNum">    1002 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1003"><span class="lineNum">    1003 </span>            : </a>
-<a name="1004"><span class="lineNum">    1004 </span>            : /*!</a>
-<a name="1005"><span class="lineNum">    1005 </span>            :  * @brief Function to modify the text that is specified at a player</a>
-<a name="1006"><span class="lineNum">    1006 </span>            :  * @param text string: text we want to set</a>
-<a name="1007"><span class="lineNum">    1007 </span>            :  */</a>
-<a name="1008"><span class="lineNum">    1008 </span><span class="lineNoCov">          0 : void GameWindow::modifyTextForUser(std::string text)</span></a>
-<a name="1009"><span class="lineNum">    1009 </span>            : {</a>
-<a name="1010"><span class="lineNum">    1010 </span><span class="lineNoCov">          0 :     textForTheUser-&gt;buttonText-&gt;setString(text);</span></a>
-<a name="1011"><span class="lineNum">    1011 </span><span class="lineNoCov">          0 :     textForTheUser-&gt;centerText();</span></a>
-<a name="1012"><span class="lineNum">    1012 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1013"><span class="lineNum">    1013 </span>            : </a>
-<a name="1014"><span class="lineNum">    1014 </span><span class="lineNoCov">          0 : void GameWindow::addPlayer(std::string username)</span></a>
-<a name="1015"><span class="lineNum">    1015 </span>            : {</a>
-<a name="1016"><span class="lineNum">    1016 </span><span class="lineNoCov">          0 :     for (auto &amp;button : whoIsPlayingButtons)</span></a>
-<a name="1017"><span class="lineNum">    1017 </span>            :     {</a>
-<a name="1018"><span class="lineNum">    1018 </span><span class="lineNoCov">          0 :         std::string buttonText = button.buttonText-&gt;getString();</span></a>
-<a name="1019"><span class="lineNum">    1019 </span><span class="lineNoCov">          0 :         if (!username.compare(buttonText))</span></a>
-<a name="1020"><span class="lineNum">    1020 </span>            :         {</a>
-<a name="1021"><span class="lineNum">    1021 </span><span class="lineNoCov">          0 :             return;</span></a>
-<a name="1022"><span class="lineNum">    1022 </span>            :         }</a>
-<a name="1023"><span class="lineNum">    1023 </span><span class="lineNoCov">          0 :     }</span></a>
-<a name="1024"><span class="lineNum">    1024 </span>            : </a>
-<a name="1025"><span class="lineNum">    1025 </span><span class="lineNoCov">          0 :     whoIsPlayingButtons.emplace_back(</span></a>
-<a name="1026"><span class="lineNum">    1026 </span><span class="lineNoCov">          0 :         sf::Vector2f(75, 90 / 2),</span></a>
-<a name="1027"><span class="lineNum">    1027 </span><span class="lineNoCov">          0 :         sf::Vector2f(0, 0),</span></a>
-<a name="1028"><span class="lineNum">    1028 </span><span class="lineNoCov">          0 :         PLAYER_COLOR[whoIsPlayingButtons.size()],</span></a>
-<a name="1029"><span class="lineNum">    1029 </span><span class="lineNoCov">          0 :         false);</span></a>
-<a name="1030"><span class="lineNum">    1030 </span>            : </a>
-<a name="1031"><span class="lineNum">    1031 </span><span class="lineNoCov">          0 :     whoIsPlayingButtons.back().setText(18, sf::Vector2f(0, 0), username, titleFont);</span></a>
-<a name="1032"><span class="lineNum">    1032 </span>            : </a>
-<a name="1033"><span class="lineNum">    1033 </span><span class="lineNoCov">          0 :     for (unsigned i = 0; i &lt; whoIsPlayingButtons.size(); i++)</span></a>
-<a name="1034"><span class="lineNum">    1034 </span>            :     {</a>
-<a name="1035"><span class="lineNum">    1035 </span><span class="lineNoCov">          0 :         whoIsPlayingButtons[i].buttonRect-&gt;setPosition(</span></a>
-<a name="1036"><span class="lineNum">    1036 </span><span class="lineNoCov">          0 :             (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2 + 105 * i,</span></a>
-<a name="1037"><span class="lineNum">    1037 </span>            :             0);</a>
-<a name="1038"><span class="lineNum">    1038 </span><span class="lineNoCov">          0 :         whoIsPlayingButtons[i].centerText(true);</span></a>
-<a name="1039"><span class="lineNum">    1039 </span>            :     }</a>
-<a name="1040"><span class="lineNum">    1040 </span>            : }</a>
-<a name="1041"><span class="lineNum">    1041 </span>            : </a>
-<a name="1042"><span class="lineNum">    1042 </span>            : /*!</a>
-<a name="1043"><span class="lineNum">    1043 </span>            :  * @brief Function that deteck where the user click and what to send to the engine</a>
-<a name="1044"><span class="lineNum">    1044 </span>            :  * @param timeSecond is a boolean used to</a>
-<a name="1045"><span class="lineNum">    1045 </span>            :  */</a>
-<a name="1046"><span class="lineNum">    1046 </span><span class="lineNoCov">          0 : long GameWindow::getCurrentTime(bool timeSecond)</span></a>
-<a name="1047"><span class="lineNum">    1047 </span>            : {</a>
-<a name="1048"><span class="lineNum">    1048 </span><span class="lineNoCov">          0 :     if (timeSecond)</span></a>
-<a name="1049"><span class="lineNum">    1049 </span>            :     {</a>
-<a name="1050"><span class="lineNum">    1050 </span><span class="lineNoCov">          0 :         return std::chrono::duration_cast&lt;std::chrono::seconds&gt;(std::chrono::system_clock::now().time_since_epoch()).count();</span></a>
-<a name="1051"><span class="lineNum">    1051 </span>            :     }</a>
-<a name="1052"><span class="lineNum">    1052 </span>            :     else</a>
-<a name="1053"><span class="lineNum">    1053 </span>            :     {</a>
-<a name="1054"><span class="lineNum">    1054 </span><span class="lineNoCov">          0 :         return std::chrono::duration_cast&lt;std::chrono::milliseconds&gt;(std::chrono::system_clock::now().time_since_epoch()).count();</span></a>
-<a name="1055"><span class="lineNum">    1055 </span>            :     }</a>
-<a name="1056"><span class="lineNum">    1056 </span>            : }</a>
-<a name="1057"><span class="lineNum">    1057 </span>            : </a>
-<a name="1058"><span class="lineNum">    1058 </span>            : /*!</a>
-<a name="1059"><span class="lineNum">    1059 </span>            :  * @brief Function to set the winnee window at the end of the party</a>
-<a name="1060"><span class="lineNum">    1060 </span>            :  * @param winner string: who is the winner</a>
-<a name="1061"><span class="lineNum">    1061 </span>            :  * @param causes string: why the winner have won</a>
-<a name="1062"><span class="lineNum">    1062 </span>            :  */</a>
-<a name="1063"><span class="lineNum">    1063 </span><span class="lineNoCov">          0 : void GameWindow::setWinnerWindow(std::string winner, std::string causes)</span></a>
-<a name="1064"><span class="lineNum">    1064 </span>            : {</a>
-<a name="1065"><span class="lineNum">    1065 </span>            : </a>
-<a name="1066"><span class="lineNum">    1066 </span><span class="lineNoCov">          0 :     winnerWindow-&gt;title-&gt;setString(winner + &quot; is the winner !!!&quot;);</span></a>
-<a name="1067"><span class="lineNum">    1067 </span><span class="lineNoCov">          0 :     winnerWindow-&gt;body-&gt;setString(causes);</span></a>
-<a name="1068"><span class="lineNum">    1068 </span><span class="lineNoCov">          0 :     winnerWindow-&gt;centerText();</span></a>
-<a name="1069"><span class="lineNum">    1069 </span><span class="lineNoCov">          0 :     winnerWindow-&gt;isWindowActive = true;</span></a>
-<a name="1070"><span class="lineNum">    1070 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="831"><span class="lineNum">     831 </span><span class="lineNoCov">          0 : sf::Vector2i GameWindow::getBoxesElementsPosition(float boxXProportion, float boxYProportion, GraphicCard &amp;priorityCard)</span></a>
+<a name="832"><span class="lineNum">     832 </span>            : {</a>
+<a name="833"><span class="lineNum">     833 </span>            :     int xBoxPos;</a>
+<a name="834"><span class="lineNum">     834 </span>            :     int yBoxPos;</a>
+<a name="835"><span class="lineNum">     835 </span>            :     int xBoxOffset;</a>
+<a name="836"><span class="lineNum">     836 </span>            :     int yBoxOffset;</a>
+<a name="837"><span class="lineNum">     837 </span>            : </a>
+<a name="838"><span class="lineNum">     838 </span><span class="lineNoCov">          0 :     xBoxOffset = boxXProportion * WINDOW_LENGTH;</span></a>
+<a name="839"><span class="lineNum">     839 </span><span class="lineNoCov">          0 :     yBoxOffset = boxYProportion * WINDOW_WIDTH;</span></a>
+<a name="840"><span class="lineNum">     840 </span>            : </a>
+<a name="841"><span class="lineNum">     841 </span><span class="lineNoCov">          0 :     xBoxPos = priorityCard.texture-&gt;getSprite().getPosition().x + xBoxOffset;</span></a>
+<a name="842"><span class="lineNum">     842 </span><span class="lineNoCov">          0 :     yBoxPos = priorityCard.texture-&gt;getSprite().getPosition().y + yBoxOffset;</span></a>
+<a name="843"><span class="lineNum">     843 </span>            : </a>
+<a name="844"><span class="lineNum">     844 </span><span class="lineNoCov">          0 :     return (sf::Vector2i(xBoxPos, yBoxPos));</span></a>
+<a name="845"><span class="lineNum">     845 </span>            : }</a>
+<a name="846"><span class="lineNum">     846 </span>            : </a>
+<a name="847"><span class="lineNum">     847 </span>            : /*!</a>
+<a name="848"><span class="lineNum">     848 </span>            :  * @brief Load all the HUD textures</a>
+<a name="849"><span class="lineNum">     849 </span>            :  */</a>
+<a name="850"><span class="lineNum">     850 </span><span class="lineNoCov">          0 : void GameWindow::loadHudTexture()</span></a>
+<a name="851"><span class="lineNum">     851 </span>            : {</a>
+<a name="852"><span class="lineNum">     852 </span>            : </a>
+<a name="853"><span class="lineNum">     853 </span><span class="lineNoCov">          0 :     int rotation = 0;</span></a>
+<a name="854"><span class="lineNum">     854 </span><span class="lineNoCov">          0 :     int priorityCardIndex = 0;</span></a>
+<a name="855"><span class="lineNum">     855 </span>            : </a>
+<a name="856"><span class="lineNum">     856 </span><span class="lineNoCov">          0 :     const Json::Value &amp;dataNumber = openJsonFile(&quot;/hud/data-number.json&quot;);</span></a>
+<a name="857"><span class="lineNum">     857 </span>            : </a>
+<a name="858"><span class="lineNum">     858 </span><span class="lineNoCov">          0 :     backgroundTexture = std::make_unique&lt;TextureDisplayer&gt;(RESOURCES_PATH &quot;/hud/background.png&quot;);</span></a>
+<a name="859"><span class="lineNum">     859 </span><span class="lineNoCov">          0 :     backgroundTexture-&gt;addSprite();</span></a>
+<a name="860"><span class="lineNum">     860 </span><span class="lineNoCov">          0 :     float backgroundScale = 1 / (float(backgroundTexture-&gt;getWidth()) / float(WINDOW_LENGTH));</span></a>
+<a name="861"><span class="lineNum">     861 </span><span class="lineNoCov">          0 :     backgroundTexture-&gt;setHudSpritePosition(backgroundScale, WINDOW_LENGTH, WINDOW_WIDTH, rotation, priorityCardIndex);</span></a>
+<a name="862"><span class="lineNum">     862 </span>            : </a>
+<a name="863"><span class="lineNum">     863 </span><span class="lineNoCov">          0 :     const Json::Value &amp;data = openJsonFile(&quot;/hud/files.json&quot;);</span></a>
+<a name="864"><span class="lineNum">     864 </span>            : </a>
+<a name="865"><span class="lineNum">     865 </span><span class="lineNoCov">          0 :     for (unsigned index = 0; index &lt; data.size(); ++index)</span></a>
+<a name="866"><span class="lineNum">     866 </span>            :     {</a>
+<a name="867"><span class="lineNum">     867 </span><span class="lineNoCov">          0 :         hudTextureToDisplay.emplace_back(RESOURCES_PATH + data[index][&quot;path&quot;].asString());</span></a>
+<a name="868"><span class="lineNum">     868 </span><span class="lineNoCov">          0 :         hudTextureToDisplay.back().addSprite();</span></a>
+<a name="869"><span class="lineNum">     869 </span><span class="lineNoCov">          0 :         float scale = data[index][&quot;scale&quot;].asFloat() / (float(hudTextureToDisplay.back().getWidth()) / float(WINDOW_LENGTH));</span></a>
+<a name="870"><span class="lineNum">     870 </span><span class="lineNoCov">          0 :         hudTextureToDisplay.back().setImageType((HudTextureType)index);</span></a>
+<a name="871"><span class="lineNum">     871 </span><span class="lineNoCov">          0 :         hudTextureToDisplay.back().setHudSpritePosition(scale, WINDOW_LENGTH, WINDOW_WIDTH, data[index][&quot;rotation&quot;].asInt(), priorityCardIndex);</span></a>
+<a name="872"><span class="lineNum">     872 </span>            :     }</a>
+<a name="873"><span class="lineNum">     873 </span>            : </a>
+<a name="874"><span class="lineNum">     874 </span>            :     // load the priorityCard</a>
+<a name="875"><span class="lineNum">     875 </span><span class="lineNoCov">          0 :     boxTexture = std::make_unique&lt;TextureDisplayer&gt;(RESOURCES_PATH &quot;/hud/box.png&quot;);</span></a>
+<a name="876"><span class="lineNum">     876 </span><span class="lineNoCov">          0 :     std::vector&lt;int&gt; numberOfBoxesPerCard = {2, 4, 2, 1, 0}; // sent by the server</span></a>
+<a name="877"><span class="lineNum">     877 </span><span class="lineNoCov">          0 :     std::string boxString = &quot;0&quot;;</span></a>
+<a name="878"><span class="lineNum">     878 </span>            : </a>
+<a name="879"><span class="lineNum">     879 </span><span class="lineNoCov">          0 :     if (!titleFont.loadFromFile(RESOURCES_PATH &quot;/font/EnchantedLand.otf&quot;))</span></a>
+<a name="880"><span class="lineNum">     880 </span>            :     {</a>
+<a name="881"><span class="lineNum">     881 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Font not loaded&quot; &lt;&lt; std::endl;</span></a>
+<a name="882"><span class="lineNum">     882 </span>            :     }</a>
+<a name="883"><span class="lineNum">     883 </span>            : </a>
+<a name="884"><span class="lineNum">     884 </span><span class="lineNoCov">          0 :     if (!bodyFont.loadFromFile(RESOURCES_PATH &quot;/font/MorrisRomanBlack.otf&quot;))</span></a>
+<a name="885"><span class="lineNum">     885 </span>            :     {</a>
+<a name="886"><span class="lineNum">     886 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Font not loaded&quot; &lt;&lt; std::endl;</span></a>
+<a name="887"><span class="lineNum">     887 </span>            :     }</a>
+<a name="888"><span class="lineNum">     888 </span>            : </a>
+<a name="889"><span class="lineNum">     889 </span><span class="lineNoCov">          0 :     const Json::Value &amp;priorityData = openJsonFile(&quot;/hud/priority-card.json&quot;);</span></a>
+<a name="890"><span class="lineNum">     890 </span>            : </a>
+<a name="891"><span class="lineNum">     891 </span><span class="lineNoCov">          0 :     float priorityTitleTextProportion = dataNumber[&quot;priority-card-title-proportion&quot;].asFloat();</span></a>
+<a name="892"><span class="lineNum">     892 </span><span class="lineNoCov">          0 :     float priorityBodyTextProportion = dataNumber[&quot;priority-card-body-proportion&quot;].asFloat();</span></a>
+<a name="893"><span class="lineNum">     893 </span>            : </a>
+<a name="894"><span class="lineNum">     894 </span><span class="lineNoCov">          0 :     for (unsigned index = 0; index &lt; priorityData.size(); ++index)</span></a>
+<a name="895"><span class="lineNum">     895 </span>            :     {</a>
+<a name="896"><span class="lineNum">     896 </span><span class="lineNoCov">          0 :         priorityCards.emplace_back(</span></a>
+<a name="897"><span class="lineNum">     897 </span><span class="lineNoCov">          0 :             RESOURCES_PATH + priorityData[index][&quot;path&quot;].asString(),</span></a>
+<a name="898"><span class="lineNum">     898 </span>            :             dataNumber,</a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineNoCov">          0 :             WINDOW_LENGTH,</span></a>
+<a name="900"><span class="lineNum">     900 </span><span class="lineNoCov">          0 :             WINDOW_WIDTH,</span></a>
+<a name="901"><span class="lineNum">     901 </span>            :             index,</a>
+<a name="902"><span class="lineNum">     902 </span><span class="lineNoCov">          0 :             bodyFont);</span></a>
+<a name="903"><span class="lineNum">     903 </span>            : </a>
+<a name="904"><span class="lineNum">     904 </span>            :         // title and body</a>
+<a name="905"><span class="lineNum">     905 </span>            : </a>
+<a name="906"><span class="lineNum">     906 </span><span class="lineNoCov">          0 :         setUpText(</span></a>
+<a name="907"><span class="lineNum">     907 </span><span class="lineNoCov">          0 :             priorityCards.back(),</span></a>
+<a name="908"><span class="lineNum">     908 </span><span class="lineNoCov">          0 :             priorityData[index][&quot;title&quot;].asString(),</span></a>
+<a name="909"><span class="lineNum">     909 </span><span class="lineNoCov">          0 :             priorityData[index][&quot;body&quot;][priorityCards.back().level].asString(),</span></a>
+<a name="910"><span class="lineNum">     910 </span><span class="lineNoCov">          0 :             titleFont,</span></a>
+<a name="911"><span class="lineNum">     911 </span><span class="lineNoCov">          0 :             bodyFont,</span></a>
+<a name="912"><span class="lineNum">     912 </span>            :             dataNumber,</a>
+<a name="913"><span class="lineNum">     913 </span>            :             priorityTitleTextProportion,</a>
+<a name="914"><span class="lineNum">     914 </span>            :             priorityBodyTextProportion);</a>
+<a name="915"><span class="lineNum">     915 </span>            : </a>
+<a name="916"><span class="lineNum">     916 </span>            :         // boxes</a>
+<a name="917"><span class="lineNum">     917 </span>            : </a>
+<a name="918"><span class="lineNum">     918 </span><span class="lineNoCov">          0 :         boxString = std::to_string(numberOfBoxesPerCard[index]) + &quot; x&quot;;</span></a>
+<a name="919"><span class="lineNum">     919 </span>            : </a>
+<a name="920"><span class="lineNum">     920 </span><span class="lineNoCov">          0 :         priorityCards.back().nbOfBoxesText = std::make_unique&lt;sf::Text&gt;(</span></a>
+<a name="921"><span class="lineNum">     921 </span>            :             boxString,</a>
+<a name="922"><span class="lineNum">     922 </span><span class="lineNoCov">          0 :             titleFont,</span></a>
+<a name="923"><span class="lineNum">     923 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-number-text-size&quot;].asInt());</span></a>
+<a name="924"><span class="lineNum">     924 </span>            : </a>
+<a name="925"><span class="lineNum">     925 </span><span class="lineNoCov">          0 :         sf::Vector2i boxNumberPosition = getBoxesElementsPosition(</span></a>
+<a name="926"><span class="lineNum">     926 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-x-number-offset-proportion&quot;].asFloat(),</span></a>
+<a name="927"><span class="lineNum">     927 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-y-number-offset-proportion&quot;].asFloat(),</span></a>
+<a name="928"><span class="lineNum">     928 </span><span class="lineNoCov">          0 :             priorityCards.back());</span></a>
+<a name="929"><span class="lineNum">     929 </span>            : </a>
+<a name="930"><span class="lineNum">     930 </span><span class="lineNoCov">          0 :         priorityCards.back().nbOfBoxesText-&gt;setPosition(boxNumberPosition.x, boxNumberPosition.y);</span></a>
+<a name="931"><span class="lineNum">     931 </span>            : </a>
+<a name="932"><span class="lineNum">     932 </span><span class="lineNoCov">          0 :         boxTexture-&gt;addSprite();</span></a>
+<a name="933"><span class="lineNum">     933 </span><span class="lineNoCov">          0 :         sf::Vector2i boxPosition = getBoxesElementsPosition(</span></a>
+<a name="934"><span class="lineNum">     934 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-x-offset-proportion&quot;].asFloat(),</span></a>
+<a name="935"><span class="lineNum">     935 </span><span class="lineNoCov">          0 :             dataNumber[&quot;box-y-offset-proportion&quot;].asFloat(),</span></a>
+<a name="936"><span class="lineNum">     936 </span><span class="lineNoCov">          0 :             priorityCards.back());</span></a>
+<a name="937"><span class="lineNum">     937 </span><span class="lineNoCov">          0 :         boxTexture-&gt;getSprite(index).setPosition(boxPosition.x, boxPosition.y);</span></a>
+<a name="938"><span class="lineNum">     938 </span>            :     }</a>
+<a name="939"><span class="lineNum">     939 </span>            : </a>
+<a name="940"><span class="lineNum">     940 </span>            :     // actionCard</a>
+<a name="941"><span class="lineNum">     941 </span><span class="lineNoCov">          0 :     const Json::Value &amp;actionCardData = openJsonFile(&quot;/hud/action-card.json&quot;);</span></a>
+<a name="942"><span class="lineNum">     942 </span><span class="lineNoCov">          0 :     float actionTitleTextProportion = dataNumber[&quot;action-card-title-proportion&quot;].asFloat();</span></a>
+<a name="943"><span class="lineNum">     943 </span><span class="lineNoCov">          0 :     float actionBodyTextProportion = dataNumber[&quot;action-card-body-proportion&quot;].asFloat();</span></a>
+<a name="944"><span class="lineNum">     944 </span>            : </a>
+<a name="945"><span class="lineNum">     945 </span><span class="lineNoCov">          0 :     std::vector&lt;int&gt; actionCardOwned = {1, 3, 7}; // array that will be sent by shared</span></a>
+<a name="946"><span class="lineNum">     946 </span>            : </a>
+<a name="947"><span class="lineNum">     947 </span><span class="lineNoCov">          0 :     for (unsigned index = 0; index &lt; actionCardOwned.size(); ++index)</span></a>
+<a name="948"><span class="lineNum">     948 </span>            :     {</a>
+<a name="949"><span class="lineNum">     949 </span><span class="lineNoCov">          0 :         actionCardsToDisplay.emplace_back(</span></a>
+<a name="950"><span class="lineNum">     950 </span><span class="lineNoCov">          0 :             RESOURCES_PATH + actionCardData[actionCardOwned[index]][&quot;path&quot;].asString(),</span></a>
+<a name="951"><span class="lineNum">     951 </span><span class="lineNoCov">          0 :             ACTION_CARD_PROPORTION,</span></a>
+<a name="952"><span class="lineNum">     952 </span><span class="lineNoCov">          0 :             WINDOW_LENGTH,</span></a>
+<a name="953"><span class="lineNum">     953 </span><span class="lineNoCov">          0 :             WINDOW_WIDTH,</span></a>
+<a name="954"><span class="lineNum">     954 </span><span class="lineNoCov">          0 :             actionCardOwned[index],</span></a>
+<a name="955"><span class="lineNum">     955 </span>            :             index);</a>
+<a name="956"><span class="lineNum">     956 </span>            : </a>
+<a name="957"><span class="lineNum">     957 </span><span class="lineNoCov">          0 :         std::string titleCardAction = actionCardData[actionCardOwned[index]][&quot;type&quot;].asString();</span></a>
+<a name="958"><span class="lineNum">     958 </span><span class="lineNoCov">          0 :         std::string bodyCardAction = actionCardData[actionCardOwned[index]][&quot;body&quot;].asString();</span></a>
+<a name="959"><span class="lineNum">     959 </span>            : </a>
+<a name="960"><span class="lineNum">     960 </span><span class="lineNoCov">          0 :         setUpText(</span></a>
+<a name="961"><span class="lineNum">     961 </span><span class="lineNoCov">          0 :             actionCardsToDisplay.back(),</span></a>
+<a name="962"><span class="lineNum">     962 </span>            :             titleCardAction,</a>
+<a name="963"><span class="lineNum">     963 </span>            :             bodyCardAction,</a>
+<a name="964"><span class="lineNum">     964 </span><span class="lineNoCov">          0 :             titleFont,</span></a>
+<a name="965"><span class="lineNum">     965 </span><span class="lineNoCov">          0 :             bodyFont,</span></a>
+<a name="966"><span class="lineNum">     966 </span>            :             dataNumber,</a>
+<a name="967"><span class="lineNum">     967 </span>            :             actionTitleTextProportion,</a>
+<a name="968"><span class="lineNum">     968 </span>            :             actionBodyTextProportion);</a>
+<a name="969"><span class="lineNum">     969 </span><span class="lineNoCov">          0 :     }</span></a>
+<a name="970"><span class="lineNum">     970 </span>            : </a>
+<a name="971"><span class="lineNum">     971 </span>            :     // rotation of the techWheel</a>
+<a name="972"><span class="lineNum">     972 </span><span class="lineNoCov">          0 :     const Json::Value &amp;dataRotation = openJsonFile(&quot;/hud/tech-wheel-rotation.json&quot;);</span></a>
+<a name="973"><span class="lineNum">     973 </span><span class="lineNoCov">          0 :     for (unsigned index = 0; index &lt; dataRotation.size(); ++index)</span></a>
+<a name="974"><span class="lineNum">     974 </span>            :     {</a>
+<a name="975"><span class="lineNum">     975 </span><span class="lineNoCov">          0 :         techWheelRotation[index] = dataRotation[index][&quot;rotation&quot;].asInt();</span></a>
+<a name="976"><span class="lineNum">     976 </span>            :     }</a>
+<a name="977"><span class="lineNum">     977 </span>            : </a>
+<a name="978"><span class="lineNum">     978 </span>            :     // text for the user</a>
+<a name="979"><span class="lineNum">     979 </span><span class="lineNoCov">          0 :     std::string textForTheUserString = &quot;Do that&quot;;</span></a>
+<a name="980"><span class="lineNum">     980 </span><span class="lineNoCov">          0 :     textForTheUser = std::make_shared&lt;Button&gt;(sf::Vector2f(dataNumber[&quot;text-for-user-size-x&quot;].asFloat(), dataNumber[&quot;text-for-user-size-y&quot;].asFloat()),</span></a>
+<a name="981"><span class="lineNum">     981 </span><span class="lineNoCov">          0 :                                               sf::Vector2f(dataNumber[&quot;text-for-user-pos-x&quot;].asFloat(), dataNumber[&quot;text-for-user-pos-y&quot;].asFloat()),</span></a>
+<a name="982"><span class="lineNum">     982 </span>            :                                               TEXT_FOR_USER_BUTTON_COLOR,</a>
+<a name="983"><span class="lineNum">     983 </span><span class="lineNoCov">          0 :                                               false);</span></a>
+<a name="984"><span class="lineNum">     984 </span><span class="lineNoCov">          0 :     textForTheUser-&gt;setText(dataNumber[&quot;text-for-user-string-size&quot;].asInt(),</span></a>
+<a name="985"><span class="lineNum">     985 </span>            :                             sf::Vector2f(0, 0),</a>
+<a name="986"><span class="lineNum">     986 </span>            :                             textForTheUserString,</a>
+<a name="987"><span class="lineNum">     987 </span><span class="lineNoCov">          0 :                             bodyFont,</span></a>
+<a name="988"><span class="lineNum">     988 </span><span class="lineNoCov">          0 :                             dataNumber[&quot;text-for-user-max-char&quot;].asInt());</span></a>
+<a name="989"><span class="lineNum">     989 </span><span class="lineNoCov">          0 :     textForTheUser-&gt;buttonText-&gt;setFillColor(TEXT_FOR_USER_COLOR);</span></a>
+<a name="990"><span class="lineNum">     990 </span>            : </a>
+<a name="991"><span class="lineNum">     991 </span>            :     // end of round button</a>
+<a name="992"><span class="lineNum">     992 </span><span class="lineNoCov">          0 :     endOfRoundButton = std::make_unique&lt;Button&gt;(sf::Vector2f(dataNumber[&quot;end-of-round-size-x&quot;].asFloat(), dataNumber[&quot;end-of-round-size-y&quot;].asFloat()),</span></a>
+<a name="993"><span class="lineNum">     993 </span><span class="lineNoCov">          0 :                                                 sf::Vector2f(dataNumber[&quot;text-for-user-pos-x&quot;].asFloat(), dataNumber[&quot;end-of-round-pos-y&quot;].asFloat()),</span></a>
+<a name="994"><span class="lineNum">     994 </span>            :                                                 END_OF_TURN_BUTTON_COLOR,</a>
+<a name="995"><span class="lineNum">     995 </span><span class="lineNoCov">          0 :                                                 false);</span></a>
+<a name="996"><span class="lineNum">     996 </span><span class="lineNoCov">          0 :     endOfRoundButton-&gt;setText(dataNumber[&quot;end-of-round-text-size&quot;].asInt(),</span></a>
+<a name="997"><span class="lineNum">     997 </span>            :                               sf::Vector2f(0, 0),</a>
+<a name="998"><span class="lineNum">     998 </span>            :                               &quot;End of turn&quot;,</a>
+<a name="999"><span class="lineNum">     999 </span><span class="lineNoCov">          0 :                               bodyFont);</span></a>
+<a name="1000"><span class="lineNum">    1000 </span><span class="lineNoCov">          0 :     endOfRoundButton-&gt;buttonRect-&gt;setOutlineThickness(2.0f);</span></a>
+<a name="1001"><span class="lineNum">    1001 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1002"><span class="lineNum">    1002 </span>            : </a>
+<a name="1003"><span class="lineNum">    1003 </span>            : /*!</a>
+<a name="1004"><span class="lineNum">    1004 </span>            :  * @brief Function to modify the text that is specified at a player</a>
+<a name="1005"><span class="lineNum">    1005 </span>            :  * @param text string: text we want to set</a>
+<a name="1006"><span class="lineNum">    1006 </span>            :  */</a>
+<a name="1007"><span class="lineNum">    1007 </span><span class="lineNoCov">          0 : void GameWindow::modifyTextForUser(std::string text)</span></a>
+<a name="1008"><span class="lineNum">    1008 </span>            : {</a>
+<a name="1009"><span class="lineNum">    1009 </span><span class="lineNoCov">          0 :     textForTheUser-&gt;buttonText-&gt;setString(text);</span></a>
+<a name="1010"><span class="lineNum">    1010 </span><span class="lineNoCov">          0 :     textForTheUser-&gt;centerText();</span></a>
+<a name="1011"><span class="lineNum">    1011 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1012"><span class="lineNum">    1012 </span>            : </a>
+<a name="1013"><span class="lineNum">    1013 </span><span class="lineNoCov">          0 : void GameWindow::addPlayer(std::string username)</span></a>
+<a name="1014"><span class="lineNum">    1014 </span>            : {</a>
+<a name="1015"><span class="lineNum">    1015 </span><span class="lineNoCov">          0 :     for (auto &amp;button : whoIsPlayingButtons)</span></a>
+<a name="1016"><span class="lineNum">    1016 </span>            :     {</a>
+<a name="1017"><span class="lineNum">    1017 </span><span class="lineNoCov">          0 :         std::string buttonText = button.buttonText-&gt;getString();</span></a>
+<a name="1018"><span class="lineNum">    1018 </span><span class="lineNoCov">          0 :         if (!username.compare(buttonText))</span></a>
+<a name="1019"><span class="lineNum">    1019 </span>            :         {</a>
+<a name="1020"><span class="lineNum">    1020 </span><span class="lineNoCov">          0 :             return;</span></a>
+<a name="1021"><span class="lineNum">    1021 </span>            :         }</a>
+<a name="1022"><span class="lineNum">    1022 </span><span class="lineNoCov">          0 :     }</span></a>
+<a name="1023"><span class="lineNum">    1023 </span>            : </a>
+<a name="1024"><span class="lineNum">    1024 </span><span class="lineNoCov">          0 :     whoIsPlayingButtons.emplace_back(</span></a>
+<a name="1025"><span class="lineNum">    1025 </span><span class="lineNoCov">          0 :         sf::Vector2f(75, 90 / 2),</span></a>
+<a name="1026"><span class="lineNum">    1026 </span><span class="lineNoCov">          0 :         sf::Vector2f(0, 0),</span></a>
+<a name="1027"><span class="lineNum">    1027 </span><span class="lineNoCov">          0 :         PLAYER_COLOR[whoIsPlayingButtons.size()],</span></a>
+<a name="1028"><span class="lineNum">    1028 </span><span class="lineNoCov">          0 :         false);</span></a>
+<a name="1029"><span class="lineNum">    1029 </span>            : </a>
+<a name="1030"><span class="lineNum">    1030 </span><span class="lineNoCov">          0 :     whoIsPlayingButtons.back().setText(18, sf::Vector2f(0, 0), username, titleFont);</span></a>
+<a name="1031"><span class="lineNum">    1031 </span>            : </a>
+<a name="1032"><span class="lineNum">    1032 </span><span class="lineNoCov">          0 :     for (unsigned i = 0; i &lt; whoIsPlayingButtons.size(); i++)</span></a>
+<a name="1033"><span class="lineNum">    1033 </span>            :     {</a>
+<a name="1034"><span class="lineNum">    1034 </span><span class="lineNoCov">          0 :         whoIsPlayingButtons[i].buttonRect-&gt;setPosition(</span></a>
+<a name="1035"><span class="lineNum">    1035 </span><span class="lineNoCov">          0 :             (WINDOW_LENGTH - 75 * whoIsPlayingButtons.size() - 30 * (whoIsPlayingButtons.size() - 1)) / 2 + 105 * i,</span></a>
+<a name="1036"><span class="lineNum">    1036 </span>            :             0);</a>
+<a name="1037"><span class="lineNum">    1037 </span><span class="lineNoCov">          0 :         whoIsPlayingButtons[i].centerText(true);</span></a>
+<a name="1038"><span class="lineNum">    1038 </span>            :     }</a>
+<a name="1039"><span class="lineNum">    1039 </span>            : }</a>
+<a name="1040"><span class="lineNum">    1040 </span>            : </a>
+<a name="1041"><span class="lineNum">    1041 </span>            : /*!</a>
+<a name="1042"><span class="lineNum">    1042 </span>            :  * @brief Function that deteck where the user click and what to send to the engine</a>
+<a name="1043"><span class="lineNum">    1043 </span>            :  * @param timeSecond is a boolean used to</a>
+<a name="1044"><span class="lineNum">    1044 </span>            :  */</a>
+<a name="1045"><span class="lineNum">    1045 </span><span class="lineNoCov">          0 : long GameWindow::getCurrentTime(bool timeSecond)</span></a>
+<a name="1046"><span class="lineNum">    1046 </span>            : {</a>
+<a name="1047"><span class="lineNum">    1047 </span><span class="lineNoCov">          0 :     if (timeSecond)</span></a>
+<a name="1048"><span class="lineNum">    1048 </span>            :     {</a>
+<a name="1049"><span class="lineNum">    1049 </span><span class="lineNoCov">          0 :         return std::chrono::duration_cast&lt;std::chrono::seconds&gt;(std::chrono::system_clock::now().time_since_epoch()).count();</span></a>
+<a name="1050"><span class="lineNum">    1050 </span>            :     }</a>
+<a name="1051"><span class="lineNum">    1051 </span>            :     else</a>
+<a name="1052"><span class="lineNum">    1052 </span>            :     {</a>
+<a name="1053"><span class="lineNum">    1053 </span><span class="lineNoCov">          0 :         return std::chrono::duration_cast&lt;std::chrono::milliseconds&gt;(std::chrono::system_clock::now().time_since_epoch()).count();</span></a>
+<a name="1054"><span class="lineNum">    1054 </span>            :     }</a>
+<a name="1055"><span class="lineNum">    1055 </span>            : }</a>
+<a name="1056"><span class="lineNum">    1056 </span>            : </a>
+<a name="1057"><span class="lineNum">    1057 </span>            : /*!</a>
+<a name="1058"><span class="lineNum">    1058 </span>            :  * @brief Function to set the winnee window at the end of the party</a>
+<a name="1059"><span class="lineNum">    1059 </span>            :  * @param winner string: who is the winner</a>
+<a name="1060"><span class="lineNum">    1060 </span>            :  * @param causes string: why the winner have won</a>
+<a name="1061"><span class="lineNum">    1061 </span>            :  */</a>
+<a name="1062"><span class="lineNum">    1062 </span><span class="lineNoCov">          0 : void GameWindow::setWinnerWindow(std::string winner, std::string causes)</span></a>
+<a name="1063"><span class="lineNum">    1063 </span>            : {</a>
+<a name="1064"><span class="lineNum">    1064 </span>            : </a>
+<a name="1065"><span class="lineNum">    1065 </span><span class="lineNoCov">          0 :     winnerWindow-&gt;title-&gt;setString(winner + &quot; is the winner !!!&quot;);</span></a>
+<a name="1066"><span class="lineNum">    1066 </span><span class="lineNoCov">          0 :     winnerWindow-&gt;body-&gt;setString(causes);</span></a>
+<a name="1067"><span class="lineNum">    1067 </span><span class="lineNoCov">          0 :     winnerWindow-&gt;centerText();</span></a>
+<a name="1068"><span class="lineNum">    1068 </span><span class="lineNoCov">          0 :     winnerWindow-&gt;isWindowActive = true;</span></a>
+<a name="1069"><span class="lineNum">    1069 </span><span class="lineNoCov">          0 : }</span></a>
 </pre>
       </td>
     </tr>
