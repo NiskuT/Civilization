@@ -330,33 +330,25 @@ void ClientGameEngine::handleInformation(int x, int y)
     }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::economy)
     {
-        clientGame->modifyTextForUser("Click on the hexagons of the path");
         std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.caravanMovementPath.push_back(position);
     }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::culture)
     {
-        clientGame->modifyTextForUser("place pawns on the hexagons");
         std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.pawnsPositions.push_back(position);
     }
-    if (ruleArgsStruct.ruleId == shared::CardsEnum::industry)// TODO : add the posibility to build wonder
+    if (ruleArgsStruct.ruleId == shared::CardsEnum::industry) // TODO : add the posibility to build wonder
     {
-        clientGame->modifyTextForUser("place a city");
         std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.positionOfCity = position;
         ruleArgsStruct.industryCardBuildWonder = false;
     }
     if (ruleArgsStruct.ruleId == shared::CardsEnum::military)
     {
-        clientGame->modifyTextForUser("choose pawns to reinforce");
         std::array<unsigned, 2> position = {(unsigned)x, (unsigned)y};
         ruleArgsStruct.pawnsPositions.push_back(position);
         ruleArgsStruct.militaryCardAttack = false;
-    }
-    if (ruleArgsStruct.ruleId == shared::CardsEnum::science)
-    {
-        clientGame->modifyTextForUser("you can finish your turn");
     }
 }
 
@@ -373,22 +365,27 @@ void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int diffic
     }
     if (typePlayed == "economy")
     {
+        clientGame->modifyTextForUser("Click on the hexagons of the path");
         ruleArgsStruct.ruleId = shared::CardsEnum::economy;
     }
     else if (typePlayed == "science")
     {
+        clientGame->modifyTextForUser("you can finish your turn");
         ruleArgsStruct.ruleId = shared::CardsEnum::science;
     }
     else if (typePlayed == "culture")
     {
+        clientGame->modifyTextForUser("place pawns on the hexagons");
         ruleArgsStruct.ruleId = shared::CardsEnum::culture;
     }
     else if (typePlayed == "army")
     {
+        clientGame->modifyTextForUser("choose pawns to reinforce");
         ruleArgsStruct.ruleId = shared::CardsEnum::military;
     }
     else if (typePlayed == "industry")
     {
+        clientGame->modifyTextForUser("place a city");
         ruleArgsStruct.ruleId = shared::CardsEnum::industry;
     }
 
@@ -520,7 +517,8 @@ void ClientGameEngine::playGame()
 
     long lastUpdateTimer = clientGame->getCurrentTime();
 
-    while (areTextureLoaded.load() == false);
+    while (areTextureLoaded.load() == false)
+        ;
 
     while (runningWindow.load() == GAME)
     {
