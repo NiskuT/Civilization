@@ -721,6 +721,7 @@ struct stdlib_includes {
    int limits;
    int map;
    int unordered_map;
+   int boost_serialize;
    int set;
    int list;
    int unordered_set;
@@ -736,6 +737,7 @@ struct stdlib_includes {
    int jsoncpp;
    int boostAsio;
    int json;
+   int variant;
 };
 
 void print_include_stdlib(struct stdlib_includes* si,char* name) {
@@ -814,6 +816,11 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            print ("#include <unordered_map>\n");
            si->unordered_map = 1;
        }
+        if (!si->boost_serialize && strstr(name,"boost::serialization::access")) {
+           print("#include <boost/serialization/access.hpp>\n");
+           print("#include <boost/serialization/vector.hpp>\n");
+           si->boost_serialize = 1;
+       }
        if (!si->unordered_set && strstr(name,"std::unordered_set")) {
            print ("#include <unordered_set>\n");
            si->unordered_set = 1;
@@ -847,8 +854,12 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            si->boostAsio = 1;
        }
        if (!si->json && strstr(name,"Json::Value")) {
-           print (" #include <json/json.h>\n");
+           print ("#include <json/json.h>\n");
            si->json = 1;
+       }
+       if (!si->variant && strstr(name,"std::variant")) {
+           print ("#include <variant>\n");
+           si->variant = 1;
        }
        
     }

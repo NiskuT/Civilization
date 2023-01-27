@@ -22,6 +22,8 @@ target_link_libraries(${lib_client_target} PUBLIC
   $<TARGET_NAME:shared_static>
   )
 
+target_link_libraries(${lib_client_target} PRIVATE boost_serialization)
+
 set(jsoncpp_lib_static ${CMAKE_BINARY_DIR}/lib/json/lib/libjsoncpp.a)
 
 # Compile "client" executable

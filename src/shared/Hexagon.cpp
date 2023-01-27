@@ -1,28 +1,38 @@
 #include <shared.hpp>
 
-namespace shared
+using namespace shared;
+
+Hexagon::Hexagon()
 {
-    FieldLevel Hexagon::getFieldLevel()
-    {
-        return this->level;
-    }
+    this->level = FieldLevel::Grassland;
+}
 
-    void Hexagon::setFieldType(FieldLevel field)
-    {
-        this->level = field;
-    }
+FieldLevel Hexagon::getFieldLevel()
+{
+    return this->level;
+}
 
-    bool Hexagon::getElements(std::vector<Element*>* fieldElement)
-    {
-        if (fieldElement == NULL)
-        {
-            return false;
-        }
-        else
-        {
-            *fieldElement = this->listElements;
-            return true;
-        }
-    }
-    
+void Hexagon::setFieldType(FieldLevel field)
+{
+    this->level = field;
+}
+
+std::vector<std::shared_ptr<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>>> Hexagon::getElements()
+{
+    return elementsList;
+}
+
+void Hexagon::addElement(std::shared_ptr<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>> element)
+{
+    elementsList.push_back(element);
+}
+
+void Hexagon::removeElement(std::shared_ptr<std::variant<Caravan, Barbarian, BarbarianVillage, ControlPawn, City>> element)
+{
+    elementsList.erase(std::remove(elementsList.begin(), elementsList.end(), element), elementsList.end());
+}
+
+void Hexagon::clearElement()
+{
+    elementsList.clear();
 }

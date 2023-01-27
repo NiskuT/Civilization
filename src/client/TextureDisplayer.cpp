@@ -1,14 +1,14 @@
 #include <client.hpp>
 #include <iostream>
 
-#define  FIRST_OFFSET_SCALE  (float(185) / float(1600))       // Offset of the first priority card 
-#define  PRIORITY_CARD_OFFSET (float(249) / float(1600))      // Offset between each card
-#define  PRIORITY_SCALE  (float(140) / float(900))
-#define  ACTION_SCALE (float(200) / float(1600))
-#define  FIRST_OFFSET_ACTION_SCALE (float(200) / float(900))   
-#define  ACTION_CARD_OFFSET (float(140)/ float(900))            // Offset between each action cards      
+#define FIRST_OFFSET_SCALE (float(185) / float(1600))   // Offset of the first priority card
+#define PRIORITY_CARD_OFFSET (float(249) / float(1600)) // Offset between each card
+#define PRIORITY_SCALE (float(140) / float(900))
+#define ACTION_SCALE (float(200) / float(1600))
+#define FIRST_OFFSET_ACTION_SCALE (float(200) / float(900))
+#define ACTION_CARD_OFFSET (float(140) / float(900)) // Offset between each action cards
 
-namespace client {
+using namespace client;
 
 /*!
  * @brief Constructor
@@ -19,12 +19,12 @@ namespace client {
  */
 TextureDisplayer::TextureDisplayer(const std::string& filename)
 {    
-    std::unique_ptr<sf::Texture> resource(new sf::Texture());
-	if (!resource->loadFromFile(filename))
+    texture = std::make_shared<sf::Texture>();
+
+	if (!texture->loadFromFile(filename))
 		throw std::runtime_error("Holder::load - Failed to load " + filename);
 
-    texture = std::move(resource);
-    mutexTexture = std::unique_ptr<std::mutex>(new std::mutex);
+    mutexTexture = std::make_unique<std::mutex>();
 }
 
 void TextureDisplayer::setImageType(HudTextureType imageType)
@@ -38,7 +38,7 @@ void TextureDisplayer::setImageType(HudTextureType imageType)
 void TextureDisplayer::addSprite()
 {
     std::lock_guard<std::mutex> lock(*mutexTexture);
-    std::unique_ptr<sf::Sprite> sprite(new sf::Sprite());
+    std::unique_ptr<sf::Sprite> sprite = std::make_unique<sf::Sprite>();
     sprite->setTexture(*texture);
     sprites.push_back(std::move(sprite));
 }
@@ -51,7 +51,8 @@ void TextureDisplayer::addSprite()
 void TextureDisplayer::moveSpritePosition(int xOffset, int yOffset)
 {
     std::lock_guard<std::mutex> lock(*mutexTexture);
-    for (unsigned i = 0; i < this->sprites.size(); i++){
+    for (unsigned i = 0; i < this->sprites.size(); i++)
+    {
         sf::Vector2f pos = getSprite(i).getPosition();
         getSprite(i).setPosition(pos.x + xOffset, pos.y + yOffset);
     }
@@ -60,7 +61,8 @@ void TextureDisplayer::moveSpritePosition(int xOffset, int yOffset)
 /*!
  * @brief Delete all sprites
  */
-void TextureDisplayer::clearSprites(){
+void TextureDisplayer::clearSprites()
+{
     std::lock_guard<std::mutex> lock(*mutexTexture);
     this->sprites.clear();
 }
@@ -84,20 +86,16 @@ void TextureDisplayer::setSpritePosition(int index, int x, int y, int xOffset, i
     int xHexSize = hexSize[0] != 0 ? hexSize[0] : getSprite(index).getLocalBounds().width;
     int yHexSize = hexSize[1] != 0 ? hexSize[1] : getSprite(index).getLocalBounds().height;
 
-    if (y%2==0) {
-        //if (x !=14 ){
-            // divide by 2 to have the good offset & -1 because width count the size from 1
-            x = xOffset + (int)(xHexSize)/2  + x * (xHexSize - 1);
+    if (y % 2 == 0)
+    {
+        // divide by 2 to have the good offset & -1 because width count the size from 1
+        x = xOffset + (int)(xHexSize) / 2 + x * (xHexSize - 1);
 
-            // multiply by 3/4 to not count the supperposition of hexagon & -1 because height count the size from 1
-            y = yOffset + y + y * (yHexSize - 1) * 3 / 4;
-        /*}
-        else{
-            x = -100;
-            y = -100;
-        }*/
+        // multiply by 3/4 to not count the supperposition of hexagon & -1 because height count the size from 1
+        y = yOffset + y + y * (yHexSize - 1) * 3 / 4;
     }
-    else {
+    else
+    {
         x = xOffset + x * (xHexSize - 1);
         y = yOffset + y + y * (yHexSize - 1) * 3 / 4;
     }
@@ -137,12 +135,40 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
         break;
     }
 
+    case HudTextureType::chat:
+    {
+        xPos = 20;
+        yPos = 585;
+        break;
+    }
+
+    case HudTextureType::moveMap:
+    {
+        xPos = 20;
+        yPos = 653;
+        break;
+    }
+
+    case HudTextureType::leave:
+    {
+        xPos = 10;
+        yPos = 10;
+        break;
+    }
+
     case HudTextureType::techWheel:
     {
         xPos = windowLength;
         yPos = windowWidth;
         sprites[0]->setOrigin(getWidth() / 2, getHeight() / 2);
         sprites[0]->rotate(rotation);
+        break;
+    }
+
+    case HudTextureType::arrow:
+    {
+        xPos = windowLength - getWidth() * scale;
+        yPos = windowWidth - getHeight() * scale;
         break;
     }
 
@@ -176,7 +202,7 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
     }
 
     case HudTextureType::empty:
-    break;
+        break;
 
     default:
         std::cerr << "Error loading Image Type" << std::endl;
@@ -185,14 +211,13 @@ void TextureDisplayer::setHudSpritePosition(float scale, int windowLength, int w
 
     getSprite().setScale(scale, scale);
     getSprite().setPosition(xPos, yPos);
-
 }
 
 /*!
  * @brief Get the number of sprite in a TextureDisplayer
  */
 unsigned TextureDisplayer::getSize()
-{    
+{
     return sprites.size();
 }
 
@@ -201,8 +226,8 @@ unsigned TextureDisplayer::getSize()
  *
  * @param index is the position of the sprite in the textureDisplayer list of Sprite
  */
-sf::Sprite& TextureDisplayer::getSprite(unsigned index)
-{    
+sf::Sprite &TextureDisplayer::getSprite(unsigned index)
+{
     return *sprites[index];
 }
 
@@ -210,7 +235,7 @@ sf::Sprite& TextureDisplayer::getSprite(unsigned index)
  * @brief Get the Width of the texture
  */
 int TextureDisplayer::getWidth()
-{    
+{
     return getSize() > 0 ? getSprite().getLocalBounds().width : 0;
 }
 
@@ -218,7 +243,7 @@ int TextureDisplayer::getWidth()
  * @brief Get the Height of the texture
  */
 int TextureDisplayer::getHeight()
-{    
+{
     return getSize() > 0 ? getSprite().getLocalBounds().height : 0;
 }
 
@@ -226,11 +251,11 @@ int TextureDisplayer::getHeight()
  * @brief draw all the sprites of a TextureDisplayer
  * @param window window where the sprites are displayed
  */
-void TextureDisplayer::drawElementSprite(std::shared_ptr<sf::RenderWindow> window){
-    for (unsigned j = 0; j < getSize(); j++){
+void TextureDisplayer::drawTextureDisplayerSprite(std::shared_ptr<sf::RenderWindow> window)
+{
+    for (unsigned j = 0; j < getSize(); j++)
+    {
         std::lock_guard<std::mutex> lock(*mutexTexture);
         window->draw(getSprite(j));
     }
-}
-
 }

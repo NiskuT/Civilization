@@ -1,0 +1,20 @@
+{
+    "data" : 
+    [
+        {
+            "path": "/map/element/player-1-caravan.png"
+        },
+        {
+            "path": "/map/element/player-1.png"
+        },
+        {
+            "path": "/map/element/player-1.png"
+        },
+        {
+            "path": "/map/element/barbarians.png"
+        },
+        {
+            "path": "/map/element/barbarian-hutte.png"
+        }
+    ]
+}

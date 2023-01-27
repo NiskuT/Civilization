@@ -1,0 +1,60 @@
+{
+    "data" : 
+    [
+        {
+            "path": "/hud/barbare-wheel-0.png",
+            "scale": 0.0956,
+            "rotation": 45
+        },
+        {
+            "path": "/hud/barbare-wheel-1.png",
+            "scale": 0.0956,
+            "rotation": 45
+        },
+        {
+            "path": "/hud/barbare-wheel-2.png",
+            "scale": 0.0956,
+            "rotation": 45
+        },
+        {
+            "path": "/hud/barbare-wheel-3.png",
+            "scale": 0.0956,
+            "rotation": 45
+        },
+        {
+            "path": "/hud/barbare-wheel-4.png",
+            "scale": 0.0956,
+            "rotation": 45
+        },
+        {
+            "path": "/hud/tech-wheel.png",
+            "scale": 0.187,
+            "rotation": 178
+        },
+        {
+            "path": "/hud/ladder.png",
+            "scale": 0.78,
+            "rotation": 0
+        },
+        {
+            "path": "/hud/arrow.png",
+            "scale": 0.05,
+            "rotation": 0
+        },
+        {
+            "path": "/hud/chat-button.png",
+            "scale": 0.03,
+            "rotation": 0
+        },
+        {
+            "path": "/hud/move-button.png",
+            "scale": 0.03,
+            "rotation": 0
+        },
+        {
+            "path": "/hud/leave.png",
+            "scale": 0.03,
+            "rotation": 0
+        }
+    ]
+}

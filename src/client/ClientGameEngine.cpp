@@ -1,6 +1,8 @@
 #include <client.hpp>
 #include <iostream>
+#include <sstream>
 #include <sys/stat.h>
+#include <thread>
 
 #define REFRESH_ELEMENT 1
 
@@ -14,298 +16,488 @@
 #define RESOURCES_PATH "../resources"
 #endif
 
-namespace client
+using namespace client;
+
+/*!
+ * @brief Constructor
+ *
+ * Constructor of ClientGameEngine class
+ */
+ClientGameEngine::ClientGameEngine()
 {
-    /*!
-     * @brief Constructor
-     *
-     * Constructor of ClientGameEngine class
-     */
-    ClientGameEngine::ClientGameEngine()
+    myself = std::make_shared<shared::Player>();
+    myself->setUsername("PlayerTest");
+    clientMap = std::make_shared<shared::Map>();
+    playerTurn.store(false);
+    clientConnectedAndReady.store(false);
+    areTextureLoaded.store(false);
+}
+
+bool ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
+{
+    boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(serverAddress), serverPort);
+
+    boost::asio::ip::tcp::socket clientSocket(io_context);
+    try
     {
-        myself = std::make_shared<shared::Player>();
-        myself->setUsername("PlayerTest");
+        clientSocket.connect(endpoint);
+    }
+    catch (const boost::system::system_error &e)
+    {
+        std::cout << "Error: " << e.what() << std::endl;
+        return false;
+    }
+    myself->setSocket(clientSocket);
+
+    std::thread t(&ClientGameEngine::startReceiving, this);
+
+    {
+        std::lock_guard<std::mutex> lock(myself->socketWriteMutex);
+        std::string msg = this->gameId + " " + myself->getName() + "\n";
+        boost::asio::write(myself->getSocket(), boost::asio::buffer(msg));
     }
 
-    /*!
-     * @brief Quentin
-     * @param serverAddress
-     * @param serverPort
-     */
-    void ClientGameEngine::connect(const std::string &serverAddress, int serverPort)
+    t.detach();
+
+    return true;
+}
+
+void ClientGameEngine::startReceiving()
+{
+    std::cout << "Starting receiving" << std::endl;
+
+    while (myself->connectedToSocket.load())
     {
-        boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(serverAddress), serverPort);
 
-        boost::asio::ip::tcp::socket clientSocket(io_context);
-        try
+        boost::asio::streambuf receiveBuffer;
+        boost::system::error_code error;
         {
-            clientSocket.connect(endpoint);
-        }
-        catch (const boost::system::system_error &e)
-        {
-            std::cout << "Error: " << e.what() << std::endl;
-            exit(1);
-        }
-        myself->setSocket(clientSocket);
-        myself->state = shared::PlayerState::Connected;
-
-        std::thread t(&ClientGameEngine::startReceiving, this);
-
-        {
-            std::lock_guard<std::mutex> lock(myself->socketWriteMutex);
-            std::string msg = this->gameId + " " + myself->getName() + "\n";
-            boost::asio::write(myself->getSocket(), boost::asio::buffer(msg));
+            std::lock_guard<std::mutex> lock(myself->socketReadMutex);
+            boost::asio::read_until(myself->getSocket(), receiveBuffer, '\n', error);
         }
 
-        t.detach();
-    }
-
-    /*!
-     * @brief Quentin
-     */
-    void ClientGameEngine::startReceiving()
-    {
-        std::cout << "Starting receiving" << std::endl;
-
-        while (myself->state == shared::PlayerState::Connected)
+        if (error == boost::asio::error::operation_aborted)
         {
-
-            boost::asio::streambuf receiveBuffer;
-            boost::system::error_code error;
-            {
-                std::lock_guard<std::mutex> lock(myself->socketReadMutex);
-                boost::asio::read_until(myself->getSocket(), receiveBuffer, '\n', error);
-            }
-
-            if (error == boost::asio::error::operation_aborted)
-            {
-                myself->disconnectPlayer();
-                continue;
-            }
-            if (receiveBuffer.size() > 0)
-            {
-                std::string messageReceived(
-                    boost::asio::buffers_begin(receiveBuffer.data()),
-                    boost::asio::buffers_end(receiveBuffer.data()));
-
-                receiveBuffer.consume(receiveBuffer.size());
-
-                if (messageReceived.find("response") == 0)
-                {
-                    registerServerAnswer(messageReceived);
-                }
-                else
-                {
-                    processServerRequest(messageReceived);
-                }
-            }
+            myself->disconnectPlayer();
+            continue;
+        }
+        if (receiveBuffer.size() > 0)
+        {
+            processMessage(receiveBuffer);
+            receiveBuffer.consume(receiveBuffer.size());
         }
     }
+}
 
-    /*!
-     * @brief Quentin
-     * @param
-     */
-    void ClientGameEngine::registerServerAnswer(const std::string &response)
+void ClientGameEngine::processMessage(boost::asio::streambuf &receiveBuffer)
+{
+    std::istream receiveStream(&receiveBuffer);
+    std::string messageReceived;
+    while (std::getline(receiveStream, messageReceived))
     {
-        std::lock_guard<std::mutex> lock(myself->qAndA.sharedDataMutex);
-        myself->qAndA.answer = response;
-        myself->qAndA.answerReady = true;
-        myself->qAndA.condition.notify_one();
+        if (messageReceived.size() == 0)
+        {
+            continue;
+        }
+        else if (messageReceived.find("response") == 0)
+        {
+            registerServerAnswer(messageReceived);
+        }
+        else if (messageReceived.find("binary") == 0) // binary reception
+        {
+            size_t size = std::stoi(messageReceived.substr(7));
+            std::string data = binary.receive(myself, receiveStream, size);
+            registerServerAnswer(data);
+        }
+        else if (messageReceived.find("rulesturn") == 0) // binary reception without response
+        {
+            // shared::RuleArgsStruct ruleArgs;
+            // std::cout << messageReceived << std::endl;
+            // binary.castToObject(messageReceived.substr(10), ruleArgs);
+            // // for (auto &player : ruleArgs.playerList)
+            // // {
+            // //     if (player->getName() == myself->getName())
+            // //     {
+            // //         myself = player;
+            // //     }
+            // // }
+            // ruleArgs.gameMap = clientMap;
+
+            // shared::Rules rules;
+            // rules.runTheRule(ruleArgs);
+        }
+        else
+        {
+            processServerRequest(messageReceived);
+        }
+    }
+}
+
+void checkOk(std::string &response)
+{
+    if (response.find("ok") == std::string::npos)
+    {
+        std::cout << "Error in server response: " << response << std::endl;
+        exit(1);
+    }
+}
+
+void ClientGameEngine::generateMap(const unsigned height, const unsigned width, const int seed)
+{
+    std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
+    lock.unlock();
+    if (myself->connectedToSocket.load() == false)
+    {
+        std::cout << "You are not connected to the server" << std::endl;
+        exit(1);
+    }
+    else if (clientConnectedAndReady.load() == false)
+    {
+        std::cout << "Server is not ready" << std::endl;
+        exit(1);
     }
 
-    /*!
-     * @brief Quentin
-     * @param request
-     */
-    void ClientGameEngine::processServerRequest(const std::string &request)
+    if (height > 0)
+    {
+        lock.lock();
+        myself->qAndA.question = "setmapparam height " + std::to_string(height) + "\n";
+        lock.unlock();
+        askServer();
+        checkOk(myself->qAndA.answer);
+    }
+    if (width > 0)
+    {
+        lock.lock();
+        myself->qAndA.question = "setmapparam width " + std::to_string(width) + "\n";
+        lock.unlock();
+        askServer();
+        checkOk(myself->qAndA.answer);
+    }
+    lock.lock();
+    myself->qAndA.question = "setmapparam generate " + std::to_string(seed) + "\n";
+    lock.unlock();
+    askServer();
+    checkOk(myself->qAndA.answer);
+}
+
+void ClientGameEngine::loadMap()
+{
+    if (myself->connectedToSocket.load() == false)
+    {
+        std::cout << "You are not connected to the server" << std::endl;
+        exit(1);
+    }
+    else if (clientConnectedAndReady.load() == false)
+    {
+        std::cout << "Server is not ready" << std::endl;
+        exit(1);
+    }
+    std::unique_lock<std::mutex> lock(myself->qAndA.sharedDataMutex);
+    myself->qAndA.question = "getmap\n";
+    lock.unlock();
+
+    askServer();
+    lock.lock();
+    if (clientMap == nullptr)
+    {
+        clientMap = std::make_shared<shared::Map>();
+    }
+    binary.castToObject(myself->qAndA.answer, *clientMap);
+    lock.unlock();
+}
+
+void ClientGameEngine::registerServerAnswer(const std::string &response)
+{
+    std::lock_guard<std::mutex> lock(myself->qAndA.sharedDataMutex);
+    myself->qAndA.answer = response;
+    myself->qAndA.answerReady = true;
+    myself->qAndA.condition.notify_one();
+}
+
+void ClientGameEngine::processServerRequest(std::string request)
+{
+    if (request.find("chat") == 0)
+    {
+        request = request.substr(5);
+        printChat(request);
+    }
+    else if (request.find("playturn") == 0)
+    {
+        playerTurn.store(true);
+    }
+    else if (request.find("connected") == 0)
+    {
+        request = request.substr(10);
+        clientConnectedAndReady.store(true);
+
+        serverGameId = request.substr(request.length()-6);
+        printChat(request);
+    }
+    else if (request.find("newplayer") == 0)
+    {
+        std::string player = request.substr(23);
+        if (clientGame != nullptr)
+        {
+            clientGame->addPlayer(player);
+        }
+        request = request.substr(10) + " join the game";
+        printChat(request);
+    }
+    else if (request.find("infoplayer") == 0)
+    {
+        std::string player = request.substr(11);
+        if (clientGame != nullptr)
+        {
+            clientGame->addPlayer(player);
+        }
+    }
+    else
     {
         std::cout << "Received request: " << request << std::endl;
     }
+}
 
-    /*!
-     * @brief Quentin
-     */
-    void ClientGameEngine::askServer()
+void ClientGameEngine::printChat(const std::string &message)
+{
+    if (clientGame == nullptr)
     {
-        myself->qAndA.answerReady = false;
+        return;
+    }
+    if (clientGame->chatBox != nullptr)
+    {
+        size_t firstSpace = message.find(" ");
+        std::string chatTime = message.substr(0, firstSpace);
+        size_t secondSpace = message.find(" ", firstSpace + 1);
+        std::string chatUsername = message.substr(firstSpace + 1, secondSpace - firstSpace - 1);
+        std::string chatMessage = message.substr(secondSpace + 1);
+
+        clientGame->chatBox->updateChat(chatTime, chatUsername, chatMessage);
+    }
+}
+
+void ClientGameEngine::askServer()
+{
+    std::unique_lock<std::mutex> responseLock(myself->qAndA.sharedDataMutex);
+    myself->qAndA.answerReady = false;
+    {
+        std::lock_guard<std::mutex> lock(myself->socketWriteMutex);
+        boost::asio::write(myself->getSocket(), boost::asio::buffer(myself->qAndA.question));
+    }
+
+    myself->qAndA.condition.wait(responseLock, [&]
+                                 { return myself->qAndA.answerReady; });
+
+    std::string response = myself->qAndA.answer;
+    myself->qAndA.answerReady = false;
+}
+
+/*!
+ * @brief Print where the user click on the GameWindow
+ * @param x position on x axis
+ * @param y position on y axis
+ */
+void ClientGameEngine::handleInformation(int x, int y)
+{
+    std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
+}
+
+/*!
+ * @brief Print which priority card the user wants to play and its difficulty
+ * @param typePlayed type of the priority card played (economy, science, culture, ...)
+ * @param difficulty level of difficulty played (0 to 4 for the 5 fields)
+ */
+void ClientGameEngine::handlePriorityCardPlay(std::string typePlayed, int difficulty, int boxes)
+{
+    std::cout << "User wants to play " << typePlayed << " with a difficulty of " << difficulty << " and with " << boxes << " boxes" << std::endl;
+}
+
+/*!
+ * @brief Change the Window for nothing, Menu or Game
+ * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
+ */
+void ClientGameEngine::handleQuitMenu(bool quitDef)
+{
+    if (quitDef)
+    {
+        runningWindow.store(0);
+        // myself->disconnectPlayer();
+    }
+    else
+    {
+        runningWindow.store(runningWindow == MENU ? GAME : MENU);
+    }
+}
+
+/*!
+ * @brief A player is connecting to a Game
+ * @param id game ID, = new for a new Game
+ * @param username player username
+ * @param server serveur adresse
+ * @param port port number
+ */
+bool ClientGameEngine::tryConnection(std::string id, std::string username, std::string server, std::string port)
+{
+    myself->setUsername(username);
+
+    int portNumber;
+    std::stringstream sStream(port);
+    if ((sStream >> portNumber).fail())
+    {
+        return false;
+    }
+
+    gameId = id;
+
+    return connect(server, portNumber);
+}
+
+void ClientGameEngine::waitToBeReady()
+{
+    while (clientConnectedAndReady.load() == false)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+}
+
+/*!
+ * @brief Start the loop that manage the GameWindow
+ */
+void ClientGameEngine::startGameWindow()
+{
+    if (myself->connectedToSocket.load() && gameId == "new")
+    {
+        waitToBeReady();
+        generateMap(11, 15, rand() % 1000000000);
+        loadMap();
+    }
+    else if (myself->connectedToSocket.load())
+    {
+        waitToBeReady();
+        loadMap();
+    }
+    else
+    {
+        std::cout << "You are not connected to the server" << std::endl;
+        std::cout << "Map has been generated locally." << std::endl;
+        clientMap->generateRandomMap(rand() % 1000000000);
+    }
+
+    clientGame->mapShared = clientMap;
+    clientGame->startGame();
+}
+
+/*!
+ * @brief Start the loop that manage the MenuWindow
+ */
+void ClientGameEngine::startMenuWindow()
+{
+    clientMenu->startMenu();
+}
+
+/*!
+ * @brief Loop that manage the entire Engine
+ */
+void ClientGameEngine::renderGame()
+{
+    clientWindow = std::make_shared<sf::RenderWindow>();
+    clientWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH),
+                         "Civilization VII",
+                         sf::Style::Close);
+
+    clientWindow->setPosition(sf::Vector2i(0, 0));
+
+    clientGame = std::make_unique<GameWindow>();
+    clientMenu = std::make_unique<MenuWindow>();
+
+    clientMenu->gameEnginePtr = this;
+    clientGame->gameEnginePtr = this;
+
+    while (runningWindow.load())
+    {
+        if (runningWindow.load() == GAME)
         {
-            std::lock_guard<std::mutex> lock(myself->socketWriteMutex);
-            boost::asio::write(myself->getSocket(), boost::asio::buffer(myself->qAndA.question));
-        }
-
-        std::unique_lock<std::mutex> responseLock(myself->qAndA.sharedDataMutex);
-        myself->qAndA.condition.wait(responseLock, [&]
-                                     { return myself->qAndA.answerReady; });
-
-        std::string response = myself->qAndA.answer;
-        std::cout << "Received response: " << response << std::endl;
-        myself->qAndA.answerReady = false;
-    }
-
-    /*!
-     * @brief Print where the user click on the GameWindow
-     * @param x position on x axis 
-     * @param y position on y axis 
-     */
-    void ClientGameEngine::handleInformation(int x, int y)
-    {
-        if (x == -1) {
-        std::cout << "User click on the priority card " << y << std::endl;
-        }
-        else {
-        std::cout << "User click on the Hex x=" << x << " & y=" << y << std::endl;
-        }
-    }   
-
-    /*!
-     * @brief Change the Window for nothing, Menu or Game
-     * @param quitDef if quitDef is true, the game stop, else it change Menu to Game
-     */
-    void ClientGameEngine::handleQuitMenu(bool quitDef)
-    {
-        std::lock_guard<std::mutex> lock(mutexRunningEngine);
-        if (quitDef)
-            runningWindow = 0;
-        else
-            runningWindow = runningWindow == MENU ? GAME : MENU;
-    }
-
-    /*!
-     * @brief Start the loop that manage the GameWindow
-     */
-    void ClientGameEngine::startGameWindow()
-    {
-        clientGame.startGame(
-            clientWindow, [this](bool quitDef)
-            { handleQuitMenu(quitDef); },
-            [this](int x, int y)
-            { handleInformation(x, y); });
-    }
-
-    /*!
-     * @brief Start the loop that manage the MenuWindow
-     */
-    void ClientGameEngine::startMenuWindow()
-    {
-        clientMenu.startMenu(clientWindow, [this](bool quitDef)
-                             { handleQuitMenu(quitDef); });
-    }
-
-    /*!
-     * @brief Loop that manage the entire Engine
-     */
-    void ClientGameEngine::renderGame()
-    {
-        clientWindow = std::make_shared<sf::RenderWindow>();
-        clientWindow->create(sf::VideoMode(WINDOW_LENGTH, WINDOW_WIDTH), "Civilization VII", sf::Style::Close);
-        clientWindow->setPosition(sf::Vector2i(0, 0));
-
-        while (true)
-        {
-
-            std::unique_lock<std::mutex> lockGlobalWhile(mutexRunningEngine);
-            if (!runningWindow)
-            {
-                lockGlobalWhile.unlock();
-                clientWindow->close();
-                return;
-            }
-            lockGlobalWhile.unlock();
-
             playGame();
+        }
+        else if (runningWindow.load() == MENU)
+        {
             playMenu();
         }
     }
+    clientWindow->close();
+}
 
-    /*!
-     * @brief Loop that is used when the client is in GameMode
-     */
-    void ClientGameEngine::playGame()
+/*!
+ * @brief Loop that is used when the client is in GameMode
+ */
+void ClientGameEngine::playGame()
+{
+
+    std::thread t(&ClientGameEngine::startGameWindow, this);
+
+    long lastUpdateTimer = clientGame->getCurrentTime();
+
+    while (areTextureLoaded.load() == false);
+
+    while (runningWindow.load() == GAME)
     {
-        std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
-        if (runningWindow == GAME)
+        if (clientGame->getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
         {
-            lockIf.unlock();
-
-            std::thread t(&ClientGameEngine::startGameWindow, this);
-
-            long lastUpdateTimer = clientGame.getCurrentTime();
-            struct stat file_stat;
-            std::string file_path = RESOURCES_PATH "/img/map/files.json";
-            if (stat(file_path.c_str(), &file_stat) == -1)
-            {
-                std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
-            }
-            time_t last_modified = file_stat.st_mtime;
-
-            while (true)
-            {
-
-                std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
-                if (runningWindow != GAME)
-                {
-                    lockWhile.unlock();
-                    t.join();
-                    break;
-                }
-                lockWhile.unlock();
-
-                if (clientGame.getCurrentTime() - lastUpdateTimer > REFRESH_ELEMENT)
-                {
-
-                    if (stat(file_path.c_str(), &file_stat) == -1)
-                    {
-                        std::cerr << "Erreur lors de l'obtention des informations sur le fichier " << file_path << '\n';
-                    }
-
-                    time_t modified = file_stat.st_mtime;
-                    lastUpdateTimer = clientGame.getCurrentTime();
-
-                    if (modified != last_modified)
-                    {
-                        last_modified = modified;
-                        clientGame.updateElementTexture();
-                        turn++;
-                    }
-                }
-            }
+            lastUpdateTimer = clientGame->getCurrentTime();
+            clientGame->updateElementTexture();
         }
-        else
+        if (playerTurn.load())
         {
-            lockIf.unlock();
+            playTurn();
         }
     }
+    t.join();
+}
 
-    /*!
-     * @brief Loop that is used when the client is in MenuMode
-     */
-    void ClientGameEngine::playMenu()
-    {
-        std::unique_lock<std::mutex> lockIf(mutexRunningEngine);
-        if (runningWindow == MENU)
-        {
-            lockIf.unlock();
+void ClientGameEngine::playTurn()
+{
+    shared::RuleArgsStruct ruleArgsStruct;
+    ruleArgsStruct.ruleId = shared::CardsEnum::science;
+    ruleArgsStruct.numberOfBoxUsed = 0;
+    ruleArgsStruct.caravanMovementPath.push_back({0, 1});
+    ruleArgsStruct.caravanMovementPath.push_back({4, 8});
+    ruleArgsStruct.caravanMovementPath.push_back({5, 6});
+    ruleArgsStruct.resourceToGet = shared::ResourceEnum::oil;
+    ruleArgsStruct.cardToGetABox = shared::CardsEnum::economy;
+    ruleArgsStruct.positionToNuke = {3, 4};
+    ruleArgsStruct.pawnsPositions.push_back({1, 1});
+    ruleArgsStruct.pawnsPositions.push_back({2, 2});
+    ruleArgsStruct.pawnsPositions.push_back({3, 3});
+    ruleArgsStruct.militaryCardAttack = true;
+    ruleArgsStruct.industryCardBuildWonder = true;
+    ruleArgsStruct.positionOfWonder = {4, 5};
+    ruleArgsStruct.positionOfCity = {6, 7};
+    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::economy);
+    ruleArgsStruct.cardsToImprove.push_back(shared::CardsEnum::military);
 
-            std::thread t(&ClientGameEngine::startMenuWindow, this);
+    std::string struc;
+    binary.castToBinary(ruleArgsStruct, struc);
+    binary.send(myself, struc);
+    playerTurn.store(false);
+}
 
-            while (true)
-            {
+/*!
+ * @brief Loop that is used when the client is in MenuMode
+ */
+void ClientGameEngine::playMenu()
+{
+    std::thread t(&ClientGameEngine::startMenuWindow, this);
+    t.join();
+}
 
-                std::unique_lock<std::mutex> lockWhile(mutexRunningEngine);
-                if (runningWindow != MENU)
-                {
-                    lockWhile.unlock();
-                    t.join();
-                    break;
-                }
-                lockWhile.unlock();
-            }
-        }
-        else
-        {
-            lockIf.unlock();
-        }
-    }
-
+/*!
+ * @brief Detect an intersection between a point and a rect
+ * @param point the point
+ * @param rectangle the rectangle
+ */
+bool ClientGameEngine::intersectPointRect(sf::Vector2i point, sf::FloatRect rectangle)
+{
+    return (point.x >= rectangle.left &&
+            point.x <= rectangle.left + rectangle.width &&
+            point.y >= rectangle.top &&
+            point.y <= rectangle.top + rectangle.height);
 }

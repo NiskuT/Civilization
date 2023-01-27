@@ -1,6 +1,4 @@
 #include <shared.hpp>
-#include <ctime>
-#include <iostream>
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE( MapTest )
@@ -16,11 +14,18 @@ BOOST_AUTO_TEST_CASE( constructorAndGetters )
 
     BOOST_CHECK(map.getMapWidth() == 20);
     BOOST_CHECK(map.getMapHeight() == 15);
+
+    map.setMapHeight(23);
+    map.setMapWidth(12);
+
+    BOOST_CHECK(map.getMapWidth() == 12);
+    BOOST_CHECK(map.getMapHeight() == 23);
 }
 
 BOOST_AUTO_TEST_CASE( operatorParentheses )
 {
     shared::Map map(20,15);
+    map.init();
 
     for (int i = 0; i < 20; i++)
     {

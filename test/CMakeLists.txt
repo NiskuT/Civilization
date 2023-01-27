@@ -12,6 +12,7 @@ find_package(Boost 1.50 REQUIRED COMPONENTS unit_test_framework)
 message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 message(STATUS "Boost include directory: ${Boost_INCLUDE_DIRS}")
 
+set(jsoncpp_lib_static ${CMAKE_BINARY_DIR}/lib/json/lib/libjsoncpp.a)
 
 function(add_custom_test name)
   # Parse input parameters
@@ -34,7 +35,7 @@ function(add_custom_test name)
 
   # Compile and link test program
   add_executable(${target_name} ${sources})
-  add_dependencies(${target_name} generate-headers)
+  add_dependencies(${target_name} generate-headers jsoncpp)
   target_compile_definitions(${target_name} PRIVATE
     BOOST_TEST_MAIN
     BOOST_TEST_DYN_LINK
@@ -45,11 +46,13 @@ function(add_custom_test name)
     ${ARG_TEST_LIBRARIES}
     $<TARGET_NAME:shared_static>
     $<TARGET_NAME:client_static>
-    #$<TARGET_NAME:server_static>
+    $<TARGET_NAME:server_static>
+    ${jsoncpp_lib_static}
     )
   target_include_directories(${target_name} PRIVATE
     ${Boost_INCLUDE_DIRS}
     ${ARG_TEST_INCLUDES}
+    ${CMAKE_SOURCE_DIR}/3rdParty/jsoncpp-src/include
     )
   set_target_properties(${target_name}
     PROPERTIES
@@ -71,7 +74,7 @@ endfunction()
 
 add_subdirectory(shared)
 add_subdirectory(client)
-#add_subdirectory(server)
+add_subdirectory(server)
 
 
 

@@ -16,7 +16,7 @@ This game is a strategy board game in which two to four players act as the leade
 If you want to know more about the rules and the documentation of the game you can click [here](https://niskut.github.io/Civilization/index.html).
 To read the rules, go fisrt on the tab called "List of pages" and then click on "rules".
 
-<img src="./resources/img/hud/hud.png">
+<img src="./resources/hud/hud.png">
 
 
 ## Constraints

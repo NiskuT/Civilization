@@ -3,7 +3,7 @@
     [
         {
             "type": "economy",
-            "path": "/img/hud/priority-card-economy.png",
+            "path": "/hud/priority-card-economy.png",
             "title": "ECONOMY",
             "body": [
                 "Move 1 caravan from 3 steps on X_field",
@@ -15,7 +15,7 @@
         },
         {
             "type": "army",
-            "path": "/img/hud/priority-card-army.png",
+            "path": "/hud/priority-card-army.png",
             "title": "ARMY",
             "body": [
                 "Reinforce X pawns or 2 attack 2 steps from you with a fight score of X",
@@ -26,7 +26,7 @@
         },
         {
             "type": "science",
-            "path": "/img/hud/priority-card-science.png",
+            "path": "/hud/priority-card-science.png",
             "title": "SCIENCE",
             "body": [
                 "Tech wheel += X",
@@ -37,7 +37,7 @@
         },
         {
             "type": "culture",
-            "path": "/img/hud/priority-card-culture.png",
+            "path": "/hud/priority-card-culture.png",
             "title": "CULTURE",
             "body": [
                 "Place 2 pawns on X_field close to the city",
@@ -48,7 +48,7 @@
         },
         {
             "type": "industry",
-            "path": "/img/hud/priority-card-industry.png",
+            "path": "/hud/priority-card-industry.png",
             "title": "INDUSTRY",
             "body": [
                 "Build a city from 2 steps from a pawn on X_field or build a wonders from X resources",
