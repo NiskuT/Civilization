@@ -33,7 +33,7 @@
 #define RESOURCES_PATH "../resources"
 #endif
 
-const sf::Color buttonColor = sf::Color(247, 200, 195, 255);
+const sf::Color buttonColor = sf::Color(247, 200, 195);
 
 using namespace client;
 

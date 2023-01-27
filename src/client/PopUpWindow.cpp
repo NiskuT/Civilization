@@ -25,6 +25,10 @@ void setText(std::unique_ptr<sf::Text> &text, sf::Font &font, int size)
     text->setFillColor(sf::Color::Black);
 }
 
+
+/*!
+ * @brief Function to set the window to choose the number of cases to use
+ */
 void PopUpWindow::setUpValidateBoxesWindow()
 {
 
@@ -73,6 +77,8 @@ void PopUpWindow::setUpValidateBoxesWindow()
  * Constructor of PopUpWindow class
  * @param windowLength length of the window
  * @param windowWidth width of the window
+ * @param data data of the json file (parameters of the buttons)
+ * @param isActive true: the window is the validate boxes window, false: the window is the winner window
  */
 PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &data, bool isActive)
 {
@@ -107,7 +113,9 @@ PopUpWindow::PopUpWindow(int windowLength, int windowWidth, const Json::Value &d
     }
 }
 
-
+/*!
+ * @brief Function to draw the common elements of the 2 windows (validateBoxes and Winner)
+ */
 void drawGeneral(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<sf::RectangleShape> &blackBackgroundButton, sf::Sprite littleBackground, std::unique_ptr<sf::Text> &title)
 {
     window->draw(*blackBackgroundButton);
@@ -115,12 +123,18 @@ void drawGeneral(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<sf::R
     window->draw(*title);
 }
 
+/*!
+ * @brief Function to draw the elements of the winner window
+ */
 void PopUpWindow::drawWinnerWindow(std::shared_ptr<sf::RenderWindow> window)
 {
     drawGeneral(window, blackBackground->buttonRect, littleBackground->getSprite(), title);
     window->draw(*body);
 }
 
+/*!
+ * @brief Function to draw the elements of the validate boxes window
+ */
 void PopUpWindow::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWindow> window)
 {
     drawGeneral(window, blackBackground->buttonRect, littleBackground->getSprite(), title);
@@ -131,6 +145,9 @@ void PopUpWindow::drawValidateBoxesButtons(std::shared_ptr<sf::RenderWindow> win
     window->draw(doneTexture->getSprite());
 }
 
+/*!
+ * @brief Function to center the text on the winner window
+ */
 void PopUpWindow::centerText()
 {
     body->setPosition(
