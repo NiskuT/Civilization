@@ -28,8 +28,11 @@ var menudata={children:[
 {text:"The game",url:"./md_docs_rules_rules.html",children:[
 {text:"Rules",url:"./md_docs_rules_rules.html"},
 {text:"Specific actions",url:"./md_docs_rules_recap_of_specific_actions.html"},
-{text:"Graphic s",url:"./md_docs_rules_graphic_elements.html"},
-{text:"Rendering",url:"./md_docs_rendering.html"}]},
+{text:"Graphics",url:"./md_docs_rules_graphic_elements.html"},
+{text:"Rendering",url:"./md_docs_rendering.html"},
+{text:"Rules implementation",url:"./md_docs_rules.html"},
+{text:"multithreading and network",url:"./md_docs_multithreading_network.html"},
+{text:"IA",url:"./md_docs_IA.html"}]},
 {text:"Development",url:"./md_docs_development_process.html",children:[
 {text:"Our development process ",url:"./md_docs_development_process.html"},
 {text:"CI/CD",url:"./md_docs_continuous_integration.html"}]},

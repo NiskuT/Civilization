@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Civilization: Rendering: Strategy and Design</title>
+<title>Civilization: Multithreading and Network</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,18 +62,15 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Rendering: Strategy and Design </div>  </div>
+<div class="title">Multithreading and Network </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md26"></a>
-Software Design</h1>
-<p>Our display is handled by a class called <code>GameWindow</code>. This class has various <code>TextureDisplayer</code> attributes or <code>TextureDisplayer</code> arrays that display elements (a class that has sprites, a texture and several methods). Moreover it has a cursor (<code>sf::Cursor</code>), a game window (<code>sf::RenderWindow</code>) and a map that comes from shared with the server data). In <code>GameWindow</code>, we initialize all the objects we want to display and place them in different places in the window. This class also detects different interactions like clicks or keyboard presses.</p>
-<h2><a class="anchor" id="autotoc_md27"></a>
-TextureDisplayer</h2>
-<p>The <code>TextureDisplayer</code> class takes as parameter a path and has as attributes a texture, a sprite vector and a type. This class allows to move specific sprites, to get information about the different elements of sfml and to manage objects.</p>
-<h2><a class="anchor" id="autotoc_md28"></a>
-PriorityCardStruct &amp; ActionCardStruct</h2>
-<p>The <code>PriorityCardStruct</code> and <code>ActionCardStruct</code> classes are structures that display the different action cards that are present in the player's HUD. They both have texture attributes (<code>TextureDisplayer</code>), a title (<code>sf::Text</code>), a type (string), a body (<code>sf::Text</code>) and a bonus (int). Its different elements allow to display all the right cards at the right places. <code>PriorityCardStruct</code> has in addition an array of strings named text which load at initialization all the possible texts for a card. </p>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md23"></a>
+Multithreading</h1>
+<p>Our game is designed to be multithreaded. On the client side, the game display runs in a separate thread from the game engine. Similarly, data reception from the network is launched in a dedicated thread. On the server side, each new client accepted launches a data reception function in a dedicated thread. When the game is ready to be launched, it is started in a dedicated thread.</p>
+<h1><a class="anchor" id="autotoc_md24"></a>
+Network connection</h1>
+<p>For the network, we chose a TCP connection between the client and the server. This connection has the advantage of being bidirectional, which allows us greater freedom to communicate. We have associated this with a command system that allows us to exchange data in the form of text or serialized binary data. In a communication regime established between the server and the client, the dedicated thread for reception only performs data reception. The sending is done from other threads of the client or server using mutexes for reading or writing to the socket. The server can send data to a single client, all clients, or even make a blocking request to one of the clients. A system with a question, an answer, and a condition_variable allows for a request between two entities and receiving the answer, which therefore arrives in another thread. The thread responsible for data reception only performs functions with quick execution, to avoid blocking reception for an extended period of time. As a result, the server can make a request to a player and the player can make a request to the server completely simultaneously. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

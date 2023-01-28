@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-01-28 00:07:13</td>
+            <td class="headerValue">2023-01-28 00:08:57</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -69,25 +69,25 @@
 <a name="7"><span class="lineNum">       7 </span><span class="lineCov">       1905 :     this-&gt;level = FieldLevel::Grassland;</span></a>
 <a name="8"><span class="lineNum">       8 </span><span class="lineCov">       1905 : }</span></a>
 <a name="9"><span class="lineNum">       9 </span>            : </a>
-<a name="10"><span class="lineNum">      10 </span><span class="lineCov">       1798 : FieldLevel Hexagon::getFieldLevel()</span></a>
+<a name="10"><span class="lineNum">      10 </span><span class="lineCov">       1785 : FieldLevel Hexagon::getFieldLevel()</span></a>
 <a name="11"><span class="lineNum">      11 </span>            : {</a>
-<a name="12"><span class="lineNum">      12 </span><span class="lineCov">       1798 :     return this-&gt;level;</span></a>
+<a name="12"><span class="lineNum">      12 </span><span class="lineCov">       1785 :     return this-&gt;level;</span></a>
 <a name="13"><span class="lineNum">      13 </span>            : }</a>
 <a name="14"><span class="lineNum">      14 </span>            : </a>
-<a name="15"><span class="lineNum">      15 </span><span class="lineCov">        720 : void Hexagon::setFieldType(FieldLevel field)</span></a>
+<a name="15"><span class="lineNum">      15 </span><span class="lineCov">        713 : void Hexagon::setFieldType(FieldLevel field)</span></a>
 <a name="16"><span class="lineNum">      16 </span>            : {</a>
-<a name="17"><span class="lineNum">      17 </span><span class="lineCov">        720 :     this-&gt;level = field;</span></a>
-<a name="18"><span class="lineNum">      18 </span><span class="lineCov">        720 : }</span></a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">        713 :     this-&gt;level = field;</span></a>
+<a name="18"><span class="lineNum">      18 </span><span class="lineCov">        713 : }</span></a>
 <a name="19"><span class="lineNum">      19 </span>            : </a>
 <a name="20"><span class="lineNum">      20 </span><span class="lineCov">        264 : std::vector&lt;std::shared_ptr&lt;std::variant&lt;Caravan, Barbarian, BarbarianVillage, ControlPawn, City&gt;&gt;&gt; Hexagon::getElements()</span></a>
 <a name="21"><span class="lineNum">      21 </span>            : {</a>
 <a name="22"><span class="lineNum">      22 </span><span class="lineCov">        264 :     return elementsList;</span></a>
 <a name="23"><span class="lineNum">      23 </span>            : }</a>
 <a name="24"><span class="lineNum">      24 </span>            : </a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineCov">         52 : void Hexagon::addElement(std::shared_ptr&lt;std::variant&lt;Caravan, Barbarian, BarbarianVillage, ControlPawn, City&gt;&gt; element)</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">         46 : void Hexagon::addElement(std::shared_ptr&lt;std::variant&lt;Caravan, Barbarian, BarbarianVillage, ControlPawn, City&gt;&gt; element)</span></a>
 <a name="26"><span class="lineNum">      26 </span>            : {</a>
-<a name="27"><span class="lineNum">      27 </span><span class="lineCov">         52 :     elementsList.push_back(element);</span></a>
-<a name="28"><span class="lineNum">      28 </span><span class="lineCov">         52 : }</span></a>
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">         46 :     elementsList.push_back(element);</span></a>
+<a name="28"><span class="lineNum">      28 </span><span class="lineCov">         46 : }</span></a>
 <a name="29"><span class="lineNum">      29 </span>            : </a>
 <a name="30"><span class="lineNum">      30 </span><span class="lineCov">          3 : void Hexagon::removeElement(std::shared_ptr&lt;std::variant&lt;Caravan, Barbarian, BarbarianVillage, ControlPawn, City&gt;&gt; elementToRemove)</span></a>
 <a name="31"><span class="lineNum">      31 </span>            : {</a>
@@ -130,10 +130,10 @@
 <a name="68"><span class="lineNum">      68 </span><span class="lineCov">          3 :     }</span></a>
 <a name="69"><span class="lineNum">      69 </span><span class="lineCov">          3 : }</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        218 : void Hexagon::clearElement()</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        208 : void Hexagon::clearElement()</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : {</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        218 :     elementsList.clear();</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        218 : }</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        208 :     elementsList.clear();</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        208 : }</span></a>
 </pre>
       </td>
     </tr>

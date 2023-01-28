@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['recap_20of_20specific_20actions_237',['Recap of Specific Actions',['../md_docs_rules_recap_of_specific_actions.html',1,'']]],
-  ['rendering_3a_20strategy_20and_20design_238',['Rendering: Strategy and Design',['../md_docs_rendering.html',1,'']]],
-  ['rules_239',['Rules',['../md_docs_rules_rules.html',1,'']]]
+  ['multithreading_20and_20network_242',['Multithreading and Network',['../md_docs_multithreading_network.html',1,'']]]
 ];

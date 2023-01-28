@@ -6,5 +6,6 @@ var searchData=
   ['handleprioritycardplay_48',['handlePriorityCardPlay',['../classclient_1_1ClientGameEngine.html#a8101b0a8d38cb1712d69bac60751f5e6',1,'client::ClientGameEngine']]],
   ['handlequitmenu_49',['handleQuitMenu',['../classclient_1_1ClientGameEngine.html#a1e1229a79361b836afe8bb89cc1fc1ec',1,'client::ClientGameEngine']]],
   ['hexagon_50',['Hexagon',['../classshared_1_1Hexagon.html',1,'shared']]],
-  ['home_20_2d_20project_20civilization_51',['Home - Project Civilization',['../index.html',1,'']]]
+  ['home_20_2d_20project_20civilization_51',['Home - Project Civilization',['../index.html',1,'']]],
+  ['how_20rules_20are_20computed_52',['How rules are computed',['../md_docs_rules.html',1,'']]]
 ];
