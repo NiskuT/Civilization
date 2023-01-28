@@ -60,7 +60,7 @@
 #define DBG_GENCODE    6
 #define DBG_CORE       8
 
-#define SMALL_BUFFER    80
+#define SMALL_BUFFER    250
 #define BIG_BUFFER     512
 #define LARGE_BUFFER  4096
 #define HUGE_BUFFER  16384
@@ -212,7 +212,9 @@ namelist find_classes(umlclasslist current_class, batch *b);
 umlclasslist find_by_name(umlclasslist list, const char * name);
 
 int is_enum_stereo (char * stereo);
+int is_enum_class_stereo (char * stereo);
 int is_struct_stereo (char * stereo);
+int is_union_stereo (char * stereo);
 int is_typedef_stereo (char * stereo);
 int is_const_stereo (char * stereo);
 

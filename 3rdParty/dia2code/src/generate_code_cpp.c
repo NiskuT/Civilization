@@ -56,7 +56,7 @@ int is_scalar_type(char* name) {
         return 1;
     }    
     umlclassnode *ref = find_by_name (gb->classlist, name);
-    if (ref && is_enum_stereo(ref->key->stereotype)) {
+    if (ref && (is_enum_stereo(ref->key->stereotype) || is_enum_class_stereo(ref->key->stereotype) || is_union_stereo(ref->key->stereotype))) {
         return 1;
     }
     return 0;
@@ -103,8 +103,10 @@ pass_by_reference (umlclass *cl)
             return 0;
         return pass_by_reference (ref->key);
     }
-    return (!is_const_stereo (st) &&
-            !is_enum_stereo (st));
+    return (!is_const_stereo (st) 
+            && !is_enum_stereo (st) 
+            && !is_enum_class_stereo (st)
+            && !is_union_stereo (st));
 }
 
 static int
@@ -119,7 +121,9 @@ is_oo_class (umlclass *cl)
     return (!is_const_stereo (st) &&
             !is_typedef_stereo (st) &&
             !is_enum_stereo (st) &&
+            !is_enum_class_stereo (st) &&
             !is_struct_stereo (st) &&
+            !is_union_stereo (st) &&
             !eq (st, "CORBAUnion") &&
             !eq (st, "CORBAException"));
 }
@@ -610,8 +614,41 @@ gen_decl (declaration *d)
         indentlevel--;
         print ("};\n\n");
 
+    } else if (is_enum_class_stereo (stype)) {
+        print ("enum class %s {\n", name);
+        indentlevel++;
+        while (umla != NULL) {
+            char *literal = umla->key.name;
+            check_umlattr (&umla->key, name);
+            if (strlen (umla->key.type) > 0)
+                fprintf (stderr, "%s/%s: ignoring type\n", name, literal);
+            print ("%s", literal);
+            if (strlen (umla->key.value) > 0)
+                print (" = %s", umla->key.value);
+            if (umla->next)
+                emit (",");
+            emit ("\n");
+            umla = umla->next;
+        }
+        indentlevel--;
+        print ("};\n\n");
+
     } else if (is_struct_stereo (stype)) {
         print ("struct %s {\n", name);
+        indentlevel++;
+        while (umla != NULL) {
+            check_umlattr (&umla->key, name);
+            print ("%s %s", cppname (umla->key.type), umla->key.name);
+            if (strlen (umla->key.value) > 0)
+                print (" = %s", umla->key.value);
+            emit (";\n");
+            umla = umla->next;
+        }
+        indentlevel--;
+        print ("};\n\n");
+
+    } else if (is_union_stereo (stype)) {
+        print ("union %s {\n", name);
         indentlevel++;
         while (umla != NULL) {
             check_umlattr (&umla->key, name);
@@ -684,6 +721,7 @@ struct stdlib_includes {
    int limits;
    int map;
    int unordered_map;
+   int boost_serialize;
    int set;
    int list;
    int unordered_set;
@@ -693,9 +731,13 @@ struct stdlib_includes {
    int array;   
    int thread;
    int mutex;
+   int condition_variable;
    int random;
    int sfmlGraphics;
    int jsoncpp;
+   int boostAsio;
+   int json;
+   int variant;
 };
 
 void print_include_stdlib(struct stdlib_includes* si,char* name) {
@@ -756,6 +798,10 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            print ("#include <mutex>\n");
            si->mutex = 1;
        }
+       if (!si->condition_variable && strstr(name,"std::condition_variable")) {
+           print ("#include <condition_variable>\n");
+           si->condition_variable = 1;
+       }
        if (!si->thread && strstr(name,"std::thread")) {
            print ("#include <thread>\n");
            si->thread = 1;
@@ -769,6 +815,11 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        if (!si->unordered_map && strstr(name,"std::unordered_map")) {
            print ("#include <unordered_map>\n");
            si->unordered_map = 1;
+       }
+        if (!si->boost_serialize && strstr(name,"boost::serialization::access")) {
+           print("#include <boost/serialization/access.hpp>\n");
+           print("#include <boost/serialization/vector.hpp>\n");
+           si->boost_serialize = 1;
        }
        if (!si->unordered_set && strstr(name,"std::unordered_set")) {
            print ("#include <unordered_set>\n");
@@ -789,9 +840,7 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            si->random = 1;
        }
        if (!si->sfmlGraphics 
-       && (strstr(name,"sf::RenderWindow")
-       ||  strstr(name,"sf::VertexArray")
-       ||  strstr(name,"sf::Texture"))) {
+       && strstr(name,"sf::")) {
            print ("#include <SFML/Graphics.hpp>\n");
            si->sfmlGraphics = 1;
        }       
@@ -799,7 +848,20 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        && (strstr(name,"Json::") == name)) {
            print ("#include <json/json.h>\n");
            si->jsoncpp = 1;
-       }       
+       }
+       if (!si->boostAsio && strstr(name,"boost::asio")) {
+           print ("#include <boost/asio.hpp>\n");
+           si->boostAsio = 1;
+       }
+       if (!si->json && strstr(name,"Json::Value")) {
+           print ("#include <json/json.h>\n");
+           si->json = 1;
+       }
+       if (!si->variant && strstr(name,"std::variant")) {
+           print ("#include <variant>\n");
+           si->variant = 1;
+       }
+       
     }
 }
 

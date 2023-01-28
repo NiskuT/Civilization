@@ -1,0 +1,220 @@
+{
+    "data" : 
+    [
+        {
+            "path": "/map/element/ressource-oil.png",
+            "x": 0,
+            "y": 4
+        },
+        {
+            "path": "/map/element/ressource-stone.png",
+            "x": 2,
+            "y": 6
+        },
+        {
+            "path": "/map/element/ressource-antic.png",
+            "x": 6,
+            "y": 7
+        },
+        {
+            "path": "/map/element/ressource-stone.png",
+            "x": 7,
+            "y": 11
+        },
+        {
+            "path": "/map/element/ressource-diamond.png",
+            "x": 10,
+            "y": 6
+        },
+        {
+            "path": "/map/element/player-2.png",
+            "x": 1,
+            "y": 8
+        },
+        {
+            "path": "/map/element/player-2.png",
+            "x": 2,
+            "y": 9
+        },
+        {
+            "path": "/map/element/player-2.png",
+            "x": 2,
+            "y": 10
+        },
+        {
+            "path": "/map/element/player-2.png",
+            "x": 4,
+            "y": 10
+        },
+        {
+            "path": "/map/element/player-2.png",
+            "x": 5,
+            "y": 11
+        },
+        {
+            "path": "/map/element/player-2-reinforced.png",
+            "x": 1,
+            "y": 9
+        },
+        {
+            "path": "/map/element/player-2-reinforced.png",
+            "x": 3,
+            "y": 9
+        },
+        {
+            "path": "/map/element/player-2-reinforced.png",
+            "x": 3,
+            "y": 8
+        },
+        {
+            "path": "/map/element/player-2-reinforced.png",
+            "x": 5,
+            "y": 9
+        },
+        {
+            "path": "/map/element/player-2-reinforced.png",
+            "x": 6,
+            "y": 10
+        },
+        {
+            "path": "/map/element/player-2-mature.png",
+            "x": 2,
+            "y": 8
+        },
+        {
+            "path": "/map/element/player-2-capital.png",
+            "x": 3,
+            "y": 10
+        },
+        {
+            "path": "/map/element/player-2-city.png",
+            "x": 4,
+            "y": 8
+        },
+        {
+            "path": "/map/element/player-2-city.png",
+            "x": 5,
+            "y": 10
+        },
+        {
+            "path": "/map/element/player-2-caravan.png",
+            "x": 8,
+            "y": 11
+        },
+        {
+            "path": "/map/element/player-1.png",
+            "x": 5,
+            "y": 7
+        },
+        {
+            "path": "/map/element/player-1.png",
+            "x": 6,
+            "y": 5
+        },
+        {
+            "path": "/map/element/player-1.png",
+            "x": 6,
+            "y": 2
+        },
+        {
+            "path": "/map/element/player-1.png",
+            "x": 7,
+            "y": 3
+        },
+        {
+            "path": "/map/element/player-1.png",
+            "x": 7,
+            "y": 7
+        },
+        {
+            "path": "/map/element/player-1-reinforced.png",
+            "x": 6,
+            "y": 6
+        },
+        {
+            "path": "/map/element/player-1-reinforced.png",
+            "x": 4,
+            "y": 5
+        },
+        {
+            "path": "/map/element/player-1-reinforced.png",
+            "x": 6,
+            "y": 4
+        },
+        {
+            "path": "/map/element/player-1-reinforced.png",
+            "x": 8,
+            "y": 6
+        },
+        {
+            "path": "/map/element/player-1-capital.png",
+            "x": 5,
+            "y": 6
+        },
+        {
+            "path": "/map/element/player-1-mature.png",
+            "x": 7,
+            "y": 6
+        },
+        {
+            "path": "/map/element/player-1-city.png",
+            "x": 6,
+            "y": 3
+        },
+        {
+            "path": "/map/element/player-1-caravan.png",
+            "x": 7,
+            "y": 9
+        },
+        {
+            "path": "/map/element/state-city-science.png",
+            "x": 7,
+            "y": 10
+        },
+        {
+            "path": "/map/element/state-city-culture.png",
+            "x": 9,
+            "y": 12
+        },
+        {
+            "path": "/map/element/state-city-army.png",
+            "x": 9,
+            "y": 4
+        },
+        {
+            "path": "/map/element/barbarians.png",
+            "x": 0,
+            "y": 3
+        },
+        {
+            "path": "/map/element/barbarians.png",
+            "x": 1,
+            "y": 6
+        },
+        {
+            "path": "/map/element/barbarians.png",
+            "x": 6,
+            "y": 6
+        },
+        {
+            "path": "/map/element/barbarians.png",
+            "x": 8,
+            "y": 4
+        },
+        {
+            "path": "/map/element/barbarian-hutte.png",
+            "x": 0,
+            "y": 7
+        },
+        {
+            "path": "/map/element/barbarian-hutte.png",
+            "x": 2,
+            "y": 3
+        },
+        {
+            "path": "/map/element/barbarian-hutte.png",
+            "x": 9,
+            "y": 6
+        }
+    ]
+}

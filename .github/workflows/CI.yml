@@ -11,15 +11,15 @@ jobs:
     
     - name: Install tools
       run: |
-        sudo apt install lcov
-        sudo apt install gcovr
+        sudo sed -i 's|http://azure.archive.ubuntu.com|http://ubuntu.mirrors.ovh.net|g' /etc/apt/sources.list
+        sudo apt update
         sudo apt install libboost-all-dev
+        sudo apt-get install libsfml-dev
         
     - name: Configure CMake
-
       run: |
         mkdir build && cd build
-        cmake .. -DBUILD_CODE_COVERAGE=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
+        cmake .. -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
 
     - name: Build
       working-directory: ${{github.workspace}}/build
@@ -27,5 +27,8 @@ jobs:
 
     - name: Tests
       working-directory: ${{github.workspace}}/build/test
-      run: ctest --timeout 300
+      run: |
+        export DISPLAY=':99'
+        Xvfb :99 -ac -screen 0 1280x1024x24 &
+        ctest --verbose --timeout 300
       

@@ -7,5 +7,9 @@ src/*/*.hpp
 src/*/*/*.hpp
 3rdParty/libxml2/
 3rdParty/libxml2-src/
+3rdParty/jsoncpp/
+3rdParty/jsoncpp-src/
 html/
 .vscode/
+/include/*
+!/include/class-diagram.dia

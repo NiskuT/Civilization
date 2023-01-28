@@ -1,0 +1,98 @@
+{
+    "data" : 
+    [
+        {
+            "type": "Carthage",
+            "path": "/hud/action-card-army.png",
+            "body":"+1 FS agnst other SC for each pawn at 2 steps from the attacker"     
+        },
+
+        {
+            "type": "Kaboul",
+            "path": "/hud/action-card-army.png",
+            "body": "+3 FS agnst other SC"     
+        },
+
+        {
+            "type": "Mohenjo Daro",
+            "path": "/hud/action-card-culture.png",
+            "body": "Priority level to place pawns = priority-1"      
+        },
+
+        {
+            "type": "Kumasi",
+            "path": "/hud/action-card-culture.png",
+            "body": "Industry or Culture cards => Forest priority lvl = 1"    
+        },
+
+        {
+            "type": "Seoul",
+            "path": "/hud/action-card-science.png",
+            "body": "Round beginning : move a barbarian to a close empty field"
+
+        },
+
+        {
+            "type": "Geneva",
+            "path": "/hud/action-card-science.png",
+            "body": " Round beginning: exchange a player diplomacy card"      
+        },
+
+        {
+            "type": "Buenos Aires",
+            "path": "/hud/action-card-industry.png",
+            "body": "Wonders cost 2 less resources if you haven't it"     
+        },
+
+        {
+            "type": "Bruxelles",
+            "path": "/hud/action-card-industry.png",
+            "body": "Wonders cost 1 less resources for each mature city"      
+        },
+
+        { 
+            "type": "Player 1",
+            "path": "/hud/action-card-player-1.png",
+            "body": [
+                "Player pawns are considered yours for mature cities",
+                "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
+                "Attack +2 FS except against Player",
+                "Defense +2 FS except against Player"
+            ]
+        },
+
+        { 
+            "type": "Player 2",
+            "path": "/hud/action-card-player-2.png",
+            "body": [
+                "Player pawns are considered yours for mature cities",
+                "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
+                "Attack +2 FS except against Player",
+                "Defense +2 FS except against Player"
+            ]
+        },
+
+        { 
+            "type": "Player 3",
+            "path": "/hud/action-card-player-3.png",
+            "body": [
+                "Player pawns are considered yours for mature cities",
+                "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
+                "Attack +2 FS except against Player",
+                "Defense +2 FS except against Player"
+            ]
+        },
+
+        { 
+            "type": "Player 4",
+            "path": "/hud/action-card-player-4.png",
+            "body": [
+                "Player pawns are considered yours for mature cities",
+                "Your caravan in a plyr CC: place a box on the card of this plyr and get a resource",
+                "Attack +2 fight score except against Player",
+                "Defense +2 fight score except against Player"
+            ]
+        }
+
+    ]
+}

@@ -377,11 +377,23 @@ is_enum_stereo (char *stereo)
 }
 
 int
+is_enum_class_stereo (char *stereo)
+{
+    return (!strcasecmp(stereo, "enum class"));
+}
+
+int
 is_struct_stereo (char *stereo)
 {
     return (!strcasecmp(stereo, "struct") ||
             !strcasecmp (stereo, "structure") ||
             !strcmp (stereo, "CORBAStruct"));
+}
+
+int
+is_union_stereo (char *stereo)
+{
+    return (!strcasecmp(stereo, "union"));
 }
 
 int
