@@ -73,6 +73,11 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
         return false;
     }
 
+    if (!verifyIfPathIsContinuous(caravanMovementPath,map))
+    {
+        return false;
+    }
+
     unsigned cardLevel = args.currentPlayer->getLevelOfCard(CardsEnum::economy);
 
     elementList barbarianList = checkIfBarbarianIsOnThePath(caravanMovementPath, map);
@@ -153,6 +158,28 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
     }
 
     roundCards(args.currentPlayer, args.ruleId);
+    return true;
+}
+
+bool Rules::verifyIfPathIsContinuous(std::vector<std::array<unsigned, 2>> &caravanMovementPath, std::shared_ptr<Map> map)
+{
+    bool isCaravanPathContinuous = false;
+    for( int i =1; i< caravanMovementPath.size(); i++){
+        std::vector<std::array<unsigned, 2>> neighboursOfPreviousField = getNeighbors(caravanMovementPath[i-1][0], caravanMovementPath[i-1][1], map);
+        for (auto &neighbour : neighboursOfPreviousField)
+        {
+            if (neighbour[0] == caravanMovementPath[i][0] && neighbour[1] == caravanMovementPath[i][1])
+            {
+                isCaravanPathContinuous = true;
+                break;
+            }
+        }
+        if (!isCaravanPathContinuous)
+        {
+            return false;
+        }
+        isCaravanPathContinuous = false;
+    }
     return true;
 }
 
