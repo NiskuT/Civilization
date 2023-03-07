@@ -239,4 +239,24 @@ BOOST_AUTO_TEST_CASE(TestRulesCultureCardLevel1)
     BOOST_CHECK(std::holds_alternative<shared::ControlPawn>(*((*map)(5, 3)->getElements().at(0))));
 }
 
+BOOST_AUTO_TEST_CASE(TestDistanceBetweenTwoPoints)
+{
+    shared::Rules rules;
+    std::array<unsigned, 2> point1 = {2, 3};
+    std::array<unsigned, 2> point2 = {4, 5};
+    BOOST_CHECK(rules.distanceBetweenHexagons(point1, point2) == 3);
+
+    point1 = {0,0};
+    point2 = {4,0};
+    BOOST_CHECK(rules.distanceBetweenHexagons(point1, point2) == 4);
+
+    point1 = {0,0};
+    point2 = {2,2};
+    BOOST_CHECK(rules.distanceBetweenHexagons(point1, point2) == 3);
+
+    point1 = {0,0};
+    point2 = {1,2};
+    BOOST_CHECK(rules.distanceBetweenHexagons(point1, point2) == 2);
+
+}
 BOOST_AUTO_TEST_SUITE_END()

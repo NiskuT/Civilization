@@ -164,7 +164,7 @@ bool Rules::playEconomyCard(RuleArgsStruct &args)
 bool Rules::verifyIfPathIsContinuous(std::vector<std::array<unsigned, 2>> &caravanMovementPath, std::shared_ptr<Map> map)
 {
     bool isCaravanPathContinuous = false;
-    for( int i =1; i< caravanMovementPath.size(); i++){
+    for( int i =1; i< (int) caravanMovementPath.size(); i++){
         std::vector<std::array<unsigned, 2>> neighboursOfPreviousField = getNeighbors(caravanMovementPath[i-1][0], caravanMovementPath[i-1][1], map);
         for (auto &neighbour : neighboursOfPreviousField)
         {
@@ -774,4 +774,70 @@ void Rules::roundCards(std::shared_ptr<Player> currentPlayer, CardsEnum cardPlay
             card->setDificulty(card->getDificulty() + 1);
         }
     }
+}
+
+/**
+ * @file Rules.cpp
+ * @fn int Rules::distanceBetweenHexagons(std::array<unsigned, 2> position1, std::array<unsigned, 2> position2)
+ * @brief This function aim to calculate the distance between two hexagons
+ * The calculated distance is the number of hexagons between the two hexagons +1
+ * For example two hexagons side by side will have a distance of 1
+ */
+int Rules::distanceBetweenHexagons(std::array<unsigned, 2> position1, std::array<unsigned, 2> position2)
+{
+    int distanceOnX = 0;
+    int distanceOnY = abs(int(position1[1] - position2[1]));
+    if (position1[1] == position2[1])
+    {
+        distanceOnX = abs(int(position1[0] - position2[0]));
+    }
+    else if (position1[1]%2 == position2[1]%2)
+    {
+        if (position1[0] > position2[0] + 1)
+        {
+            distanceOnX = position1[0] - position2[0] - 1;
+        }
+        else if (position1[0] < position2[0] - 1)
+        {
+            distanceOnX = position2[0] - position1[0] - 1;
+        }
+        else
+        {
+            distanceOnX = 0;
+        }
+    }
+    else
+    {
+        if (position1[0] % 2 ==0)
+        {
+            if (position1[0] > position2[0])
+            {
+                distanceOnX = position1[0] - position2[0];
+            }
+            else if (position1[0] + 1 < position2[0])
+            {
+                distanceOnX = position2[0] - position1[0];
+            }
+            else
+            {
+                distanceOnX = 0;
+            }
+        }
+        else 
+        {
+            if (position2[0] > position1[0])
+            {
+                distanceOnX = position2[0] - position1[0];
+            }
+            else if (position2[0] + 1 < position1[0])
+            {
+                distanceOnX = position1[0] - position2[0];
+            }
+            else
+            {
+                distanceOnX = 0;
+            }
+        }
+    }
+    return distanceOnX + distanceOnY;
 }
